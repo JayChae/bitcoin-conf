@@ -1,5 +1,5 @@
-import { type AttendeeItem } from "../messages/attendees";
-import CountUp from "../../components/CountUp";
+import { type AttendeeItem } from "../../../messages/attendees";
+import CountUp from "@/components/CountUp";
 import GradientText from "@/components/GradientText";
 
 type Props = {

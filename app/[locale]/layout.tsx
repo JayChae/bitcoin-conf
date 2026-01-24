@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import DarkVeil from "../_components/DarkVeil";
-import Nav from "../_components/Nav";
-import Footer from "../_components/Footer";
+import Nav from "./_components/Nav";
+import Footer from "./_components/Footer";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
@@ -45,15 +44,12 @@ export default async function RootLayout({ children, params }: Props) {
           }}
         />
       </head>
-      <body
-        className={`antialiased size-full relative overflow-y-auto bg-black`}
-      >
+      <body className={`antialiased size-full relative overflow-y-auto bg-black`}>
         <NextIntlClientProvider>
           <Nav items={navItems[lang]} />
-          {children}
+          <div className="h-screen">{children}</div>
           <Footer />
         </NextIntlClientProvider>
-        <DarkVeil speed={0.8} />
       </body>
       <GoogleAnalytics gaId="G-9R5RSRB96E" />
     </html>
