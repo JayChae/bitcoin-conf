@@ -1,6 +1,6 @@
 import GradientText from "@/components/GradientText";
 import Link from "next/link";
-import { type TicketButton } from "../messages/tickets";
+import { type TicketButton } from "@/app/messages/tickets";
 import BlurText from "@/components/BlurText";
 import ShinyText from "@/components/ShinyText";
 import Attendees from "./Attendees";
