@@ -15,6 +15,10 @@ const pretendardFont = localFont({
   src: "../../public/fonts/PretendardVariable.woff2",
 });
 
+const suitFont = localFont({
+  src: "../../public/fonts/SUIT-Variable.woff2",
+});
+
 type Props = {
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
@@ -35,7 +39,7 @@ export default async function RootLayout({ children, params }: Props) {
   const structuredData = generateStructuredData(locale);
 
   return (
-    <html lang={locale} className={`size-full ${pretendardFont.className}`}>
+    <html lang={locale} className={`size-full ${suitFont.className}`}>
       <head>
         <script
           type="application/ld+json"

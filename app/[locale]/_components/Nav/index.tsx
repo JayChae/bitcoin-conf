@@ -6,6 +6,7 @@ import { Link, useRouter } from "@/i18n/navigation";
 import { useLocale } from "next-intl";
 import { type NavItem } from "@/app/messages/nav";
 import Mobile from "./Mobile";
+import SplitText from "@/components/SplitText";
 
 type Props = {
   items: NavItem[];
@@ -44,10 +45,10 @@ export default function Nav({ items }: Props) {
 
   return (
     <nav
-      className="fixed top-0 left-0 right-0 z-50 bg-black/20 backdrop-blur-md border-b border-white/10"
+      className="fixed top-0 left-0 right-0 z-50 bg-black/20 backdrop-blur-md border-b-[1px] border-white/50 font-suit"
       ref={initScroll}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 relative md:py-2">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link href="/" className="flex-shrink-0">
@@ -56,21 +57,29 @@ export default function Nav({ items }: Props) {
 
           {/* Desktop Menu */}
           <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-8">
+            <div className="flex items-center justify-center space-x-8">
               {items.map((item) => (
                 <Link
                   key={item.label}
                   href={item.href}
                   onClick={(e) => handleClick(e, item.href)}
-                  className="text-white/80 hover:text-white px-3 py-2 text-sm font-medium transition-colors duration-200 cursor-pointer"
+                  className="text-white/80 text-lg font-light cursor-pointer flex items-center justify-center h-10"
                 >
-                  {item.label}
+                  <SplitText
+                    text={item.label}
+                    triggerOn="hover"
+                    from={{ opacity: 0, y: 10 }}
+                    to={{ opacity: 1, y: 0 }}
+                    duration={0.8}
+                    delay={80}
+                    ease="power3.out"
+                  />
                 </Link>
               ))}
               <Link
                 href="/"
                 locale={locale === "en" ? "ko" : "en"}
-                className="text-white/80 hover:text-white px-3 py-2 text-sm font-medium transition-colors duration-200 bg-white/10 hover:bg-white/20 rounded-md border border-white/20 cursor-pointer"
+                className="text-white/80 hover:text-white px-3 py-2 font-medium transition-colors duration-200 bg-white/10 hover:bg-white/20 rounded-md border border-white/20 cursor-pointer"
               >
                 {locale === "en" ? "한국어" : "English"}
               </Link>
