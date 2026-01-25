@@ -23,6 +23,8 @@ export default function Nav({ items }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const locale = useLocale();
+  const lang = locale.split("/")[0];
+  console.log(lang);
 
   const handleClick = (e: React.MouseEvent, href: string) => {
     e.preventDefault();
@@ -83,6 +85,57 @@ export default function Nav({ items }: Props) {
                   />
                 </Link>
               ))}
+
+              {/* History Dropdown */}
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <div className="flex items-center justify-center gap-1 group text-lg">
+                    <SplitText
+                      text="History"
+                      triggerOn="hover"
+                      from={{ opacity: 0, y: 10 }}
+                      to={{ opacity: 1, y: 0 }}
+                      duration={0.8}
+                      delay={80}
+                      ease="power3.out"
+                      className="text-white/80 text-lg font-light cursor-pointer flex items-center justify-center h-10"
+                    />
+                  </div>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  className="bg-black/90 border-white/20 backdrop-blur-md min-w-24"
+                  sideOffset={12}
+                >
+                  <DropdownMenuItem
+                    className={`text-md focus:bg-white/10 focus:text-white ${
+                      lang === "en"
+                        ? "text-white bg-white/10 cursor-default"
+                        : "text-white/80 hover:text-white cursor-pointer"
+                    }`}
+                  >
+                    <Link
+                      href="/"
+                      locale={lang + "/2025"}
+                      className="flex items-center gap-2 w-full"
+                    >
+                      2025
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    className={`text-md focus:bg-white/10 focus:text-white ${
+                      lang === "ko"
+                        ? "text-white bg-white/10 cursor-default"
+                        : "text-white/80 hover:text-white cursor-pointer"
+                    }`}
+                  >
+                    <Link href="/" locale="ko/2025" className="flex items-center gap-2 w-full">
+                      2025
+                    </Link>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              {/* Language Switcher */}
               <DropdownMenu>
                 <DropdownMenuTrigger>
                   <div className="flex items-center justify-center gap-1 group text-lg">

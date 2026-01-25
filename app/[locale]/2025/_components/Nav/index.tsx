@@ -6,6 +6,8 @@ import { Link, useRouter } from "@/i18n/navigation";
 import { useLocale } from "next-intl";
 import { type NavItem } from "@/app/messages/2025/nav";
 import Mobile from "./Mobile";
+import { usePathname } from "next/navigation";
+import HistoryDropdown from "@/components/HistoryDropdown";
 
 type Props = {
   items: NavItem[];
@@ -15,6 +17,8 @@ export default function Nav({ items }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const locale = useLocale();
+  const lang = locale.split("/")[0];
+  const pathname = usePathname();
 
   const handleClick = (e: React.MouseEvent, href: string) => {
     e.preventDefault();
@@ -67,6 +71,7 @@ export default function Nav({ items }: Props) {
                   {item.label}
                 </Link>
               ))}
+              <HistoryDropdown lang={locale} />
               <Link
                 href="/"
                 locale={locale === "en" ? "ko/2025" : "en/2025"}
