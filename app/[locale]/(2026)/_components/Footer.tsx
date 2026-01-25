@@ -64,7 +64,7 @@ export default async function Footer() {
         <div className="border-t border-white/10 pt-6">
           <div className="flex justify-center">
             <p className="text-white/60 text-sm">
-              © 2025 Bitcoin Mini Conference. All rights reserved.
+              © 2026 Bitcoin Mini Conference. All rights reserved.
             </p>
           </div>
         </div>
