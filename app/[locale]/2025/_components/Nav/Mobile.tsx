@@ -67,6 +67,19 @@ export default function Mobile({
               </Link>
             ))}
             <div className="pt-2 border-t border-white/10">
+              <div className="px-3 py-2 text-white/60 font-medium text-base">
+                History
+              </div>
+              <Link
+                href="/"
+                locale={locale.split("/")[0]}
+                className="text-sm text-white/80 hover:text-white block px-3 py-2 font-medium transition-colors duration-200 cursor-pointer"
+                onClick={() => setIsOpen(false)}
+              >
+                2026
+              </Link>
+            </div>
+            <div className="pt-2 border-t border-white/10">
               <Link
                 href="/"
                 locale={locale === "en" ? "ko" : "en"}

@@ -1,3 +1,5 @@
+import BlurText from "@/components/BlurText";
+
 type Props = {
   tagline: string;
   title: string;
@@ -7,7 +9,7 @@ type Props = {
 
 export default function Hero({ tagline, title, location, date }: Props) {
   return (
-    <section className="h-screen flex flex-col items-center justify-center gap-4 md:gap-6 text-white px-4">
+    <section className="h-dvh flex flex-col items-center justify-center gap-4 md:gap-6 text-white px-4">
       <div className="text-2xl md:text-4xl lg:text-5xl font-semibold text-center">
         {tagline}
       </div>
@@ -15,7 +17,12 @@ export default function Hero({ tagline, title, location, date }: Props) {
         {title}
       </div>
       <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 text-2xl md:text-3xl font-semibold mt-8">
-        <div>{location}</div>
+        <BlurText
+          text={location}
+          className="text-2xl md:text-3xl font-semibold"
+          delay={100}
+          animateBy="letters"
+        />
         <div className="hidden md:block">|</div>
         <div>{date}</div>
       </div>
