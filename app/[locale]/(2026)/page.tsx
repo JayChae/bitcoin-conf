@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import Hero from "./_components/Hero";
 
 type Props = {
@@ -6,11 +7,16 @@ type Props = {
 
 export default async function Home2026({ params }: Props) {
   const { locale } = await params;
-  const lang = locale === "en" ? "en" : "ko";
+  const tHero = await getTranslations("Hero2026");
 
   return (
     <main className="">
-      <Hero lang={lang} />
+      <Hero
+        tagline={tHero("tagline")}
+        title={tHero("title")}
+        location={tHero("location")}
+        date={tHero("date")}
+      />
     </main>
   );
 }

@@ -26,7 +26,7 @@ export default function HistoryDropdown({ lang }: { lang: string }) {
             locale={lang}
             className="flex items-center gap-2 w-full text-white/80 hover:text-white cursor-pointer"
           >
-            2025
+            2026
           </Link>
         </DropdownMenuItem>
       </DropdownMenuContent>
