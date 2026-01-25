@@ -89,7 +89,7 @@ export default function Nav({ items }: Props) {
               {/* History Dropdown */}
               <DropdownMenu>
                 <DropdownMenuTrigger>
-                  <div className="flex items-center justify-center gap-1 group text-lg">
+                  <div className="text-white/80 text-lg font-light cursor-pointer flex items-center justify-center">
                     <SplitText
                       text="History"
                       triggerOn="hover"
@@ -98,7 +98,6 @@ export default function Nav({ items }: Props) {
                       duration={0.8}
                       delay={80}
                       ease="power3.out"
-                      className="text-white/80 text-lg font-light cursor-pointer flex items-center justify-center h-10"
                     />
                   </div>
                 </DropdownMenuTrigger>
@@ -106,29 +105,12 @@ export default function Nav({ items }: Props) {
                   className="bg-black/90 border-white/20 backdrop-blur-md min-w-24"
                   sideOffset={12}
                 >
-                  <DropdownMenuItem
-                    className={`text-md focus:bg-white/10 focus:text-white ${
-                      lang === "en"
-                        ? "text-white bg-white/10 cursor-default"
-                        : "text-white/80 hover:text-white cursor-pointer"
-                    }`}
-                  >
+                  <DropdownMenuItem className="text-md focus:bg-white/10 focus:text-white">
                     <Link
                       href="/"
                       locale={lang + "/2025"}
-                      className="flex items-center gap-2 w-full"
+                      className="flex items-center gap-2 w-full text-white/80 hover:text-white cursor-pointer"
                     >
-                      2025
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    className={`text-md focus:bg-white/10 focus:text-white ${
-                      lang === "ko"
-                        ? "text-white bg-white/10 cursor-default"
-                        : "text-white/80 hover:text-white cursor-pointer"
-                    }`}
-                  >
-                    <Link href="/" locale="ko/2025" className="flex items-center gap-2 w-full">
                       2025
                     </Link>
                   </DropdownMenuItem>
