@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { seoMessages, SeoLanguage } from "../messages/seo";
+import { seoMessages, SeoLanguage } from "../messages/2025/seo";
 
 interface GenerateMetadataProps {
   locale: string;

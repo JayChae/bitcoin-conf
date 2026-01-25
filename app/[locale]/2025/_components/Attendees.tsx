@@ -1,4 +1,4 @@
-import { type AttendeeItem } from "../../../messages/attendees";
+import { type AttendeeItem } from "../../../messages/2025/attendees";
 import CountUp from "@/components/CountUp";
 import GradientText from "@/components/GradientText";
 

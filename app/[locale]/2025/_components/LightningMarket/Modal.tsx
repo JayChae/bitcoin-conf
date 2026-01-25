@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { type Market, type Product } from "@/app/messages/markets";
+import { type Market, type Product } from "@/app/messages/2025/markets";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { handleModalRef } from "@/app/_utils/modal";

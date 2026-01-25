@@ -1,6 +1,6 @@
 "use client";
 
-import { Market } from "@/app/messages/markets";
+import { Market } from "@/app/messages/2025/markets";
 import { useState } from "react";
 import MarketModal from "./Modal";
 

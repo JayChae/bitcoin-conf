@@ -1,7 +1,7 @@
 "use client";
 
 import { Link } from "@/i18n/navigation";
-import { type NavItem } from "@/app/messages/nav";
+import { type NavItem } from "@/app/messages/2025/nav";
 
 type Props = {
   items: NavItem[];

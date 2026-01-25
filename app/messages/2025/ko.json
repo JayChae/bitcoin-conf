@@ -1,0 +1,52 @@
+{
+  "Hero": {
+    "title": "Bitcoin Mini Conference",
+    "subtitle": "SECOND EDITION",
+    "date": "2025.11.29-30",
+    "location": "서울"
+  },
+  "Speakers": {
+    "title": "연사 소개",
+    "moreText": "더보기",
+    "closeText": "접기"
+  },
+  "Schedule": {
+    "title": "일정",
+    "triggerText": "자세히 보기"
+  },
+  "Video": {
+    "title": "컨퍼런스 하이라이트",
+    "description": "컨퍼런스 티저 영상을 확인하세요"
+  },
+  "LightningMarket": {
+    "title": "라이트닝 마켓",
+    "moreText": "상세 보기",
+    "about": "소개",
+    "products": "상품",
+    "specialEvent": "특별 이벤트",
+    "productsInformationComingSoon": "상품 정보 준비 중...",
+    "details": "상세",
+    "onlineStore": "온라인 스토어",
+    "website": "웹사이트",
+    "showMoreText": "더보기",
+    "showCloseText": "접기"
+  },
+  "Sponsor": {
+    "title": "후원자",
+    "gold": "Gold Sponsor",
+    "silver": "Silver Sponsor",
+    "bronze": "Bronze Sponsor",
+    "individual": "Individual Sponsor"
+  },
+  "Footer": {
+    "contact": "Contact",
+    "email": "문의 이메일:",
+    "donation": "후원",
+    "location": "장소",
+    "day1": "29일",
+    "day2": "30일",
+    "address1": "서울 강서구 마곡중앙1로 20 지하 1층 NSP 홀",
+    "address2": "서울 서대문구 연희로2길 76 (홍대 한빛)",
+    "address3": "서울 마포구 동교로 30길 21 (SPACE BE)"
+  }
+}

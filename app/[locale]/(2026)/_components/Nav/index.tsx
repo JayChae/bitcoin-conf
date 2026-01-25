@@ -4,7 +4,7 @@ import { useCallback, useState } from "react";
 import Image from "next/image";
 import { Link, useRouter } from "@/i18n/navigation";
 import { useLocale } from "next-intl";
-import { type NavItem } from "@/app/messages/nav";
+import { type NavItem } from "@/app/messages/2025/nav";
 import Mobile from "./Mobile";
 import SplitText from "@/components/SplitText";
 import {

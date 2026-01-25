@@ -2,7 +2,7 @@ import { setRequestLocale } from "next-intl/server";
 import Footer from "./_components/Footer";
 import DarkVeil from "./_components/DarkVeil";
 import Nav from "./_components/Nav";
-import navItems from "@/app/messages/nav";
+import navItems from "@/app/messages/2025/nav";
 
 type Props = {
   children: React.ReactNode;
@@ -17,7 +17,7 @@ export default async function Layout2025({ children, params }: Props) {
   return (
     <>
       <Nav items={navItems[lang]} />
-      <div className="h-screen">{children}</div>
+      {children}
       <Footer />
       <DarkVeil speed={0.8} />
     </>
