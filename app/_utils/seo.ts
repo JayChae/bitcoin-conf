@@ -49,11 +49,6 @@ export function generateSEOMetadata({
         "max-snippet": -1,
       },
     },
-    icons: {
-      icon: "/logo-v2.webp",
-      shortcut: "/logo-v2.webp",
-      apple: "/logo-v2.webp",
-    },
     openGraph: {
       type: "website",
       locale: lang === "ko" ? "ko_KR" : "en_US",
