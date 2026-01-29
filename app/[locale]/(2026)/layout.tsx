@@ -5,11 +5,18 @@ import navItems from "@/app/messages/2025/nav";
 import ColorBends from "@/components/ColorBends";
 import FloatingLines from "@/components/FloatingLines";
 import LiquidEther from "@/components/LiquidEther";
+import { generateSEOMetadata } from "@/app/_utils/seo";
+import { seoMessages } from "@/app/messages/seo";
+import { Metadata } from "next";
 
 type Props = {
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
 };
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  return generateSEOMetadata({ locale, seoMessages });
+}
 
 export default async function Layout2026({ children, params }: Props) {
   const { locale } = await params;

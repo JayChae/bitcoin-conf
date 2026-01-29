@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: "/private/",
     },
-    sitemap: "https://mini.bitcoinconf.org/sitemap.xml",
+    sitemap: "https://bitcoinkoreaconference.com/sitemap.xml",
   };
 }
