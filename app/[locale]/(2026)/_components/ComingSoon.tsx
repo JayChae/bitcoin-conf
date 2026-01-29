@@ -12,7 +12,7 @@ export default function ComingSoon({ title, description }: Props) {
       <div className="max-w-6xl mx-auto">
         <div className="relative w-full aspect-video rounded-2xl overflow-hidden">
           <Image
-            src="/2026/coex_3.jpg"
+            src="/2026/coex.webp"
             alt="COEX Conference Hall"
             fill
             className="object-cover"

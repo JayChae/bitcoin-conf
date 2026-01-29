@@ -61,7 +61,7 @@ export default function Nav({ items }: Props) {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link href="/" className="flex-shrink-0">
-            <Image src="/logo-v2.png" alt="Logo" width={40} height={40} />
+            <Image src="/logo-v2.webp" alt="Logo" width={40} height={40} />
           </Link>
 
           {/* Desktop Menu */}
@@ -139,7 +139,11 @@ export default function Nav({ items }: Props) {
                         : "text-white/80 hover:text-white cursor-pointer"
                     }`}
                   >
-                    <Link href="/" locale="en" className="flex items-center gap-2 w-full">
+                    <Link
+                      href="/"
+                      locale="en"
+                      className="flex items-center gap-2 w-full"
+                    >
                       English
                       {locale === "en" && <Check className="size-4" />}
                     </Link>
@@ -151,7 +155,11 @@ export default function Nav({ items }: Props) {
                         : "text-white/80 hover:text-white cursor-pointer"
                     }`}
                   >
-                    <Link href="/" locale="ko" className="flex items-center gap-2 w-full">
+                    <Link
+                      href="/"
+                      locale="ko"
+                      className="flex items-center gap-2 w-full"
+                    >
                       한국어
                       {locale === "ko" && <Check className="size-4" />}
                     </Link>

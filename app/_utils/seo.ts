@@ -22,7 +22,7 @@ export function generateSEOMetadata({
 
   const images = [
     {
-      url: `${baseUrl}/logo-dark.png`,
+      url: `${baseUrl}/logo-v2.webp`,
       width: 1200,
       height: 630,
       alt: seo.siteName,
@@ -50,9 +50,9 @@ export function generateSEOMetadata({
       },
     },
     icons: {
-      icon: "/logo-v2.png",
-      shortcut: "/logo-v2.png",
-      apple: "/logo-v2.png",
+      icon: "/logo-v2.webp",
+      shortcut: "/logo-v2.webp",
+      apple: "/logo-v2.webp",
     },
     openGraph: {
       type: "website",
