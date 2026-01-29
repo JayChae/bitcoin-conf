@@ -12,6 +12,16 @@ const suitFont = localFont({
   src: "../../public/fonts/SUIT-Variable.woff2",
 });
 
+const ubuntuMonoFont = localFont({
+  src: "../../public/fonts/UbuntuMono-BI.ttf",
+  variable: "--font-ubuntu-mono",
+});
+
+const neurimboGothicFont = localFont({
+  src: "../../public/fonts/neurimboGothicRegular.otf",
+  variable: "--font-neurimbo-gothic",
+});
+
 type Props = {
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
@@ -31,7 +41,7 @@ export default async function RootLayout({ children, params }: Props) {
   const structuredData = generateStructuredData(locale);
 
   return (
-    <html lang={locale} className={`size-full ${suitFont.className}`}>
+    <html lang={locale} className={`size-full ${suitFont.className} ${ubuntuMonoFont.variable} ${neurimboGothicFont.variable}`}>
       <head>
         <script
           type="application/ld+json"

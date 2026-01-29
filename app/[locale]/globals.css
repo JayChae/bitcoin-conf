@@ -15,6 +15,18 @@
 	src: url('/fonts/SUIT-Variable.woff2') format('woff2-variations');
 }
 
+@font-face {
+	font-family: 'Ubuntu Mono';
+	font-style: normal;
+	src: url('/fonts/UbuntuMono-BI.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Neurimbo Gothic';
+	font-style: normal;
+	src: url('/fonts/neurimboGothicRegular.otf') format('opentype');
+}
+
 html,
 body {
   height: 100%;
