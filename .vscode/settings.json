@@ -7,5 +7,5 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },
-  "cSpell.words": ["classname", "pretendard"]
+  "cSpell.words": ["classname", "pretendard", "neurimbo"]
 }
