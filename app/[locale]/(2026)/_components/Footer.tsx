@@ -27,7 +27,7 @@ export default async function Footer() {
                 rel="noopener noreferrer"
                 className="text-white/60 hover:text-white text-sm transition-colors duration-200"
               >
-                @Bitcoinminiconf
+                @btckoreaconf
               </Link>
             </div>
           </div>
