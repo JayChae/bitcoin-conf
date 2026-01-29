@@ -22,7 +22,7 @@ export function generateSEOMetadata({
 
   const images = [
     {
-      url: `${baseUrl}/logo-v2.webp`,
+      url: `${baseUrl}/logo-v2.png`,
       width: 1200,
       height: 630,
       alt: seo.siteName,
