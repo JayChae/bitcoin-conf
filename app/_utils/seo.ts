@@ -1,26 +1,28 @@
 import { Metadata } from "next";
-import { seoMessages, SeoLanguage } from "../messages/seo";
+import { SeoLanguage, seoMessages } from "../messages/2025/seo";
 
 interface GenerateMetadataProps {
   locale: string;
   pathname?: string;
+  seoMessages: any;
 }
 
 export function generateSEOMetadata({
   locale,
   pathname = "/",
+  seoMessages,
 }: GenerateMetadataProps): Metadata {
   const lang = (locale === "ko" ? "ko" : "en") as SeoLanguage;
   const seo = seoMessages[lang];
 
-  const baseUrl = "https://mini.bitcoinconf.org";
+  const baseUrl = "https://bitcoinkoreaconference.com";
   const url = `${baseUrl}${locale === "en" ? "" : `/${locale}`}${
     pathname === "/" ? "" : pathname
   }`;
 
   const images = [
     {
-      url: `${baseUrl}/logo-dark.png`,
+      url: `${baseUrl}/logo-v2.png`,
       width: 1200,
       height: 630,
       alt: seo.siteName,
@@ -47,11 +49,6 @@ export function generateSEOMetadata({
         "max-snippet": -1,
       },
     },
-    icons: {
-      icon: "/logo-v2.png",
-      shortcut: "/logo-v2.png",
-      apple: "/logo-v2.png",
-    },
     openGraph: {
       type: "website",
       locale: lang === "ko" ? "ko_KR" : "en_US",
@@ -66,8 +63,8 @@ export function generateSEOMetadata({
       title: seo.twitterTitle,
       description: seo.twitterDescription,
       images,
-      creator: "@Bitcoinminiconf",
-      site: "@Bitcoinminiconf",
+      creator: "@Bitcoinkoreaconference",
+      site: "@Bitcoinkoreaconference",
     },
     alternates: {
       canonical: url,
@@ -105,34 +102,24 @@ export function generateStructuredData(locale: string) {
     location: [
       {
         "@type": "Place",
-        name: "NSP Hall",
+        name: "COEX",
         address: {
           "@type": "PostalAddress",
-          streetAddress: "20, Magokjungang 1-ro, Gangseo-gu",
-          addressLocality: "Seoul",
-          addressCountry: "KR",
-        },
-      },
-      {
-        "@type": "Place",
-        name: "Hanbit Building",
-        address: {
-          "@type": "PostalAddress",
-          streetAddress: "76, Yeonhui-ro 2-gil, Seodaemun-gu",
+          streetAddress: "159, Samsung-ro, Gangnam-gu",
           addressLocality: "Seoul",
           addressCountry: "KR",
         },
       },
     ],
-    image: ["https://mini.bitcoinconf.org/logo-dark.png"],
+    image: ["https://bitcoinkoreaconference.com/logo-dark.png"],
     organizer: {
       "@type": "Organization",
       name: seo.siteName,
-      url: "https://mini.bitcoinconf.org",
+      url: "https://bitcoinkoreaconference.com",
     },
     offers: {
       "@type": "Offer",
-      url: "https://mini.bitcoinconf.org",
+      url: "https://bitcoinkoreaconference.com",
       availability: "https://schema.org/InStock",
     },
     inLanguage: lang === "ko" ? "ko-KR" : "en-US",

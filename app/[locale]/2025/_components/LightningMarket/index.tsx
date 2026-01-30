@@ -1,6 +1,6 @@
 "use client";
 
-import { type Market } from "../../messages/markets";
+import { type Market } from "@/app/messages/2025/markets";
 import MarketCard from "./Card";
 import ShowMoreButton, { useShowMore } from "../ShowMoreButton";
 

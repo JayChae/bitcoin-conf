@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { type Schedule } from "../../messages/schedules";
+import { type Schedule } from "@/app/messages/2025/schedules";
 import { MapPin } from "lucide-react";
 import BrochureModalTrigger from "./BrochureModal";
 

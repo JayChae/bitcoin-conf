@@ -4,8 +4,10 @@ import { useCallback, useState } from "react";
 import Image from "next/image";
 import { Link, useRouter } from "@/i18n/navigation";
 import { useLocale } from "next-intl";
-import { type NavItem } from "@/app/messages/nav";
+import { type NavItem } from "@/app/messages/2025/nav";
 import Mobile from "./Mobile";
+import { usePathname } from "next/navigation";
+import HistoryDropdown from "@/components/HistoryDropdown";
 
 type Props = {
   items: NavItem[];
@@ -15,6 +17,8 @@ export default function Nav({ items }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const locale = useLocale();
+  const lang = locale.split("/")[0];
+  const pathname = usePathname();
 
   const handleClick = (e: React.MouseEvent, href: string) => {
     e.preventDefault();
@@ -50,7 +54,7 @@ export default function Nav({ items }: Props) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link href="/" className="flex-shrink-0">
+          <Link href="/2025" className="flex-shrink-0">
             <Image src="/logo-v2.png" alt="Logo" width={40} height={40} />
           </Link>
 
@@ -67,9 +71,10 @@ export default function Nav({ items }: Props) {
                   {item.label}
                 </Link>
               ))}
+              <HistoryDropdown lang={locale} />
               <Link
                 href="/"
-                locale={locale === "en" ? "ko" : "en"}
+                locale={locale === "en" ? "ko/2025" : "en/2025"}
                 className="text-white/80 hover:text-white px-3 py-2 text-sm font-medium transition-colors duration-200 bg-white/10 hover:bg-white/20 rounded-md border border-white/20 cursor-pointer"
               >
                 {locale === "en" ? "한국어" : "English"}

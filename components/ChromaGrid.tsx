@@ -4,7 +4,7 @@ import React, { useRef, useEffect, ReactNode } from "react";
 import { gsap } from "gsap";
 import Image from "next/image";
 import Link from "next/link";
-import { snsIconUrl, Speaker } from "@/app/messages/speakers";
+import { snsIconUrl, Speaker } from "@/app/messages/2025/speakers";
 
 export interface ChromaGridProps {
   items: Speaker[];

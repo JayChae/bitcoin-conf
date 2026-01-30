@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import ChromaGrid from "@/components/ChromaGrid";
 import ShinyText from "@/components/ShinyText";
 import ShowMoreButton, { useShowMore } from "./ShowMoreButton";
-import { type Speaker } from "../messages/speakers";
+import { type Speaker } from "@/app/messages/2025/speakers";
 // import { isMobileRef } from "../_utils/mobile";
 
 type Props = {

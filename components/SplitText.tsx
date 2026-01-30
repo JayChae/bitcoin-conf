@@ -21,6 +21,7 @@ export interface SplitTextProps {
   tag?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'span';
   textAlign?: React.CSSProperties['textAlign'];
   onLetterAnimationComplete?: () => void;
+  triggerOn?: 'scroll' | 'hover' | 'mount';
 }
 
 const SplitText: React.FC<SplitTextProps> = ({
@@ -36,10 +37,13 @@ const SplitText: React.FC<SplitTextProps> = ({
   rootMargin = '-100px',
   tag = 'p',
   textAlign = 'center',
-  onLetterAnimationComplete
+  onLetterAnimationComplete,
+  triggerOn = 'scroll'
 }) => {
   const ref = useRef<HTMLParagraphElement>(null);
   const animationCompletedRef = useRef(false);
+  const splitInstanceRef = useRef<GSAPSplitText | null>(null);
+  const targetsRef = useRef<Element[]>([]);
   const [fontsLoaded, setFontsLoaded] = useState<boolean>(false);
 
   useEffect(() => {
@@ -51,6 +55,25 @@ const SplitText: React.FC<SplitTextProps> = ({
       });
     }
   }, []);
+
+  const handleMouseEnter = () => {
+    if (triggerOn !== 'hover' || !targetsRef.current.length) return;
+    gsap.fromTo(
+      targetsRef.current,
+      { ...from },
+      {
+        ...to,
+        duration,
+        ease,
+        stagger: delay / 1000,
+        onComplete: () => {
+          onLetterAnimationComplete?.();
+        },
+        willChange: 'transform, opacity',
+        force3D: true
+      }
+    );
+  };
 
   useGSAP(
     () => {
@@ -84,7 +107,9 @@ const SplitText: React.FC<SplitTextProps> = ({
         if (!targets.length && splitType.includes('words') && self.words.length) targets = self.words;
         if (!targets.length && splitType.includes('lines') && self.lines.length) targets = self.lines;
         if (!targets.length) targets = self.chars || self.words || self.lines;
+        targetsRef.current = targets;
       };
+
       const splitInstance = new GSAPSplitText(el, {
         type: splitType,
         smartWrap: true,
@@ -95,6 +120,33 @@ const SplitText: React.FC<SplitTextProps> = ({
         reduceWhiteSpace: false,
         onSplit: (self: GSAPSplitText) => {
           assignTargets(self);
+
+          // hover 모드: 애니메이션 없이 split만 유지, 호버 시 재생
+          if (triggerOn === 'hover') {
+            return;
+          }
+
+          // mount 모드: 즉시 애니메이션 실행
+          if (triggerOn === 'mount') {
+            return gsap.fromTo(
+              targets,
+              { ...from },
+              {
+                ...to,
+                duration,
+                ease,
+                stagger: delay / 1000,
+                onComplete: () => {
+                  animationCompletedRef.current = true;
+                  onLetterAnimationComplete?.();
+                },
+                willChange: 'transform, opacity',
+                force3D: true
+              }
+            );
+          }
+
+          // scroll 모드 (기본): 스크롤 트리거 사용
           return gsap.fromTo(
             targets,
             { ...from },
@@ -120,7 +172,10 @@ const SplitText: React.FC<SplitTextProps> = ({
           );
         }
       });
+
+      splitInstanceRef.current = splitInstance;
       el._rbsplitInstance = splitInstance;
+
       return () => {
         ScrollTrigger.getAll().forEach(st => {
           if (st.trigger === el) st.kill();
@@ -129,6 +184,8 @@ const SplitText: React.FC<SplitTextProps> = ({
           splitInstance.revert();
         } catch (_) {}
         el._rbsplitInstance = undefined;
+        splitInstanceRef.current = null;
+        targetsRef.current = [];
       };
     },
     {
@@ -143,6 +200,7 @@ const SplitText: React.FC<SplitTextProps> = ({
         threshold,
         rootMargin,
         fontsLoaded,
+        triggerOn,
         onLetterAnimationComplete
       ],
       scope: ref
@@ -156,46 +214,48 @@ const SplitText: React.FC<SplitTextProps> = ({
       willChange: 'transform, opacity'
     };
     const classes = `split-parent overflow-hidden inline-block whitespace-normal ${className}`;
+    const hoverProps = triggerOn === 'hover' ? { onMouseEnter: handleMouseEnter } : {};
+
     switch (tag) {
       case 'h1':
         return (
-          <h1 ref={ref} style={style} className={classes}>
+          <h1 ref={ref} style={style} className={classes} {...hoverProps}>
             {text}
           </h1>
         );
       case 'h2':
         return (
-          <h2 ref={ref} style={style} className={classes}>
+          <h2 ref={ref} style={style} className={classes} {...hoverProps}>
             {text}
           </h2>
         );
       case 'h3':
         return (
-          <h3 ref={ref} style={style} className={classes}>
+          <h3 ref={ref} style={style} className={classes} {...hoverProps}>
             {text}
           </h3>
         );
       case 'h4':
         return (
-          <h4 ref={ref} style={style} className={classes}>
+          <h4 ref={ref} style={style} className={classes} {...hoverProps}>
             {text}
           </h4>
         );
       case 'h5':
         return (
-          <h5 ref={ref} style={style} className={classes}>
+          <h5 ref={ref} style={style} className={classes} {...hoverProps}>
             {text}
           </h5>
         );
       case 'h6':
         return (
-          <h6 ref={ref} style={style} className={classes}>
+          <h6 ref={ref} style={style} className={classes} {...hoverProps}>
             {text}
           </h6>
         );
       default:
         return (
-          <p ref={ref} style={style} className={classes}>
+          <p ref={ref} style={style} className={classes} {...hoverProps}>
             {text}
           </p>
         );

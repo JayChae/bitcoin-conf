@@ -1,15 +1,9 @@
 {
   "Hero": {
-    "title": "Bitcoin Korea Conference",
+    "title": "Bitcoin Mini Conference",
     "subtitle": "SECOND EDITION",
     "date": "2025.11.29-30",
     "location": "서울"
-  },
-  "Hero2026": {
-    "tagline": "대한민국 대표 비트코인 컨퍼런스",
-    "title": "Bitcoin Korea Conference",
-    "location": "코엑스 삼성",
-    "date": "2026년 11월 7일 ~ 8일"
   },
   "Speakers": {
     "title": "연사 소개",
@@ -49,10 +43,10 @@
     "email": "문의 이메일:",
     "donation": "후원",
     "location": "장소",
-    "day1": "7일",
-    "day2": "8일",
-    "address1": "서울 강남구 영동대로 513 코엑스",
-    "address2": "",
-    "address3": ""
+    "day1": "29일",
+    "day2": "30일",
+    "address1": "서울 강서구 마곡중앙1로 20 지하 1층 NSP 홀",
+    "address2": "서울 서대문구 연희로2길 76 (홍대 한빛)",
+    "address3": "서울 마포구 동교로 30길 21 (SPACE BE)"
   }
 }
