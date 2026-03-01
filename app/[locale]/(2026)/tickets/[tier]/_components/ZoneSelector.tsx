@@ -127,11 +127,12 @@ export default function ZoneSelector({
                 <span className="text-[10px] md:text-xs text-white/50 mt-0.5 whitespace-nowrap">
                   {getSelectableCount(id, tier)} {t("availableSeats")}
                 </span>
-                {selectedCount > 0 && (
-                  <span className="mt-1 text-[10px] md:text-xs text-white font-medium whitespace-nowrap">
-                    {selectedCount} {t("selected")}
-                  </span>
-                )}
+                <span className={cn(
+                  "mt-1 text-[10px] md:text-xs text-white font-medium whitespace-nowrap",
+                  selectedCount === 0 && "invisible",
+                )}>
+                  {selectedCount || 0} {t("selected")}
+                </span>
               </button>
             );
           })}
@@ -142,3 +143,4 @@ export default function ZoneSelector({
     </div>
   );
 }
+''
