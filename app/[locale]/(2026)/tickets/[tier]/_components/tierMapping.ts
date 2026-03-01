@@ -14,7 +14,7 @@ export const TIER_TO_SEAT_TIER: Record<TierKey, SeatTier> = {
 export const TIER_SECTIONS: Record<TierKey, string[]> = {
   vip: ["C", "D"],
   premium: ["A", "B", "C", "D", "E", "F"],
-  general: ["G", "H", "J", "K", "L", "M", "N"],
+  general: ["A", "G", "H", "J", "K", "L", "M", "N", "F"],
 };
 
 export function isValidTier(tier: string): tier is TierKey {

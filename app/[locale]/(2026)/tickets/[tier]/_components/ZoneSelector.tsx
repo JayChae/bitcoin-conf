@@ -4,12 +4,11 @@ import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import {
   SECTIONS,
-  getSectionPrimaryTier,
   TIER_BORDER,
   TIER_BG_MUTED,
 } from "@/app/[locale]/(2026)/_components/SeatMap/seatData";
 import type { TierKey } from "@/app/[locale]/(2026)/_components/Tickets/tickets";
-import { TIER_SECTIONS, getSelectableCount } from "./tierMapping";
+import { TIER_SECTIONS, TIER_TO_SEAT_TIER, getSelectableCount } from "./tierMapping";
 
 // Sections shown as display-only context above selectable sections
 const CONTEXT_SECTIONS: Record<TierKey, string[][]> = {
@@ -65,7 +64,6 @@ export default function ZoneSelector({
           </span>
           <div className="flex items-end justify-center gap-1 md:gap-1.5">
             {ids.map((id, i) => {
-              const sectionTier = getSectionPrimaryTier(id);
               const offsetY = getCurveOffset(i, ids.length);
               return (
                 <div
@@ -74,8 +72,8 @@ export default function ZoneSelector({
                   className={cn(
                     "flex items-center justify-center rounded-md border px-2 py-1.5 md:px-3 md:py-2",
                     "opacity-30",
-                    TIER_BORDER[sectionTier],
-                    TIER_BG_MUTED[sectionTier],
+                    TIER_BORDER.unavailable,
+                    TIER_BG_MUTED.unavailable,
                   )}
                 >
                   <span className="text-[10px] md:text-xs font-bold text-white/50">
@@ -92,7 +90,7 @@ export default function ZoneSelector({
       <div className="flex items-end justify-center gap-1.5 md:gap-2">
         {activeIds.map((id, i) => {
           const section = SECTIONS.find((s) => s.id === id)!;
-          const sectionTier = getSectionPrimaryTier(id);
+          const sectionTier = TIER_TO_SEAT_TIER[tier];
           const selectedCount = selectedSeats[id]?.size ?? 0;
           const isCurrent = selectedSection === id;
           const offsetY = getCurveOffset(i, activeIds.length);
@@ -118,7 +116,7 @@ export default function ZoneSelector({
                 {getSelectableCount(id, tier)} {t("availableSeats")}
               </span>
               {selectedCount > 0 && (
-                <span className="mt-1 text-[10px] md:text-xs text-blue-400 font-medium">
+                <span className="mt-1 text-[10px] md:text-xs text-white font-medium">
                   {selectedCount} {t("selected")}
                 </span>
               )}

@@ -27,28 +27,28 @@ type Props = {
 
 const tierStyles = {
   vip: {
-    accent: "bg-amber-500",
-    check: "text-amber-400",
-    glow: "animate-gold-glow",
-    badge: "border-amber-500/30 text-amber-300/80",
-    phaseBadge: "bg-amber-500/10 border-amber-500/30 text-amber-300",
-    cta: "border-amber-500/30 text-amber-200 hover:bg-amber-500/10",
+    accent: "bg-violet-500",
+    check: "text-violet-400",
+    glow: "animate-violet-glow",
+    badge: "border-violet-500/30 text-violet-300/80",
+    phaseBadge: "bg-violet-500/10 border-violet-500/30 text-violet-300",
+    cta: "border-violet-500/30 text-violet-200 hover:bg-violet-500/10",
   },
   premium: {
-    accent: "bg-purple-500",
-    check: "text-purple-400",
-    glow: "animate-purple-glow",
-    badge: "border-purple-500/30 text-purple-300/80",
-    phaseBadge: "bg-purple-500/10 border-purple-500/30 text-purple-300",
-    cta: "border-purple-500/30 text-purple-200 hover:bg-purple-500/10",
+    accent: "bg-orange-500",
+    check: "text-orange-400",
+    glow: "animate-orange-glow",
+    badge: "border-orange-500/30 text-orange-300/80",
+    phaseBadge: "bg-orange-500/10 border-orange-500/30 text-orange-300",
+    cta: "border-orange-500/30 text-orange-200 hover:bg-orange-500/10",
   },
   general: {
-    accent: "bg-white/40",
-    check: "text-white/50",
+    accent: "bg-yellow-500",
+    check: "text-yellow-400",
     glow: "",
-    badge: "border-white/20 text-white/60",
-    phaseBadge: "bg-white/5 border-white/20 text-white/60",
-    cta: "border-white/15 text-white/60 hover:bg-white/[0.06]",
+    badge: "border-yellow-500/30 text-yellow-300/80",
+    phaseBadge: "bg-yellow-500/10 border-yellow-500/30 text-yellow-300",
+    cta: "border-yellow-500/30 text-yellow-200 hover:bg-yellow-500/10",
   },
 } as const;
 
@@ -73,7 +73,7 @@ export default function TicketCard({
     <div
       className={cn(
         "relative flex flex-col rounded-2xl overflow-hidden h-full",
-        "bg-black/40 backdrop-blur-sm border border-white/10",
+        "bg-black/40 backdrop-blur-xl border border-white/10",
         "transition-all duration-250 ease-out hover:-translate-y-1.5 hover:border-white/20",
         s.glow,
       )}

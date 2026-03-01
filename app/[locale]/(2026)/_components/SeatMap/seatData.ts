@@ -13,7 +13,7 @@ export const SECTIONS: SectionConfig[] = [
   {
     id: "A",
     totalSeats: 95,
-    rows: [7, 7, 8, 8, 8, 8, 8, 8, 9, 9, 10, 5],
+    rows: [7, 7, 8, 8, 8, 9, 9, 9, 10, 10, 10],
     tierRanges: [
       { tier: "premium", from: 1, to: 65 },
       { tier: "regular", from: 66, to: 95 },
@@ -22,7 +22,7 @@ export const SECTIONS: SectionConfig[] = [
   {
     id: "B",
     totalSeats: 107,
-    rows: [6, 6, 7, 7, 8, 8, 10, 10, 10, 10, 10, 10, 5],
+    rows: [6, 6, 7, 7, 8, 8, 8, 9, 9, 9, 10, 10, 10],
     tierRanges: [
       { tier: "unavailable", from: 1, to: 12 },
       { tier: "premium", from: 13, to: 107 },
@@ -31,7 +31,7 @@ export const SECTIONS: SectionConfig[] = [
   {
     id: "C",
     totalSeats: 107,
-    rows: [6, 6, 7, 7, 8, 8, 10, 10, 10, 10, 10, 10, 5],
+    rows: [6, 6, 7, 7, 8, 8, 8, 9, 9, 9, 10, 10, 10],
     tierRanges: [
       { tier: "vip", from: 1, to: 6 },
       { tier: "unavailable", from: 7, to: 8 },
@@ -43,7 +43,7 @@ export const SECTIONS: SectionConfig[] = [
   {
     id: "D",
     totalSeats: 107,
-    rows: [6, 6, 7, 7, 8, 8, 10, 10, 10, 10, 10, 10, 5],
+    rows: [6, 6, 7, 7, 8, 8, 8, 9, 9, 9, 10, 10, 10],
     tierRanges: [
       { tier: "vip", from: 1, to: 11 },
       { tier: "unavailable", from: 12, to: 19 },
@@ -53,7 +53,7 @@ export const SECTIONS: SectionConfig[] = [
   {
     id: "E",
     totalSeats: 107,
-    rows: [6, 6, 7, 7, 8, 8, 10, 10, 10, 10, 10, 10, 5],
+    rows: [6, 6, 7, 7, 8, 8, 8, 9, 9, 9, 10, 10, 10],
     tierRanges: [
       { tier: "unavailable", from: 1, to: 12 },
       { tier: "premium", from: 13, to: 107 },
@@ -62,7 +62,7 @@ export const SECTIONS: SectionConfig[] = [
   {
     id: "F",
     totalSeats: 95,
-    rows: [7, 7, 8, 8, 8, 8, 8, 8, 9, 9, 10, 5],
+    rows: [7, 7, 8, 8, 8, 9, 9, 9, 10, 10, 10],
     tierRanges: [
       { tier: "premium", from: 1, to: 65 },
       { tier: "regular", from: 66, to: 95 },
@@ -71,43 +71,43 @@ export const SECTIONS: SectionConfig[] = [
   {
     id: "G",
     totalSeats: 40,
-    rows: [5, 6, 6, 6, 6, 6, 5],
+    rows: [6, 6, 7, 7, 7, 7],
     tierRanges: [{ tier: "regular", from: 1, to: 40 }],
   },
   {
     id: "H",
     totalSeats: 77,
-    rows: [8, 8, 8, 8, 9, 9, 9, 9, 9],
+    rows: [8, 8, 8, 9, 9, 9, 9, 7, 10],
     tierRanges: [{ tier: "regular", from: 1, to: 77 }],
   },
   {
     id: "J",
     totalSeats: 76,
-    rows: [7, 8, 8, 9, 9, 9, 9, 8, 9],
+    rows: [7, 8, 8, 9, 9, 9, 9, 7, 10],
     tierRanges: [{ tier: "regular", from: 1, to: 76 }],
   },
   {
     id: "K",
     totalSeats: 76,
-    rows: [7, 8, 8, 9, 9, 9, 9, 8, 9],
+    rows: [7, 8, 8, 9, 9, 9, 9, 7, 10],
     tierRanges: [{ tier: "regular", from: 1, to: 76 }],
   },
   {
     id: "L",
     totalSeats: 76,
-    rows: [7, 8, 8, 9, 9, 9, 9, 8, 9],
+    rows: [7, 8, 8, 9, 9, 9, 9, 7, 10],
     tierRanges: [{ tier: "regular", from: 1, to: 76 }],
   },
   {
     id: "M",
     totalSeats: 77,
-    rows: [8, 8, 8, 8, 9, 9, 9, 9, 9],
+    rows: [8, 8, 8, 9, 9, 9, 9, 7, 10],
     tierRanges: [{ tier: "regular", from: 1, to: 77 }],
   },
   {
     id: "N",
     totalSeats: 40,
-    rows: [5, 6, 6, 6, 6, 6, 5],
+    rows: [6, 6, 7, 7, 7, 7],
     tierRanges: [{ tier: "regular", from: 1, to: 40 }],
   },
 ];
@@ -147,29 +147,29 @@ export function getAvailableCount(section: SectionConfig): number {
 }
 
 export const TIER_COLORS: Record<SeatTier, string> = {
-  vip: "#3B82F6",
-  premium: "#22C55E",
+  vip: "#8B5CF6",
+  premium: "#F97316",
   regular: "#EAB308",
   unavailable: "#374151",
 };
 
 export const TIER_BG: Record<SeatTier, string> = {
-  vip: "bg-blue-500",
-  premium: "bg-emerald-500",
-  regular: "bg-amber-400",
+  vip: "bg-violet-500",
+  premium: "bg-orange-500",
+  regular: "bg-yellow-500",
   unavailable: "bg-gray-700",
 };
 
 export const TIER_BORDER: Record<SeatTier, string> = {
-  vip: "border-blue-500/40",
-  premium: "border-emerald-500/40",
-  regular: "border-amber-400/40",
+  vip: "border-violet-500/40",
+  premium: "border-orange-500/40",
+  regular: "border-yellow-500/40",
   unavailable: "border-gray-700/40",
 };
 
 export const TIER_BG_MUTED: Record<SeatTier, string> = {
-  vip: "bg-blue-500/15",
-  premium: "bg-emerald-500/15",
-  regular: "bg-amber-400/15",
+  vip: "bg-violet-500/15",
+  premium: "bg-orange-500/15",
+  regular: "bg-yellow-500/15",
   unavailable: "bg-gray-700/15",
 };
