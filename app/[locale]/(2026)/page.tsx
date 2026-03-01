@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import Hero from "./_components/Hero";
-import ComingSoon from "./_components/ComingSoon";
+import TicketsSection from "./_components/Tickets/TicketsSection";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -18,7 +18,7 @@ export default async function Home2026({ params }: Props) {
         location={tHero("location")}
         date={tHero("date")}
       />
-      <ComingSoon />
+      <TicketsSection />
     </main>
   );
 }

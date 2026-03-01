@@ -1,7 +1,7 @@
 import { setRequestLocale } from "next-intl/server";
 import Nav from "./_components/Nav";
 import Footer from "./_components/Footer";
-import navItems from "@/app/messages/2025/nav";
+import navItems from "./_components/Nav/navItems";
 import ColorBends from "@/components/ColorBends";
 import FloatingLines from "@/components/FloatingLines";
 import LiquidEther from "@/components/LiquidEther";

@@ -4,7 +4,7 @@ import { useCallback, useState } from "react";
 import Image from "next/image";
 import { Link, useRouter } from "@/i18n/navigation";
 import { useLocale } from "next-intl";
-import { type NavItem } from "@/app/messages/2025/nav";
+import { type NavItem } from "./navItems";
 import Mobile from "./Mobile";
 import SplitText from "@/components/SplitText";
 import {
@@ -27,17 +27,17 @@ export default function Nav({ items }: Props) {
   console.log(lang);
 
   const handleClick = (e: React.MouseEvent, href: string) => {
-    e.preventDefault();
-    const targetId = href.replace("#", "");
-    const element = document.getElementById(targetId);
-    if (element) {
-      // URL 업데이트
-      router.push(href, { scroll: false });
-      // 부드러운 스크롤
-      element.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
+    if (href.startsWith("#")) {
+      e.preventDefault();
+      const targetId = href.replace("#", "");
+      const element = document.getElementById(targetId);
+      if (element) {
+        router.push(href, { scroll: false });
+        element.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }
     }
     setIsOpen(false);
   };
