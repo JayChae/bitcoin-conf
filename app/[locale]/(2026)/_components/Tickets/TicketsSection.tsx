@@ -18,7 +18,7 @@ export default async function TicketsSection() {
         <div className="flex justify-center mt-10 md:mt-12">
           <Link
             href="/tickets"
-            className="group relative inline-flex items-center gap-2 px-8 py-3.5 rounded-full border border-white/20 bg-white/[0.04] backdrop-blur-sm text-white/80 text-base font-medium transition-all duration-300 hover:bg-white/[0.08] hover:border-white/30 hover:text-white"
+            className="group relative inline-flex items-center gap-2 px-8 py-3.5 rounded-full border border-white/20 bg-white/[0.04] backdrop-blur-xl text-white/80 text-base font-medium transition-all duration-300 hover:bg-white/[0.08] hover:border-white/30 hover:text-white"
           >
             {t("viewAll")}
             <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />

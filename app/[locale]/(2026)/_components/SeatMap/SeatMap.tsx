@@ -185,7 +185,9 @@ function SeatCircle({
       className={cn(
         "w-7 h-7 md:w-8 md:h-8 rounded-full text-[9px] md:text-[10px] font-medium",
         "transition-all duration-150 flex items-center justify-center flex-shrink-0",
-        isAvailable ? "cursor-pointer hover:brightness-125" : "cursor-default opacity-30",
+        isAvailable
+          ? "cursor-pointer hover:brightness-125"
+          : "cursor-default opacity-30",
         isSelected && "ring-2 ring-white scale-110",
       )}
       style={{
@@ -246,10 +248,7 @@ function SectionDetail({
             rowSeats.push(seatCounter);
           }
           return (
-            <div
-              key={rowIdx}
-              className="flex items-center gap-1 md:gap-1.5"
-            >
+            <div key={rowIdx} className="flex items-center gap-1 md:gap-1.5">
               <span className="w-4 text-[10px] text-white/30 text-right mr-1">
                 {rowIdx + 1}
               </span>
@@ -372,7 +371,8 @@ function SelectionSummary({
           {t("selected")}
         </div>
         <div className="text-sm font-bold text-white tabular-nums">
-          {t("totalPrice")} {formatKRW(totalPrice, locale)}{t("currency")}
+          {t("totalPrice")} {formatKRW(totalPrice, locale)}
+          {t("currency")}
         </div>
       </div>
     </div>
@@ -384,28 +384,27 @@ function SelectionSummary({
 export default function SeatMap({ locale }: { locale: string }) {
   const t = useTranslations("Tickets2026");
   const [activeSection, setActiveSection] = useState<string | null>(null);
-  const [selectedSeats, setSelectedSeats] = useState<Record<string, Set<number>>>({});
+  const [selectedSeats, setSelectedSeats] = useState<
+    Record<string, Set<number>>
+  >({});
 
-  const toggleSeat = useCallback(
-    (sectionId: string, seatNumber: number) => {
-      setSelectedSeats((prev) => {
-        const next = { ...prev };
-        const set = new Set(prev[sectionId] ?? []);
-        if (set.has(seatNumber)) {
-          set.delete(seatNumber);
-        } else {
-          set.add(seatNumber);
-        }
-        if (set.size === 0) {
-          delete next[sectionId];
-        } else {
-          next[sectionId] = set;
-        }
-        return next;
-      });
-    },
-    [],
-  );
+  const toggleSeat = useCallback((sectionId: string, seatNumber: number) => {
+    setSelectedSeats((prev) => {
+      const next = { ...prev };
+      const set = new Set(prev[sectionId] ?? []);
+      if (set.has(seatNumber)) {
+        set.delete(seatNumber);
+      } else {
+        set.add(seatNumber);
+      }
+      if (set.size === 0) {
+        delete next[sectionId];
+      } else {
+        next[sectionId] = set;
+      }
+      return next;
+    });
+  }, []);
 
   const activeSectionData = activeSection
     ? SECTIONS.find((s) => s.id === activeSection)
@@ -422,7 +421,7 @@ export default function SeatMap({ locale }: { locale: string }) {
       <div
         className={cn(
           "rounded-2xl p-4 md:p-8",
-          "bg-black/40 backdrop-blur-sm border border-white/10",
+          "bg-black/40 backdrop-blur-xl border border-white/10",
         )}
       >
         {activeSection && activeSectionData ? (

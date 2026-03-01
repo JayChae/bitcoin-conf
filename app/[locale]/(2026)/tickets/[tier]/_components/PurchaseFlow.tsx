@@ -41,7 +41,7 @@ export default function PurchaseFlow({
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="rounded-2xl p-4 md:p-8 bg-black/40 backdrop-blur-sm border border-white/10">
+      <div className="rounded-2xl p-4 md:p-8 bg-black/40 backdrop-blur-xl border border-white/10">
         <ZoneSelector
           tier={tier}
           selectedSeats={selectedSeats}
@@ -51,7 +51,7 @@ export default function PurchaseFlow({
       </div>
 
       {selectedSection && (
-        <div className="rounded-2xl p-4 md:p-8 bg-black/40 backdrop-blur-sm border border-white/10">
+        <div className="rounded-2xl p-4 md:p-8 bg-black/40 backdrop-blur-xl border border-white/10">
           <SeatSelector
             tier={tier}
             sectionId={selectedSection}

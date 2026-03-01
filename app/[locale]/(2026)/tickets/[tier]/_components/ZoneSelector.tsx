@@ -8,13 +8,20 @@ import {
   TIER_BG_MUTED,
 } from "@/app/[locale]/(2026)/_components/SeatMap/seatData";
 import type { TierKey } from "@/app/[locale]/(2026)/_components/Tickets/tickets";
-import { TIER_SECTIONS, TIER_TO_SEAT_TIER, getSelectableCount } from "./tierMapping";
+import {
+  TIER_SECTIONS,
+  TIER_TO_SEAT_TIER,
+  getSelectableCount,
+} from "./tierMapping";
 
 // Sections shown as display-only context above selectable sections
 const CONTEXT_SECTIONS: Record<TierKey, string[][]> = {
   vip: [],
   premium: [["C", "D"]],
-  general: [["C", "D"], ["A", "B", "C", "D", "E", "F"]],
+  general: [
+    ["C", "D"],
+    ["A", "B", "C", "D", "E", "F"],
+  ],
 };
 
 const CONTEXT_LABELS: Record<TierKey, string[]> = {
@@ -99,7 +106,11 @@ export default function ZoneSelector({
             <button
               key={id}
               onClick={() => onSelectZone(id)}
-              style={{ transform: isCurrent ? `translateY(${offsetY}px) scale(1.05)` : `translateY(${offsetY}px)` }}
+              style={{
+                transform: isCurrent
+                  ? `translateY(${offsetY}px) scale(1.05)`
+                  : `translateY(${offsetY}px)`,
+              }}
               className={cn(
                 "flex flex-col items-center justify-center rounded-lg border px-3 py-3 md:px-5 md:py-5",
                 "transition-all duration-200",
@@ -112,11 +123,11 @@ export default function ZoneSelector({
               <span className="text-sm md:text-lg font-bold text-white">
                 {section.id}
               </span>
-              <span className="text-[10px] md:text-xs text-white/50 mt-0.5">
+              <span className="text-[10px] md:text-xs text-white/50 mt-0.5 whitespace-nowrap">
                 {getSelectableCount(id, tier)} {t("availableSeats")}
               </span>
               {selectedCount > 0 && (
-                <span className="mt-1 text-[10px] md:text-xs text-white font-medium">
+                <span className="mt-1 text-[10px] md:text-xs text-white font-medium whitespace-nowrap">
                   {selectedCount} {t("selected")}
                 </span>
               )}
