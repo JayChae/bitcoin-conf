@@ -66,9 +66,16 @@
     "seating": "Reserved seating",
     "centerSeats": "Center seats",
     "lunchSpecial": "Lunch (special meal)",
-    "afterPartyOption": "After party option",
+    "afterPartyOption": "After party",
     "afterPartyAddon": "+50,000 KRW",
-    "lunchProvided": "Lunch provided"
+    "lunchProvided": "Lunch provided",
+    "currency": "KRW",
+    "ctaBuy": "Get Tickets",
+    "phaseEarlybird1": "1st Early Bird",
+    "phaseEarlybird2": "2nd Early Bird",
+    "discountEarlybird1": "20% OFF",
+    "discountEarlybird2": "10% OFF",
+    "savings": "Save {amount} KRW"
   },
   "Footer": {
     "contact": "Contact",

@@ -65,9 +65,16 @@
     "seating": "좌석",
     "centerSeats": "중앙 좌석",
     "lunchSpecial": "점심 제공 (특식)",
-    "afterPartyOption": "애프터 파티 옵션",
+    "afterPartyOption": "애프터 파티",
     "afterPartyAddon": "+5만원",
-    "lunchProvided": "점심 제공"
+    "lunchProvided": "점심 제공",
+    "currency": "원",
+    "ctaBuy": "티켓 구매하기",
+    "phaseEarlybird1": "1차 얼리버드",
+    "phaseEarlybird2": "2차 얼리버드",
+    "discountEarlybird1": "20% 할인",
+    "discountEarlybird2": "10% 할인",
+    "savings": "{amount}원 절약"
   },
   "Footer": {
     "contact": "Contact",

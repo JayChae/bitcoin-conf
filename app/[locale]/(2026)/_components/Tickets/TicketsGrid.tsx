@@ -1,57 +1,28 @@
 import { getTranslations } from "next-intl/server";
+import { getLocale } from "next-intl/server";
 import TicketCard from "./TicketCard";
+import {
+  TICKETS,
+  CURRENT_PHASE,
+  getDiscountedPrice,
+  isDiscounted,
+  formatKRW,
+} from "./tickets";
 
-type TicketDef = {
-  tier: "vip" | "premium" | "general";
-  totalSeats: number;
-  benefitKeys: string[];
-  addonKeys?: string[];
+const PHASE_KEYS: Record<string, { phase: string; discount: string }> = {
+  earlybird1: { phase: "phaseEarlybird1", discount: "discountEarlybird1" },
+  earlybird2: { phase: "phaseEarlybird2", discount: "discountEarlybird2" },
 };
-
-const tickets: TicketDef[] = [
-  {
-    tier: "vip",
-    totalSeats: 21,
-    benefitKeys: [
-      "welcomeGift",
-      "fastEntry",
-      "frontSeats",
-      "lunchWithSpeakers",
-      "lunchSpecial",
-      "speakerMaterials",
-      "workshopPriority",
-      "dinnerParty",
-      "afterParty",
-      "seating",
-    ],
-  },
-  {
-    tier: "premium",
-    totalSeats: 512,
-    benefitKeys: [
-      "welcomeGift",
-      "fastEntry",
-      "centerSeats",
-      "lunchSpecial",
-      "speakerMaterials",
-      "workshopPriority",
-    ],
-    addonKeys: ["afterPartyOption"],
-  },
-  {
-    tier: "general",
-    totalSeats: 506,
-    benefitKeys: ["lunchProvided"],
-    addonKeys: ["afterPartyOption"],
-  },
-];
 
 export default async function TicketsGrid() {
   const t = await getTranslations("Tickets2026");
+  const locale = await getLocale();
+  const discounted = isDiscounted();
+  const phaseKey = PHASE_KEYS[CURRENT_PHASE];
 
   return (
     <div className="flex flex-col md:flex-row gap-4 md:gap-6">
-      {tickets.map((ticket) => {
+      {TICKETS.map((ticket) => {
         const benefits = ticket.benefitKeys.map((key) => ({
           text: t(key),
         }));
@@ -65,6 +36,8 @@ export default async function TicketsGrid() {
           });
         }
 
+        const currentPrice = getDiscountedPrice(ticket.basePrice);
+
         return (
           <div key={ticket.tier} className="flex-1 min-w-0">
             <TicketCard
@@ -73,7 +46,14 @@ export default async function TicketsGrid() {
               totalSeats={ticket.totalSeats}
               seatsLabel={t("seats")}
               benefits={benefits}
-              ctaLabel={t("cta")}
+              ctaLabel={t("ctaBuy")}
+              ctaHref={`/tickets/${ticket.tier}`}
+              currentPrice={formatKRW(currentPrice, locale)}
+              originalPrice={formatKRW(ticket.basePrice, locale)}
+              currencyLabel={t("currency")}
+              isDiscounted={discounted}
+              phaseLabel={phaseKey ? t(phaseKey.phase) : ""}
+              discountLabel={phaseKey ? t(phaseKey.discount) : ""}
             />
           </div>
         );
