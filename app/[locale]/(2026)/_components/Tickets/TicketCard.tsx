@@ -94,8 +94,7 @@ export default function TicketCard({
               s.badge,
             )}
           >
-            {totalSeats}
-            {seatsLabel}
+            {totalSeats} {seatsLabel}
           </div>
         </div>
 

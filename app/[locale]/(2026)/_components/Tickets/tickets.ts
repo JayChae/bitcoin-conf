@@ -44,9 +44,8 @@ export const TICKETS: TicketDef[] = [
     totalSeats: 512,
     benefitKeys: [
       "welcomeGift",
-      "fastEntry",
       "centerSeats",
-      "lunchSpecial",
+      "lunchProvided",
       "speakerMaterials",
       "workshopPriority",
     ],
