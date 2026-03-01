@@ -1,12 +1,12 @@
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
-import { isValidTier } from "./_components/tierMapping";
+import { isValidTier } from "../../_utils/tierMapping";
+import { TICKETS } from "../../_constants/tickets";
 import {
-  TICKETS,
   getDiscountedPrice,
   isDiscounted as checkDiscount,
   formatKRW,
-} from "../../_components/Tickets/tickets";
+} from "../../_utils/tickets";
 import PurchaseFlow from "./_components/PurchaseFlow";
 
 type Props = {

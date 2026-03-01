@@ -2,12 +2,9 @@
 
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
-import type { TierKey } from "@/app/[locale]/(2026)/_components/Tickets/tickets";
-import {
-  TICKETS,
-  getDiscountedPrice,
-  formatKRW,
-} from "@/app/[locale]/(2026)/_components/Tickets/tickets";
+import type { TierKey } from "@/app/[locale]/(2026)/_types/tickets";
+import { TICKETS } from "@/app/[locale]/(2026)/_constants/tickets";
+import { getDiscountedPrice, formatKRW } from "@/app/[locale]/(2026)/_utils/tickets";
 
 export default function SelectionSummary({
   tier,

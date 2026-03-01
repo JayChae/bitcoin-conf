@@ -1,27 +1,16 @@
-import type { TierKey } from "@/app/[locale]/(2026)/_components/Tickets/tickets";
-import {
-  type SeatTier,
-  SECTIONS,
-  getSeatTier,
-} from "@/app/[locale]/(2026)/_components/SeatMap/seatData";
-
-export const TIER_TO_SEAT_TIER: Record<TierKey, SeatTier> = {
-  vip: "vip",
-  premium: "premium",
-  general: "regular",
-};
-
-export const TIER_SECTIONS: Record<TierKey, string[]> = {
-  vip: ["C", "D"],
-  premium: ["A", "B", "C", "D", "E", "F"],
-  general: ["A", "G", "H", "J", "K", "L", "M", "N", "F"],
-};
+import type { TierKey } from "../_types/tickets";
+import { SECTIONS } from "../_constants/seats";
+import { TIER_TO_SEAT_TIER, TIER_SECTIONS } from "../_constants/tierMapping";
+import { getSeatTier } from "./seats";
 
 export function isValidTier(tier: string): tier is TierKey {
   return tier === "vip" || tier === "premium" || tier === "general";
 }
 
-export function isSectionActiveForTier(sectionId: string, tier: TierKey): boolean {
+export function isSectionActiveForTier(
+  sectionId: string,
+  tier: TierKey,
+): boolean {
   return TIER_SECTIONS[tier].includes(sectionId);
 }
 

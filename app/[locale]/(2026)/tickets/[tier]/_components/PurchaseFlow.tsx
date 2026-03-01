@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import type { TierKey } from "@/app/[locale]/(2026)/_components/Tickets/tickets";
+import type { TierKey } from "@/app/[locale]/(2026)/_types/tickets";
 import ZoneSelector from "./ZoneSelector";
 import SeatSelector from "./SeatSelector";
 import SelectionSummary from "./SelectionSummary";

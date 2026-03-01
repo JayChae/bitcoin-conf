@@ -2,13 +2,10 @@
 
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
-import {
-  SECTIONS,
-  getSeatTier,
-  TIER_COLORS,
-} from "@/app/[locale]/(2026)/_components/SeatMap/seatData";
-import type { TierKey } from "@/app/[locale]/(2026)/_components/Tickets/tickets";
-import { isSeatSelectable } from "./tierMapping";
+import type { TierKey } from "@/app/[locale]/(2026)/_types/tickets";
+import { SECTIONS, TIER_COLORS } from "@/app/[locale]/(2026)/_constants/seats";
+import { getSeatTier } from "@/app/[locale]/(2026)/_utils/seats";
+import { isSeatSelectable } from "@/app/[locale]/(2026)/_utils/tierMapping";
 
 function SeatCircle({
   sectionId,

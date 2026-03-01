@@ -1,23 +1,14 @@
-export type PricingPhase = "earlybird1" | "earlybird2" | "regular";
-export type TierKey = "vip" | "premium" | "general";
+import type { PricingPhase, TicketDef } from "../_types/tickets";
 
 // ============================================
 // 이 값만 변경하면 전체 가격이 자동 전환됩니다
 // ============================================
 export const CURRENT_PHASE: PricingPhase = "earlybird1";
 
-const DISCOUNTS: Record<PricingPhase, number> = {
+export const DISCOUNTS: Record<PricingPhase, number> = {
   earlybird1: 0.2,
   earlybird2: 0.1,
   regular: 0,
-};
-
-export type TicketDef = {
-  tier: TierKey;
-  basePrice: number;
-  totalSeats: number;
-  benefitKeys: string[];
-  addonKeys?: string[];
 };
 
 export const TICKETS: TicketDef[] = [
@@ -59,17 +50,3 @@ export const TICKETS: TicketDef[] = [
     addonKeys: ["afterPartyOption"],
   },
 ];
-
-export function getDiscountedPrice(basePrice: number): number {
-  return Math.round(basePrice * (1 - DISCOUNTS[CURRENT_PHASE]));
-}
-
-export function isDiscounted(): boolean {
-  return DISCOUNTS[CURRENT_PHASE] > 0;
-}
-
-export function formatKRW(amount: number, locale: string): string {
-  return new Intl.NumberFormat(locale === "ko" ? "ko-KR" : "en-US").format(
-    amount
-  );
-}

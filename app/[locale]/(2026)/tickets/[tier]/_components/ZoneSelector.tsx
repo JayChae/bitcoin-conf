@@ -2,17 +2,17 @@
 
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
+import type { TierKey } from "@/app/[locale]/(2026)/_types/tickets";
 import {
   SECTIONS,
   TIER_BORDER,
   TIER_BG_MUTED,
-} from "@/app/[locale]/(2026)/_components/SeatMap/seatData";
-import type { TierKey } from "@/app/[locale]/(2026)/_components/Tickets/tickets";
+} from "@/app/[locale]/(2026)/_constants/seats";
 import {
   TIER_SECTIONS,
   TIER_TO_SEAT_TIER,
-  getSelectableCount,
-} from "./tierMapping";
+} from "@/app/[locale]/(2026)/_constants/tierMapping";
+import { getSelectableCount } from "@/app/[locale]/(2026)/_utils/tierMapping";
 
 // Sections shown as display-only context above selectable sections
 const CONTEXT_SECTIONS: Record<TierKey, string[][]> = {

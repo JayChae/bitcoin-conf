@@ -1,13 +1,8 @@
 import { getTranslations } from "next-intl/server";
 import { getLocale } from "next-intl/server";
 import TicketCard from "./TicketCard";
-import {
-  TICKETS,
-  CURRENT_PHASE,
-  getDiscountedPrice,
-  isDiscounted,
-  formatKRW,
-} from "./tickets";
+import { TICKETS, CURRENT_PHASE } from "../../_constants/tickets";
+import { getDiscountedPrice, isDiscounted, formatKRW } from "../../_utils/tickets";
 
 const PHASE_KEYS: Record<string, { phase: string; discount: string }> = {
   earlybird1: { phase: "phaseEarlybird1", discount: "discountEarlybird1" },
