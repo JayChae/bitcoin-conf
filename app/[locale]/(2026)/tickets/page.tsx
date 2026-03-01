@@ -1,12 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import TicketsGrid from "../_components/Tickets/TicketsGrid";
 
-type Props = {
-  params: Promise<{ locale: string }>;
-};
-
-export default async function TicketsPage({ params }: Props) {
-  const { locale } = await params;
+export default async function TicketsPage() {
   const t = await getTranslations("Tickets2026");
 
   return (

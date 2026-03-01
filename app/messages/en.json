@@ -75,7 +75,20 @@
     "phaseEarlybird2": "2nd Early Bird",
     "discountEarlybird1": "20% OFF",
     "discountEarlybird2": "10% OFF",
-    "savings": "Save {amount} KRW"
+    "savings": "Save {amount} KRW",
+    "seatMap": "Seat Map",
+    "stage": "Stage",
+    "section": "Section",
+    "selectSection": "Tap a section to select seats",
+    "selectSeat": "Tap a seat to select",
+    "backToMap": "Back to map",
+    "selected": "selected",
+    "availableSeats": "available",
+    "unavailableLabel": "Unavailable",
+    "totalPrice": "Total ",
+    "stepZone": "Select Zone",
+    "stepSeats": "Select Seats",
+    "stepAfterParty": "After Party"
   },
   "Footer": {
     "contact": "Contact",

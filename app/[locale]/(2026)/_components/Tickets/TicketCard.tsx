@@ -119,15 +119,16 @@ export default function TicketCard({
         <div className="mb-5 md:mb-6">
           {isDiscounted && (
             <del className="text-sm md:text-base text-white/30 tabular-nums block mb-1">
-              {currencyLabel} {originalPrice}
+              {originalPrice}
+              {currencyLabel}
             </del>
           )}
           <div className="flex items-baseline gap-1.5">
-            <span className="text-base md:text-lg text-white/50 font-medium">
-              {currencyLabel}
-            </span>
             <span className="text-3xl md:text-4xl font-bold text-white tracking-tight tabular-nums">
               {currentPrice}
+            </span>
+            <span className="text-base md:text-lg text-white/50 font-medium">
+              {currencyLabel}
             </span>
           </div>
         </div>

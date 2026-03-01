@@ -74,7 +74,20 @@
     "phaseEarlybird2": "2차 얼리버드",
     "discountEarlybird1": "20% 할인",
     "discountEarlybird2": "10% 할인",
-    "savings": "{amount}원 절약"
+    "savings": "{amount}원 절약",
+    "seatMap": "좌석 배치도",
+    "stage": "무대",
+    "section": "구역",
+    "selectSection": "구역을 선택하세요",
+    "selectSeat": "좌석을 선택하세요",
+    "backToMap": "배치도로 돌아가기",
+    "selected": "선택",
+    "availableSeats": "잔여석",
+    "unavailableLabel": "선택 불가",
+    "totalPrice": "합계 ",
+    "stepZone": "구역 선택",
+    "stepSeats": "좌석 선택",
+    "stepAfterParty": "애프터 파티"
   },
   "Footer": {
     "contact": "Contact",
