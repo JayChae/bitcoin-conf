@@ -73,7 +73,7 @@ export default function TicketCard({
     <div
       className={cn(
         "relative flex flex-col rounded-2xl overflow-hidden h-full",
-        "bg-black/40 backdrop-blur-xl border border-white/10",
+        "bg-black/40 backdrop-blur-2xl border border-white/10",
         "transition-all duration-250 ease-out hover:-translate-y-1.5 hover:border-white/20",
         s.glow,
       )}

@@ -11,6 +11,8 @@ export const DISCOUNTS: Record<PricingPhase, number> = {
   regular: 0,
 };
 
+export const AFTER_PARTY_PRICE = 50_000;
+
 export const TICKETS: TicketDef[] = [
   {
     tier: "vip",
@@ -32,7 +34,7 @@ export const TICKETS: TicketDef[] = [
   {
     tier: "premium",
     basePrice: 330_000,
-    totalSeats: 512,
+    totalSeats: 496,
     benefitKeys: [
       "welcomeGift",
       "centerSeats",
@@ -45,7 +47,7 @@ export const TICKETS: TicketDef[] = [
   {
     tier: "general",
     basePrice: 210_000,
-    totalSeats: 506,
+    totalSeats: 522,
     benefitKeys: ["lunchProvided"],
     addonKeys: ["afterPartyOption"],
   },

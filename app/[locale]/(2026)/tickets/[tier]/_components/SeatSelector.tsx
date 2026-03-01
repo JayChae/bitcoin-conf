@@ -49,11 +49,26 @@ export default function SeatSelector({
   onToggleSeat,
 }: {
   tier: TierKey;
-  sectionId: string;
+  sectionId: string | null;
   selectedSeats: Set<number>;
   onToggleSeat: (sectionId: string, seatNumber: number) => void;
 }) {
   const t = useTranslations("Tickets2026");
+
+  if (!sectionId) {
+    return (
+      <div className="flex flex-col gap-4">
+        <h3 className="text-xl md:text-2xl font-bold text-white">
+          {t("section")}
+        </h3>
+        <p className="text-xs text-white/40">{t("selectSeat")}</p>
+        <div className="flex items-center justify-center py-12 md:py-16">
+          <p className="text-sm text-white/30">{t("selectSection")}</p>
+        </div>
+      </div>
+    );
+  }
+
   const section = SECTIONS.find((s) => s.id === sectionId);
   if (!section) return null;
 
@@ -61,7 +76,6 @@ export default function SeatSelector({
 
   return (
     <div className="flex flex-col gap-4">
-      {/* Header */}
       <div className="flex items-center justify-between">
         <h3 className="text-xl md:text-2xl font-bold text-white">
           {t("section")} {sectionId}
@@ -70,8 +84,7 @@ export default function SeatSelector({
 
       <p className="text-xs text-white/40">{t("selectSeat")}</p>
 
-      {/* Seat grid */}
-      <div className="overflow-x-auto py-2">
+      <div className="overflow-x-auto p-2">
         <div className="flex flex-col items-center gap-1.5 md:gap-2 min-w-max">
           {section.rows.map((count, rowIdx) => {
             const rowSeats: number[] = [];

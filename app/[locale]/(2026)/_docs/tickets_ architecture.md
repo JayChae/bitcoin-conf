@@ -35,7 +35,7 @@
     ↕ (API 요청)
 우리 서버 (Next.js, Vercel에서 운영)
     ↕                    ↕
-Redis (좌석 상태 관리)    Shopify (결제 처리)
+Redis (좌석 상태 관리)    Shopify (결제 처리
 ```
 
 세 가지 역할이 명확히 분리됩니다:
