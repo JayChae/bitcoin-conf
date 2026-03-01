@@ -71,35 +71,37 @@ export default function SeatSelector({
       <p className="text-xs text-white/40">{t("selectSeat")}</p>
 
       {/* Seat grid */}
-      <div className="flex flex-col items-center gap-1.5 md:gap-2 overflow-x-auto py-2">
-        {section.rows.map((count, rowIdx) => {
-          const rowSeats: number[] = [];
-          for (let i = 0; i < count; i++) {
-            seatCounter++;
-            rowSeats.push(seatCounter);
-          }
-          const selectableSeats = rowSeats.filter((num) =>
-            isSeatSelectable(sectionId, num, tier),
-          );
-          if (selectableSeats.length === 0) return null;
+      <div className="overflow-x-auto py-2">
+        <div className="flex flex-col items-center gap-1.5 md:gap-2 min-w-max">
+          {section.rows.map((count, rowIdx) => {
+            const rowSeats: number[] = [];
+            for (let i = 0; i < count; i++) {
+              seatCounter++;
+              rowSeats.push(seatCounter);
+            }
+            const selectableSeats = rowSeats.filter((num) =>
+              isSeatSelectable(sectionId, num, tier),
+            );
+            if (selectableSeats.length === 0) return null;
 
-          return (
-            <div key={rowIdx} className="flex items-center gap-1 md:gap-1.5">
-              <span className="w-4 text-[10px] text-white/30 text-right mr-1">
-                {rowIdx + 1}
-              </span>
-              {selectableSeats.map((num) => (
-                <SeatCircle
-                  key={num}
-                  sectionId={sectionId}
-                  seatNumber={num}
-                  isSelected={selectedSeats.has(num)}
-                  onToggle={() => onToggleSeat(sectionId, num)}
-                />
-              ))}
-            </div>
-          );
-        })}
+            return (
+              <div key={rowIdx} className="flex items-center gap-1 md:gap-1.5">
+                <span className="w-4 text-[10px] text-white/30 text-right mr-1">
+                  {rowIdx + 1}
+                </span>
+                {selectableSeats.map((num) => (
+                  <SeatCircle
+                    key={num}
+                    sectionId={sectionId}
+                    seatNumber={num}
+                    isSelected={selectedSeats.has(num)}
+                    onToggle={() => onToggleSeat(sectionId, num)}
+                  />
+                ))}
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

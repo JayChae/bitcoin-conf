@@ -55,88 +55,90 @@ export default function ZoneSelector({
   const contextLabels = CONTEXT_LABELS[tier];
 
   return (
-    <div className="flex flex-col items-center gap-4 md:gap-6 py-4">
-      {/* Stage */}
-      <div className="w-48 md:w-64 py-2 rounded-lg bg-white/10 border border-white/20 text-center">
-        <span className="text-xs md:text-sm font-medium text-white/70 tracking-widest uppercase">
-          {t("stage")}
-        </span>
-      </div>
-
-      {/* Context sections (display-only) */}
-      {contextRows.map((ids, rowIdx) => (
-        <div key={rowIdx} className="flex flex-col items-center gap-1">
-          <span className="text-[10px] md:text-xs text-white/30 font-medium">
-            {contextLabels[rowIdx]}
+    <div className="overflow-x-auto">
+      <div className="flex flex-col items-center gap-4 md:gap-6 py-4 min-w-max">
+        {/* Stage */}
+        <div className="w-48 md:w-64 py-2 rounded-lg bg-white/10 border border-white/20 text-center">
+          <span className="text-xs md:text-sm font-medium text-white/70 tracking-widest uppercase">
+            {t("stage")}
           </span>
-          <div className="flex items-end justify-center gap-1 md:gap-1.5">
-            {ids.map((id, i) => {
-              const offsetY = getCurveOffset(i, ids.length);
-              return (
-                <div
-                  key={id}
-                  style={{ transform: `translateY(${offsetY}px)` }}
-                  className={cn(
-                    "flex items-center justify-center rounded-md border px-2 py-1.5 md:px-3 md:py-2",
-                    "opacity-30",
-                    TIER_BORDER.unavailable,
-                    TIER_BG_MUTED.unavailable,
-                  )}
-                >
-                  <span className="text-[10px] md:text-xs font-bold text-white/50">
-                    {id}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
         </div>
-      ))}
 
-      {/* Selectable sections */}
-      <div className="flex items-end justify-center gap-1.5 md:gap-2">
-        {activeIds.map((id, i) => {
-          const section = SECTIONS.find((s) => s.id === id)!;
-          const sectionTier = TIER_TO_SEAT_TIER[tier];
-          const selectedCount = selectedSeats[id]?.size ?? 0;
-          const isCurrent = selectedSection === id;
-          const offsetY = getCurveOffset(i, activeIds.length);
+        {/* Context sections (display-only) */}
+        {contextRows.map((ids, rowIdx) => (
+          <div key={rowIdx} className="flex flex-col items-center gap-1">
+            <span className="text-[10px] md:text-xs text-white/30 font-medium">
+              {contextLabels[rowIdx]}
+            </span>
+            <div className="flex items-end justify-center gap-1 md:gap-1.5">
+              {ids.map((id, i) => {
+                const offsetY = getCurveOffset(i, ids.length);
+                return (
+                  <div
+                    key={id}
+                    style={{ transform: `translateY(${offsetY}px)` }}
+                    className={cn(
+                      "flex items-center justify-center rounded-md border px-2 py-1.5 md:px-3 md:py-2",
+                      "opacity-30",
+                      TIER_BORDER.unavailable,
+                      TIER_BG_MUTED.unavailable,
+                    )}
+                  >
+                    <span className="text-[10px] md:text-xs font-bold text-white/50">
+                      {id}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        ))}
 
-          return (
-            <button
-              key={id}
-              onClick={() => onSelectZone(id)}
-              style={{
-                transform: isCurrent
-                  ? `translateY(${offsetY}px) scale(1.05)`
-                  : `translateY(${offsetY}px)`,
-              }}
-              className={cn(
-                "flex flex-col items-center justify-center rounded-lg border px-3 py-3 md:px-5 md:py-5",
-                "transition-all duration-200",
-                "cursor-pointer hover:brightness-125",
-                TIER_BORDER[sectionTier],
-                TIER_BG_MUTED[sectionTier],
-                isCurrent && "ring-2 ring-white",
-              )}
-            >
-              <span className="text-sm md:text-lg font-bold text-white">
-                {section.id}
-              </span>
-              <span className="text-[10px] md:text-xs text-white/50 mt-0.5 whitespace-nowrap">
-                {getSelectableCount(id, tier)} {t("availableSeats")}
-              </span>
-              {selectedCount > 0 && (
-                <span className="mt-1 text-[10px] md:text-xs text-white font-medium whitespace-nowrap">
-                  {selectedCount} {t("selected")}
+        {/* Selectable sections */}
+        <div className="flex items-end justify-center gap-1.5 md:gap-2">
+          {activeIds.map((id, i) => {
+            const section = SECTIONS.find((s) => s.id === id)!;
+            const sectionTier = TIER_TO_SEAT_TIER[tier];
+            const selectedCount = selectedSeats[id]?.size ?? 0;
+            const isCurrent = selectedSection === id;
+            const offsetY = getCurveOffset(i, activeIds.length);
+
+            return (
+              <button
+                key={id}
+                onClick={() => onSelectZone(id)}
+                style={{
+                  transform: isCurrent
+                    ? `translateY(${offsetY}px) scale(1.05)`
+                    : `translateY(${offsetY}px)`,
+                }}
+                className={cn(
+                  "flex flex-col items-center justify-center rounded-lg border px-2 py-2 md:px-5 md:py-5",
+                  "transition-all duration-200",
+                  "cursor-pointer hover:brightness-125",
+                  TIER_BORDER[sectionTier],
+                  TIER_BG_MUTED[sectionTier],
+                  isCurrent && "ring-2 ring-white",
+                )}
+              >
+                <span className="text-xs md:text-lg font-bold text-white">
+                  {section.id}
                 </span>
-              )}
-            </button>
-          );
-        })}
-      </div>
+                <span className="text-[10px] md:text-xs text-white/50 mt-0.5 whitespace-nowrap">
+                  {getSelectableCount(id, tier)} {t("availableSeats")}
+                </span>
+                {selectedCount > 0 && (
+                  <span className="mt-1 text-[10px] md:text-xs text-white font-medium whitespace-nowrap">
+                    {selectedCount} {t("selected")}
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </div>
 
-      <p className="text-xs text-white/40 mt-2">{t("selectSection")}</p>
+        <p className="text-xs text-white/40 mt-2">{t("selectSection")}</p>
+      </div>
     </div>
   );
 }
