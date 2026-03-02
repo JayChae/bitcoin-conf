@@ -6,3 +6,19 @@ export type SectionConfig = {
   rows: number[];
   tierRanges: { tier: SeatTier; from: number; to: number }[];
 };
+
+export type SeatStatus = "available" | "held" | "sold";
+
+export type SeatStatusInfo = {
+  status: SeatStatus;
+  sessionId?: string;
+  heldAt?: string;
+  tier?: string;
+  afterParty?: boolean;
+};
+
+export type SeatHoldRequest = {
+  section: string;
+  seat: number;
+  afterParty: boolean;
+};

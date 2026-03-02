@@ -90,7 +90,14 @@
     "totalPrice": "Total ",
     "stepZone": "Select Zone",
     "stepSeats": "Select Seats",
-    "stepAfterParty": "After Party"
+    "stepAfterParty": "After Party",
+    "reserving": "Reserving...",
+    "redirecting": "Redirecting...",
+    "holdTimer": "Time left:",
+    "holdExpired": "Time expired. Please select seats again.",
+    "seatsTaken": "Some seats are no longer available.",
+    "holdError": "Failed to reserve seats. Please try again.",
+    "alreadyHeld": "You already have reserved seats. Please release them first."
   },
   "Footer": {
     "contact": "Contact",

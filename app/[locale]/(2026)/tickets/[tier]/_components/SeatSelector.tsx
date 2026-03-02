@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import type { TierKey } from "@/app/[locale]/(2026)/_types/tickets";
+import type { SeatStatus } from "@/app/[locale]/(2026)/_types/seats";
 import { SECTIONS, TIER_COLORS } from "@/app/[locale]/(2026)/_constants/seats";
 import { getSeatTier } from "@/app/[locale]/(2026)/_utils/seats";
 import { isSeatSelectable } from "@/app/[locale]/(2026)/_utils/tierMapping";
@@ -11,33 +12,45 @@ function SeatCircle({
   sectionId,
   seatNumber,
   isSelected,
+  status,
   onToggle,
 }: {
   sectionId: string;
   seatNumber: number;
   isSelected: boolean;
+  status: SeatStatus;
   onToggle: () => void;
 }) {
   const seatTier = getSeatTier(sectionId, seatNumber);
+  const isDisabled = status === "held" || status === "sold";
 
   return (
     <button
-      onClick={onToggle}
-      title={`${sectionId}-${seatNumber}`}
+      onClick={isDisabled ? undefined : onToggle}
+      disabled={isDisabled}
+      title={`${sectionId}-${seatNumber}${isDisabled ? ` (${status})` : ""}`}
       className={cn(
         "w-7 h-7 md:w-8 md:h-8 rounded-full text-[9px] md:text-[10px] font-medium",
         "transition-all duration-150 flex items-center justify-center flex-shrink-0",
-        "cursor-pointer hover:brightness-125",
-        isSelected && "ring-2 ring-white scale-110",
+        isDisabled
+          ? "cursor-not-allowed opacity-40"
+          : "cursor-pointer hover:brightness-125",
+        isSelected && !isDisabled && "ring-2 ring-white scale-110",
       )}
       style={{
-        backgroundColor: isSelected
-          ? TIER_COLORS[seatTier]
-          : `${TIER_COLORS[seatTier]}66`,
-        color: isSelected ? "#fff" : "rgba(255,255,255,0.6)",
+        backgroundColor: isDisabled
+          ? "#374151"
+          : isSelected
+            ? TIER_COLORS[seatTier]
+            : `${TIER_COLORS[seatTier]}66`,
+        color: isDisabled
+          ? "rgba(255,255,255,0.3)"
+          : isSelected
+            ? "#fff"
+            : "rgba(255,255,255,0.6)",
       }}
     >
-      {seatNumber}
+      {status === "sold" ? "✕" : seatNumber}
     </button>
   );
 }
@@ -47,11 +60,13 @@ export default function SeatSelector({
   sectionId,
   selectedSeats,
   onToggleSeat,
+  seatStatuses = {},
 }: {
   tier: TierKey;
   sectionId: string | null;
   selectedSeats: Set<number>;
   onToggleSeat: (sectionId: string, seatNumber: number) => void;
+  seatStatuses?: Record<number, SeatStatus>;
 }) {
   const t = useTranslations("Tickets2026");
 
@@ -108,6 +123,7 @@ export default function SeatSelector({
                     sectionId={sectionId}
                     seatNumber={num}
                     isSelected={selectedSeats.has(num)}
+                    status={seatStatuses[num] ?? "available"}
                     onToggle={() => onToggleSeat(sectionId, num)}
                   />
                 ))}
