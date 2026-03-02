@@ -12,7 +12,6 @@ import {
   TIER_SECTIONS,
   TIER_TO_SEAT_TIER,
 } from "@/app/[locale]/(2026)/_constants/tierMapping";
-import { getSelectableCount } from "@/app/[locale]/(2026)/_utils/tierMapping";
 
 // Sections shown as display-only context above selectable sections
 const CONTEXT_SECTIONS: Record<TierKey, string[][]> = {
@@ -43,11 +42,13 @@ export default function ZoneSelector({
   selectedSeats,
   selectedSection,
   onSelectZone,
+  sectionCounts,
 }: {
   tier: TierKey;
   selectedSeats: Record<string, Set<number>>;
   selectedSection: string | null;
   onSelectZone: (sectionId: string) => void;
+  sectionCounts: Record<string, number>;
 }) {
   const t = useTranslations("Tickets2026");
   const activeIds = TIER_SECTIONS[tier];
@@ -125,7 +126,7 @@ export default function ZoneSelector({
                   {section.id}
                 </span>
                 <span className="text-[10px] md:text-xs text-white/50 mt-0.5 whitespace-nowrap">
-                  {getSelectableCount(id, tier)} {t("availableSeats")}
+                  {sectionCounts[id] ?? 0} {t("availableSeats")}
                 </span>
                 <span className={cn(
                   "mt-1 text-[10px] md:text-xs text-white font-medium whitespace-nowrap",

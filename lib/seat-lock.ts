@@ -1,6 +1,9 @@
 import { redis } from "./redis";
 import { SECTIONS } from "@/app/[locale]/(2026)/_constants/seats";
-import { TIER_TO_SEAT_TIER } from "@/app/[locale]/(2026)/_constants/tierMapping";
+import {
+  TIER_TO_SEAT_TIER,
+  TIER_SECTIONS,
+} from "@/app/[locale]/(2026)/_constants/tierMapping";
 import { getSeatTier } from "@/app/[locale]/(2026)/_utils/seats";
 import type { SeatStatus, SeatStatusInfo, SeatHoldRequest } from "@/app/[locale]/(2026)/_types/seats";
 import type { TierKey } from "@/app/[locale]/(2026)/_types/tickets";
@@ -227,4 +230,34 @@ export async function saveCheckoutMapping(
     JSON.stringify({ sessionId, seats, tier }),
     { ex: CHECKOUT_TTL },
   );
+}
+
+// ─── 6. 구역별 남은 좌석 수 조회 ───
+
+export async function getRemainingSeatsBySectionForTier(
+  tier: TierKey,
+): Promise<Record<string, number>> {
+  const sectionIds = TIER_SECTIONS[tier];
+  const seatTier = TIER_TO_SEAT_TIER[tier];
+
+  const sectionStatuses = await Promise.all(
+    sectionIds.map(async (id) => ({ id, seats: await getSectionStatus(id) })),
+  );
+
+  const result: Record<string, number> = {};
+  for (const { id, seats } of sectionStatuses) {
+    const section = SECTIONS.find((s) => s.id === id)!;
+    const totalForTier = section.tierRanges
+      .filter((r) => r.tier === seatTier)
+      .reduce((sum, r) => sum + (r.to - r.from + 1), 0);
+
+    let occupied = 0;
+    for (const [num, status] of Object.entries(seats)) {
+      if (status === "held" || status === "sold") {
+        if (getSeatTier(id, Number(num)) === seatTier) occupied++;
+      }
+    }
+    result[id] = totalForTier - occupied;
+  }
+  return result;
 }

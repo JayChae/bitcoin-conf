@@ -7,6 +7,7 @@ import type { SeatHoldRequest } from "@/app/[locale]/(2026)/_types/seats";
 import { TICKETS } from "@/app/[locale]/(2026)/_constants/tickets";
 import { useSessionId } from "@/hooks/useSessionId";
 import { useSeatAvailability } from "@/hooks/useSeatAvailability";
+import { useZoneAvailability } from "@/hooks/useZoneAvailability";
 import { useHoldTimer } from "@/hooks/useHoldTimer";
 import ZoneSelector from "./ZoneSelector";
 import SeatSelector from "./SeatSelector";
@@ -51,6 +52,7 @@ export default function PurchaseFlow({
 
   // Seat availability polling
   const { seatStatuses } = useSeatAvailability(selectedSection);
+  const { sectionCounts } = useZoneAvailability(tier);
 
   // Hold timer
   const {
@@ -202,6 +204,7 @@ export default function PurchaseFlow({
           selectedSeats={selectedSeats}
           selectedSection={selectedSection}
           onSelectZone={handleSelectZone}
+          sectionCounts={sectionCounts}
         />
       </div>
 
