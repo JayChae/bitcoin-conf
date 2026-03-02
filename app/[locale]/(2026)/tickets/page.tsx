@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server";
+import SeatingChart from "../_components/Tickets/SeatingChart";
 import TicketsGrid from "../_components/Tickets/TicketsGrid";
-import FloatingLines from "@/components/FloatingLines";
 
 export default async function TicketsPage() {
   const t = await getTranslations("Tickets2026");
@@ -17,6 +17,7 @@ export default async function TicketsPage() {
           </p>
         </div>
 
+        <SeatingChart />
         <TicketsGrid />
       </div>
     </main>
