@@ -37,6 +37,7 @@ export default function PurchaseFlow({
 
   const ticket = TICKETS.find((tk) => tk.tier === tier)!;
   const hasAfterPartyAddon = !!ticket.addonKeys?.includes("afterPartyOption");
+  const afterPartyIncluded = ticket.benefitKeys.includes("afterParty");
 
   const totalCount = Object.values(selectedSeats).reduce(
     (sum, set) => sum + set.size,
@@ -134,7 +135,7 @@ export default function PurchaseFlow({
         seats.push({
           section: sectionId,
           seat: num,
-          afterParty: afterPartySeats[sectionId]?.has(num) ?? false,
+          afterParty: afterPartyIncluded || (afterPartySeats[sectionId]?.has(num) ?? false),
         });
       }
     }
@@ -190,7 +191,7 @@ export default function PurchaseFlow({
       setHoldState("error");
       setHoldError(t("holdError"));
     }
-  }, [sessionId, selectedSeats, afterPartySeats, tier, startTimer, t]);
+  }, [sessionId, selectedSeats, afterPartySeats, afterPartyIncluded, tier, startTimer, t]);
 
   return (
     <div className="flex flex-col gap-6">

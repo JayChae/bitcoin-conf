@@ -23,8 +23,14 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid tier" }, { status: 400 });
   }
 
+  // VIP includes after party — force true regardless of client value
+  const normalizedSeats =
+    tier === "vip"
+      ? seats.map((s) => ({ ...s, afterParty: true }))
+      : seats;
+
   try {
-    const result = await holdSeats(sessionId, seats, tier);
+    const result = await holdSeats(sessionId, normalizedSeats, tier);
 
     if (!result.success) {
       return NextResponse.json(
