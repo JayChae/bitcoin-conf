@@ -11,6 +11,7 @@ type Props = {
   tier: "vip" | "premium" | "general";
   tierLabel: string;
   totalSeats: number;
+  remainingSeats: number;
   seatsLabel: string;
   benefits: Benefit[];
   ctaLabel: string;
@@ -56,6 +57,7 @@ export default function TicketCard({
   tier,
   tierLabel,
   totalSeats,
+  remainingSeats,
   seatsLabel,
   benefits,
   ctaLabel,
@@ -89,12 +91,13 @@ export default function TicketCard({
           </h3>
           <div
             className={cn(
-              "px-3 py-1 rounded-full text-xs md:text-sm border",
-              "bg-white/5",
-              s.badge,
+              "px-3 py-1 rounded-full text-xs md:text-sm border tabular-nums",
+              remainingSeats / totalSeats <= 0.2
+                ? "bg-red-500/10 border-red-500/30 text-red-300"
+                : "bg-white/5 " + s.badge,
             )}
           >
-            {totalSeats} {seatsLabel}
+            {remainingSeats}/{totalSeats} {seatsLabel}
           </div>
         </div>
 

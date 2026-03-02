@@ -1,5 +1,7 @@
 import { redis } from "./redis";
 import { SECTIONS } from "@/app/[locale]/(2026)/_constants/seats";
+import { TIER_TO_SEAT_TIER } from "@/app/[locale]/(2026)/_constants/tierMapping";
+import { getSeatTier } from "@/app/[locale]/(2026)/_utils/seats";
 import type { SeatStatus, SeatStatusInfo, SeatHoldRequest } from "@/app/[locale]/(2026)/_types/seats";
 import type { TierKey } from "@/app/[locale]/(2026)/_types/tickets";
 
@@ -89,6 +91,18 @@ export async function holdSeats(
       success: false,
       error: `Maximum ${MAX_SEATS[tier]} seats for ${tier}`,
     };
+  }
+
+  // Validate that all seats belong to the requested tier
+  const expectedSeatTier = TIER_TO_SEAT_TIER[tier];
+  for (const s of seats) {
+    const actual = getSeatTier(s.section, s.seat);
+    if (actual !== expectedSeatTier) {
+      return {
+        success: false,
+        error: `Seat ${s.section}-${s.seat} is not a ${tier} seat`,
+      };
+    }
   }
 
   // Auto-release existing holds before creating new ones
