@@ -36,11 +36,28 @@ export async function POST(request: NextRequest) {
   // Extract cart token and build the full GID
   const cartToken = payload.cart_token;
   if (!cartToken) {
+    console.error("Webhook payload missing cart_token:", payload);
     return NextResponse.json({ error: "No cart token" }, { status: 400 });
   }
 
+  // Log for debugging
+  console.log("Webhook received:", {
+    orderId: orderId,
+    cartToken: cartToken,
+    noteAttributes: payload.note_attributes,
+  });
+
+  // Try different cart ID formats
   const cartId = `gid://shopify/Cart/${cartToken}`;
-  const confirmed = await confirmSeats(cartId);
+  console.log("Attempting to confirm seats with cartId:", cartId);
+
+  let confirmed = await confirmSeats(cartId);
+
+  // If not found, try with the raw cart token as it might be the full ID already
+  if (!confirmed && cartToken.startsWith("gid://")) {
+    console.log("Retrying with raw cart token:", cartToken);
+    confirmed = await confirmSeats(cartToken);
+  }
 
   // Mark as processed (24h TTL)
   if (orderId) {

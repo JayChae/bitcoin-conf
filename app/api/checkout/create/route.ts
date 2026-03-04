@@ -37,9 +37,11 @@ export async function POST(request: NextRequest) {
 
   try {
     const { cartId, checkoutUrl } = await createCheckoutCart(holdsData, tier);
+    console.log("Created checkout with cartId:", cartId);
     await saveCheckoutMapping(cartId, sessionId, holdsData, tier);
     return NextResponse.json({ checkoutUrl, cartId });
-  } catch {
+  } catch (error) {
+    console.error("Failed to create checkout:", error);
     return NextResponse.json(
       { error: "Failed to create checkout" },
       { status: 500 },
