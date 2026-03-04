@@ -37,8 +37,16 @@ export async function POST(request: NextRequest) {
 
   try {
     const { cartId, checkoutUrl } = await createCheckoutCart(holdsData, tier);
+
+    // Remove query parameters from cartId for consistent Redis key mapping
+    // Shopify returns: gid://shopify/Cart/xxx?key=yyy
+    // We need to store: gid://shopify/Cart/xxx
+    const cleanCartId = cartId.split('?')[0];
+
     console.log("Created checkout with cartId:", cartId);
-    await saveCheckoutMapping(cartId, sessionId, holdsData, tier);
+    console.log("Saving to Redis with cleanCartId:", cleanCartId);
+
+    await saveCheckoutMapping(cleanCartId, sessionId, holdsData, tier);
     return NextResponse.json({ checkoutUrl, cartId });
   } catch (error) {
     console.error("Failed to create checkout:", error);
