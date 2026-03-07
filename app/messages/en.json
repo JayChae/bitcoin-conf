@@ -40,10 +40,12 @@
   },
   "Sponsor": {
     "title": "Sponsors",
+    "diamond": "Diamond Sponsor",
     "gold": "Gold Sponsor",
     "silver": "Silver Sponsor",
     "bronze": "Bronze Sponsor",
-    "individual": "Individual Sponsor"
+    "individual": "Individual Sponsor",
+    "comingSoon": "Coming Soon"
   },
   "Footer": {
     "contact": "Contact",
