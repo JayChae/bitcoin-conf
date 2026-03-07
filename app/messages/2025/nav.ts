@@ -20,7 +20,7 @@ const koItems: NavItem[] = [
   { label: "연사 소개", href: hrefList.speakers },
   { label: "일정", href: hrefList.schedule },
   { label: "라이트닝 마켓", href: hrefList.lightningMarket },
-  { label: "후원자", href: hrefList.sponsors },
+  { label: "스폰서", href: hrefList.sponsors },
 ] as const;
 
 const navItems = {

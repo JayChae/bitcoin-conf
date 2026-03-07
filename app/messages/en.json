@@ -40,10 +40,12 @@
   },
   "Sponsor": {
     "title": "Sponsors",
+    "diamond": "Diamond Sponsor",
     "gold": "Gold Sponsor",
     "silver": "Silver Sponsor",
     "bronze": "Bronze Sponsor",
-    "individual": "Individual Sponsor"
+    "individual": "Individual Sponsor",
+    "comingSoon": "Coming Soon"
   },
   "Footer": {
     "contact": "Contact",
@@ -53,8 +55,6 @@
     "day1": "Nov 7",
     "day2": "Nov 8",
     "address1": "COEX, 513 Yeongdong-daero, Gangnam-gu, Seoul",
-    "address2": "",
-    "address3": "",
-    "copyright": "© 2026 Bitcoin Mini Conference. All rights reserved."
+    "address2": "19, Myeongdong 11-gil, Jung-gu, Seoul Korea Federation of Banks Hall, 2F International Conference Room"
   }
 }
