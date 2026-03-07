@@ -52,7 +52,6 @@ export default async function Footer() {
                 </p>
                 <div className="space-y-1">
                   <p className="text-white/60 text-sm">{t("address2")}</p>
-                  <p className="text-white/60 text-sm">{t("address3")}</p>
                 </div>
               </div>
             </div>
