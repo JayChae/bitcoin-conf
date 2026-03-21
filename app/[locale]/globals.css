@@ -34,7 +34,7 @@ body {
 
 body {
   min-height: 100dvh; /* 최신 브라우저 */
-  background-color: #fff; /* 원하는 배경색 */
+  background-color: #000;
   font-family: 'SUIT Variable', sans-serif;
 }
 
