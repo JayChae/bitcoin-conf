@@ -156,8 +156,9 @@ AP에도 할인이 적용되는 문제가 발생합니다.
 어드민 페이지는 **라디오 버튼 1개**로 할인 모드를 선택하는 단순한 구조입니다.
 
 **1) 현재 상태 대시보드:**
-- 티어별 현재 적용 페이즈 표시
-- Early Bird 2 선택 시 판매/잔여 현황 표시
+- 티어별 현재 적용 페이즈 표시 (서버에서 실제 계산된 값)
+- 각 티어의 실제 페이즈가 earlybird2일 때 해당 티어의 판매/잔여 현황 표시
+- 설정과 실제 적용 상태가 다를 경우 경고 배너 표시 (예: EB1 기간 만료, EB2 수량 소진)
 
 **2) 할인 설정 (라디오 선택):**
 - **Early Bird 1** — 기간 한정 할인 (20% 고정)
@@ -187,11 +188,17 @@ AP에도 할인이 적용되는 문제가 발생합니다.
 
 Phase 2 할인 티켓 판매 수는 **결제 완료 시점**에 카운트됩니다 (hold 시점이 아님).
 
+페이즈 판단은 **체크아웃 생성 시점**에 확정되어 checkout 매핑에 저장됩니다.
+웹훅에서는 저장된 페이즈를 사용하므로, 체크아웃과 결제 완료 사이에 페이즈가 변경되어도 정확히 카운트됩니다.
+
 ```
-결제 완료 웹훅 수신
-  → confirmSeats() → 좌석 "sold"로 변경
-  → getCurrentPhase(tier) 확인
-  → earlybird2이면:
+체크아웃 생성 시:
+  → getCurrentPhase(tier) → phase 확정
+  → saveCheckoutMapping(..., phase) → Redis에 phase 저장
+
+결제 완료 웹훅 수신 시:
+  → confirmSeats() → 좌석 "sold"로 변경 + 저장된 phase 반환
+  → 저장된 phase가 earlybird2이면:
      → redis.incrby("pricing:phase2_sold:{tier}", seatCount)
 ```
 
