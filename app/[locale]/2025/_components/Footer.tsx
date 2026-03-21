@@ -52,7 +52,6 @@ export default async function Footer() {
                 </p>
                 <div className="space-y-1">
                   <p className="text-white/60 text-sm">{t("address2")}</p>
-                  <p className="text-white/60 text-sm">{t("address3")}</p>
                 </div>
               </div>
             </div>
@@ -62,8 +61,14 @@ export default async function Footer() {
         {/* Business Info */}
         <div className="border-t border-white/10 pt-6 space-y-1 text-white/40 text-xs leading-relaxed">
           <p>상호명: 비토문 | 사업자번호: 747-36-01655</p>
-          <p>우편번호: 41935 | 사업장 주소: 대구광역시 중구 국채보상로 558-1, 2층 S25호(종로1가)</p>
-          <p>대표 이메일: admin@bitomun.com | 대표자명: 박성현 | 국문상호명: 비토문</p>
+          <p>
+            우편번호: 41935 | 사업장 주소: 대구광역시 중구 국채보상로 558-1, 2층
+            S25호(종로1가)
+          </p>
+          <p>
+            대표 이메일: admin@bitomun.com | 대표자명: 박성현 | 국문상호명:
+            비토문
+          </p>
           <p>통신판매업 신고표기: 2026-대구중구-0149</p>
         </div>
 
