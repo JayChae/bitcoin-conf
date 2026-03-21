@@ -5,13 +5,11 @@ import type { PricingPhase, TierKey } from "@/app/[locale]/(2026)/_types/tickets
 
 export type PricingConfig = {
   phase1: {
-    discount: number;
     startDate: string; // ISO 8601
     endDate: string;
     enabled: boolean;
   };
   phase2: {
-    discount: number;
     maxTickets: Record<TierKey, number>;
     enabled: boolean;
   };
@@ -25,13 +23,11 @@ const phase2SoldKey = (tier: TierKey) => `pricing:phase2_sold:${tier}`;
 
 const DEFAULT_CONFIG: PricingConfig = {
   phase1: {
-    discount: 0.2,
     startDate: "2026-04-01T00:00:00+09:00",
     endDate: "2026-04-30T23:59:59+09:00",
     enabled: false,
   },
   phase2: {
-    discount: 0.1,
     maxTickets: { vip: 10, premium: 100, general: 100 },
     enabled: false,
   },

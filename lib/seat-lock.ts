@@ -6,7 +6,7 @@ import {
 } from "@/app/[locale]/(2026)/_constants/tierMapping";
 import { getSeatTier } from "@/app/[locale]/(2026)/_utils/seats";
 import type { SeatStatus, SeatStatusInfo, SeatHoldRequest } from "@/app/[locale]/(2026)/_types/seats";
-import type { TierKey } from "@/app/[locale]/(2026)/_types/tickets";
+import type { TierKey, PricingPhase } from "@/app/[locale]/(2026)/_types/tickets";
 
 const HOLD_TTL = 7 * 60; // 7 minutes
 const CHECKOUT_TTL = 30 * 60; // 30 minutes
@@ -191,11 +191,12 @@ export async function releaseHolds(sessionId: string): Promise<void> {
 
 export async function confirmSeats(
   cartId: string,
-): Promise<{ confirmed: false } | { confirmed: true; tier: TierKey; seatCount: number }> {
+): Promise<{ confirmed: false } | { confirmed: true; tier: TierKey; seatCount: number; phase: PricingPhase }> {
   const data = await redis.get<{
     sessionId: string;
     seats: SeatHoldRequest[];
     tier: TierKey;
+    phase: PricingPhase;
   }>(checkoutKey(cartId));
 
   if (!data) return { confirmed: false };
@@ -216,7 +217,7 @@ export async function confirmSeats(
   pipeline.del(checkoutKey(cartId));
   await pipeline.exec();
 
-  return { confirmed: true, tier: data.tier, seatCount: data.seats.length };
+  return { confirmed: true, tier: data.tier, seatCount: data.seats.length, phase: data.phase };
 }
 
 // ─── 5. 장바구니 ↔ 좌석 매핑 저장 ───
@@ -226,10 +227,11 @@ export async function saveCheckoutMapping(
   sessionId: string,
   seats: SeatHoldRequest[],
   tier: TierKey,
+  phase: PricingPhase,
 ): Promise<void> {
   await redis.set(
     checkoutKey(cartId),
-    JSON.stringify({ sessionId, seats, tier }),
+    JSON.stringify({ sessionId, seats, tier, phase }),
     { ex: CHECKOUT_TTL },
   );
 }

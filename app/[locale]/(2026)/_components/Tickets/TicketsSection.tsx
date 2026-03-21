@@ -9,9 +9,15 @@ export default async function TicketsSection() {
   return (
     <section id="tickets" className="scroll-mt-24 pb-20 px-4">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-4xl md:text-5xl font-bold text-white text-center mb-10 md:mb-12">
-          {t("sectionTitle")}
-        </h2>
+        <div className="relative inline-block mb-10 md:mb-12 w-full text-center">
+          <div className="absolute inset-0 section-title-glow pointer-events-none" />
+          <h2
+            className="relative text-3xl md:text-4xl lg:text-5xl font-bold pointer-events-none animate-fade-in px-6 py-3"
+            style={{ color: "#FFFFFF" }}
+          >
+            {t("sectionTitle")}
+          </h2>
+        </div>
 
         <TicketsGrid />
 

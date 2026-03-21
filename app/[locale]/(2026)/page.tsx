@@ -29,7 +29,7 @@ export default async function Home2026({ params }: Props) {
         date={tHero("date")}
       />
       <TicketsSection />
-      <ComingSoon />
+      {/* <ComingSoon /> */}
       <Section id="sponsors" title={tSponsor("title")}>
         <Sponsor
           diamondTitle={tSponsor("diamond")}

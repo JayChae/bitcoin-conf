@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
     console.log("Created checkout with cartId:", cartId);
     console.log("Saving to Redis with cleanCartId:", cleanCartId);
 
-    await saveCheckoutMapping(cleanCartId, sessionId, holdsData, tier);
+    await saveCheckoutMapping(cleanCartId, sessionId, holdsData, tier, phase);
     return NextResponse.json({ checkoutUrl, cartId });
   } catch (error) {
     console.error("Failed to create checkout:", error);

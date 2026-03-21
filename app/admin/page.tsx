@@ -4,13 +4,11 @@ import { useState, useEffect, useCallback } from "react";
 
 type PricingConfig = {
   phase1: {
-    discount: number;
     startDate: string;
     endDate: string;
     enabled: boolean;
   };
   phase2: {
-    discount: number;
     maxTickets: Record<string, number>;
     enabled: boolean;
   };
@@ -39,6 +37,22 @@ function getActiveMode(config: PricingConfig): ActiveMode {
   if (config.phase1.enabled) return "earlybird1";
   if (config.phase2.enabled) return "earlybird2";
   return "regular";
+}
+
+/** Check if any tier's actual phase differs from the configured mode */
+function getPhaseWarning(
+  activeMode: ActiveMode,
+  tiers: Record<string, TierStatus>,
+): string | null {
+  if (activeMode === "earlybird1") {
+    const allRegular = Object.values(tiers).every((t) => t.phase === "regular");
+    if (allRegular) return "EB1이 활성화되어 있지만 기간이 지나 실제로는 정가가 적용 중입니다.";
+  }
+  if (activeMode === "earlybird2") {
+    const allRegular = Object.values(tiers).every((t) => t.phase === "regular");
+    if (allRegular) return "EB2가 활성화되어 있지만 모든 티어의 할인 수량이 소진되어 정가가 적용 중입니다.";
+  }
+  return null;
 }
 
 export default function AdminPage() {
@@ -148,6 +162,7 @@ export default function AdminPage() {
 
   const { config, tiers } = data;
   const activeMode = getActiveMode(config);
+  const phaseWarning = getPhaseWarning(activeMode, tiers);
 
   // ─── Dashboard ───
   return (
@@ -155,6 +170,13 @@ export default function AdminPage() {
       <div className="mb-10">
         <h1 className="text-lg font-bold text-neutral-200">할인 관리</h1>
       </div>
+
+      {/* Phase Warning */}
+      {phaseWarning && (
+        <div className="mb-6 px-4 py-3 rounded-lg bg-amber-900/30 border border-amber-800/50">
+          <p className="text-xs text-amber-400">{phaseWarning}</p>
+        </div>
+      )}
 
       {/* Current Status */}
       <section className="mb-10">
@@ -171,7 +193,7 @@ export default function AdminPage() {
                 <span className="text-sm text-neutral-200">
                   {PHASE_LABELS[status.phase] ?? status.phase}
                 </span>
-                {activeMode === "earlybird2" && (
+                {status.phase === "earlybird2" && (
                   <span className="text-xs text-neutral-500 tabular-nums">
                     {status.sold}/{config.phase2.maxTickets[tier] ?? 0}
                   </span>

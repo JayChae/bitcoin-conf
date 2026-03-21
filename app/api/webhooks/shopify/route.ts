@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 import { confirmSeats } from "@/lib/seat-lock";
 import { redis } from "@/lib/redis";
-import { getCurrentPhase, incrementPhase2Sold } from "@/lib/pricing";
+import { incrementPhase2Sold } from "@/lib/pricing";
 
 export async function POST(request: NextRequest) {
   const body = await request.text();
@@ -19,7 +19,9 @@ export async function POST(request: NextRequest) {
     .update(body, "utf8")
     .digest("base64");
 
-  if (hmacHeader !== computedHmac) {
+  const a = Buffer.from(hmacHeader, "base64");
+  const b = Buffer.from(computedHmac, "base64");
+  if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) {
     return NextResponse.json({ error: "Invalid HMAC" }, { status: 401 });
   }
 
@@ -59,12 +61,9 @@ export async function POST(request: NextRequest) {
     result = await confirmSeats(cartToken);
   }
 
-  // Increment Phase 2 sold counter if applicable
-  if (result.confirmed) {
-    const phase = await getCurrentPhase(result.tier);
-    if (phase === "earlybird2") {
-      await incrementPhase2Sold(result.tier, result.seatCount);
-    }
+  // Increment Phase 2 sold counter using the phase stored at checkout time
+  if (result.confirmed && result.phase === "earlybird2") {
+    await incrementPhase2Sold(result.tier, result.seatCount);
   }
 
   // Mark as processed (24h TTL)
