@@ -24,7 +24,6 @@ export default function Nav({ items }: Props) {
   const router = useRouter();
   const locale = useLocale();
   const lang = locale.split("/")[0];
-  console.log(lang);
 
   const handleClick = (e: React.MouseEvent, href: string) => {
     if (href.startsWith("#")) {
