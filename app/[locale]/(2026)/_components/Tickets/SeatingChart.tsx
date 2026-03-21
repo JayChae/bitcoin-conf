@@ -106,9 +106,9 @@ export default async function SeatingChart() {
                 <path
                   d={fanArc(cx, cy, innerR, outerR, spread)}
                   fill={tier.color}
-                  fillOpacity={0.18}
+                  fillOpacity={0.3 - i * 0.08}
                   stroke={tier.color}
-                  strokeOpacity={0.4}
+                  strokeOpacity={0.5 - i * 0.1}
                   strokeWidth={1}
                 />
                 <text

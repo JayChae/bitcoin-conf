@@ -7,8 +7,6 @@ type Props = {
   description: string;
   benefits: { text: string }[];
   notice?: string;
-  ctaLabel: string;
-  ctaHref: string;
 };
 
 export default function StudentTicketCard({
@@ -17,21 +15,19 @@ export default function StudentTicketCard({
   description,
   benefits,
   notice,
-  ctaLabel,
-  ctaHref,
 }: Props) {
   return (
     <div
       className={cn(
         "relative flex flex-col rounded-2xl overflow-hidden h-full",
-        "bg-[#181820] border border-white/10",
+        "bg-[#1a1412]/90 backdrop-blur-2xl border border-white/10",
         "transition-all duration-250 ease-out hover:-translate-y-1 hover:border-white/15",
       )}
     >
       <div className="flex flex-col flex-grow p-6 md:p-10">
         {/* Header: tier */}
         <div className="flex items-center justify-between mb-8 md:mb-8">
-          <h3 className="text-2xl md:text-3xl font-bold text-[#4ADE80]">
+          <h3 className="text-2xl md:text-3xl font-bold text-white">
             {tierLabel}
           </h3>
         </div>
@@ -73,19 +69,17 @@ export default function StudentTicketCard({
 
         {/* CTA */}
         <div className="mt-auto pt-8 md:pt-10">
-          <a
-            href={ctaHref}
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            disabled
             className={cn(
               "w-full flex items-center justify-center",
               "text-sm font-semibold py-3.5 px-6 rounded-full",
-              "bg-white/10 text-white border border-white/15",
-              "transition-colors duration-200 hover:bg-white/15",
+              "bg-white/10 text-white/40 border border-white/15",
+              "cursor-not-allowed",
             )}
           >
-            {ctaLabel}
-          </a>
+            준비중
+          </button>
         </div>
       </div>
     </div>

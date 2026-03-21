@@ -26,12 +26,6 @@ type Props = {
   discountLabel: string;
 };
 
-const TIER_TEXT_COLOR: Record<Props["tier"], string> = {
-  vip: "text-[#A78BFA]",
-  premium: "text-[#D4A060]",
-  general: "text-[#7B8DB8]",
-};
-
 export default function TicketCard({
   tier,
   tierLabel,
@@ -52,19 +46,14 @@ export default function TicketCard({
     <div
       className={cn(
         "relative flex flex-col rounded-2xl overflow-hidden h-full",
-        "bg-[#181820] border border-white/10",
+        "bg-[#1a1412]/90 backdrop-blur-2xl border border-white/10",
         "transition-all duration-250 ease-out hover:-translate-y-1 hover:border-white/15",
       )}
     >
       <div className="flex flex-col flex-grow p-6 md:p-10">
         {/* Header: tier + seats */}
         <div className="flex items-center justify-between mb-6 md:mb-8">
-          <h3
-            className={cn(
-              "text-2xl md:text-3xl font-bold",
-              TIER_TEXT_COLOR[tier],
-            )}
-          >
+          <h3 className={cn("text-2xl md:text-3xl font-bold", "text-white")}>
             {tierLabel}
           </h3>
           <div

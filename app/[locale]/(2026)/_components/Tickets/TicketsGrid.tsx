@@ -31,8 +31,6 @@ export default async function TicketsGrid() {
           description={t("studentDescription")}
           benefits={studentBenefitKeys.map((key) => ({ text: t(key) }))}
           notice={t("studentIdRequired")}
-          ctaLabel={t("ctaApply")}
-          ctaHref="#"
         />
       </div>
       {TICKETS.map((ticket) => {
