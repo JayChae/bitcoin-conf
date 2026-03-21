@@ -102,7 +102,13 @@
     "holdExpired": "Time expired. Please select seats again.",
     "seatsTaken": "Some seats are no longer available.",
     "holdError": "Failed to reserve seats. Please try again.",
-    "alreadyHeld": "You already have reserved seats. Please release them first."
+    "alreadyHeld": "You already have reserved seats. Please release them first.",
+    "student": "Student",
+    "studentFree": "Free",
+    "studentDescription": "University students aged 25 and under",
+    "studentIdRequired": "Student ID or enrollment certificate required on-site",
+    "studentBenefitNote": "Same benefits as Premium ticket",
+    "ctaApply": "Apply"
   },
   "Footer": {
     "contact": "Contact",

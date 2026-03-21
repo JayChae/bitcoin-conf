@@ -1,6 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { getLocale } from "next-intl/server";
 import TicketCard from "./TicketCard";
+import StudentTicketCard from "./StudentTicketCard";
 import { TICKETS, CURRENT_PHASE } from "../../_constants/tickets";
 import { getDiscountedPrice, isDiscounted, formatKRW } from "../../_utils/tickets";
 import { getRemainingSeatsByTier } from "../../_utils/seats";
@@ -17,8 +18,23 @@ export default async function TicketsGrid() {
   const phaseKey = PHASE_KEYS[CURRENT_PHASE];
   const remaining = await getRemainingSeatsByTier();
 
+  const studentBenefitKeys = [
+    "studentBenefitNote",
+  ];
+
   return (
     <div className="flex flex-col md:flex-row gap-4 md:gap-6">
+      <div className="flex-1 min-w-0">
+        <StudentTicketCard
+          tierLabel={t("student")}
+          freeLabel={t("studentFree")}
+          description={t("studentDescription")}
+          benefits={studentBenefitKeys.map((key) => ({ text: t(key) }))}
+          notice={t("studentIdRequired")}
+          ctaLabel={t("ctaApply")}
+          ctaHref="#"
+        />
+      </div>
       {TICKETS.map((ticket) => {
         const benefits = ticket.benefitKeys.map((key) => ({
           text: t(key),

@@ -8,7 +8,7 @@ export default async function TicketsSection() {
 
   return (
     <section id="tickets" className="scroll-mt-24 pb-20 px-4">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         <h2 className="text-4xl md:text-5xl font-bold text-white text-center mb-10 md:mb-12">
           {t("sectionTitle")}
         </h2>
