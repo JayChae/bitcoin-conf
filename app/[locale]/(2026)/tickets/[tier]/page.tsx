@@ -7,6 +7,7 @@ import {
   isDiscounted as checkDiscount,
   formatKRW,
 } from "../../_utils/tickets";
+import { getCurrentPhase } from "@/lib/pricing";
 import PurchaseFlow from "./_components/PurchaseFlow";
 
 type Props = {
@@ -20,8 +21,9 @@ export default async function TierPage({ params }: Props) {
 
   const t = await getTranslations("Tickets2026");
   const ticket = TICKETS.find((tk) => tk.tier === tier)!;
-  const currentPrice = getDiscountedPrice(ticket.basePrice);
-  const discounted = checkDiscount();
+  const phase = await getCurrentPhase(tier);
+  const currentPrice = getDiscountedPrice(ticket.basePrice, phase);
+  const discounted = checkDiscount(phase);
 
   return (
     <main className="min-h-screen pt-28 pb-20 px-4">
@@ -42,7 +44,7 @@ export default async function TierPage({ params }: Props) {
           </p>
         </div>
 
-        <PurchaseFlow tier={tier} locale={locale} />
+        <PurchaseFlow tier={tier} locale={locale} phase={phase} />
       </div>
     </main>
   );

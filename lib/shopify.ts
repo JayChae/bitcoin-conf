@@ -1,5 +1,5 @@
-import { VARIANT_IDS } from "./shopify-config";
-import type { TierKey } from "@/app/[locale]/(2026)/_types/tickets";
+import { TICKET_VARIANT_IDS, AFTER_PARTY_VARIANT_ID, DISCOUNT_CODES } from "./shopify-config";
+import type { TierKey, PricingPhase } from "@/app/[locale]/(2026)/_types/tickets";
 import type { SeatHoldRequest } from "@/app/[locale]/(2026)/_types/seats";
 
 const STOREFRONT_URL = `https://${process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN}/api/2024-10/graphql.json`;
@@ -11,6 +11,20 @@ const CART_CREATE_MUTATION = `
       cart {
         id
         checkoutUrl
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+`;
+
+const CART_DISCOUNT_UPDATE_MUTATION = `
+  mutation cartDiscountCodesUpdate($cartId: ID!, $discountCodes: [String!]!) {
+    cartDiscountCodesUpdate(cartId: $cartId, discountCodes: $discountCodes) {
+      cart {
+        id
       }
       userErrors {
         field
@@ -45,9 +59,11 @@ async function storefrontFetch<T>(query: string, variables?: Record<string, unkn
 export async function createCheckoutCart(
   seats: SeatHoldRequest[],
   tier: TierKey,
+  phase: PricingPhase,
 ): Promise<{ cartId: string; checkoutUrl: string }> {
-  const lines = seats.map((seat) => ({
-    merchandiseId: VARIANT_IDS[tier][seat.afterParty ? "withAP" : "withoutAP"],
+  // 1. Ticket line items (one per seat)
+  const ticketLines = seats.map((seat) => ({
+    merchandiseId: TICKET_VARIANT_IDS[tier],
     quantity: 1,
     attributes: [
       { key: "seat_section", value: seat.section },
@@ -56,6 +72,21 @@ export async function createCheckoutCart(
     ],
   }));
 
+  // 2. After Party line items (separate product, VIP excluded — AP included in VIP ticket)
+  const apLines = seats
+    .filter((seat) => seat.afterParty && tier !== "vip")
+    .map((seat) => ({
+      merchandiseId: AFTER_PARTY_VARIANT_ID,
+      quantity: 1,
+      attributes: [
+        { key: "seat_section", value: seat.section },
+        { key: "seat_number", value: seat.seat.toString() },
+      ],
+    }));
+
+  const lines = [...ticketLines, ...apLines];
+
+  // 3. Create cart
   const data = await storefrontFetch<{
     cartCreate: {
       cart: { id: string; checkoutUrl: string } | null;
@@ -70,6 +101,21 @@ export async function createCheckoutCart(
   }
 
   const cart = data.cartCreate.cart!;
+
+  // 4. Apply discount code based on current pricing phase
+  const discountCode = DISCOUNT_CODES[phase];
+  if (discountCode) {
+    await storefrontFetch<{
+      cartDiscountCodesUpdate: {
+        cart: { id: string } | null;
+        userErrors: { field: string[]; message: string }[];
+      };
+    }>(CART_DISCOUNT_UPDATE_MUTATION, {
+      cartId: cart.id,
+      discountCodes: [discountCode],
+    });
+  }
+
   return {
     cartId: cart.id,
     checkoutUrl: cart.checkoutUrl,

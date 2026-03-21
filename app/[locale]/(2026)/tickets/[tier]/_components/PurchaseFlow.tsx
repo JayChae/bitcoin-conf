@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useRef, useEffect } from "react";
 import { useTranslations } from "next-intl";
-import type { TierKey } from "@/app/[locale]/(2026)/_types/tickets";
+import type { TierKey, PricingPhase } from "@/app/[locale]/(2026)/_types/tickets";
 import type { SeatHoldRequest } from "@/app/[locale]/(2026)/_types/seats";
 import { TICKETS } from "@/app/[locale]/(2026)/_constants/tickets";
 import { useSessionId } from "@/hooks/useSessionId";
@@ -18,9 +18,11 @@ import SelectionSummary, { type HoldState } from "./SelectionSummary";
 export default function PurchaseFlow({
   tier,
   locale,
+  phase,
 }: {
   tier: TierKey;
   locale: string;
+  phase: PricingPhase;
 }) {
   const t = useTranslations("Tickets2026");
   const sessionId = useSessionId();
@@ -251,6 +253,7 @@ export default function PurchaseFlow({
         holdState={holdState}
         timerDisplay={timerDisplay}
         holdError={holdError}
+        phase={phase}
       />
     </div>
   );

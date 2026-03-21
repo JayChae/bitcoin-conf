@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { redis } from "@/lib/redis";
 import { saveCheckoutMapping } from "@/lib/seat-lock";
 import { createCheckoutCart } from "@/lib/shopify";
+import { getCurrentPhase } from "@/lib/pricing";
 import type { TierKey } from "@/app/[locale]/(2026)/_types/tickets";
 import type { SeatHoldRequest, SeatStatusInfo } from "@/app/[locale]/(2026)/_types/seats";
 
@@ -36,7 +37,8 @@ export async function POST(request: NextRequest) {
   const tier = seatData.tier as TierKey;
 
   try {
-    const { cartId, checkoutUrl } = await createCheckoutCart(holdsData, tier);
+    const phase = await getCurrentPhase(tier);
+    const { cartId, checkoutUrl } = await createCheckoutCart(holdsData, tier, phase);
 
     // Remove query parameters from cartId for consistent Redis key mapping
     // Shopify returns: gid://shopify/Cart/xxx?key=yyy

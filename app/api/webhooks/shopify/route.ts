@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 import { confirmSeats } from "@/lib/seat-lock";
 import { redis } from "@/lib/redis";
+import { getCurrentPhase, incrementPhase2Sold } from "@/lib/pricing";
 
 export async function POST(request: NextRequest) {
   const body = await request.text();
@@ -40,7 +41,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "No cart token" }, { status: 400 });
   }
 
-  // Log for debugging
   console.log("Webhook received:", {
     orderId: orderId,
     cartToken: cartToken,
@@ -51,12 +51,20 @@ export async function POST(request: NextRequest) {
   const cartId = `gid://shopify/Cart/${cartToken}`;
   console.log("Attempting to confirm seats with cartId:", cartId);
 
-  let confirmed = await confirmSeats(cartId);
+  let result = await confirmSeats(cartId);
 
   // If not found, try with the raw cart token as it might be the full ID already
-  if (!confirmed && cartToken.startsWith("gid://")) {
+  if (!result.confirmed && cartToken.startsWith("gid://")) {
     console.log("Retrying with raw cart token:", cartToken);
-    confirmed = await confirmSeats(cartToken);
+    result = await confirmSeats(cartToken);
+  }
+
+  // Increment Phase 2 sold counter if applicable
+  if (result.confirmed) {
+    const phase = await getCurrentPhase(result.tier);
+    if (phase === "earlybird2") {
+      await incrementPhase2Sold(result.tier, result.seatCount);
+    }
   }
 
   // Mark as processed (24h TTL)
@@ -64,5 +72,5 @@ export async function POST(request: NextRequest) {
     await redis.set(`webhook:order:${orderId}`, "1", { ex: 86400 });
   }
 
-  return NextResponse.json({ success: true, confirmed });
+  return NextResponse.json({ success: true, confirmed: result.confirmed });
 }

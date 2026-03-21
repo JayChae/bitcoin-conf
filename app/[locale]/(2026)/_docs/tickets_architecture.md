@@ -116,35 +116,42 @@ Redis (좌석 상태 관리)    Shopify (결제 처리)
 
 > 가격 설정: [_constants/tickets.ts](app/[locale]/(2026)/_constants/tickets.ts) · Variant ID: [lib/shopify-config.ts](lib/shopify-config.ts)
 
-Shopify에 **3개 상품**을 등록합니다. **재고 관리는 Shopify에서 하지 않습니다** (Redis가 관리).
+Shopify에 **4개 상품**을 등록합니다. **재고 관리는 Shopify에서 하지 않습니다** (Redis가 관리).
 
-애프터파티는 별도 상품이 아니라 **각 티켓의 옵션(Variant)**으로 만듭니다.
+모든 상품은 **정가(base price)**로 등록하고, 할인은 **Shopify 할인 코드**로 적용합니다.
+애프터파티는 할인 대상에서 제외하기 위해 **별도 상품**으로 분리되어 있습니다.
 
-| 상품명 | Variant | Early Bird 1 가격 | 정가 |
-|--------|---------|-------------------|------|
-| VIP Ticket | (단일 — 애프터파티 기본 포함) | ₩2,400,000 | ₩3,000,000 |
-| Premium Ticket | Without After Party | ₩264,000 | ₩330,000 |
-| Premium Ticket | With After Party | ₩314,000 | ₩380,000 |
-| General Ticket | Without After Party | ₩168,000 | ₩210,000 |
-| General Ticket | With After Party | ₩218,000 | ₩260,000 |
+| 상품명 | 타입 | 정가 | Variant ID |
+|--------|------|------|-----------|
+| VIP Ticket | Conference Ticket | ₩3,000,000 | `48806870352114` |
+| Premium Ticket | Conference Ticket | ₩330,000 | `48892186296562` |
+| General Ticket | Conference Ticket | ₩210,000 | `48806870450418` |
+| After Party | Conference Add-on | ₩50,000 | `48892186329330` |
 
-**왜 별도 상품이 아니라 옵션(Variant)인가요?**
+**할인 코드:**
 
-별도 상품으로 만들면 장바구니에 "Premium Ticket × 2, After Party × 1"처럼 분리되어,
-어떤 좌석이 애프터파티인지 주문 내역에서 바로 알 수 없습니다.
+| 코드명 | 할인율 | 대상 | 적용 페이즈 |
+|--------|-------|------|------------|
+| `EARLYBIRD20` | 20% | 티켓 상품만 (AP 제외) | Phase 1 (earlybird1) |
+| `EARLYBIRD10` | 10% | 티켓 상품만 (AP 제외) | Phase 2 (earlybird2) |
 
-Variant 방식이면 **한 줄 = 한 좌석**이 되어 명확합니다:
+**왜 After Party를 별도 상품으로 분리했나요?**
+
+Shopify 할인 코드는 상품 단위로 적용됩니다. After Party가 티켓의 Variant로 포함되어 있으면
+할인 코드가 AP에도 적용되어 의도치 않은 할인이 발생합니다.
+별도 상품으로 분리하면 할인 코드 대상을 "티켓 상품만"으로 설정할 수 있습니다.
+
+**장바구니 구성 예시** (Premium 2석, AP 1석, earlybird1 적용):
 ```
-Premium Ticket (With After Party)      × 1    ₩314,000   seat: A-5
-Premium Ticket (Without After Party)   × 2    ₩528,000   seat: A-6, A-7
+Line 1: Premium Ticket × 1    ₩264,000 (₩330,000 × 0.8)   seat: A-5
+Line 2: Premium Ticket × 1    ₩264,000 (₩330,000 × 0.8)   seat: A-6
+Line 3: After Party    × 1    ₩50,000  (할인 미적용)         seat: A-5
+할인코드: EARLYBIRD20
+총액: ₩578,000
 ```
 
-- 주문 관리가 쉬움 (좌석과 애프터파티 여부가 한눈에 보임)
-- 코드에서 장바구니 생성 시 Variant ID만 바꾸면 됨
-- 상품 3개로 관리가 단순
-
-좌석 정보는 장바구니에 메모처럼 첨부됩니다:
-예) `seat: "C-1"` → "C 섹션 1번 좌석"
+좌석 정보는 장바구니 라인 아이템의 `attributes`에 첨부됩니다:
+`seat_section: "A"`, `seat_number: "5"`, `after_party: "true"`
 
 ---
 
@@ -268,7 +275,9 @@ Shopify가 같은 주문 완료 알림을 여러 번 보내더라도, 이 키가
 
 ## 9. API 목록 (서버 끝점)
 
-우리 서버가 제공하는 기능 5개:
+우리 서버가 제공하는 기능:
+
+### 좌석/결제 API
 
 | 기능 | 경로 | 코드 | 설명 |
 |------|------|------|------|
@@ -277,6 +286,15 @@ Shopify가 같은 주문 완료 알림을 여러 번 보내더라도, 이 키가
 | 잠금 해제 | `POST /api/seats/release` | [route.ts](app/api/seats/release/route.ts) | "잡아둔 좌석 취소할게" |
 | 결제 생성 | `POST /api/checkout/create` | [route.ts](app/api/checkout/create/route.ts) | "Shopify 결제 페이지 만들어줘" |
 | 결제 완료 수신 | `POST /api/webhooks/shopify` | [route.ts](app/api/webhooks/shopify/route.ts) | Shopify가 "결제 완료됐어" 알림 |
+
+### 할인/어드민 API
+
+| 기능 | 경로 | 코드 | 설명 |
+|------|------|------|------|
+| 현재 가격 조회 | `GET /api/pricing/current?tier=premium` | [route.ts](app/api/pricing/current/route.ts) | 현재 페이즈, 할인율, Phase 2 잔여 수량 |
+| 어드민 로그인 | `POST /api/admin/auth` | [route.ts](app/api/admin/auth/route.ts) | 비밀번호 검증 → 세션 쿠키 발급 |
+| 할인 설정 조회 | `GET /api/admin/pricing` | [route.ts](app/api/admin/pricing/route.ts) | 현재 할인 설정 + 티어별 상태 |
+| 할인 설정 변경 | `PUT /api/admin/pricing` | [route.ts](app/api/admin/pricing/route.ts) | 할인 설정 저장 (Redis) |
 
 ### 각 API 상세
 
@@ -300,8 +318,10 @@ Shopify가 같은 주문 완료 알림을 여러 번 보내더라도, 이 키가
 - 요청 예시: `{ sessionId: "sess_170930_abc" }`
 - 동작 순서:
   1. Redis에서 해당 사용자의 hold 좌석 확인
-  2. Shopify 장바구니 생성 (티켓 상품 + 애프터파티 애드온)
-  3. Shopify 결제 페이지 URL 반환
+  2. `getCurrentPhase(tier)` 호출하여 현재 할인 페이즈 확인
+  3. Shopify 장바구니 생성 (티켓 라인 아이템 + After Party 라인 아이템 분리)
+  4. 페이즈에 따라 할인 코드 적용 (`cartDiscountCodesUpdate` mutation)
+  5. Shopify 결제 페이지 URL 반환
 - 장바구니 ID를 Redis에 저장 (나중에 결제 완료 시 좌석과 연결하기 위해)
 
 **결제 완료 수신** `POST /api/webhooks/shopify`
@@ -309,7 +329,13 @@ Shopify가 같은 주문 완료 알림을 여러 번 보내더라도, 이 키가
 - HMAC 서명 검증으로 위조된 요청 차단
   - HMAC이란? → Shopify가 비밀 키로 만든 "전자 서명". 이걸로 진짜 Shopify가 보낸 건지 확인합니다.
 - 장바구니 ID로 Redis에서 좌석 정보를 찾아 → 상태를 "sold"(판매 완료)로 변경
+- Phase 2 수량 카운터 증가: 결제 확정 시 현재 페이즈가 `earlybird2`이면 해당 티어의 판매 카운터를 `INCRBY`로 증가
 - 주문 ID를 `webhook:order:{주문ID}` 키에 저장해서 같은 주문이 중복 처리되지 않도록 방지 (24시간 TTL)
+
+**현재 가격 조회** `GET /api/pricing/current?tier=premium`
+- 현재 적용 중인 페이즈, 할인율 반환
+- `tier` 파라미터 제공 시 Phase 2 잔여 수량도 포함
+- 클라이언트 컴포넌트에서 동적 가격 표시에 사용
 
 ---
 
@@ -335,30 +361,11 @@ for (const s of seats) {
 }
 ```
 
-### [심각] SHOPIFY_WEBHOOK_SECRET 미설정
+### ~~[심각] SHOPIFY_WEBHOOK_SECRET 미설정~~ ✅ 해결됨
 
 > [app/api/webhooks/shopify/route.ts:11](app/api/webhooks/shopify/route.ts#L11)
 
-**Webhook이 뭔지부터 설명하면:**
-결제가 완료되면 Shopify가 우리 서버에 "이 주문 결제 끝났어!"라는 알림을 보냅니다.
-이 알림을 Webhook이라고 합니다. 우리 서버는 이 알림을 받으면 좌석을 "sold"로 바꿉니다.
-
-**문제:**
-이 알림이 진짜 Shopify에서 온 건지 확인하려면 `SHOPIFY_WEBHOOK_SECRET`이라는 비밀 키가 필요합니다.
-현재 `.env` 파일에 이 키가 설정되어 있지 않아서, 서버가 **모든 Webhook 알림을 거부**합니다.
-
-```
-현재 상황:
-  고객이 결제 완료 → Shopify가 알림 전송 → 서버: "비밀 키가 없어서 확인 불가, 거부!"
-                                              ↓
-                                         좌석이 "sold"로 안 바뀜
-                                              ↓
-                                         7분 후 TTL 만료 → 좌석이 다시 "available"
-                                              ↓
-                                         돈은 냈는데 좌석이 풀려서 다른 사람이 구매 가능
-```
-
-**수정**: Shopify Admin → Settings → Notifications에서 webhook secret을 발급받아 `.env`에 `SHOPIFY_WEBHOOK_SECRET=발급받은값` 추가.
+`.env`에 `SHOPIFY_WEBHOOK_SECRET`이 설정되어 Webhook HMAC 검증이 정상 동작합니다.
 
 ### [높음] 세션 ID 우회로 좌석 독점 가능
 

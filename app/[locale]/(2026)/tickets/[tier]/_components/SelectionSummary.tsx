@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
-import type { TierKey } from "@/app/[locale]/(2026)/_types/tickets";
+import type { TierKey, PricingPhase } from "@/app/[locale]/(2026)/_types/tickets";
 import {
   TICKETS,
   AFTER_PARTY_PRICE,
@@ -23,6 +23,7 @@ export default function SelectionSummary({
   holdState = "idle",
   timerDisplay = null,
   holdError = null,
+  phase,
 }: {
   tier: TierKey;
   selectedSeats: Record<string, Set<number>>;
@@ -32,6 +33,7 @@ export default function SelectionSummary({
   holdState?: HoldState;
   timerDisplay?: string | null;
   holdError?: string | null;
+  phase: PricingPhase;
 }) {
   const t = useTranslations("Tickets2026");
   const ticket = TICKETS.find((tk) => tk.tier === tier);
@@ -44,7 +46,7 @@ export default function SelectionSummary({
 
   if (totalCount === 0) return null;
 
-  const unitPrice = getDiscountedPrice(ticket.basePrice);
+  const unitPrice = getDiscountedPrice(ticket.basePrice, phase);
   const ticketTotal = totalCount * unitPrice;
   const afterPartyTotal = afterPartyCount * AFTER_PARTY_PRICE;
   const grandTotal = ticketTotal + afterPartyTotal;

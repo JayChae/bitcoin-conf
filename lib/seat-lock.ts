@@ -189,14 +189,16 @@ export async function releaseHolds(sessionId: string): Promise<void> {
 
 // ─── 4. 결제 완료 — 좌석 sold 확정 ───
 
-export async function confirmSeats(cartId: string): Promise<boolean> {
+export async function confirmSeats(
+  cartId: string,
+): Promise<{ confirmed: false } | { confirmed: true; tier: TierKey; seatCount: number }> {
   const data = await redis.get<{
     sessionId: string;
     seats: SeatHoldRequest[];
     tier: TierKey;
   }>(checkoutKey(cartId));
 
-  if (!data) return false;
+  if (!data) return { confirmed: false };
 
   const pipeline = redis.pipeline();
   for (const seat of data.seats) {
@@ -214,7 +216,7 @@ export async function confirmSeats(cartId: string): Promise<boolean> {
   pipeline.del(checkoutKey(cartId));
   await pipeline.exec();
 
-  return true;
+  return { confirmed: true, tier: data.tier, seatCount: data.seats.length };
 }
 
 // ─── 5. 장바구니 ↔ 좌석 매핑 저장 ───
