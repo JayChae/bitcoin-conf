@@ -38,7 +38,7 @@ export default function PurchaseFlow({
 
   const ticket = TICKETS.find((tk) => tk.tier === tier)!;
   const hasAfterPartyAddon = !!ticket.addonKeys?.includes("afterPartyOption");
-  const afterPartyIncluded = ticket.benefitKeys.includes("afterParty");
+  const afterPartyIncluded = tier === "vip";
 
   const totalCount = Object.values(selectedSeats).reduce(
     (sum, set) => sum + set.size,

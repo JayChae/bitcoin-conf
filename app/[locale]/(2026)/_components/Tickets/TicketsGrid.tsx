@@ -24,15 +24,6 @@ export default async function TicketsGrid() {
           text: t(key),
         }));
 
-        if (ticket.addonKeys) {
-          ticket.addonKeys.forEach((key) => {
-            benefits.push({
-              text: t(key),
-              addon: t("afterPartyAddon"),
-            } as { text: string; addon?: string });
-          });
-        }
-
         const currentPrice = getDiscountedPrice(ticket.basePrice);
 
         return (

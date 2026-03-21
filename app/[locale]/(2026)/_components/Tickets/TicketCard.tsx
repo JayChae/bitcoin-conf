@@ -140,7 +140,7 @@ export default function TicketCard({
         <div className="border-t border-white/10 mb-5 md:mb-6" />
 
         {/* Benefits */}
-        <ul className="grid grid-cols-2 md:grid-cols-1 gap-x-2 gap-y-2.5 md:gap-y-3">
+        <ul className="grid grid-cols-1 gap-y-2.5 md:gap-y-3">
           {benefits.map((benefit, i) => (
             <li key={i} className="flex items-start gap-2 md:gap-3">
               <Check
