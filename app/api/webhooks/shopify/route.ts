@@ -43,27 +43,26 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "No cart token" }, { status: 400 });
   }
 
-  console.log("Webhook received:", {
-    orderId: orderId,
-    cartToken: cartToken,
-    noteAttributes: payload.note_attributes,
-  });
+  console.log("[webhook] received:", { orderId, cartToken });
 
   // Try different cart ID formats
   const cartId = `gid://shopify/Cart/${cartToken}`;
-  console.log("Attempting to confirm seats with cartId:", cartId);
 
   let result = await confirmSeats(cartId);
 
   // If not found, try with the raw cart token as it might be the full ID already
   if (!result.confirmed && cartToken.startsWith("gid://")) {
-    console.log("Retrying with raw cart token:", cartToken);
     result = await confirmSeats(cartToken);
   }
+
+  console.log("[webhook] confirmSeats result:", JSON.stringify(result));
 
   // Increment Phase 2 sold counter using the phase stored at checkout time
   if (result.confirmed && result.phase === "earlybird2") {
     await incrementPhase2Sold(result.tier, result.seatCount);
+    console.log("[webhook] phase2 counter incremented:", result.tier, "+", result.seatCount);
+  } else if (result.confirmed) {
+    console.log("[webhook] phase2 counter SKIPPED — stored phase:", result.phase);
   }
 
   // Mark as processed (24h TTL)

@@ -45,8 +45,7 @@ export async function POST(request: NextRequest) {
     // We need to store: gid://shopify/Cart/xxx
     const cleanCartId = cartId.split('?')[0];
 
-    console.log("Created checkout with cartId:", cartId);
-    console.log("Saving to Redis with cleanCartId:", cleanCartId);
+    console.log("[checkout] phase:", phase, "tier:", tier, "cleanCartId:", cleanCartId, "seats:", holdsData.length);
 
     await saveCheckoutMapping(cleanCartId, sessionId, holdsData, tier, phase);
     return NextResponse.json({ checkoutUrl, cartId });
