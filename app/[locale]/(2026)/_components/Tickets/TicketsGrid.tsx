@@ -23,8 +23,8 @@ export default async function TicketsGrid() {
   ];
 
   return (
-    <div className="flex flex-col md:flex-row gap-4 md:gap-6">
-      <div className="flex-1 min-w-0">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+      <div>
         <StudentTicketCard
           tierLabel={t("student")}
           freeLabel={t("studentFree")}
@@ -43,7 +43,7 @@ export default async function TicketsGrid() {
         const currentPrice = getDiscountedPrice(ticket.basePrice);
 
         return (
-          <div key={ticket.tier} className="flex-1 min-w-0">
+          <div key={ticket.tier}>
             <TicketCard
               tier={ticket.tier}
               tierLabel={t(ticket.tier)}

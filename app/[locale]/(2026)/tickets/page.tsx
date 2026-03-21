@@ -7,7 +7,7 @@ export default async function TicketsPage() {
 
   return (
     <main className="relative z-10 min-h-screen pt-28 pb-20 px-4">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         <div className="text-center mb-14">
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
             {t("pageTitle")}
