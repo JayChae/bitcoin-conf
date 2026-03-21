@@ -26,35 +26,7 @@ type Props = {
   discountLabel: string;
 };
 
-const tierStyles = {
-  vip: {
-    accent: "bg-violet-500",
-    check: "text-violet-400",
-    glow: "animate-violet-glow",
-    badge: "border-violet-500/30 text-violet-300/80",
-    phaseBadge: "bg-violet-500/10 border-violet-500/30 text-violet-300",
-    cta: "border-violet-500/30 text-violet-200 hover:bg-violet-500/10",
-  },
-  premium: {
-    accent: "bg-orange-500",
-    check: "text-orange-400",
-    glow: "animate-orange-glow",
-    badge: "border-orange-500/30 text-orange-300/80",
-    phaseBadge: "bg-orange-500/10 border-orange-500/30 text-orange-300",
-    cta: "border-orange-500/30 text-orange-200 hover:bg-orange-500/10",
-  },
-  general: {
-    accent: "bg-yellow-500",
-    check: "text-yellow-400",
-    glow: "",
-    badge: "border-yellow-500/30 text-yellow-300/80",
-    phaseBadge: "bg-yellow-500/10 border-yellow-500/30 text-yellow-300",
-    cta: "border-yellow-500/30 text-yellow-200 hover:bg-yellow-500/10",
-  },
-} as const;
-
 export default function TicketCard({
-  tier,
   tierLabel,
   totalSeats,
   remainingSeats,
@@ -69,20 +41,14 @@ export default function TicketCard({
   phaseLabel,
   discountLabel,
 }: Props) {
-  const s = tierStyles[tier];
-
   return (
     <div
       className={cn(
         "relative flex flex-col rounded-2xl overflow-hidden h-full",
-        "bg-black/40 backdrop-blur-2xl border border-white/10",
+        "bg-black border border-white/10",
         "transition-all duration-250 ease-out hover:-translate-y-1.5 hover:border-white/20",
-        s.glow,
       )}
     >
-      {/* Accent strip */}
-      <div className={cn("h-1 w-full", s.accent)} />
-
       <div className="flex flex-col flex-grow p-5 md:p-8">
         {/* Header: tier + seats */}
         <div className="flex items-center justify-between mb-5 md:mb-6">
@@ -94,7 +60,7 @@ export default function TicketCard({
               "px-3 py-1 rounded-full text-xs md:text-sm border tabular-nums",
               remainingSeats / totalSeats <= 0.2
                 ? "bg-red-500/10 border-red-500/30 text-red-300"
-                : "bg-white/5 " + s.badge,
+                : "bg-white/5 border-white/20 text-white/60",
             )}
           >
             {remainingSeats}/{totalSeats} {seatsLabel}
@@ -106,12 +72,7 @@ export default function TicketCard({
 
         {/* Phase badge */}
         {isDiscounted && (
-          <div
-            className={cn(
-              "inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium border w-fit mb-3",
-              s.phaseBadge,
-            )}
-          >
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium border border-white/15 bg-white/5 text-white/60 w-fit mb-3">
             <span>{phaseLabel}</span>
             <span className="opacity-40">|</span>
             <span>{discountLabel}</span>
@@ -143,9 +104,7 @@ export default function TicketCard({
         <ul className="grid grid-cols-1 gap-y-2.5 md:gap-y-3">
           {benefits.map((benefit, i) => (
             <li key={i} className="flex items-start gap-2 md:gap-3">
-              <Check
-                className={cn("size-4 md:size-5 mt-0.5 flex-shrink-0", s.check)}
-              />
+              <Check className="size-4 md:size-5 mt-0.5 flex-shrink-0 text-white/60" />
               <span className="text-white/80 text-xs md:text-base leading-tight whitespace-nowrap">
                 {benefit.text}
                 {benefit.addon && (
@@ -163,15 +122,13 @@ export default function TicketCard({
           <Link
             href={ctaHref}
             className={cn(
-              "group w-full flex items-center justify-center gap-2",
+              "w-full flex items-center justify-center gap-2",
               "text-sm md:text-base font-medium py-3 px-6 rounded-xl",
-              "bg-white/[0.03] border backdrop-blur-sm",
-              "transition-all duration-200",
-              s.cta,
+              "bg-white/[0.03] border border-white/20 text-white/80 backdrop-blur-sm",
+              "transition-all duration-200 hover:bg-white/10 hover:border-white/30",
             )}
           >
             {ctaLabel}
-            <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
         </div>
       </div>
