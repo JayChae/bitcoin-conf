@@ -106,29 +106,29 @@ export const SECTIONS: SectionConfig[] = [
 ];
 
 export const TIER_COLORS: Record<SeatTier, string> = {
-  vip: "#8B5CF6",
-  premium: "#F97316",
-  regular: "#EAB308",
+  vip: "#A78BFA",
+  premium: "#D4A060",
+  regular: "#7B8DB8",
   unavailable: "#374151",
 };
 
 export const TIER_BG: Record<SeatTier, string> = {
-  vip: "bg-violet-500",
-  premium: "bg-orange-500",
-  regular: "bg-yellow-500",
+  vip: "bg-[#A78BFA]",
+  premium: "bg-[#D4A060]",
+  regular: "bg-[#7B8DB8]",
   unavailable: "bg-gray-700",
 };
 
 export const TIER_BORDER: Record<SeatTier, string> = {
-  vip: "border-violet-500/40",
-  premium: "border-orange-500/40",
-  regular: "border-yellow-500/40",
+  vip: "border-[#A78BFA]/40",
+  premium: "border-[#D4A060]/40",
+  regular: "border-[#7B8DB8]/40",
   unavailable: "border-gray-700/40",
 };
 
 export const TIER_BG_MUTED: Record<SeatTier, string> = {
-  vip: "bg-violet-500/15",
-  premium: "bg-orange-500/15",
-  regular: "bg-yellow-500/15",
+  vip: "bg-[#A78BFA]/15",
+  premium: "bg-[#D4A060]/15",
+  regular: "bg-[#7B8DB8]/15",
   unavailable: "bg-gray-700/15",
 };
