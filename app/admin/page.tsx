@@ -78,6 +78,13 @@ export default function AdminPage() {
     fetchData();
   }, [fetchData]);
 
+  // Auto-refresh every 10 seconds when authenticated
+  useEffect(() => {
+    if (!authed) return;
+    const interval = setInterval(fetchData, 10_000);
+    return () => clearInterval(interval);
+  }, [authed, fetchData]);
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoginError("");

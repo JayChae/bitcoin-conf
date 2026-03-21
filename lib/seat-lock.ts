@@ -214,10 +214,13 @@ export async function confirmSeats(
     );
   }
   pipeline.del(holdsKey(data.sessionId));
-  pipeline.del(checkoutKey(cartId));
   await pipeline.exec();
 
   return { confirmed: true, tier: data.tier, seatCount: data.seats.length, phase: data.phase };
+}
+
+export async function deleteCheckoutMapping(cartId: string): Promise<void> {
+  await redis.del(checkoutKey(cartId));
 }
 
 // ─── 5. 장바구니 ↔ 좌석 매핑 저장 ───

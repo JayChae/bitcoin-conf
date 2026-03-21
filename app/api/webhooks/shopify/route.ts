@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
-import { confirmSeats } from "@/lib/seat-lock";
+import { confirmSeats, deleteCheckoutMapping } from "@/lib/seat-lock";
 import { redis } from "@/lib/redis";
 import { incrementPhase2Sold } from "@/lib/pricing";
 
@@ -69,6 +69,12 @@ export async function POST(request: NextRequest) {
   // Mark as processed (24h TTL)
   if (orderId) {
     await redis.set(`webhook:order:${orderId}`, "1", { ex: 86400 });
+  }
+
+  // Delete checkout mapping last — if earlier steps fail, Shopify retries
+  // can still find the mapping and re-process. TTL (30min) auto-cleans anyway.
+  if (result.confirmed) {
+    await deleteCheckoutMapping(cartId);
   }
 
   return NextResponse.json({ success: true, confirmed: result.confirmed });
