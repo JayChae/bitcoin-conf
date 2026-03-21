@@ -46,11 +46,13 @@ function getPhaseWarning(
 ): string | null {
   if (activeMode === "earlybird1") {
     const allRegular = Object.values(tiers).every((t) => t.phase === "regular");
-    if (allRegular) return "EB1이 활성화되어 있지만 기간이 지나 실제로는 정가가 적용 중입니다.";
+    if (allRegular)
+      return "EB1이 활성화되어 있지만 해당 기간이 아니기 때문에 정가가 적용 중입니다.";
   }
   if (activeMode === "earlybird2") {
     const allRegular = Object.values(tiers).every((t) => t.phase === "regular");
-    if (allRegular) return "EB2가 활성화되어 있지만 모든 티어의 할인 수량이 소진되어 정가가 적용 중입니다.";
+    if (allRegular)
+      return "EB2가 활성화되어 있지만 모든 티어의 할인 수량이 소진되어 정가가 적용 중입니다.";
   }
   return null;
 }
