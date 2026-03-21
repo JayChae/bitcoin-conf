@@ -9,6 +9,7 @@ import { useSessionId } from "@/hooks/useSessionId";
 import { useSeatAvailability } from "@/hooks/useSeatAvailability";
 import { useZoneAvailability } from "@/hooks/useZoneAvailability";
 import { useHoldTimer } from "@/hooks/useHoldTimer";
+import SeatMapOverview from "./SeatMapOverview";
 import ZoneSelector from "./ZoneSelector";
 import SeatSelector from "./SeatSelector";
 import AfterPartyAddon from "./AfterPartyAddon";
@@ -197,6 +198,9 @@ export default function PurchaseFlow({
 
   return (
     <div className="flex flex-col gap-6">
+      {/* Seat Map Overview */}
+      <SeatMapOverview />
+
       {/* Zone Selector */}
       <div className="rounded-2xl p-4 md:p-8 bg-black/40 backdrop-blur-xl border border-white/10">
         <ZoneSelector
