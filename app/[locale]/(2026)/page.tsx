@@ -18,10 +18,7 @@ export default async function Home2026({ params }: Props) {
   return (
     <main className="">
       <div className="pointer-events-none fixed inset-0 -z-10">
-        <FloatingLines
-          linesGradient={["#CC7000", "#CC3800", "#BB1870", "#7D33CC"]}
-          lineDistance={10}
-        />
+        <FloatingLines />
       </div>
       <Hero
         tagline={tHero("tagline")}

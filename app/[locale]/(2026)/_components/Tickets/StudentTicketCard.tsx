@@ -20,7 +20,7 @@ export default function StudentTicketCard({
     <div
       className={cn(
         "relative flex flex-col rounded-2xl overflow-hidden h-full",
-        "bg-[#1a1412]/90 backdrop-blur-2xl border border-white/10",
+        "bg-[#15122a]/90 backdrop-blur-2xl border border-white/10",
         "transition-all duration-250 ease-out hover:-translate-y-1 hover:border-white/15",
       )}
     >

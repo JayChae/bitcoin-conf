@@ -4,16 +4,17 @@ export const AFTER_PARTY_PRICE = 50_000;
 
 export const TICKETS: TicketDef[] = [
   {
-    tier: "vip",
-    basePrice: 3_000_000,
-    totalSeats: 21,
+    tier: "general",
+    basePrice: 210_000,
+    totalSeats: 522,
     benefitKeys: [
-      "includesPremium",
-      "fastEntry",
-      "frontSeats",
-      "vipDinnerParty",
-      "allBtcWeekEvents",
+      "mainStage",
+      "workshopStage",
+      "lightningMarket",
+      "networkingPartyNote",
+      "translationProvided",
     ],
+    addonKeys: ["afterPartyOption"],
   },
   {
     tier: "premium",
@@ -29,16 +30,15 @@ export const TICKETS: TicketDef[] = [
     addonKeys: ["afterPartyOption"],
   },
   {
-    tier: "general",
-    basePrice: 210_000,
-    totalSeats: 522,
+    tier: "vip",
+    basePrice: 3_000_000,
+    totalSeats: 21,
     benefitKeys: [
-      "mainStage",
-      "workshopStage",
-      "lightningMarket",
-      "networkingPartyNote",
-      "translationProvided",
+      "includesPremium",
+      "fastEntry",
+      "frontSeats",
+      "vipDinnerParty",
+      "allBtcWeekEvents",
     ],
-    addonKeys: ["afterPartyOption"],
   },
 ];

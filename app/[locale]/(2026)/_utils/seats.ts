@@ -47,9 +47,9 @@ const SEAT_TIER_TO_TICKET_TIER: Partial<Record<SeatTier, TierKey>> = {
 
 export async function getRemainingSeatsByTier(): Promise<Record<TierKey, number>> {
   const fallback: Record<TierKey, number> = {
-    vip: TICKETS[0].totalSeats,
-    premium: TICKETS[1].totalSeats,
-    general: TICKETS[2].totalSeats,
+    vip: TICKETS.find((t) => t.tier === "vip")!.totalSeats,
+    premium: TICKETS.find((t) => t.tier === "premium")!.totalSeats,
+    general: TICKETS.find((t) => t.tier === "general")!.totalSeats,
   };
 
   try {
