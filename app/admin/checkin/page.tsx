@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
+import { useRouter } from "next/navigation";
 
 type CheckinResult =
   | { valid: false; reason: string }
@@ -12,9 +13,7 @@ type CheckinResult =
     };
 
 export default function CheckinPage() {
-  const [authed, setAuthed] = useState(false);
-  const [password, setPassword] = useState("");
-  const [loginError, setLoginError] = useState("");
+  const router = useRouter();
   const [manualInput, setManualInput] = useState("");
   const [result, setResult] = useState<CheckinResult | null>(null);
   const [scanning, setScanning] = useState(false);
@@ -22,31 +21,6 @@ export default function CheckinPage() {
   const scannerRef = useRef<HTMLDivElement>(null);
   const html5QrCodeRef = useRef<import("html5-qrcode").Html5Qrcode | null>(null);
   const lastScannedRef = useRef<string>("");
-
-  // ─── Auth ───
-
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoginError("");
-    const res = await fetch("/api/admin/auth", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ password }),
-    });
-    if (res.ok) {
-      setPassword("");
-      setAuthed(true);
-    } else {
-      setLoginError("비밀번호가 올바르지 않습니다.");
-    }
-  };
-
-  // Check if already authed
-  useEffect(() => {
-    fetch("/api/admin/pricing").then((res) => {
-      if (res.ok) setAuthed(true);
-    });
-  }, []);
 
   // ─── Verify Token ───
 
@@ -62,7 +36,7 @@ export default function CheckinPage() {
         body: JSON.stringify({ token }),
       });
       if (res.status === 401) {
-        setAuthed(false);
+        router.refresh();
         return;
       }
       const data: CheckinResult = await res.json();
@@ -75,7 +49,7 @@ export default function CheckinPage() {
     } catch {
       setResult({ valid: false, reason: "Network error" });
     }
-  }, []);
+  }, [router]);
 
   // ─── Camera Scanner ───
 
@@ -134,32 +108,6 @@ export default function CheckinPage() {
       setManualInput("");
     }
   };
-
-  // ─── Login Screen ───
-
-  if (!authed) {
-    return (
-      <div style={{ minHeight: "100vh", background: "#000", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "system-ui, sans-serif" }}>
-        <form onSubmit={handleLogin} style={{ width: 320, textAlign: "center" }}>
-          <h1 style={{ fontSize: 24, marginBottom: 24 }}>Check-in Scanner</h1>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Admin password"
-            style={{ width: "100%", padding: "12px 16px", borderRadius: 8, border: "1px solid #333", background: "#111", color: "#fff", fontSize: 16, marginBottom: 12 }}
-          />
-          <button
-            type="submit"
-            style={{ width: "100%", padding: "12px 16px", borderRadius: 8, border: "none", background: "#FF8C00", color: "#fff", fontSize: 16, fontWeight: 600, cursor: "pointer" }}
-          >
-            Login
-          </button>
-          {loginError && <p style={{ color: "#FF4500", marginTop: 8, fontSize: 14 }}>{loginError}</p>}
-        </form>
-      </div>
-    );
-  }
 
   // ─── Main UI ───
 

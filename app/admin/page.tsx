@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useMemo } from "react";
+import { useRouter } from "next/navigation";
 
 type SaleStatus = "upcoming" | "open" | "closed";
 
@@ -54,9 +55,7 @@ function getActiveMode(config: PricingConfig): ActiveMode {
 }
 
 export default function AdminPage() {
-  const [authed, setAuthed] = useState(false);
-  const [password, setPassword] = useState("");
-  const [loginError, setLoginError] = useState("");
+  const router = useRouter();
   const [serverData, setServerData] = useState<PricingData | null>(null);
   const [editConfig, setEditConfig] = useState<PricingConfig | null>(null);
   const [seatData, setSeatData] = useState<SeatSummary | null>(null);
@@ -76,41 +75,23 @@ export default function AdminPage() {
       const d: PricingData = await pricingRes.json();
       setServerData(d);
       setEditConfig(d.config);
-      setAuthed(true);
     } else if (pricingRes.status === 401) {
-      setAuthed(false);
+      router.refresh();
       return;
     }
     if (seatsRes.ok) {
       setSeatData(await seatsRes.json());
     }
-  }, []);
+  }, [router]);
 
   useEffect(() => {
     fetchData();
   }, [fetchData]);
 
   useEffect(() => {
-    if (!authed) return;
     const interval = setInterval(fetchData, 10_000);
     return () => clearInterval(interval);
-  }, [authed, fetchData]);
-
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoginError("");
-    const res = await fetch("/api/admin/auth", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ password }),
-    });
-    if (res.ok) {
-      setPassword("");
-      fetchData();
-    } else {
-      setLoginError("비밀번호가 올바르지 않습니다.");
-    }
-  };
+  }, [fetchData]);
 
   const handleSave = async () => {
     if (!editConfig) return;
@@ -172,35 +153,6 @@ export default function AdminPage() {
     a.click();
     URL.revokeObjectURL(url);
   };
-
-  // ─── Login Screen ───
-  if (!authed) {
-    return (
-      <div className="flex items-center justify-center min-h-screen px-4 bg-black text-white">
-        <form onSubmit={handleLogin} className="w-full max-w-xs">
-          <h1 className="text-lg font-bold mb-6 text-center text-neutral-300">
-            Admin
-          </h1>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="비밀번호"
-            className="w-full px-4 py-3 rounded-lg bg-neutral-900 border border-neutral-800 text-white placeholder-neutral-600 mb-3 text-sm focus:outline-none focus:border-neutral-600"
-          />
-          {loginError && (
-            <p className="text-red-400 text-xs mb-3">{loginError}</p>
-          )}
-          <button
-            type="submit"
-            className="w-full py-3 rounded-lg bg-white text-black text-sm font-semibold hover:bg-neutral-200 transition-colors"
-          >
-            로그인
-          </button>
-        </form>
-      </div>
-    );
-  }
 
   if (!serverData || !editConfig)
     return (
