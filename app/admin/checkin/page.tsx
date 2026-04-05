@@ -57,6 +57,12 @@ export default function CheckinPage() {
     if (!scannerRef.current) return;
     setCameraError("");
 
+    // Make container visible BEFORE starting scanner so clientWidth > 0
+    setScanning(true);
+
+    // Wait for React to render the visible container
+    await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+
     try {
       const { Html5Qrcode } = await import("html5-qrcode");
       const scanner = new Html5Qrcode("qr-reader");
@@ -72,12 +78,21 @@ export default function CheckinPage() {
           // ignore scan failures (no QR detected in frame)
         },
       );
-      setScanning(true);
+
+      // Fix Tailwind preflight killing video visibility
+      const video = scannerRef.current?.querySelector("video");
+      if (video) {
+        video.style.maxWidth = "none";
+        video.style.height = "100%";
+        video.style.objectFit = "cover";
+      }
+
       // Scroll camera preview into view on mobile
       setTimeout(() => {
         scannerRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
       }, 100);
     } catch (err) {
+      setScanning(false);
       setCameraError(
         err instanceof Error ? err.message : "Camera access denied",
       );
@@ -156,7 +171,9 @@ export default function CheckinPage() {
               display: scanning ? "block" : "none",
               border: "2px solid #FF8C00",
               background: "#111",
-              minHeight: scanning ? 280 : 0,
+              minHeight: scanning ? 300 : 0,
+              WebkitTransform: "translateZ(0)",
+              isolation: "isolate" as const,
             }}
           />
         </div>
