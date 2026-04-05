@@ -73,6 +73,10 @@ export default function CheckinPage() {
         },
       );
       setScanning(true);
+      // Scroll camera preview into view on mobile
+      setTimeout(() => {
+        scannerRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+      }, 100);
     } catch (err) {
       setCameraError(
         err instanceof Error ? err.message : "Camera access denied",
@@ -145,7 +149,15 @@ export default function CheckinPage() {
           <div
             id="qr-reader"
             ref={scannerRef}
-            style={{ marginTop: 16, borderRadius: 12, overflow: "hidden", display: scanning ? "block" : "none" }}
+            style={{
+              marginTop: 16,
+              borderRadius: 12,
+              overflow: "hidden",
+              display: scanning ? "block" : "none",
+              border: "2px solid #FF8C00",
+              background: "#111",
+              minHeight: scanning ? 280 : 0,
+            }}
           />
         </div>
 
