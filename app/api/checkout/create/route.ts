@@ -9,9 +9,10 @@ const VALID_TIERS: TierKey[] = ["vip", "premium", "general"];
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  const { seats, tier } = body as {
+  const { seats, tier, locale } = body as {
     seats: SeatHoldRequest[];
     tier: TierKey;
+    locale?: string;
   };
 
   if (!seats?.length || !tier) {
@@ -44,7 +45,7 @@ export async function POST(request: NextRequest) {
   // Step 2: Create Shopify checkout
   try {
     const phase = await getCurrentPhase(tier);
-    const { cartId, checkoutUrl } = await createCheckoutCart(normalizedSeats, tier, phase);
+    const { cartId, checkoutUrl } = await createCheckoutCart(normalizedSeats, tier, phase, locale);
 
     const cleanCartId = cartId.split('?')[0];
 

@@ -217,6 +217,7 @@ export async function releaseHolds(sessionId: string): Promise<void> {
 
 export async function confirmSeats(
   cartId: string,
+  email?: string,
 ): Promise<{ confirmed: false } | { confirmed: true; tier: TierKey; seatCount: number; phase: PricingPhase }> {
   const data = await redis.get<{
     seats: SeatHoldRequest[];
@@ -234,6 +235,7 @@ export async function confirmSeats(
         status: "sold",
         tier: data.tier,
         afterParty: seat.afterParty,
+        ...(email && { email }),
       } satisfies SeatStatusInfo),
     );
   }
@@ -261,7 +263,85 @@ export async function saveCheckoutMapping(
   );
 }
 
-// ─── 6. 구역별 남은 좌석 수 조회 ───
+// ─── 6. 전체 좌석 요약 (관리자용) ───
+
+export type SoldSeatRecord = {
+  section: string;
+  seat: number;
+  tier: string;
+  afterParty: boolean;
+  email?: string;
+};
+
+export type SeatSummary = {
+  byTier: Record<string, { total: number; sold: number; remaining: number }>;
+  afterPartyCount: number;
+  fillRate: number;
+  soldSeats: SoldSeatRecord[];
+};
+
+export async function getAllSeatSummary(): Promise<SeatSummary> {
+  const allStatuses = await Promise.all(
+    SECTIONS.map(async (cfg) => {
+      const keys = Array.from({ length: cfg.totalSeats }, (_, i) =>
+        seatKey(cfg.id, i + 1),
+      );
+      const values = await redis.mget<(SeatStatusInfo | null)[]>(...keys);
+      return { section: cfg, values };
+    }),
+  );
+
+  const byTier: Record<string, { total: number; sold: number; remaining: number }> = {
+    vip: { total: 0, sold: 0, remaining: 0 },
+    premium: { total: 0, sold: 0, remaining: 0 },
+    general: { total: 0, sold: 0, remaining: 0 },
+  };
+
+  let afterPartyCount = 0;
+  let totalAvailable = 0;
+  let totalSold = 0;
+  const soldSeats: SoldSeatRecord[] = [];
+
+  for (const { section, values } of allStatuses) {
+    for (let i = 0; i < values.length; i++) {
+      const seatNumber = i + 1;
+      const seatTier = getSeatTier(section.id, seatNumber);
+
+      if (seatTier === "unavailable") continue;
+
+      const ticketTier = seatTier === "regular" ? "general" : seatTier;
+      byTier[ticketTier].total++;
+      totalAvailable++;
+
+      const info = values[i];
+      if (info?.status === "sold") {
+        byTier[ticketTier].sold++;
+        totalSold++;
+        if (info.afterParty) afterPartyCount++;
+
+        soldSeats.push({
+          section: section.id,
+          seat: seatNumber,
+          tier: ticketTier,
+          afterParty: info.afterParty ?? false,
+          email: info.email,
+        });
+      }
+    }
+  }
+
+  for (const tier of Object.values(byTier)) {
+    tier.remaining = tier.total - tier.sold;
+  }
+
+  const fillRate = totalAvailable > 0
+    ? Math.round((totalSold / totalAvailable) * 1000) / 10
+    : 0;
+
+  return { byTier, afterPartyCount, fillRate, soldSeats };
+}
+
+// ─── 7. 구역별 남은 좌석 수 조회 ───
 
 export async function getRemainingSeatsBySectionForTier(
   tier: TierKey,

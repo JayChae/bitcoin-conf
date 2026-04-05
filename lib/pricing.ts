@@ -18,6 +18,8 @@ export type PricingConfig = {
 
 const PRICING_CONFIG_KEY = "pricing:config";
 const phase2SoldKey = (tier: TierKey) => `pricing:phase2_sold:${tier}`;
+const phaseSoldKey = (phase: PricingPhase, tier: TierKey) =>
+  `pricing:phase_sold:${phase}:${tier}`;
 
 // ─── Default Config ───
 
@@ -87,6 +89,36 @@ export async function incrementPhase2Sold(
   count: number,
 ): Promise<void> {
   await redis.incrby(phase2SoldKey(tier), count);
+}
+
+// ─── Phase Sold Counter (all phases) ───
+
+export async function incrementPhaseSold(
+  phase: PricingPhase,
+  tier: TierKey,
+  count: number,
+): Promise<void> {
+  await redis.incrby(phaseSoldKey(phase, tier), count);
+}
+
+const TIERS: TierKey[] = ["vip", "premium", "general"];
+const PHASES: PricingPhase[] = ["earlybird1", "earlybird2", "regular"];
+
+export async function getAllPhaseSold(): Promise<
+  Record<PricingPhase, Record<TierKey, number>>
+> {
+  const keys = PHASES.flatMap((p) => TIERS.map((t) => phaseSoldKey(p, t)));
+  const values = await Promise.all(keys.map((k) => redis.get<number>(k)));
+
+  let i = 0;
+  const result = {} as Record<PricingPhase, Record<TierKey, number>>;
+  for (const phase of PHASES) {
+    result[phase] = {} as Record<TierKey, number>;
+    for (const tier of TIERS) {
+      result[phase][tier] = values[i++] ?? 0;
+    }
+  }
+  return result;
 }
 
 // ─── Discount helpers ───

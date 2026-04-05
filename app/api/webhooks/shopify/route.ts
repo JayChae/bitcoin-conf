@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 import { confirmSeats, deleteCheckoutMapping } from "@/lib/seat-lock";
 import { redis } from "@/lib/redis";
-import { incrementPhase2Sold } from "@/lib/pricing";
+import { incrementPhase2Sold, incrementPhaseSold } from "@/lib/pricing";
 
 export async function POST(request: NextRequest) {
   const body = await request.text();
@@ -36,6 +36,9 @@ export async function POST(request: NextRequest) {
     }
   }
 
+  // Extract customer email
+  const email: string | undefined = payload.contact_email || payload.email || undefined;
+
   // Extract cart token and build the full GID
   const cartToken = payload.cart_token;
   if (!cartToken) {
@@ -48,21 +51,24 @@ export async function POST(request: NextRequest) {
   // Try different cart ID formats
   const cartId = `gid://shopify/Cart/${cartToken}`;
 
-  let result = await confirmSeats(cartId);
+  let result = await confirmSeats(cartId, email);
 
   // If not found, try with the raw cart token as it might be the full ID already
   if (!result.confirmed && cartToken.startsWith("gid://")) {
-    result = await confirmSeats(cartToken);
+    result = await confirmSeats(cartToken, email);
   }
 
   console.log("[webhook] confirmSeats result:", JSON.stringify(result));
 
-  // Increment Phase 2 sold counter using the phase stored at checkout time
-  if (result.confirmed && result.phase === "earlybird2") {
-    await incrementPhase2Sold(result.tier, result.seatCount);
-    console.log("[webhook] phase2 counter incremented:", result.tier, "+", result.seatCount);
-  } else if (result.confirmed) {
-    console.log("[webhook] phase2 counter SKIPPED — stored phase:", result.phase);
+  // Increment phase sold counters
+  if (result.confirmed) {
+    await incrementPhaseSold(result.phase, result.tier, result.seatCount);
+    console.log("[webhook] phase counter incremented:", result.phase, result.tier, "+", result.seatCount);
+
+    if (result.phase === "earlybird2") {
+      await incrementPhase2Sold(result.tier, result.seatCount);
+      console.log("[webhook] phase2 tier counter incremented:", result.tier, "+", result.seatCount);
+    }
   }
 
   // Mark as processed (24h TTL)

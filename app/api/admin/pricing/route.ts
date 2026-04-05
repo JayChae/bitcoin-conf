@@ -4,6 +4,7 @@ import {
   savePricingConfig,
   getCurrentPhase,
   getPhase2Sold,
+  getAllPhaseSold,
   type PricingConfig,
 } from "@/lib/pricing";
 import { isValidSession } from "../auth/route";
@@ -26,7 +27,9 @@ export async function GET(request: NextRequest) {
     tiers[tier] = { phase, sold };
   }
 
-  return NextResponse.json({ config, tiers });
+  const phaseSold = await getAllPhaseSold();
+
+  return NextResponse.json({ config, tiers, phaseSold });
 }
 
 export async function PUT(request: NextRequest) {

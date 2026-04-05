@@ -126,7 +126,7 @@ export default function PurchaseFlow({
       const res = await fetch("/api/checkout/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ seats, tier }),
+        body: JSON.stringify({ seats, tier, locale }),
       });
 
       if (!res.ok) {
@@ -146,7 +146,7 @@ export default function PurchaseFlow({
       setHoldState("error");
       setHoldError(t("holdError"));
     }
-  }, [selectedSeats, afterPartySeats, afterPartyIncluded, tier, t]);
+  }, [selectedSeats, afterPartySeats, afterPartyIncluded, tier, locale, t]);
 
   return (
     <div className="flex flex-col gap-6">

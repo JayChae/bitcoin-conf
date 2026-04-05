@@ -13,6 +13,7 @@ export type SeatStatusInfo = {
   status: SeatStatus;
   tier?: string;
   afterParty?: boolean;
+  email?: string;
 };
 
 export type SeatHoldRequest = {

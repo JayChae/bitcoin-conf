@@ -60,6 +60,7 @@ export async function createCheckoutCart(
   seats: SeatHoldRequest[],
   tier: TierKey,
   phase: PricingPhase,
+  locale?: string,
 ): Promise<{ cartId: string; checkoutUrl: string }> {
   // 1. Ticket line items (one per seat)
   const ticketLines = seats.map((seat) => ({
@@ -86,13 +87,17 @@ export async function createCheckoutCart(
 
   const lines = [...ticketLines, ...apLines];
 
-  // 3. Create cart
+  // 3. Create cart with lang attribute for bilingual email notifications
+  const cartAttributes = [
+    { key: "lang", value: locale ?? "ko" },
+  ];
+
   const data = await storefrontFetch<{
     cartCreate: {
       cart: { id: string; checkoutUrl: string } | null;
       userErrors: { field: string[]; message: string }[];
     };
-  }>(CART_CREATE_MUTATION, { input: { lines } });
+  }>(CART_CREATE_MUTATION, { input: { lines, attributes: cartAttributes } });
 
   if (data.cartCreate.userErrors.length > 0) {
     throw new Error(
