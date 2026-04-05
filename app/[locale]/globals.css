@@ -42,6 +42,16 @@ button {
   cursor: pointer;
 }
 
+/* Fix Tailwind preflight killing html5-qrcode video preview */
+#qr-reader video {
+  max-width: none !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+#qr-reader canvas {
+  max-width: none !important;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
