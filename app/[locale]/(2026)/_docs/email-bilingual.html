@@ -82,7 +82,7 @@
                         <td style="padding:24px 24px 0;">
                           <!-- Ticket Title -->
                           <p style="margin:0 0 16px; font-size:11px; font-weight:700; color:rgba(255,255,255,0.4); text-transform:uppercase; letter-spacing:1.5px;">
-                            {% if line.presentment_title %}{{ line.presentment_title }}{% elsif line.title %}{{ line.title }}{% else %}{{ line.product.title }}{% endif %}
+                            {% if is_ko %}{% if line.presentment_title %}{{ line.presentment_title }}{% else %}{{ line.title }}{% endif %}{% else %}{{ line.product.title | default: line.title }}{% endif %}
                           </p>
 
                           <!-- Section & Seat (two columns) -->
@@ -170,7 +170,7 @@
                         <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:8px;">
                           <tr>
                             <td style="font-size:14px; color:#ffffff;">
-                              {% if line.presentment_title %}{{ line.presentment_title }}{% elsif line.title %}{{ line.title }}{% else %}{{ line.product.title }}{% endif %}
+                              {% if is_ko %}{% if line.presentment_title %}{{ line.presentment_title }}{% else %}{{ line.title }}{% endif %}{% else %}{{ line.product.title | default: line.title }}{% endif %}
                               &times; {{ line.quantity }}
                               {% if line.properties["seat_section"] and line.properties["seat_number"] %}
                                 <span style="color:#FF8C00; font-size:13px;"> ({{ line.properties["seat_section"] }}-{{ line.properties["seat_number"] }})</span>
