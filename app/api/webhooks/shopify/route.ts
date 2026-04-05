@@ -36,8 +36,8 @@ export async function POST(request: NextRequest) {
     }
   }
 
-  // Extract customer email
-  const email: string | undefined = payload.contact_email || payload.email || undefined;
+  // Extract customer email (try multiple Shopify payload fields)
+  const email: string | undefined = payload.contact_email || payload.email || payload.customer?.email || undefined;
 
   // Extract cart token and build the full GID
   const cartToken = payload.cart_token;
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "No cart token" }, { status: 400 });
   }
 
-  console.log("[webhook] received:", { orderId, cartToken });
+  console.log("[webhook] received:", { orderId, cartToken, email, contact_email: payload.contact_email, payloadEmail: payload.email, customerEmail: payload.customer?.email });
 
   // Try different cart ID formats
   const cartId = `gid://shopify/Cart/${cartToken}`;
