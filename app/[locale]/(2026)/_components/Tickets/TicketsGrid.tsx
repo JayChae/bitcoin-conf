@@ -16,6 +16,8 @@ export default async function TicketsGrid() {
   const locale = await getLocale();
   const saleStatus = await getSaleStatus();
 
+  if (saleStatus === "upcoming") return null;
+
   const studentBenefitKeys = [
     "studentBenefitNote",
   ];

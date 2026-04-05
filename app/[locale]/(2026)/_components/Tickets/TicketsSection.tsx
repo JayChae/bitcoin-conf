@@ -2,9 +2,13 @@ import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { ArrowRight } from "lucide-react";
 import TicketsGrid from "./TicketsGrid";
+import { getSaleStatus } from "@/lib/pricing";
 
 export default async function TicketsSection() {
   const t = await getTranslations("Tickets2026");
+  const saleStatus = await getSaleStatus();
+
+  if (saleStatus === "upcoming") return null;
 
   return (
     <section id="tickets" className="scroll-mt-24 pb-20 px-4">
