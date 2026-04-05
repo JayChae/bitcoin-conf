@@ -207,8 +207,14 @@ export default function AdminPage() {
 
   return (
     <div className="min-h-screen bg-black text-white max-w-lg mx-auto px-5 py-12">
-      <div className="mb-8">
+      <div className="flex items-center justify-between mb-8">
         <h1 className="text-lg font-bold text-neutral-200">Admin</h1>
+        <a
+          href="/admin/checkin"
+          className="px-3 py-1.5 rounded-lg bg-neutral-900 border border-neutral-800 text-sm text-neutral-400 hover:text-neutral-200 hover:border-neutral-600 transition-colors"
+        >
+          Check-in
+        </a>
       </div>
 
       {/* Tab Navigation */}

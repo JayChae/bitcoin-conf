@@ -1,76 +1,19 @@
 {%- comment -%}
-  Bilingual Email Template (Korean/English)
-  Detects checkout language via cart attributes and shows the appropriate language.
-  Default: Korean (ko). Falls back to English for "en" locale.
+  Bilingual Email Template (Korean/English) — Bitcoin Korea Conference
+  Simplified for conference tickets only: seat info + QR codes for check-in.
 
-  SETUP REQUIRED: Your checkout must pass a cart attribute named "lang" or "Locale".
-  Example (in your cart/checkout code):
-    <input type="hidden" name="attributes[lang]" value="{{ locale }}" />
-  Or via Shopify Ajax API:
-    fetch('/cart/update.js', { body: JSON.stringify({ attributes: { lang: locale } }) })
+  SETUP: Cart must pass attribute "lang" with value "ko" or "en".
+  SETUP: Line items must have properties: seat_section, seat_number, after_party, _qr_token.
+  APPLY: Shopify Admin > Settings > Notifications > Order confirmation
 {%- endcomment -%}
+
 {%- assign is_ko = true -%}
 {%- if attributes.lang == "en" or attributes.Locale == "en" -%}
   {%- assign is_ko = false -%}
 {%- endif -%}
 
-{% assign delivery_method_types = delivery_agreements | map: 'delivery_method_type' | uniq %}
-{% if delivery_method_types.size > 1 %}
-  {% assign has_split_cart = true %}
-{% else %}
-  {% assign has_split_cart = false %}
-{% endif %}
-
 {% capture email_title %}
-  {% if has_pending_payment %}
-    {% if is_ko %}주문해 주셔서 감사합니다!{% else %}Thank you for your order!{% endif %}
-  {% else %}
-    {% if is_ko %}구매해 주셔서 감사합니다!{% else %}Thank you for your purchase!{% endif %}
-  {% endif %}
-{% endcapture %}
-{% capture email_body %}
-  {% if has_pending_payment %}
-    {% if buyer_action_required %}
-      {% if is_ko %}결제 완료 후 확인 이메일을 보내드리겠습니다.{% else %}You'll get a confirmation email after completing your payment.{% endif %}
-    {% else %}
-      {% if is_ko %}결제가 처리 중입니다. 주문이 확인되면 이메일을 보내드리겠습니다.{% else %}Your payment is being processed. You'll get an email when your order is confirmed.{% endif %}
-    {% endif %}
-  {% else %}
-    {% if requires_shipping %}
-    {% case delivery_method %}
-        {% when 'pick-up' %}
-          {% if is_ko %}주문하신 상품이 픽업 준비되면 이메일을 보내드리겠습니다.{% else %}You'll receive an email when your order is ready for pickup.{% endif %}
-        {% when 'local' %}
-          {% if is_ko %}{{ customer.first_name }}님, 주문하신 상품의 배달을 준비하고 있습니다.{% else %}Hi {{ customer.first_name }}, we're getting your order ready for delivery.{% endif %}
-      {% endcase %}
-        {% if delivery_instructions != blank  %}
-          <p style="margin:8px 0;"><b>{% if is_ko %}배달 정보:{% else %}Delivery information:{% endif %}</b> {{ delivery_instructions }}</p>
-        {% endif %}
-       {% if consolidated_estimated_delivery_time %}
-        {% if has_multiple_delivery_methods %}
-          <p style="font-size:16px;font-weight:bold;margin:12px 0 4px;">{% if is_ko %}예상 배송일{% else %}Estimated delivery{% endif %}</p>
-          <p style="margin:4px 0;">{{ consolidated_estimated_delivery_time }}</p>
-        {% else %}
-          <p style="margin:8px 0;">
-            {% if is_ko %}예상 배송일{% else %}Estimated delivery{% endif %} <b>{{ consolidated_estimated_delivery_time }}</b>
-          </p>
-        {% endif %}
-       {% endif %}
-    {% endif %}
-  {% endif %}
-  {% assign gift_card_line_items = line_items | where: "gift_card" %}
-  {% assign found_gift_card_with_recipient_email = false %}
-  {% for line_item in gift_card_line_items %}
-    {% if line_item.properties["__shopify_send_gift_card_to_recipient"] and line_item.properties["Recipient email"] %}
-      {% assign found_gift_card_with_recipient_email = true %}
-      {% break %}
-    {% endif %}
-  {% endfor %}
-  {% if found_gift_card_with_recipient_email %}
-    <p style="margin:8px 0;">{% if is_ko %}기프트 카드 수신자에게 기프트 카드 코드가 포함된 이메일이 발송됩니다.{% else %}Your gift card recipient will receive an email with their gift card code.{% endif %}</p>
-  {% elsif gift_card_line_items.first %}
-    <p style="margin:8px 0;">{% if is_ko %}기프트 카드에 대한 별도의 이메일을 받으실 수 있습니다.{% else %}You'll receive separate emails for any gift cards.{% endif %}</p>
-  {% endif %}
+  {% if is_ko %}구매해 주셔서 감사합니다!{% else %}Thank you for your purchase!{% endif %}
 {% endcapture %}
 
 <!DOCTYPE html>
@@ -80,39 +23,17 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="dark">
-    <meta name="supported-color-schemes" content="dark">
-    <!--[if mso]>
     <style>
-      table { border-collapse: collapse; }
-      .fallback-font { font-family: Arial, sans-serif !important; }
-    </style>
-    <![endif]-->
-    <style>
-      body, table, td, p, a, li, blockquote {
-        -webkit-text-size-adjust: 100%;
-        -ms-text-size-adjust: 100%;
-      }
-      body {
-        margin: 0 !important;
-        padding: 0 !important;
-        background-color: #000000 !important;
-        color: #ffffff;
-      }
-      table { border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
-      img { border: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; }
+      body, table, td, p, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+      body { margin: 0 !important; padding: 0 !important; background-color: #000000 !important; color: #ffffff; }
       a { color: #FF8C00; text-decoration: none; }
-      a:hover { color: #FF4500; }
       @media only screen and (max-width: 620px) {
         .container { width: 100% !important; padding: 0 16px !important; }
-        .product-image { width: 50px !important; height: 50px !important; }
-        .cta-button { width: 100% !important; }
       }
     </style>
   </head>
 
   <body style="margin:0; padding:0; background-color:#000000; color:#ffffff; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size:14px; line-height:1.6;">
-
-    <!-- Wrapper -->
     <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#000000;">
       <tr>
         <td align="center" style="padding:0;">
@@ -121,27 +42,16 @@
             <!-- Header: Logo + Order Number -->
             <tr>
               <td align="center" style="padding:40px 24px 20px;">
-                <table cellpadding="0" cellspacing="0" border="0">
-                  <tr>
-                    <td align="center">
-                      {%- if shop.email_logo_url %}
-                        <img src="{{shop.email_logo_url}}" alt="{{ shop.name }}" width="{{ shop.email_logo_width }}" style="display:block; margin:0 auto;">
-                      {%- else %}
-                        <h1 style="margin:0; font-size:24px; font-weight:700; color:#ffffff; letter-spacing:-0.5px;">
-                          <a href="{{shop.url}}" style="color:#ffffff; text-decoration:none;">{{ shop.name }}</a>
-                        </h1>
-                      {%- endif %}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td align="center" style="padding-top:12px;">
-                      <span style="font-size:13px; color:rgba(255,255,255,0.5); letter-spacing:0.5px;">
-                        {% if is_ko %}주문번호{% else %}Order{% endif %} {{ order_name }}
-                        {%- if po_number %} &middot; PO #{{ po_number }}{%- endif %}
-                      </span>
-                    </td>
-                  </tr>
-                </table>
+                {%- if shop.email_logo_url %}
+                  <img src="{{shop.email_logo_url}}" alt="{{ shop.name }}" width="{{ shop.email_logo_width }}" style="display:block; margin:0 auto;">
+                {%- else %}
+                  <h1 style="margin:0; font-size:24px; font-weight:700; color:#ffffff;">
+                    <a href="{{shop.url}}" style="color:#ffffff; text-decoration:none;">{{ shop.name }}</a>
+                  </h1>
+                {%- endif %}
+                <p style="margin:12px 0 0; font-size:13px; color:rgba(255,255,255,0.5);">
+                  {% if is_ko %}주문번호{% else %}Order{% endif %} {{ order_name }}
+                </p>
               </td>
             </tr>
 
@@ -152,154 +62,83 @@
               </td>
             </tr>
 
-            <!-- Main Message -->
+            <!-- Thank You Message -->
             <tr>
               <td style="padding:32px 24px 24px;">
-                <h2 style="margin:0 0 12px; font-size:24px; font-weight:700; color:#ffffff; text-align:center;">{{ email_title }}</h2>
-                <p style="margin:0; font-size:15px; color:rgba(255,255,255,0.7); text-align:center; line-height:1.6;">{{ email_body }}</p>
+                <h2 style="margin:0 0 8px; font-size:24px; font-weight:700; color:#ffffff; text-align:center;">{{ email_title }}</h2>
+                <p style="margin:0; font-size:15px; color:rgba(255,255,255,0.7); text-align:center;">
+                  {% if is_ko %}아래 QR 코드를 체크인 시 제시해주세요.{% else %}Please present the QR code below at check-in.{% endif %}
+                </p>
               </td>
             </tr>
 
-            <!-- Pending Payment Instructions -->
-            {% assign transaction_count = transactions | size %}
-            {% if transaction_count > 0 %}
-              {% for transaction in transactions %}
-                {% if transaction.show_buyer_pending_payment_instructions? %}
-                  <tr>
-                    <td style="padding:0 24px 16px;">
-                      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#1a1412; border-radius:12px;">
-                        <tr>
-                          <td style="padding:20px;">
-                            <p style="margin:0 0 12px; color:rgba(255,255,255,0.8); font-size:14px;">{{ transaction.buyer_pending_payment_notice }}</p>
-                            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:separate;">
+            <!-- Seat Cards with QR Codes -->
+            {% for line in line_items %}
+              {% if line.properties["seat_section"] and line.properties["seat_number"] %}
+                <tr>
+                  <td style="padding:0 24px 16px;">
+                    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#1a1412; border-radius:12px; border:1px solid rgba(255,140,0,0.3);">
+                      <tr>
+                        <td style="padding:20px;">
+                          <!-- Ticket Title -->
+                          <p style="margin:0 0 4px; font-size:12px; font-weight:600; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:0.5px;">
+                            {% if line.presentment_title %}{{ line.presentment_title }}{% elsif line.title %}{{ line.title }}{% else %}{{ line.product.title }}{% endif %}
+                          </p>
+
+                          <!-- Section · Seat -->
+                          <p style="margin:0 0 8px; font-size:22px; font-weight:700; color:#ffffff;">
+                            <span style="color:#FF8C00;">{{ line.properties["seat_section"] }}</span>
+                            <span style="color:rgba(255,255,255,0.3);"> · </span>
+                            {% if is_ko %}좌석{% else %}Seat{% endif %} {{ line.properties["seat_number"] }}
+                          </p>
+
+                          <!-- After Party -->
+                          {% if line.properties["after_party"] == "true" %}
+                            <p style="margin:0 0 16px; font-size:14px; color:#FF8C00;">
+                              ✓ {% if is_ko %}네트워킹 파티 포함{% else %}Networking Party included{% endif %}
+                            </p>
+                          {% else %}
+                            <p style="margin:0 0 16px; font-size:14px; color:rgba(255,255,255,0.3);">
+                              {% if is_ko %}네트워킹 파티 미포함{% else %}Networking Party not included{% endif %}
+                            </p>
+                          {% endif %}
+
+                          <!-- QR Code -->
+                          {% if line.properties["_qr_token"] %}
+                            <table width="100%" cellpadding="0" cellspacing="0" border="0">
                               <tr>
-                                {% for instruction in transaction.buyer_pending_payment_instructions %}
-                                  <td style="padding:8px 12px; font-size:12px; color:rgba(255,255,255,0.5); font-weight:600; text-transform:uppercase; letter-spacing:0.5px;">{{ instruction.header }}</td>
-                                {% endfor %}
-                                <td style="padding:8px 12px; font-size:12px; color:rgba(255,255,255,0.5); font-weight:600; text-transform:uppercase; letter-spacing:0.5px; text-align:right;">{% if is_ko %}금액{% else %}Amount{% endif %}</td>
+                                <td align="center" style="padding:8px 0;">
+                                  <div style="display:inline-block; background:#ffffff; border-radius:8px; padding:8px;">
+                                    <img src="https://bitcoin-conf-git-ticket-2026-03-21-jaychaes-projects.vercel.app/api/qr/{{ line.properties['_qr_token'] }}"
+                                         width="200" height="200" alt="Check-in QR Code"
+                                         style="display:block; width:200px; height:200px;" />
+                                  </div>
+                                </td>
                               </tr>
                               <tr>
-                                {% for instruction in transaction.buyer_pending_payment_instructions %}
-                                  <td style="padding:8px 12px; font-size:14px; color:#ffffff;">{{ instruction.value }}</td>
-                                {% endfor %}
-                                <td style="padding:8px 12px; font-size:14px; color:#ffffff; text-align:right;">{{ transaction.amount | money }}</td>
+                                <td align="center" style="padding:8px 0 0;">
+                                  <p style="margin:0; font-size:12px; color:rgba(255,255,255,0.5);">
+                                    {% if is_ko %}체크인 시 이 QR 코드를 제시해주세요{% else %}Present this QR code at check-in{% endif %}
+                                  </p>
+                                </td>
                               </tr>
                             </table>
-                          </td>
-                        </tr>
-                      </table>
-                    </td>
-                  </tr>
-                {% endif %}
-              {% endfor %}
-            {% endif %}
-
-            <!-- CTA Buttons -->
-            {% if order_status_url %}
-              <tr>
-                <td align="center" style="padding:8px 24px 32px;">
-                  <table cellpadding="0" cellspacing="0" border="0" width="240" style="margin:0 auto;">
-                    <tr>
-                      <td align="center" width="240" style="border-radius:50px; background:linear-gradient(135deg, #FF8C00, #FF4500, #E91E8C, #9C40FF); text-align:center;">
-                        <a href="{{ order_status_url }}" class="cta-button" style="display:block; width:240px; padding:16px 0; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; border-radius:50px; text-align:center;">{% if is_ko %}주문 확인하기{% else %}View your order{% endif %}</a>
-                      </td>
-                    </tr>
-                  </table>
-                  {% if shop.url %}
-                    <p style="margin:16px 0 0; font-size:13px;">
-                      <a href="{{ shop.url }}" style="color:rgba(255,255,255,0.5); text-decoration:none;">{% if is_ko %}또는 스토어 방문하기{% else %}or visit our store{% endif %}</a>
-                    </p>
-                  {% endif %}
-                </td>
-              </tr>
-            {% else %}
-              {% if shop.url %}
-                <tr>
-                  <td align="center" style="padding:8px 24px 32px;">
-                    <table cellpadding="0" cellspacing="0" border="0" width="240" style="margin:0 auto;">
-                      <tr>
-                        <td align="center" width="240" style="border-radius:50px; background:linear-gradient(135deg, #FF8C00, #FF4500, #E91E8C, #9C40FF); text-align:center;">
-                          <a href="{{ shop.url }}" class="cta-button" style="display:block; width:240px; padding:16px 0; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; border-radius:50px; text-align:center;">{% if is_ko %}스토어 방문하기{% else %}Visit our store{% endif %}</a>
+                          {% endif %}
                         </td>
                       </tr>
                     </table>
                   </td>
                 </tr>
               {% endif %}
-            {% endif %}
-
-            <!-- Seat Assignment Card -->
-            {% assign has_seat_info = false %}
-            {% for line in line_items %}
-              {% if line.properties["seat_section"] and line.properties["seat_number"] %}
-                {% assign has_seat_info = true %}
-                {% break %}
-              {% endif %}
             {% endfor %}
-            {% if has_seat_info %}
-              <tr>
-                <td style="padding:0 24px 16px;">
-                  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#1a1412; border-radius:12px; border:1px solid rgba(255,140,0,0.3);">
-                    <tr>
-                      <td style="padding:20px 20px 16px;">
-                        <h3 style="margin:0; font-size:16px; font-weight:600; color:#FF8C00; letter-spacing:0.3px;">🎫 {% if is_ko %}좌석 배정 정보{% else %}Seat Assignment{% endif %}</h3>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style="padding:0 20px;">
-                        <div style="height:1px; background:linear-gradient(90deg, #FF8C00, #FF4500, transparent);"></div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style="padding:16px 20px 20px;">
-                        <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                          <tr>
-                            <td style="padding:6px 12px; font-size:12px; font-weight:600; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:0.5px;">{% if is_ko %}티켓{% else %}Ticket{% endif %}</td>
-                            <td style="padding:6px 12px; font-size:12px; font-weight:600; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:0.5px;" align="center">{% if is_ko %}섹션{% else %}Section{% endif %}</td>
-                            <td style="padding:6px 12px; font-size:12px; font-weight:600; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:0.5px;" align="center">{% if is_ko %}좌석번호{% else %}Seat{% endif %}</td>
-                            <td style="padding:6px 12px; font-size:12px; font-weight:600; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:0.5px;" align="right">{% if is_ko %}애프터파티{% else %}After Party{% endif %}</td>
-                          </tr>
-                          {% for line in line_items %}
-                            {% if line.properties["seat_section"] and line.properties["seat_number"] %}
-                              <tr>
-                                <td style="padding:8px 12px; font-size:14px; color:#ffffff;">
-                                  {% if line.presentment_title %}{{ line.presentment_title }}{% elsif line.title %}{{ line.title }}{% else %}{{ line.product.title }}{% endif %}
-                                </td>
-                                <td style="padding:8px 12px; font-size:16px; font-weight:700; color:#FF8C00;" align="center">{{ line.properties["seat_section"] }}</td>
-                                <td style="padding:8px 12px; font-size:16px; font-weight:700; color:#ffffff;" align="center">{{ line.properties["seat_number"] }}</td>
-                                <td style="padding:8px 12px; font-size:14px; color:rgba(255,255,255,0.7);" align="right">
-                                  {% if line.properties["after_party"] == "true" %}
-                                    <span style="color:#FF8C00;">✓ {% if is_ko %}참가{% else %}Yes{% endif %}</span>
-                                  {% else %}
-                                    <span style="color:rgba(255,255,255,0.3);">—</span>
-                                  {% endif %}
-                                </td>
-                              </tr>
-                              {% unless forloop.last %}
-                                <tr>
-                                  <td colspan="4" style="padding:0 12px;">
-                                    <div style="height:1px; background-color:rgba(255,255,255,0.06);"></div>
-                                  </td>
-                                </tr>
-                              {% endunless %}
-                            {% endif %}
-                          {% endfor %}
-                        </table>
-                      </td>
-                    </tr>
-                  </table>
-                </td>
-              </tr>
-            {% endif %}
 
-            <!-- Order Summary Card -->
+            <!-- Order Summary -->
             <tr>
               <td style="padding:0 24px 16px;">
                 <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#1a1412; border-radius:12px; border:1px solid rgba(255,255,255,0.08);">
-                  <!-- Card Header -->
                   <tr>
                     <td style="padding:20px 20px 16px;">
-                      <h3 style="margin:0; font-size:16px; font-weight:600; color:#ffffff; letter-spacing:0.3px;">{% if is_ko %}주문 요약{% else %}Order summary{% endif %}</h3>
+                      <h3 style="margin:0; font-size:16px; font-weight:600; color:#ffffff;">{% if is_ko %}주문 요약{% else %}Order summary{% endif %}</h3>
                     </td>
                   </tr>
                   <tr>
@@ -311,916 +150,36 @@
                   <!-- Line Items -->
                   <tr>
                     <td style="padding:16px 20px;">
-                      {% if has_split_cart %}
-                        <!-- Split cart: items without delivery agreement -->
-                        {% for line in subtotal_line_items %}
-                          {% unless line.delivery_agreement %}
-                            {% if line.groups.size == 0 %}
-                              {% unless line.nested_line_child? %}
-                                {% assign is_parent = false %}
-                                {% if line.bundle_parent? or line.nested_line_parent? %}
-                                  {% assign is_parent = true %}
-                                {% endif %}
-                                <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:12px;">
-                                  <tr>
-                                    <td width="60" valign="top" style="padding-right:12px;">
-                                      {% if line.image %}
-                                        <img src="{{ line | img_url: 'compact_cropped' }}" width="60" height="60" class="product-image" style="display:block; border-radius:8px; background-color:rgba(255,255,255,0.05);" />
-                                      {% else %}
-                                        <div style="width:60px; height:60px; border-radius:8px; background-color:rgba(255,255,255,0.05);"></div>
-                                      {% endif %}
-                                    </td>
-                                    <td valign="top" style="color:#ffffff;">
-                                      {% if line.presentment_title %}
-                                        {% assign line_title = line.presentment_title %}
-                                      {% elsif line.title %}
-                                        {% assign line_title = line.title %}
-                                      {% else %}
-                                        {% assign line_title = line.product.title %}
-                                      {% endif %}
-                                      <p style="margin:0 0 2px; font-size:14px; font-weight:600; color:#ffffff;">{{ line_title }} &times; {{ line.quantity }}</p>
-                                      {% if line.variant.title != 'Default Title' %}
-                                        <p style="margin:0 0 2px; font-size:13px; color:rgba(255,255,255,0.5);">{{ line.variant.title }}</p>
-                                      {% endif %}
-                                      {% if line.selling_plan_allocation %}
-                                        <p style="margin:0 0 2px; font-size:13px; color:rgba(255,255,255,0.5);">{{ line.selling_plan_allocation.selling_plan.name }}</p>
-                                      {% endif %}
-                                      {% if line.refunded_quantity > 0 %}
-                                        <p style="margin:2px 0 0; font-size:12px; color:#FF4500;">{% if is_ko %}환불됨{% else %}Refunded{% endif %}</p>
-                                      {% endif %}
-                                      {% if line.properties["seat_section"] and line.properties["seat_number"] %}
-                                        <p style="margin:4px 0 0; font-size:13px; color:#FF8C00;">
-                                          {% if is_ko %}좌석{% else %}Seat{% endif %}: {{ line.properties["seat_section"] }}-{{ line.properties["seat_number"] }}
-                                        </p>
-                                      {% endif %}
-                                      {% if line.discount_allocations %}
-                                        {% for discount_allocation in line.discount_allocations %}
-                                          {% if discount_allocation.discount_application.target_selection != 'all' %}
-                                            <p style="margin:4px 0 0; font-size:12px; color:#FF8C00;">
-                                              {{ discount_allocation.discount_application.title | upcase }} (-{{ discount_allocation.amount | money }})
-                                            </p>
-                                          {% endif %}
-                                        {% endfor %}
-                                      {% endif %}
-                                    </td>
-                                    <td width="100" valign="top" align="right" style="white-space:nowrap;">
-                                      {% if line.original_line_price != line.final_line_price %}
-                                        <p style="margin:0; font-size:12px; color:rgba(255,255,255,0.4); text-decoration:line-through;">{{ line.original_line_price | money }}</p>
-                                      {% endif %}
-                                      <p style="margin:0; font-size:14px; font-weight:600; color:#ffffff;">
-                                        {% if line.final_line_price > 0 %}{{ line.final_line_price | money }}{% else %}{% if is_ko %}무료{% else %}Free{% endif %}{% endif %}
-                                      </p>
-                                    </td>
-                                  </tr>
-                                </table>
-                                {% if line.nested_line_parent? %}
-                                  {% for child_line in line.nested_lines %}
-                                    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:8px; padding-left:24px;">
-                                      <tr>
-                                        <td width="40" valign="top" style="padding-right:8px;">
-                                          {% if child_line.image %}
-                                            <img src="{{ child_line | img_url: 'compact_cropped' }}" width="40" height="40" style="display:block; border-radius:6px; background-color:rgba(255,255,255,0.05);" />
-                                          {% else %}
-                                            <div style="width:40px; height:40px; border-radius:6px; background-color:rgba(255,255,255,0.05);"></div>
-                                          {% endif %}
-                                        </td>
-                                        <td valign="top">
-                                          {% if child_line.product.title %}{% assign item_title = child_line.product.title %}{% else %}{% assign item_title = child_line.title %}{% endif %}
-                                          <p style="margin:0; font-size:13px; color:rgba(255,255,255,0.7);">{{ item_title }} &times; {{ child_line.quantity }}</p>
-                                          {% if child_line.variant.title != 'Default Title' %}
-                                            <p style="margin:0; font-size:12px; color:rgba(255,255,255,0.4);">{{ child_line.variant.title }}</p>
-                                          {% endif %}
-                                        </td>
-                                      </tr>
-                                    </table>
-                                  {% endfor %}
-                                {% endif %}
-                                {% if false %}
-                                  {% for child_line in line.bundle_components %}
-                                    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:8px; padding-left:24px;">
-                                      <tr>
-                                        <td width="40" valign="top" style="padding-right:8px;">
-                                          {% if child_line.image %}
-                                            <img src="{{ child_line | img_url: 'compact_cropped' }}" width="40" height="40" style="display:block; border-radius:6px; background-color:rgba(255,255,255,0.05);" />
-                                          {% else %}
-                                            <div style="width:40px; height:40px; border-radius:6px; background-color:rgba(255,255,255,0.05);"></div>
-                                          {% endif %}
-                                        </td>
-                                        <td valign="top">
-                                          {% if child_line.product.title %}{% assign item_title = child_line.product.title %}{% else %}{% assign item_title = child_line.title %}{% endif %}
-                                          <p style="margin:0; font-size:13px; color:rgba(255,255,255,0.7);">{{ child_line.quantity }} &times; {{ item_title }}</p>
-                                          {% if child_line.variant.title != 'Default Title' %}
-                                            <p style="margin:0; font-size:12px; color:rgba(255,255,255,0.4);">{{ child_line.variant.title }}</p>
-                                          {% endif %}
-                                        </td>
-                                      </tr>
-                                    </table>
-                                  {% endfor %}
-                                {% else %}
-                                  {% for group in line.groups %}
-                                    {% if group.deliverable? %}
-                                      <p style="margin:0 0 4px; font-size:12px; color:rgba(255,255,255,0.4); padding-left:24px;">{% if is_ko %}수령자{% else %}For{% endif %}: {{ group.display_title }}</p>
-                                    {% else %}
-                                      <p style="margin:0 0 4px; font-size:12px; color:rgba(255,255,255,0.4); padding-left:24px;">{% if is_ko %}포함{% else %}Part of{% endif %}: {{ group.display_title }}</p>
-                                    {% endif %}
-                                  {% endfor %}
-                                {% endif %}
-                                {% if line.gift_card and line.properties["__shopify_send_gift_card_to_recipient"] %}
-                                  {% for property in line.properties %}
-                                    {% assign property_first_char = property.first | slice: 0 %}
-                                    {% if property.last != blank and property_first_char != '_' %}
-                                      <p style="margin:2px 0; font-size:12px; color:rgba(255,255,255,0.5); padding-left:24px;">
-                                        {{ property.first }}: {% if property.last contains '/uploads/' %}<a href="{{ property.last }}" style="color:#FF8C00;">{{ property.last | split: '/' | last }}</a>{% else %}{{ property.last }}{% endif %}
-                                      </p>
-                                    {% endif %}
-                                  {% endfor %}
-                                {% endif %}
-                              {% endunless %}
-                            {% endif %}
-                          {% endunless %}
-                        {% endfor %}
-
-                        <!-- Split cart: line item groups without delivery agreement -->
-                        {% for line_item_group in line_item_groups %}
-                          {% unless line_item_group.components.first.delivery_agreement %}
-                            {% assign final_line_price = 0 %}
-                            {% assign original_line_price = 0 %}
-                            {% if line_item_group.deliverable? == false %}
-                              {% for component in line_item_group.components %}
-                                {% assign final_line_price = final_line_price | plus: component.final_line_price %}
-                                {% assign original_line_price = original_line_price | plus: component.original_line_price %}
-                              {% endfor %}
-                            {% endif %}
-                            {% if line_item_group.deliverable? %}
-                              {% assign parent_line_item = line_item_group.parent_sales_line_item %}
-                              {% assign final_line_price = parent_line_item.final_line_price %}
-                              {% assign original_line_price = parent_line_item.original_line_price %}
-                            {% endif %}
-                            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:12px;">
-                              <tr>
-                                <td width="60" valign="top" style="padding-right:12px;">
-                                  {% if line_item_group.deliverable? and parent_line_item and parent_line_item.image %}
-                                    <img src="{{ parent_line_item | img_url: 'compact_cropped' }}" width="60" height="60" class="product-image" style="display:block; border-radius:8px; background-color:rgba(255,255,255,0.05);" />
-                                  {% elsif line_item_group.image %}
-                                    <img src="{{ line_item_group | img_url: 'compact_cropped' }}" width="60" height="60" class="product-image" style="display:block; border-radius:8px; background-color:rgba(255,255,255,0.05);" />
-                                  {% else %}
-                                    <div style="width:60px; height:60px; border-radius:8px; background-color:rgba(255,255,255,0.05);"></div>
-                                  {% endif %}
-                                </td>
-                                <td valign="top" style="color:#ffffff;">
-                                  <p style="margin:0 0 2px; font-size:14px; font-weight:600; color:#ffffff;">{{ line_item_group.display_title }} &times; {{ line_item_group.quantity }}</p>
-                                  {% if line_item_group.variant and line_item_group.variant.title != 'Default Title' %}
-                                    <p style="margin:0; font-size:13px; color:rgba(255,255,255,0.5);">{{ line_item_group.variant.title }}</p>
-                                  {% endif %}
-                                </td>
-                                <td width="100" valign="top" align="right" style="white-space:nowrap;">
-                                  {% if original_line_price != final_line_price %}
-                                    <p style="margin:0; font-size:12px; color:rgba(255,255,255,0.4); text-decoration:line-through;">{{ original_line_price | money }}</p>
-                                  {% endif %}
-                                  <p style="margin:0; font-size:14px; font-weight:600; color:#ffffff;">
-                                    {% if final_line_price > 0 %}{{ final_line_price | money }}{% else %}{% if is_ko %}무료{% else %}Free{% endif %}{% endif %}
-                                  </p>
-                                </td>
-                              </tr>
-                            </table>
-                            {% if line_item_group.deliverable? %}
-                              {% for component in line_item_group.components %}
-                                <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:8px; padding-left:24px;">
-                                  <tr>
-                                    <td width="40" valign="top" style="padding-right:8px;">
-                                      {% if component.image %}
-                                        <img src="{{ component | img_url: 'compact_cropped' }}" width="40" height="40" style="display:block; border-radius:6px; background-color:rgba(255,255,255,0.05);" />
-                                      {% else %}
-                                        <div style="width:40px; height:40px; border-radius:6px; background-color:rgba(255,255,255,0.05);"></div>
-                                      {% endif %}
-                                    </td>
-                                    <td valign="top">
-                                      {% if component.product.title %}{% assign component_title = component.product.title %}{% else %}{% assign component_title = component.title %}{% endif %}
-                                      <p style="margin:0; font-size:13px; color:rgba(255,255,255,0.7);">{{ component_title }} &times; {{ component.quantity }}</p>
-                                      {% if component.variant.title != 'Default Title' %}
-                                        <p style="margin:0; font-size:12px; color:rgba(255,255,255,0.4);">{{ component.variant.title }}</p>
-                                      {% endif %}
-                                    </td>
-                                    <td width="80" valign="top" align="right" style="white-space:nowrap;">
-                                      {% if component.original_line_price != component.final_line_price %}
-                                        <p style="margin:0; font-size:11px; color:rgba(255,255,255,0.4); text-decoration:line-through;">{{ component.original_line_price | money }}</p>
-                                      {% endif %}
-                                      <p style="margin:0; font-size:13px; color:rgba(255,255,255,0.7);">
-                                        {% if component.final_line_price > 0 %}{{ component.final_line_price | money }}{% else %}{% if is_ko %}무료{% else %}Free{% endif %}{% endif %}
-                                      </p>
-                                    </td>
-                                  </tr>
-                                </table>
-                              {% endfor %}
-                            {% else %}
-                              {% for component in line_item_group.components %}
-                                <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:8px; padding-left:24px;">
-                                  <tr>
-                                    <td width="40" valign="top" style="padding-right:8px;">
-                                      {% if component.image %}
-                                        <img src="{{ component | img_url: 'compact_cropped' }}" width="40" height="40" style="display:block; border-radius:6px; background-color:rgba(255,255,255,0.05);" />
-                                      {% else %}
-                                        <div style="width:40px; height:40px; border-radius:6px; background-color:rgba(255,255,255,0.05);"></div>
-                                      {% endif %}
-                                    </td>
-                                    <td valign="top">
-                                      {% if component.product.title %}{% assign component_title = component.product.title %}{% else %}{% assign component_title = component.title %}{% endif %}
-                                      <p style="margin:0; font-size:13px; color:rgba(255,255,255,0.7);">{{ component.quantity }} &times; {{ component_title }}</p>
-                                      {% if component.variant.title != 'Default Title' %}
-                                        <p style="margin:0; font-size:12px; color:rgba(255,255,255,0.4);">{{ component.variant.title }}</p>
-                                      {% endif %}
-                                    </td>
-                                  </tr>
-                                </table>
-                              {% endfor %}
-                            {% endif %}
-                          {% endunless %}
-                        {% endfor %}
-
-                        <!-- Split cart: delivery agreement items -->
-                        {% for delivery_agreement in delivery_agreements %}
-                          {% if delivery_agreement.line_items != blank %}
-                            {% if delivery_agreements.size > 1 %}
-                              <div style="padding:12px 0 8px;">
-                                <p style="margin:0; font-size:13px; font-weight:600; color:rgba(255,255,255,0.6); text-transform:uppercase; letter-spacing:0.5px;">
-                                  {{ delivery_agreement.delivery_method_name }} {% if is_ko %}상품{% else %}items{% endif %}
-                                </p>
-                              </div>
-                            {% endif %}
-
-                            {% for line in delivery_agreement.non_parent_line_items %}
-                              {% if line.groups.size == 0 %}
-                                {% unless line.nested_line_child? %}
-                                  {% assign is_parent = false %}
-                                  {% if line.bundle_parent? or line.nested_line_parent? %}
-                                    {% assign is_parent = true %}
-                                  {% endif %}
-                                  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:12px;">
-                                    <tr>
-                                      <td width="60" valign="top" style="padding-right:12px;">
-                                        {% if line.image %}
-                                          <img src="{{ line | img_url: 'compact_cropped' }}" width="60" height="60" class="product-image" style="display:block; border-radius:8px; background-color:rgba(255,255,255,0.05);" />
-                                        {% else %}
-                                          <div style="width:60px; height:60px; border-radius:8px; background-color:rgba(255,255,255,0.05);"></div>
-                                        {% endif %}
-                                      </td>
-                                      <td valign="top" style="color:#ffffff;">
-                                        {% if line.presentment_title %}{% assign line_title = line.presentment_title %}{% elsif line.title %}{% assign line_title = line.title %}{% else %}{% assign line_title = line.product.title %}{% endif %}
-                                        <p style="margin:0 0 2px; font-size:14px; font-weight:600; color:#ffffff;">{{ line_title }} &times; {{ line.quantity }}</p>
-                                        {% if line.variant.title != 'Default Title' %}
-                                          <p style="margin:0 0 2px; font-size:13px; color:rgba(255,255,255,0.5);">{{ line.variant.title }}</p>
-                                        {% endif %}
-                                        {% if line.selling_plan_allocation %}
-                                          <p style="margin:0 0 2px; font-size:13px; color:rgba(255,255,255,0.5);">{{ line.selling_plan_allocation.selling_plan.name }}</p>
-                                        {% endif %}
-                                        {% if line.refunded_quantity > 0 %}
-                                          <p style="margin:2px 0 0; font-size:12px; color:#FF4500;">{% if is_ko %}환불됨{% else %}Refunded{% endif %}</p>
-                                        {% endif %}
-                                        {% if line.properties["seat_section"] and line.properties["seat_number"] %}
-                                          <p style="margin:4px 0 0; font-size:13px; color:#FF8C00;">
-                                            {% if is_ko %}좌석{% else %}Seat{% endif %}: {{ line.properties["seat_section"] }}-{{ line.properties["seat_number"] }}
-                                          </p>
-                                        {% endif %}
-                                        {% if line.discount_allocations %}
-                                          {% for discount_allocation in line.discount_allocations %}
-                                            {% if discount_allocation.discount_application.target_selection != 'all' %}
-                                              <p style="margin:4px 0 0; font-size:12px; color:#FF8C00;">
-                                                {{ discount_allocation.discount_application.title | upcase }} (-{{ discount_allocation.amount | money }})
-                                              </p>
-                                            {% endif %}
-                                          {% endfor %}
-                                        {% endif %}
-                                        {% if line.gift_card and line.properties["__shopify_send_gift_card_to_recipient"] %}
-                                          {% for property in line.properties %}
-                                            {% assign property_first_char = property.first | slice: 0 %}
-                                            {% if property.last != blank and property_first_char != '_' %}
-                                              <p style="margin:2px 0; font-size:12px; color:rgba(255,255,255,0.5);">
-                                                {{ property.first }}: {% if property.last contains '/uploads/' %}<a href="{{ property.last }}" style="color:#FF8C00;">{{ property.last | split: '/' | last }}</a>{% else %}{{ property.last }}{% endif %}
-                                              </p>
-                                            {% endif %}
-                                          {% endfor %}
-                                        {% endif %}
-                                      </td>
-                                      <td width="100" valign="top" align="right" style="white-space:nowrap;">
-                                        {% if line.original_line_price != line.final_line_price %}
-                                          <p style="margin:0; font-size:12px; color:rgba(255,255,255,0.4); text-decoration:line-through;">{{ line.original_line_price | money }}</p>
-                                        {% endif %}
-                                        <p style="margin:0; font-size:14px; font-weight:600; color:#ffffff;">
-                                          {% if line.final_line_price > 0 %}{{ line.final_line_price | money }}{% else %}{% if is_ko %}무료{% else %}Free{% endif %}{% endif %}
-                                        </p>
-                                      </td>
-                                    </tr>
-                                  </table>
-                                  {% if line.nested_line_parent? %}
-                                    {% for child_line in line.nested_lines %}
-                                      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:8px; padding-left:24px;">
-                                        <tr>
-                                          <td width="40" valign="top" style="padding-right:8px;">
-                                            {% if child_line.image %}
-                                              <img src="{{ child_line | img_url: 'compact_cropped' }}" width="40" height="40" style="display:block; border-radius:6px; background-color:rgba(255,255,255,0.05);" />
-                                            {% else %}
-                                              <div style="width:40px; height:40px; border-radius:6px; background-color:rgba(255,255,255,0.05);"></div>
-                                            {% endif %}
-                                          </td>
-                                          <td valign="top">
-                                            {% if child_line.product.title %}{% assign item_title = child_line.product.title %}{% else %}{% assign item_title = child_line.title %}{% endif %}
-                                            <p style="margin:0; font-size:13px; color:rgba(255,255,255,0.7);">{{ item_title }} &times; {{ child_line.quantity }}</p>
-                                            {% if child_line.variant.title != 'Default Title' %}
-                                              <p style="margin:0; font-size:12px; color:rgba(255,255,255,0.4);">{{ child_line.variant.title }}</p>
-                                            {% endif %}
-                                          </td>
-                                        </tr>
-                                      </table>
-                                    {% endfor %}
-                                  {% endif %}
-                                {% endunless %}
-                              {% endif %}
-                            {% endfor %}
-
-                            <!-- Delivery agreement line item groups -->
-                            {% for line_item_group in delivery_agreement.line_item_groups %}
-                              {% assign final_line_price = 0 %}
-                              {% assign original_line_price = 0 %}
-                              {% if line_item_group.deliverable? == false %}
-                                {% for component in line_item_group.components %}
-                                  {% assign final_line_price = final_line_price | plus: component.final_line_price %}
-                                  {% assign original_line_price = original_line_price | plus: component.original_line_price %}
-                                {% endfor %}
-                              {% endif %}
-                              {% if line_item_group.deliverable? %}
-                                {% assign parent_line_item = line_item_group.parent_sales_line_item %}
-                                {% assign final_line_price = parent_line_item.final_line_price %}
-                                {% assign original_line_price = parent_line_item.original_line_price %}
-                              {% endif %}
-
-                              {% if line_item_group.deliverable? == false or delivery_agreement == line_item_group.parent_sales_line_item.delivery_agreement %}
-                                <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:12px;">
-                                  <tr>
-                                    <td width="60" valign="top" style="padding-right:12px;">
-                                      {% if line_item_group.deliverable? and parent_line_item and parent_line_item.image %}
-                                        <img src="{{ parent_line_item | img_url: 'compact_cropped' }}" width="60" height="60" class="product-image" style="display:block; border-radius:8px; background-color:rgba(255,255,255,0.05);" />
-                                      {% elsif line_item_group.image %}
-                                        <img src="{{ line_item_group | img_url: 'compact_cropped' }}" width="60" height="60" class="product-image" style="display:block; border-radius:8px; background-color:rgba(255,255,255,0.05);" />
-                                      {% else %}
-                                        <div style="width:60px; height:60px; border-radius:8px; background-color:rgba(255,255,255,0.05);"></div>
-                                      {% endif %}
-                                    </td>
-                                    <td valign="top" style="color:#ffffff;">
-                                      <p style="margin:0 0 2px; font-size:14px; font-weight:600; color:#ffffff;">{{ line_item_group.display_title }} &times; {{ line_item_group.quantity }}</p>
-                                      {% if line_item_group.variant and line_item_group.variant.title != 'Default Title' %}
-                                        <p style="margin:0; font-size:13px; color:rgba(255,255,255,0.5);">{{ line_item_group.variant.title }}</p>
-                                      {% endif %}
-                                    </td>
-                                    <td width="100" valign="top" align="right" style="white-space:nowrap;">
-                                      {% if original_line_price != final_line_price %}
-                                        <p style="margin:0; font-size:12px; color:rgba(255,255,255,0.4); text-decoration:line-through;">{{ original_line_price | money }}</p>
-                                      {% endif %}
-                                      <p style="margin:0; font-size:14px; font-weight:600; color:#ffffff;">
-                                        {% if final_line_price > 0 %}{{ final_line_price | money }}{% else %}{% if is_ko %}무료{% else %}Free{% endif %}{% endif %}
-                                      </p>
-                                    </td>
-                                  </tr>
-                                </table>
-                                {% for component in line_item_group.components %}
-                                  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:8px; padding-left:24px;">
-                                    <tr>
-                                      <td width="40" valign="top" style="padding-right:8px;">
-                                        {% if component.image %}
-                                          <img src="{{ component | img_url: 'compact_cropped' }}" width="40" height="40" style="display:block; border-radius:6px; background-color:rgba(255,255,255,0.05);" />
-                                        {% else %}
-                                          <div style="width:40px; height:40px; border-radius:6px; background-color:rgba(255,255,255,0.05);"></div>
-                                        {% endif %}
-                                      </td>
-                                      <td valign="top">
-                                        {% if component.product.title %}{% assign component_title = component.product.title %}{% else %}{% assign component_title = component.title %}{% endif %}
-                                        {% if line_item_group.deliverable? %}
-                                          <p style="margin:0; font-size:13px; color:rgba(255,255,255,0.7);">{{ component_title }} &times; {{ component.quantity }}</p>
-                                        {% else %}
-                                          <p style="margin:0; font-size:13px; color:rgba(255,255,255,0.7);">{{ component.quantity }} &times; {{ component_title }}</p>
-                                        {% endif %}
-                                        {% if component.variant.title != 'Default Title' %}
-                                          <p style="margin:0; font-size:12px; color:rgba(255,255,255,0.4);">{{ component.variant.title }}</p>
-                                        {% endif %}
-                                      </td>
-                                      {% if line_item_group.deliverable? %}
-                                        <td width="80" valign="top" align="right" style="white-space:nowrap;">
-                                          <p style="margin:0; font-size:13px; color:rgba(255,255,255,0.7);">
-                                            {% if component.final_line_price > 0 %}{{ component.final_line_price | money }}{% else %}{% if is_ko %}무료{% else %}Free{% endif %}{% endif %}
-                                          </p>
-                                        </td>
-                                      {% endif %}
-                                    </tr>
-                                  </table>
-                                {% endfor %}
-                              {% else %}
-                                <!-- Deliverable group components as individual items -->
-                                {% for component in line_item_group.components %}
-                                  {% unless component.nested_line_child? %}
-                                    {% assign is_parent = false %}
-                                    {% if component.bundle_parent? or component.nested_line_parent? %}
-                                      {% assign is_parent = true %}
-                                    {% endif %}
-                                    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:12px;">
-                                      <tr>
-                                        <td width="60" valign="top" style="padding-right:12px;">
-                                          {% if component.image %}
-                                            <img src="{{ component | img_url: 'compact_cropped' }}" width="60" height="60" class="product-image" style="display:block; border-radius:8px; background-color:rgba(255,255,255,0.05);" />
-                                          {% else %}
-                                            <div style="width:60px; height:60px; border-radius:8px; background-color:rgba(255,255,255,0.05);"></div>
-                                          {% endif %}
-                                        </td>
-                                        <td valign="top" style="color:#ffffff;">
-                                          {% if component.presentment_title %}{% assign line_title = component.presentment_title %}{% elsif component.title %}{% assign line_title = component.title %}{% else %}{% assign line_title = component.product.title %}{% endif %}
-                                          <p style="margin:0 0 2px; font-size:14px; font-weight:600; color:#ffffff;">{{ line_title }} &times; {{ component.quantity }}</p>
-                                          {% if component.variant.title != 'Default Title' %}
-                                            <p style="margin:0 0 2px; font-size:13px; color:rgba(255,255,255,0.5);">{{ component.variant.title }}</p>
-                                          {% endif %}
-                                          {% if component.selling_plan_allocation %}
-                                            <p style="margin:0; font-size:13px; color:rgba(255,255,255,0.5);">{{ component.selling_plan_allocation.selling_plan.name }}</p>
-                                          {% endif %}
-                                          {% if component.refunded_quantity > 0 %}
-                                            <p style="margin:2px 0 0; font-size:12px; color:#FF4500;">{% if is_ko %}환불됨{% else %}Refunded{% endif %}</p>
-                                          {% endif %}
-                                          {% if component.properties["seat_section"] and component.properties["seat_number"] %}
-                                            <p style="margin:4px 0 0; font-size:13px; color:#FF8C00;">
-                                              {% if is_ko %}좌석{% else %}Seat{% endif %}: {{ component.properties["seat_section"] }}-{{ component.properties["seat_number"] }}
-                                            </p>
-                                          {% endif %}
-                                          {% if component.discount_allocations %}
-                                            {% for discount_allocation in component.discount_allocations %}
-                                              {% if discount_allocation.discount_application.target_selection != 'all' %}
-                                                <p style="margin:4px 0 0; font-size:12px; color:#FF8C00;">
-                                                  {{ discount_allocation.discount_application.title | upcase }} (-{{ discount_allocation.amount | money }})
-                                                </p>
-                                              {% endif %}
-                                            {% endfor %}
-                                          {% endif %}
-                                        </td>
-                                        <td width="100" valign="top" align="right" style="white-space:nowrap;">
-                                          {% if component.original_line_price != component.final_line_price %}
-                                            <p style="margin:0; font-size:12px; color:rgba(255,255,255,0.4); text-decoration:line-through;">{{ component.original_line_price | money }}</p>
-                                          {% endif %}
-                                          <p style="margin:0; font-size:14px; font-weight:600; color:#ffffff;">
-                                            {% if component.final_line_price > 0 %}{{ component.final_line_price | money }}{% else %}{% if is_ko %}무료{% else %}Free{% endif %}{% endif %}
-                                          </p>
-                                        </td>
-                                      </tr>
-                                    </table>
-                                    {% if component.nested_line_parent? %}
-                                      {% for child_line in component.nested_lines %}
-                                        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:8px; padding-left:24px;">
-                                          <tr>
-                                            <td width="40" valign="top" style="padding-right:8px;">
-                                              {% if child_line.image %}
-                                                <img src="{{ child_line | img_url: 'compact_cropped' }}" width="40" height="40" style="display:block; border-radius:6px; background-color:rgba(255,255,255,0.05);" />
-                                              {% else %}
-                                                <div style="width:40px; height:40px; border-radius:6px; background-color:rgba(255,255,255,0.05);"></div>
-                                              {% endif %}
-                                            </td>
-                                            <td valign="top">
-                                              {% if child_line.product.title %}{% assign item_title = child_line.product.title %}{% else %}{% assign item_title = child_line.title %}{% endif %}
-                                              <p style="margin:0; font-size:13px; color:rgba(255,255,255,0.7);">{{ item_title }} &times; {{ child_line.quantity }}</p>
-                                              {% if child_line.variant.title != 'Default Title' %}
-                                                <p style="margin:0; font-size:12px; color:rgba(255,255,255,0.4);">{{ child_line.variant.title }}</p>
-                                              {% endif %}
-                                            </td>
-                                          </tr>
-                                        </table>
-                                      {% endfor %}
-                                    {% endif %}
-                                  {% endunless %}
-                                {% endfor %}
-                              {% endif %}
-                            {% endfor %}
-
-                            {% unless forloop.last %}
-                              <div style="height:1px; background-color:rgba(255,255,255,0.08); margin:16px 0;"></div>
-                            {% endunless %}
-                          {% endif %}
-                        {% endfor %}
-
-                      {% else %}
-                        <!-- Non-split cart: simple line items -->
-                        {% for line in subtotal_line_items %}
-                          {% if line.groups.size == 0 %}
-                            {% unless line.nested_line_child? %}
-                              {% assign is_parent = false %}
-                              {% if line.bundle_parent? or line.nested_line_parent? %}
-                                {% assign is_parent = true %}
-                              {% endif %}
-                              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:12px;">
-                                <tr>
-                                  <td width="60" valign="top" style="padding-right:12px;">
-                                    {% if line.image %}
-                                      <img src="{{ line | img_url: 'compact_cropped' }}" width="60" height="60" class="product-image" style="display:block; border-radius:8px; background-color:rgba(255,255,255,0.05);" />
-                                    {% else %}
-                                      <div style="width:60px; height:60px; border-radius:8px; background-color:rgba(255,255,255,0.05);"></div>
-                                    {% endif %}
-                                  </td>
-                                  <td valign="top" style="color:#ffffff;">
-                                    {% if line.presentment_title %}{% assign line_title = line.presentment_title %}{% elsif line.title %}{% assign line_title = line.title %}{% else %}{% assign line_title = line.product.title %}{% endif %}
-                                    <p style="margin:0 0 2px; font-size:14px; font-weight:600; color:#ffffff;">{{ line_title }} &times; {{ line.quantity }}</p>
-                                    {% if line.variant.title != 'Default Title' and is_parent == false %}
-                                      <p style="margin:0 0 2px; font-size:13px; color:rgba(255,255,255,0.5);">{{ line.variant.title }}</p>
-                                    {% elsif line.variant.title != 'Default Title' and line.nested_line_parent? %}
-                                      <p style="margin:0 0 2px; font-size:13px; color:rgba(255,255,255,0.5);">{{ line.variant.title }}</p>
-                                    {% elsif line.variant.title != 'Default Title' and line.bundle_parent? %}
-                                      <p style="margin:0 0 2px; font-size:13px; color:rgba(255,255,255,0.5);">{{ line.variant.title }}</p>
-                                    {% endif %}
-                                    {% if line.selling_plan_allocation %}
-                                      <p style="margin:0 0 2px; font-size:13px; color:rgba(255,255,255,0.5);">{{ line.selling_plan_allocation.selling_plan.name }}</p>
-                                    {% endif %}
-                                    {% if line.refunded_quantity > 0 %}
-                                      <p style="margin:2px 0 0; font-size:12px; color:#FF4500;">{% if is_ko %}환불됨{% else %}Refunded{% endif %}</p>
-                                    {% endif %}
-                                    {% if line.properties["seat_section"] and line.properties["seat_number"] %}
-                                      <p style="margin:4px 0 0; font-size:13px; color:#FF8C00;">
-                                        {% if is_ko %}좌석{% else %}Seat{% endif %}: {{ line.properties["seat_section"] }}-{{ line.properties["seat_number"] }}
-                                      </p>
-                                    {% endif %}
-                                    {% if line.discount_allocations %}
-                                      {% for discount_allocation in line.discount_allocations %}
-                                        {% if discount_allocation.discount_application.target_selection != 'all' %}
-                                          <p style="margin:4px 0 0; font-size:12px; color:#FF8C00;">
-                                            {{ discount_allocation.discount_application.title | upcase }} (-{{ discount_allocation.amount | money }})
-                                          </p>
-                                        {% endif %}
-                                      {% endfor %}
-                                    {% endif %}
-                                    {% if false %}
-                                      {% for child_line in line.bundle_components %}
-                                        <p style="margin:4px 0 0 12px; font-size:12px; color:rgba(255,255,255,0.5);">
-                                          {% if child_line.product.title %}{{ child_line.quantity }} &times; {{ child_line.product.title }}{% else %}{{ child_line.quantity }} &times; {{ child_line.title }}{% endif %}
-                                        </p>
-                                      {% endfor %}
-                                    {% else %}
-                                      {% for group in line.groups %}
-                                        {% if group.deliverable? %}
-                                          <p style="margin:2px 0; font-size:12px; color:rgba(255,255,255,0.4);">{% if is_ko %}수령자{% else %}For{% endif %}: {{ group.display_title }}</p>
-                                        {% else %}
-                                          <p style="margin:2px 0; font-size:12px; color:rgba(255,255,255,0.4);">{% if is_ko %}포함{% else %}Part of{% endif %}: {{ group.display_title }}</p>
-                                        {% endif %}
-                                      {% endfor %}
-                                    {% endif %}
-                                    {% if line.gift_card and line.properties["__shopify_send_gift_card_to_recipient"] %}
-                                      {% for property in line.properties %}
-                                        {% assign property_first_char = property.first | slice: 0 %}
-                                        {% if property.last != blank and property_first_char != '_' %}
-                                          <p style="margin:2px 0; font-size:12px; color:rgba(255,255,255,0.5);">
-                                            {{ property.first }}: {% if property.last contains '/uploads/' %}<a href="{{ property.last }}" style="color:#FF8C00;">{{ property.last | split: '/' | last }}</a>{% else %}{{ property.last }}{% endif %}
-                                          </p>
-                                        {% endif %}
-                                      {% endfor %}
-                                    {% endif %}
-                                  </td>
-                                  <td width="100" valign="top" align="right" style="white-space:nowrap;">
-                                    {% if line.original_line_price != line.final_line_price %}
-                                      <p style="margin:0; font-size:12px; color:rgba(255,255,255,0.4); text-decoration:line-through;">{{ line.original_line_price | money }}</p>
-                                    {% endif %}
-                                    <p style="margin:0; font-size:14px; font-weight:600; color:#ffffff;">
-                                      {% if line.final_line_price > 0 %}{{ line.final_line_price | money }}{% else %}{% if is_ko %}무료{% else %}Free{% endif %}{% endif %}
-                                    </p>
-                                    {% if line.unit_price_measurement %}
-                                      <p style="margin:2px 0 0; font-size:11px; color:rgba(255,255,255,0.4);">
-                                        {{- line.unit_price | unit_price_with_measurement: line.unit_price_measurement -}}
-                                      </p>
-                                    {% endif %}
-                                  </td>
-                                </tr>
-                              </table>
-                              {% if line.nested_line_parent? %}
-                                {% for child_line in line.nested_lines %}
-                                  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:8px; padding-left:24px;">
-                                    <tr>
-                                      <td width="40" valign="top" style="padding-right:8px;">
-                                        {% if child_line.image %}
-                                          <img src="{{ child_line | img_url: 'compact_cropped' }}" width="40" height="40" style="display:block; border-radius:6px; background-color:rgba(255,255,255,0.05);" />
-                                        {% else %}
-                                          <div style="width:40px; height:40px; border-radius:6px; background-color:rgba(255,255,255,0.05);"></div>
-                                        {% endif %}
-                                      </td>
-                                      <td valign="top">
-                                        {% if child_line.product.title %}{% assign item_title = child_line.product.title %}{% else %}{% assign item_title = child_line.title %}{% endif %}
-                                        <p style="margin:0; font-size:13px; color:rgba(255,255,255,0.7);">{{ item_title }} &times; {{ child_line.quantity }}</p>
-                                        {% if child_line.variant.title != 'Default Title' %}
-                                          <p style="margin:0; font-size:12px; color:rgba(255,255,255,0.4);">{{ child_line.variant.title }}</p>
-                                        {% endif %}
-                                      </td>
-                                    </tr>
-                                  </table>
-                                {% endfor %}
-                              {% endif %}
-                            {% endunless %}
-                          {% endif %}
-                        {% endfor %}
-
-                        <!-- Non-split cart: line item groups -->
-                        {% for line_item_group in line_item_groups %}
-                          {% assign final_line_price = 0 %}
-                          {% assign original_line_price = 0 %}
-                          {% if line_item_group.deliverable? == false %}
-                            {% for component in line_item_group.components %}
-                              {% assign final_line_price = final_line_price | plus: component.final_line_price %}
-                              {% assign original_line_price = original_line_price | plus: component.original_line_price %}
-                            {% endfor %}
-                          {% endif %}
-                          {% if line_item_group.deliverable? %}
-                            {% assign parent_line_item = line_item_group.parent_sales_line_item %}
-                            {% assign final_line_price = parent_line_item.final_line_price %}
-                            {% assign original_line_price = parent_line_item.original_line_price %}
-                          {% endif %}
-                          <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:12px;">
-                            <tr>
-                              <td width="60" valign="top" style="padding-right:12px;">
-                                {% if line_item_group.deliverable? and parent_line_item and parent_line_item.image %}
-                                  <img src="{{ parent_line_item | img_url: 'compact_cropped' }}" width="60" height="60" class="product-image" style="display:block; border-radius:8px; background-color:rgba(255,255,255,0.05);" />
-                                {% elsif line_item_group.image %}
-                                  <img src="{{ line_item_group | img_url: 'compact_cropped' }}" width="60" height="60" class="product-image" style="display:block; border-radius:8px; background-color:rgba(255,255,255,0.05);" />
-                                {% else %}
-                                  <div style="width:60px; height:60px; border-radius:8px; background-color:rgba(255,255,255,0.05);"></div>
-                                {% endif %}
-                              </td>
-                              <td valign="top" style="color:#ffffff;">
-                                <p style="margin:0 0 2px; font-size:14px; font-weight:600; color:#ffffff;">{{ line_item_group.display_title }} &times; {{ line_item_group.quantity }}</p>
-                                {% if line_item_group.variant and line_item_group.variant.title != 'Default Title' %}
-                                  <p style="margin:0; font-size:13px; color:rgba(255,255,255,0.5);">{{ line_item_group.variant.title }}</p>
-                                {% endif %}
-                                {% if line_item_group.deliverable? %}
-                                  {% if parent_line_item.discount_allocations %}
-                                    {% for discount_allocation in parent_line_item.discount_allocations %}
-                                      {% if discount_allocation.discount_application.target_selection != 'all' %}
-                                        <p style="margin:4px 0 0; font-size:12px; color:#FF8C00;">
-                                          {{ discount_allocation.discount_application.title | upcase }} (-{{ discount_allocation.amount | money }})
-                                        </p>
-                                      {% endif %}
-                                    {% endfor %}
-                                  {% endif %}
-                                {% else %}
-                                  {% assign discount_keys_str = "" %}
-                                  {% for component in line_item_group.components %}
-                                    {% for da in component.discount_allocations %}
-                                      {% if da.discount_application.target_selection != 'all' %}
-                                        {% assign discount_key = da.discount_application.title | append: da.discount_application.type %}
-                                        {% assign discount_keys_str = discount_keys_str | append: discount_key | append: "," %}
-                                      {% endif %}
-                                    {% endfor %}
-                                  {% endfor %}
-                                  {% assign discount_keys = discount_keys_str | split: "," | uniq %}
-                                  {% for discount_key in discount_keys %}
-                                    {% assign discount_amount = 0 %}
-                                    {% for component in line_item_group.components %}
-                                      {% for da in component.discount_allocations %}
-                                        {% assign key = da.discount_application.title | append: da.discount_application.type %}
-                                        {% if da.discount_application.target_selection != 'all' and key == discount_key %}
-                                          {% assign discount_amount = discount_amount | plus: da.amount %}
-                                          {% assign discount_title = da.discount_application.title %}
-                                        {% endif %}
-                                      {% endfor %}
-                                    {% endfor %}
-                                    <p style="margin:4px 0 0; font-size:12px; color:#FF8C00;">
-                                      {{ discount_title | upcase }} (-{{ discount_amount | money }})
-                                    </p>
-                                  {% endfor %}
-                                {% endif %}
-                              </td>
-                              <td width="100" valign="top" align="right" style="white-space:nowrap;">
-                                {% if original_line_price != final_line_price %}
-                                  <p style="margin:0; font-size:12px; color:rgba(255,255,255,0.4); text-decoration:line-through;">{{ original_line_price | money }}</p>
-                                {% endif %}
-                                <p style="margin:0; font-size:14px; font-weight:600; color:#ffffff;">
-                                  {% if final_line_price > 0 %}{{ final_line_price | money }}{% else %}{% if is_ko %}무료{% else %}Free{% endif %}{% endif %}
-                                </p>
-                              </td>
-                            </tr>
-                          </table>
-                          {% if line_item_group.deliverable? %}
-                            {% for component in line_item_group.components %}
-                              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:8px; padding-left:24px;">
-                                <tr>
-                                  <td width="40" valign="top" style="padding-right:8px;">
-                                    {% if component.image %}
-                                      <img src="{{ component | img_url: 'compact_cropped' }}" width="40" height="40" style="display:block; border-radius:6px; background-color:rgba(255,255,255,0.05);" />
-                                    {% else %}
-                                      <div style="width:40px; height:40px; border-radius:6px; background-color:rgba(255,255,255,0.05);"></div>
-                                    {% endif %}
-                                  </td>
-                                  <td valign="top">
-                                    {% if component.product.title %}{% assign component_title = component.product.title %}{% else %}{% assign component_title = component.title %}{% endif %}
-                                    <p style="margin:0; font-size:13px; color:rgba(255,255,255,0.7);">{{ component_title }} &times; {{ component.quantity }}</p>
-                                    {% if component.variant.title != 'Default Title' %}
-                                      <p style="margin:0; font-size:12px; color:rgba(255,255,255,0.4);">{{ component.variant.title }}</p>
-                                    {% endif %}
-                                  </td>
-                                  <td width="80" valign="top" align="right" style="white-space:nowrap;">
-                                    <p style="margin:0; font-size:13px; color:rgba(255,255,255,0.7);">
-                                      {% if component.final_line_price > 0 %}{{ component.final_line_price | money }}{% else %}{% if is_ko %}무료{% else %}Free{% endif %}{% endif %}
-                                    </p>
-                                  </td>
-                                </tr>
-                              </table>
-                            {% endfor %}
-                          {% else %}
-                            {% for component in line_item_group.components %}
-                              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:8px; padding-left:24px;">
-                                <tr>
-                                  <td width="40" valign="top" style="padding-right:8px;">
-                                    {% if component.image %}
-                                      <img src="{{ component | img_url: 'compact_cropped' }}" width="40" height="40" style="display:block; border-radius:6px; background-color:rgba(255,255,255,0.05);" />
-                                    {% else %}
-                                      <div style="width:40px; height:40px; border-radius:6px; background-color:rgba(255,255,255,0.05);"></div>
-                                    {% endif %}
-                                  </td>
-                                  <td valign="top">
-                                    {% if component.product.title %}{% assign component_title = component.product.title %}{% else %}{% assign component_title = component.title %}{% endif %}
-                                    <p style="margin:0; font-size:13px; color:rgba(255,255,255,0.7);">{{ component.quantity }} &times; {{ component_title }}</p>
-                                    {% if component.variant.title != 'Default Title' %}
-                                      <p style="margin:0; font-size:12px; color:rgba(255,255,255,0.4);">{{ component.variant.title }}</p>
-                                    {% endif %}
-                                  </td>
-                                </tr>
-                              </table>
-                            {% endfor %}
-                          {% endif %}
-                        {% endfor %}
-                      {% endif %}
-                    </td>
-                  </tr>
-
-                  <!-- Subtotal Section -->
-                  <tr>
-                    <td style="padding:0 20px;">
-                      <div style="height:1px; background-color:rgba(255,255,255,0.08);"></div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td style="padding:16px 20px;">
-                      {% assign total_order_discount_amount = 0 %}
-                      {% assign has_shipping_discount = false %}
-                      {% assign epsilon = 0.00001 %}
-                      {% for discount_application in discount_applications %}
-                        {% if discount_application.target_selection == 'all' and discount_application.target_type == 'line_item' %}
-                          {% assign order_discount_count = order_discount_count | plus: 1 %}
-                          {% assign total_order_discount_amount = total_order_discount_amount | plus: discount_application.total_allocated_amount %}
-                        {% endif %}
-                        {% if discount_application.target_type == 'shipping_line' %}
-                          {% assign has_shipping_discount = true %}
-                          {% assign shipping_discount_title = discount_application.title %}
-                          {% assign discount_value_price = discount_application.total_allocated_amount %}
-                          {% assign shipping_amount_minus_discount_value_price = shipping_price | minus: discount_value_price %}
-                          {% assign shipping_amount_minus_discount_value_price_abs = shipping_amount_minus_discount_value_price | abs %}
-                          {% assign discount_application_value_type = discount_application.value_type | strip %}
-                          {% if shipping_amount_minus_discount_value_price_abs < epsilon or discount_application_value_type == 'percentage' and discount_application.value == 100 %}
-                            {% assign free_shipping = true %}
-                          {% else %}
-                            {% assign discounted_shipping_price = shipping_amount_minus_discount_value_price %}
-                          {% endif %}
-                        {% endif %}
-                      {% endfor %}
-
-                      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                        <!-- Subtotal -->
-                        <tr>
-                          <td style="padding:4px 0; font-size:14px; color:rgba(255,255,255,0.6);">{% if is_ko %}소계{% else %}Subtotal{% endif %}</td>
-                          <td align="right" style="padding:4px 0; font-size:14px; color:#ffffff;">{{ subtotal_price | plus: total_order_discount_amount | money }}</td>
-                        </tr>
-
-                        <!-- Order Discounts -->
-                        {% if order_discount_count > 0 %}
+                      {% for line in subtotal_line_items %}
+                        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:8px;">
                           <tr>
-                            <td style="padding:4px 0; font-size:14px; color:rgba(255,255,255,0.6);">
-                              {% if is_ko %}주문 할인{% else %}{% if order_discount_count == 1 %}Order discount{% else %}Order discounts{% endif %}{% endif %}
+                            <td style="font-size:14px; color:#ffffff;">
+                              {% if line.presentment_title %}{{ line.presentment_title }}{% elsif line.title %}{{ line.title }}{% else %}{{ line.product.title }}{% endif %}
+                              &times; {{ line.quantity }}
+                              {% if line.properties["seat_section"] and line.properties["seat_number"] %}
+                                <span style="color:#FF8C00; font-size:13px;"> ({{ line.properties["seat_section"] }}-{{ line.properties["seat_number"] }})</span>
+                              {% endif %}
+                              {% if line.discount_allocations %}
+                                {% for da in line.discount_allocations %}
+                                  {% if da.discount_application.target_selection != 'all' %}
+                                    <br><span style="font-size:12px; color:#FF8C00;">{{ da.discount_application.title | upcase }} (-{{ da.amount | money }})</span>
+                                  {% endif %}
+                                {% endfor %}
+                              {% endif %}
                             </td>
-                            <td align="right" style="padding:4px 0; font-size:14px; color:#FF8C00;">-{{ total_order_discount_amount | money }}</td>
-                          </tr>
-                          {% for discount_application in discount_applications %}
-                            {% if discount_application.target_selection == 'all' and discount_application.target_type != 'shipping_line' %}
-                              <tr>
-                                <td colspan="2" style="padding:2px 0 4px; font-size:12px; color:#FF8C00;">
-                                  {{ discount_application.title }} (-{{ discount_application.total_allocated_amount | money }})
-                                </td>
-                              </tr>
-                            {% endif %}
-                          {% endfor %}
-                        {% endif %}
-
-                        <!-- Shipping -->
-                        {% unless retail_delivery_only %}
-                          {% if delivery_method == 'pick-up' %}
-                            <tr>
-                              <td style="padding:4px 0; font-size:14px; color:rgba(255,255,255,0.6);">{% if is_ko %}픽업{% else %}Pickup{% endif %}</td>
-                              <td align="right" style="padding:4px 0; font-size:14px; color:#ffffff;">{{ shipping_price | money }}</td>
-                            </tr>
-                          {% else %}
-                            {% if has_shipping_discount %}
-                              {% if free_shipping == true %}
-                                <tr>
-                                  <td style="padding:4px 0; font-size:14px; color:rgba(255,255,255,0.6);">{% if is_ko %}배송비{% else %}Shipping{% endif %}</td>
-                                  <td align="right" style="padding:4px 0; font-size:14px; color:#ffffff;">
-                                    {% if shipping_price != 0 %}<span style="text-decoration:line-through; color:rgba(255,255,255,0.4); margin-right:6px;">{{ shipping_price | money }}</span>{% endif %}
-                                    <strong>{% if is_ko %}무료{% else %}Free{% endif %}</strong>
-                                  </td>
-                                </tr>
-                              {% else %}
-                                <tr>
-                                  <td style="padding:4px 0; font-size:14px; color:rgba(255,255,255,0.6);">{% if is_ko %}배송비{% else %}Shipping{% endif %}</td>
-                                  <td align="right" style="padding:4px 0; font-size:14px; color:#ffffff;">
-                                    <span style="text-decoration:line-through; color:rgba(255,255,255,0.4); margin-right:6px;">{{ shipping_price | money }}</span>
-                                    <strong>{{ discounted_shipping_price | money }}</strong>
-                                  </td>
-                                </tr>
+                            <td width="100" align="right" valign="top" style="white-space:nowrap;">
+                              {% if line.original_line_price != line.final_line_price %}
+                                <p style="margin:0; font-size:12px; color:rgba(255,255,255,0.4); text-decoration:line-through;">{{ line.original_line_price | money }}</p>
                               {% endif %}
-                              <tr>
-                                <td colspan="2" style="padding:2px 0 4px; font-size:12px; color:#FF8C00;">
-                                  {{ shipping_discount_title }}{% if discount_value_price != 0 %} (-{{ discount_value_price | money }}){% endif %}
-                                </td>
-                              </tr>
-                            {% else %}
-                              <tr>
-                                <td style="padding:4px 0; font-size:14px; color:rgba(255,255,255,0.6);">{% if is_ko %}배송비{% else %}Shipping{% endif %}</td>
-                                <td align="right" style="padding:4px 0; font-size:14px; color:#ffffff;">{{ shipping_price | money }}</td>
-                              </tr>
-                            {% endif %}
-                          {% endif %}
-                        {% endunless %}
-
-                        <!-- Duties -->
-                        {% if total_duties %}
-                          <tr>
-                            <td style="padding:4px 0; font-size:14px; color:rgba(255,255,255,0.6);">{% if is_ko %}관세{% else %}Duties{% endif %}</td>
-                            <td align="right" style="padding:4px 0; font-size:14px; color:#ffffff;">{{ total_duties | money }}</td>
+                              <p style="margin:0; font-size:14px; font-weight:600; color:#ffffff;">{{ line.final_line_price | money }}</p>
+                            </td>
                           </tr>
-                        {% endif %}
-
-                        <!-- Taxes -->
-                        <tr>
-                          <td style="padding:4px 0; font-size:14px; color:rgba(255,255,255,0.6);">{% if is_ko %}세금{% else %}Taxes{% endif %}</td>
-                          <td align="right" style="padding:4px 0; font-size:14px; color:#ffffff;">{{ tax_price | money }}</td>
-                        </tr>
-
-                        <!-- Tip -->
-                        {% if total_tip and total_tip > 0 %}
-                          <tr>
-                            <td style="padding:4px 0; font-size:14px; color:rgba(255,255,255,0.6);">{% if is_ko %}팁{% else %}Tip{% endif %}</td>
-                            <td align="right" style="padding:4px 0; font-size:14px; color:#ffffff;">{{ total_tip | money }}</td>
-                          </tr>
-                        {% endif %}
-                      </table>
-
-                      <!-- Transaction calculations -->
-                      {% assign transaction_size = 0 %}
-                      {% assign transaction_amount = 0 %}
-                      {% assign net_transaction_amount_rounding = 0 %}
-                      {% assign authorized_amount = 0 %}
-                      {% assign has_refunds = false %}
-                      {% assign shopify_pay_captured = false %}
-                      {% assign shop_cash_offers_captured = false %}
-                      {% for transaction in transactions %}
-                        {% if transaction.kind == "sale" or transaction.kind == "capture" %}
-                          {% if transaction.status == "success" %}
-                            {% if transaction.payment_details.credit_card_company %}
-                              {% assign shopify_pay_captured = true %}
-                            {% endif %}
-                            {% if transaction.gateway == "shop_cash" or transaction.gateway == "shop_offer" %}
-                              {% assign shop_cash_offers_captured = true %}
-                            {% endif %}
-                            {% assign transaction_size = transaction_size | plus: 1 %}
-                            {% assign transaction_amount = transaction_amount | plus: transaction.amount %}
-                            {% if transaction.amount_rounding != nil %}
-                              {% assign net_transaction_amount_rounding = net_transaction_amount_rounding | plus: transaction.amount_rounding %}
-                            {% endif %}
-                          {% endif %}
-                        {% elsif transaction.kind == "authorization" %}
-                          {% if transaction.status == "success" %}
-                            {% assign authorized_amount = authorized_amount | plus: transaction.amount %}
-                          {% endif %}
-                        {% elsif transaction.kind == "refund" or transaction.kind == "change" %}
-                          {% if transaction.status == "success" or transaction.status == "pending" %}
-                            {% assign transaction_size = transaction_size | plus: 1 %}
-                            {% assign transaction_amount = transaction_amount | minus: transaction.amount %}
-                            {% assign has_refunds = true %}
-                            {% if transaction.amount_rounding != nil %}
-                              {% assign net_transaction_amount_rounding = net_transaction_amount_rounding | minus: transaction.amount_rounding %}
-                            {% endif %}
-                          {% endif %}
-                        {% endif %}
+                        </table>
                       {% endfor %}
-                      {% if shopify_pay_captured == true and shop_cash_offers_captured == false %}
-                        {% for transaction in transactions %}
-                          {% if transaction.status == "success" %}
-                            {% if transaction.kind == "authorization" and transaction.gateway == "shop_cash" or transaction.gateway == "shop_offer" %}
-                              {% assign transaction_size = transaction_size | plus: 1 %}
-                              {% assign transaction_amount = transaction_amount | plus: transaction.amount %}
-                              {% if transaction.amount_rounding != nil %}
-                                {% assign net_transaction_amount_rounding = net_transaction_amount_rounding | plus: transaction.amount_rounding %}
-                              {% endif %}
-                            {% endif %}
-                          {% endif %}
-                        {% endfor %}
-                      {% endif %}
                     </td>
                   </tr>
 
-                  <!-- Total -->
+                  <!-- Totals -->
                   <tr>
                     <td style="padding:0 20px;">
                       <div style="height:1px; background-color:rgba(255,255,255,0.08);"></div>
@@ -1229,284 +188,56 @@
                   <tr>
                     <td style="padding:16px 20px 20px;">
                       <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                        {% if payment_terms and payment_terms.automatic_capture_at_fulfillment == false or b2b? %}
-                          {% assign next_payment = payment_terms.next_payment %}
-                          {% if is_ko %}
-                            {% assign due_at_date = next_payment.due_at | date: "%Y년 %m월 %d일" %}
-                          {% else %}
-                            {% assign due_at_date = next_payment.due_at | date: "%b %d, %Y" %}
-                          {% endif %}
-                          {% if net_transaction_amount_rounding != 0 %}
-                            <tr>
-                              <td style="padding:4px 0; font-size:16px; font-weight:700; color:#ffffff;">{% if is_ko %}합계{% else %}Total{% endif %}</td>
-                              <td align="right" style="padding:4px 0; font-size:16px; font-weight:700; color:#ffffff;">{{ total_price | money_with_currency }}</td>
-                            </tr>
-                            {% if total_discounts > 0 %}
-                              <tr>
-                                <td colspan="2" align="right" style="padding:4px 0; font-size:13px; color:#FF8C00;">
-                                  {% if is_ko %}{{ total_discounts | money }} 절약하셨습니다{% else %}You saved {{ total_discounts | money }}{% endif %}
-                                </td>
-                              </tr>
-                            {% endif %}
-                            <tr>
-                              <td style="padding:4px 0; font-size:13px; color:rgba(255,255,255,0.5);">{% if is_ko %}현금 반올림{% else %}Cash rounding{% endif %}</td>
-                              <td align="right" style="padding:4px 0; font-size:13px; color:rgba(255,255,255,0.5);">{% if net_transaction_amount_rounding < 0 %}-{% endif %}{{ net_transaction_amount_rounding | abs | money }}</td>
-                            </tr>
-                          {% endif %}
+                        <tr>
+                          <td style="padding:4px 0; font-size:14px; color:rgba(255,255,255,0.6);">{% if is_ko %}소계{% else %}Subtotal{% endif %}</td>
+                          <td align="right" style="padding:4px 0; font-size:14px; color:#ffffff;">{{ subtotal_price | money }}</td>
+                        </tr>
+                        {% if total_discounts > 0 %}
                           <tr>
-                            <td style="padding:4px 0; font-size:14px; color:rgba(255,255,255,0.6);">{% if is_ko %}오늘 결제한 금액{% else %}Total paid today{% endif %}</td>
-                            <td align="right" style="padding:4px 0; font-size:14px; font-weight:600; color:#ffffff;">{{ transaction_amount | plus: net_transaction_amount_rounding | money_with_currency }}</td>
+                            <td style="padding:4px 0; font-size:14px; color:#FF8C00;">{% if is_ko %}할인{% else %}Discount{% endif %}</td>
+                            <td align="right" style="padding:4px 0; font-size:14px; color:#FF8C00;">-{{ total_discounts | money }}</td>
                           </tr>
-                          {% assign next_amount_due = total_price %}
-                          {% if next_payment %}
-                            {% assign next_amount_due = next_payment.amount_due %}
-                          {% elsif total_outstanding > 0 %}
-                            {% assign next_amount_due = total_outstanding %}
-                          {% endif %}
-                          {% if payment_terms.type == 'receipt' %}
-                            <tr>
-                              <td style="padding:4px 0; font-size:14px; color:rgba(255,255,255,0.6);">{% if is_ko %}수령 시 결제 금액{% else %}Total due on receipt{% endif %}</td>
-                              <td align="right" style="padding:4px 0; font-size:14px; font-weight:600; color:#ffffff;">{{ next_amount_due | money_with_currency }}</td>
-                            </tr>
-                          {% elsif payment_terms.type == 'fulfillment' %}
-                            <tr>
-                              <td style="padding:4px 0; font-size:14px; color:rgba(255,255,255,0.6);">{% if is_ko %}이행 시 결제 금액{% else %}Total due on fulfillment{% endif %}</td>
-                              <td align="right" style="padding:4px 0; font-size:14px; font-weight:600; color:#ffffff;">{{ next_amount_due | money_with_currency }}</td>
-                            </tr>
-                          {% else %}
-                            <tr>
-                              <td style="padding:4px 0; font-size:14px; color:rgba(255,255,255,0.6);">{% if is_ko %}{{ due_at_date }} 결제 예정 금액{% else %}Total due {{ due_at_date }}{% endif %}</td>
-                              <td align="right" style="padding:4px 0; font-size:14px; font-weight:600; color:#ffffff;">{{ next_amount_due | money_with_currency }}</td>
-                            </tr>
-                          {% endif %}
-                          {% if total_discounts > 0 and net_transaction_amount_rounding == 0 %}
-                            <tr>
-                              <td colspan="2" align="right" style="padding:4px 0; font-size:13px; color:#FF8C00;">
-                                {% if is_ko %}{{ total_discounts | money }} 절약하셨습니다{% else %}You saved {{ total_discounts | money }}{% endif %}
-                              </td>
-                            </tr>
-                          {% endif %}
-                        {% else %}
+                        {% endif %}
+                        {% if tax_price and tax_price > 0 %}
                           <tr>
-                            <td style="padding:4px 0; font-size:16px; font-weight:700; color:#ffffff;">{% if is_ko %}합계{% else %}Total{% endif %}</td>
-                            <td align="right" style="padding:4px 0; font-size:16px; font-weight:700; color:#ffffff;">{{ total_price | money_with_currency }}</td>
+                            <td style="padding:4px 0; font-size:14px; color:rgba(255,255,255,0.6);">{% if is_ko %}세금{% else %}Tax{% endif %}</td>
+                            <td align="right" style="padding:4px 0; font-size:14px; color:#ffffff;">{{ tax_price | money }}</td>
                           </tr>
-                          {% if total_discounts > 0 %}
-                            <tr>
-                              <td colspan="2" align="right" style="padding:4px 0; font-size:13px; color:#FF8C00;">
-                                {% if is_ko %}{{ total_discounts | money }} 절약하셨습니다{% else %}You saved {{ total_discounts | money }}{% endif %}
-                              </td>
-                            </tr>
-                          {% endif %}
-                          {% if net_transaction_amount_rounding != 0 %}
-                            <tr>
-                              <td style="padding:4px 0; font-size:13px; color:rgba(255,255,255,0.5);">{% if is_ko %}현금 반올림{% else %}Cash rounding{% endif %}</td>
-                              <td align="right" style="padding:4px 0; font-size:13px; color:rgba(255,255,255,0.5);">{% if net_transaction_amount_rounding < 0 %}-{% endif %}{{ net_transaction_amount_rounding | abs | money }}</td>
-                            </tr>
-                            {% if financial_status == 'paid' %}
-                              <tr>
-                                <td style="padding:4px 0; font-size:14px; color:rgba(255,255,255,0.6);">
-                                  {% if is_ko %}결제 완료{% else %}Paid{% endif %}
-                                  <br><span style="font-size:12px; color:rgba(255,255,255,0.4);">{{ order.transactions | map: 'gateway_display_name' | uniq | join: ', ' }}</span>
-                                </td>
-                                <td align="right" style="padding:4px 0; font-size:14px; font-weight:600; color:#ffffff;">{{ transaction_amount | plus: net_transaction_amount_rounding | money_with_currency }}</td>
-                              </tr>
-                            {% endif %}
-                          {% endif %}
-                          {% if transaction_amount != total_price and payment_terms == nil %}
-                            {% if transaction_amount == 0 and authorized_amount > 0 and has_refunds == false %}
-                            {% else %}
-                              <tr>
-                                <td style="padding:4px 0; font-size:14px; color:rgba(255,255,255,0.6);">{% if is_ko %}오늘 결제한 금액{% else %}Total paid today{% endif %}</td>
-                                <td align="right" style="padding:4px 0; font-size:14px; font-weight:600; color:#ffffff;">{{ transaction_amount | plus: net_transaction_amount_rounding | money_with_currency }}</td>
-                              </tr>
-                            {% endif %}
-                          {% endif %}
+                        {% endif %}
+                        <tr>
+                          <td colspan="2" style="padding:8px 0 0;">
+                            <div style="height:1px; background-color:rgba(255,255,255,0.08);"></div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style="padding:8px 0 0; font-size:16px; font-weight:700; color:#ffffff;">{% if is_ko %}합계{% else %}Total{% endif %}</td>
+                          <td align="right" style="padding:8px 0 0; font-size:16px; font-weight:700; color:#ffffff;">{{ total_price | money_with_currency }}</td>
+                        </tr>
+                        {% if total_discounts > 0 %}
+                          <tr>
+                            <td colspan="2" align="right" style="padding:4px 0 0; font-size:13px; color:#FF8C00;">
+                              {% if is_ko %}{{ total_discounts | money }} 절약하셨습니다{% else %}You saved {{ total_discounts | money }}{% endif %}
+                            </td>
+                          </tr>
                         {% endif %}
                       </table>
-
-                      <!-- Transaction Details -->
-                      {% unless payment_terms %}
-                        {% if transaction_size > 1 or transaction_amount < total_price %}
-                          <div style="height:1px; background-color:rgba(255,255,255,0.06); margin:12px 0;"></div>
-                          <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                            {% for transaction in transactions %}
-                              {% assign amount_rounding = 0 %}
-                              {% if transaction.amount_rounding != 0 %}
-                                {% assign amount_rounding = transaction.amount_rounding %}
-                              {% endif %}
-                              {% if transaction.status == "success" and transaction.kind == "capture" or transaction.kind == "sale" %}
-                                {% if transaction.payment_details.gift_card_last_four_digits %}
-                                  {% if is_ko %}
-                                    {% capture transaction_name %}기프트 카드 (끝자리 {{ transaction.payment_details.gift_card_last_four_digits }}){% endcapture %}
-                                  {% else %}
-                                    {% capture transaction_name %}Gift card (ending with {{ transaction.payment_details.gift_card_last_four_digits }}){% endcapture %}
-                                  {% endif %}
-                                {% elsif transaction.payment_details.credit_card_company %}
-                                  {% if is_ko %}
-                                    {% capture transaction_name %}{{ transaction.payment_details.credit_card_company }} (끝자리 {{ transaction.payment_details.credit_card_last_four_digits }}){% endcapture %}
-                                  {% else %}
-                                    {% capture transaction_name %}{{ transaction.payment_details.credit_card_company }} (ending in {{ transaction.payment_details.credit_card_last_four_digits }}){% endcapture %}
-                                  {% endif %}
-                                {% else %}
-                                  {% capture transaction_name %}{{ transaction.gateway_display_name }}{% endcapture %}
-                                {% endif %}
-                                <tr>
-                                  <td style="padding:3px 0; font-size:13px; color:rgba(255,255,255,0.5);">{{ transaction_name }}</td>
-                                  <td align="right" style="padding:3px 0; font-size:13px; color:rgba(255,255,255,0.7);">{{ transaction.amount | plus: amount_rounding | money }}</td>
-                                </tr>
-                              {% elsif shopify_pay_captured and shop_cash_offers_captured == false and transaction.kind == "authorization" and transaction.gateway == "shop_cash" or transaction.gateway == "shop_offer" %}
-                                {% capture transaction_name %}{{ transaction.gateway_display_name }}{% endcapture %}
-                                <tr>
-                                  <td style="padding:3px 0; font-size:13px; color:rgba(255,255,255,0.5);">{{ transaction_name }}</td>
-                                  <td align="right" style="padding:3px 0; font-size:13px; color:rgba(255,255,255,0.7);">{{ transaction.amount | plus: amount_rounding | money }}</td>
-                                </tr>
-                              {% endif %}
-                              {% if transaction.kind == 'refund' and transaction.gateway != "shop_offer" %}
-                                {% if transaction.payment_details.gift_card_last_four_digits %}
-                                  {% assign refund_method_title = transaction.payment_details.type %}
-                                {% elsif transaction.payment_details.local_payment %}
-                                  {% assign refund_method_title = transaction.payment_details.payment_method_name %}
-                                {% elsif transaction.payment_details.credit_card_company %}
-                                  {% assign refund_method_title = transaction.payment_details.credit_card_company %}
-                                {% else %}
-                                  {% assign refund_method_title = transaction.gateway_display_name %}
-                                {% endif %}
-                                {% if transaction.gateway == 'shopify_store_credit' %}
-                                  {% assign link_url = routes.account_profile_url %}
-                                  {% if is_ko %}
-                                    {% capture link_text %}보기{% endcapture %}
-                                  {% else %}
-                                    {% capture link_text %}View{% endcapture %}
-                                  {% endif %}
-                                {% else %}
-                                  {% assign link_url = nil %}
-                                  {% assign link_text = nil %}
-                                {% endif %}
-                                <tr>
-                                  <td style="padding:3px 0; font-size:13px; color:rgba(255,255,255,0.5);">
-                                    {% if is_ko %}환불{% else %}Refund{% endif %} <span style="font-size:12px; color:rgba(255,255,255,0.4);">{{ refund_method_title | replace: '_', ' ' | capitalize }}</span>
-                                    {% if link_url %}&nbsp;<a href="{{ link_url }}" style="color:#FF8C00; font-size:12px;">{{ link_text }}</a>{% endif %}
-                                  </td>
-                                  <td align="right" style="padding:3px 0; font-size:13px; color:rgba(255,255,255,0.7);">{{ transaction.amount | plus: amount_rounding | times: -1 | money }}</td>
-                                </tr>
-                              {% endif %}
-                            {% endfor %}
-                          </table>
-                        {% endif %}
-                      {% endunless %}
                     </td>
                   </tr>
                 </table>
               </td>
             </tr>
 
-            <!-- Customer Information -->
+            <!-- Event Info -->
             <tr>
               <td style="padding:0 24px 16px;">
                 <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#1a1412; border-radius:12px; border:1px solid rgba(255,255,255,0.08);">
                   <tr>
-                    <td style="padding:20px 20px 16px;">
-                      <h3 style="margin:0; font-size:16px; font-weight:600; color:#ffffff; letter-spacing:0.3px;">{% if is_ko %}고객 정보{% else %}Customer information{% endif %}</h3>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td style="padding:0 20px;">
-                      <div style="height:1px; background-color:rgba(255,255,255,0.08);"></div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td style="padding:16px 20px 20px;">
-                      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                        <tr>
-                          {% if requires_shipping and shipping_address %}
-                            <td valign="top" width="50%" style="padding-right:12px;">
-                              <p style="margin:0 0 6px; font-size:12px; font-weight:600; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:0.5px;">{% if is_ko %}배송 주소{% else %}Shipping address{% endif %}</p>
-                              <p style="margin:0; font-size:14px; color:rgba(255,255,255,0.8); line-height:1.5;">{{ shipping_address | format_address }}</p>
-                            </td>
-                          {% endif %}
-                          {% if billing_address %}
-                            <td valign="top" width="50%">
-                              <p style="margin:0 0 6px; font-size:12px; font-weight:600; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:0.5px;">{% if is_ko %}청구 주소{% else %}Billing address{% endif %}</p>
-                              <p style="margin:0; font-size:14px; color:rgba(255,255,255,0.8); line-height:1.5;">{{ billing_address | format_address }}</p>
-                            </td>
-                          {% endif %}
-                        </tr>
-                      </table>
-
-                      {% if company_location or transactions.size > 0 or payment_terms and payment_terms.automatic_capture_at_fulfillment == false or b2b? %}
-                        <div style="height:1px; background-color:rgba(255,255,255,0.06); margin:16px 0;"></div>
-                        <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                          <tr>
-                            {% if company_location %}
-                              <td valign="top" width="50%" style="padding-right:12px;">
-                                <p style="margin:0 0 6px; font-size:12px; font-weight:600; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:0.5px;">{% if is_ko %}위치{% else %}Location{% endif %}</p>
-                                <p style="margin:0; font-size:14px; color:rgba(255,255,255,0.8);">{{ company_location.name }}</p>
-                              </td>
-                            {% endif %}
-                            {% if transactions.size > 0 or payment_terms and payment_terms.automatic_capture_at_fulfillment == false or b2b? %}
-                              <td valign="top" width="50%">
-                                <p style="margin:0 0 6px; font-size:12px; font-weight:600; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:0.5px;">{% if is_ko %}결제{% else %}Payment{% endif %}</p>
-                                <p style="margin:0; font-size:14px; color:rgba(255,255,255,0.8); line-height:1.6;">
-                                  {% if payment_terms and payment_terms.automatic_capture_at_fulfillment == false %}
-                                    {% assign due_date = payment_terms.next_payment.due_at | default: nil %}
-                                    {% if payment_terms.type == 'receipt' or payment_terms.type == 'fulfillment' and payment_terms.next_payment.due_at == nil %}
-                                      {{ payment_terms.translated_name }}<br>
-                                    {% else %}
-                                      {% if is_ko %}
-                                        {{ payment_terms.translated_name }}: {{ due_date | date: format: 'date' }} 결제 예정<br>
-                                      {% else %}
-                                        {{ payment_terms.translated_name }}: Due {{ due_date | date: format: 'date' }}<br>
-                                      {% endif %}
-                                    {% endif %}
-                                  {% endif %}
-                                  {% if transactions.size > 0 %}
-                                    {% for transaction in transactions %}
-                                      {% if transaction.status == "success" or transaction.status == "pending" %}
-                                        {% if transaction.kind == "capture" or transaction.kind == "sale" %}
-                                          {% if transaction.payment_details.gift_card_last_four_digits %}
-                                            <img src="{{ transaction.payment_details.payment_icon_source | payment_type_img_url }}" height="20" style="vertical-align:middle; margin-right:6px;">
-                                            {% if is_ko %}끝자리{% else %}ending with{% endif %} {{ transaction.payment_details.gift_card_last_four_digits }}<br>
-                                          {% elsif transaction.payment_details.type == "shop_pay_installments" and transaction.payment_details.credit_card_company == "unknown" %}
-                                            <img src="{{ 'notifications/shop-pay.svg' | shopify_asset_url }}" height="18" style="vertical-align:middle;"><br>
-                                            <span style="font-size:13px;">{% if is_ko %}Shop Pay 할부로 결제{% else %}Paid with Shop Pay installments{% endif %}</span><br>
-                                          {% elsif transaction.payment_details.type == "card" %}
-                                            <img src="{{ transaction.payment_details.credit_card_company | payment_icon_png_url }}" height="20" style="vertical-align:middle; margin-right:6px;" alt="{{ transaction.payment_details.credit_card_company }}">
-                                            <span>{% if is_ko %}끝자리{% else %}ending with{% endif %} {{ transaction.payment_details.credit_card_last_four_digits }}</span><br>
-                                          {% elsif transaction.gateway_display_name == "Gift card" %}
-                                            <img src="{{ transaction.gateway_icon_source | payment_type_img_url }}" height="20" style="vertical-align:middle; margin-right:6px;">
-                                            {% if is_ko %}끝자리{% else %}ending with{% endif %} {{ transaction.payment_details.gift_card.last_four_characters | upcase }}<br>
-                                            <span style="font-size:12px; color:rgba(255,255,255,0.5);">&emsp;{% if is_ko %}잔액{% else %}Balance{% endif %}: <b>{{ transaction.payment_details.gift_card.balance | money }}</b></span>
-                                          {% elsif transaction.payment_details.local_payment? %}
-                                            <img src="{{ transaction.payment_details.payment_icon_source | payment_type_img_url }}" height="20" style="vertical-align:middle; margin-right:6px;">
-                                            <span>{{ transaction.payment_details.payment_method_display_name }}</span><br>
-                                          {% elsif transaction.gateway_display_name != "Shop Cash" and transaction.gateway != "shop_offer" %}
-                                            {{ transaction.gateway_display_name }}<br>
-                                          {% endif %}
-                                        {% elsif transaction.kind == "authorization" and transaction.gateway_display_name == "Shop Cash" %}
-                                          <span>Shop Cash</span><br>
-                                        {% endif %}
-                                      {% endif %}
-                                    {% endfor %}
-                                  {% endif %}
-                                </p>
-                              </td>
-                            {% endif %}
-                          </tr>
-                        </table>
-                      {% endif %}
-
-                      {% if requires_shipping and shipping_address and shipping_method %}
-                        <div style="height:1px; background-color:rgba(255,255,255,0.06); margin:16px 0;"></div>
-                        <p style="margin:0 0 6px; font-size:12px; font-weight:600; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:0.5px;">{% if is_ko %}배송 방법{% else %}Shipping method{% endif %}</p>
-                        <p style="margin:0; font-size:14px; color:rgba(255,255,255,0.8);">
-                          {% if delivery_promise_branded_shipping_line %}
-                            {{ delivery_promise_branded_shipping_line }}
-                          {% else %}
-                            {{ shipping_method.title }}
-                          {% endif %}
-                        </p>
-                      {% endif %}
+                    <td style="padding:20px;">
+                      <h3 style="margin:0 0 12px; font-size:16px; font-weight:600; color:#ffffff;">{% if is_ko %}안내 사항{% else %}Event Information{% endif %}</h3>
+                      <p style="margin:0 0 6px; font-size:14px; color:rgba(255,255,255,0.7);">📅 {% if is_ko %}2026년 11월 7-8일{% else %}November 7-8, 2026{% endif %}</p>
+                      <p style="margin:0 0 6px; font-size:14px; color:rgba(255,255,255,0.7);">📍 {% if is_ko %}코엑스, 서울{% else %}COEX, Seoul{% endif %}</p>
+                      <p style="margin:0 0 6px; font-size:14px; color:rgba(255,255,255,0.7);">🕘 {% if is_ko %}입장 시작: 오전 9시{% else %}Doors open at 9:00 AM{% endif %}</p>
+                      <p style="margin:0; font-size:14px; color:rgba(255,255,255,0.7);">🪪 {% if is_ko %}유효한 신분증을 지참해주세요{% else %}Please bring a valid photo ID{% endif %}</p>
                     </td>
                   </tr>
                 </table>
@@ -1523,16 +254,12 @@
               <td align="center" style="padding:0 24px 40px;">
                 <p style="margin:0 0 8px; font-size:13px; color:rgba(255,255,255,0.4); line-height:1.6;">
                   {% if is_ko %}
-                    문의사항이 있으시면 이 이메일에 회신하시거나
-                    <a href="mailto:{{ shop.email }}" style="color:#FF8C00;">{{ shop.email }}</a>로 연락해 주세요.
+                    문의사항이 있으시면 <a href="mailto:{{ shop.email }}" style="color:#FF8C00;">{{ shop.email }}</a>로 연락해 주세요.
                   {% else %}
-                    If you have any questions, reply to this email or contact us at
-                    <a href="mailto:{{ shop.email }}" style="color:#FF8C00;">{{ shop.email }}</a>
+                    Questions? Contact us at <a href="mailto:{{ shop.email }}" style="color:#FF8C00;">{{ shop.email }}</a>
                   {% endif %}
                 </p>
-                <p style="margin:0; font-size:12px; color:rgba(255,255,255,0.25);">
-                  {{ shop.name }}
-                </p>
+                <p style="margin:0; font-size:12px; color:rgba(255,255,255,0.25);">{{ shop.name }}</p>
               </td>
             </tr>
 
@@ -1540,24 +267,5 @@
         </td>
       </tr>
     </table>
-
   </body>
 </html>
-
-{%- if billing_address.country_code == 'DE' or billing_address.country_code == 'DK' -%}
-  {%- if shop.terms_of_service.body != blank -%}
-    {% if is_ko %}
-      {{ shop.terms_of_service | attach_as_pdf: "이용약관" }}
-    {% else %}
-      {{ shop.terms_of_service | attach_as_pdf: "Terms of service" }}
-    {% endif %}
-  {%- endif -%}
-
-  {%- if shop.refund_policy.body != blank -%}
-    {% if is_ko %}
-      {{ shop.refund_policy | attach_as_pdf: "환불 정책" }}
-    {% else %}
-      {{ shop.refund_policy | attach_as_pdf: "Refund policy" }}
-    {% endif %}
-  {%- endif -%}
-{%- endif -%}

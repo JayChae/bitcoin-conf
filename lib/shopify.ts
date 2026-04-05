@@ -1,4 +1,6 @@
+import crypto from "crypto";
 import { TICKET_VARIANT_IDS, AFTER_PARTY_VARIANT_ID, DISCOUNT_CODES } from "./shopify-config";
+import { signPayload } from "./qr";
 import type { TierKey, PricingPhase } from "@/app/[locale]/(2026)/_types/tickets";
 import type { SeatHoldRequest } from "@/app/[locale]/(2026)/_types/seats";
 
@@ -62,7 +64,8 @@ export async function createCheckoutCart(
   phase: PricingPhase,
   locale?: string,
 ): Promise<{ cartId: string; checkoutUrl: string }> {
-  // 1. Ticket line items (one per seat)
+  // 1. Ticket line items (one per seat) with QR token for check-in
+  const checkoutId = crypto.randomUUID().slice(0, 8);
   const ticketLines = seats.map((seat) => ({
     merchandiseId: TICKET_VARIANT_IDS[tier],
     quantity: 1,
@@ -70,6 +73,16 @@ export async function createCheckoutCart(
       { key: "seat_section", value: seat.section },
       { key: "seat_number", value: seat.seat.toString() },
       { key: "after_party", value: seat.afterParty.toString() },
+      {
+        key: "_qr_token",
+        value: signPayload({
+          cid: checkoutId,
+          sec: seat.section,
+          seat: seat.seat,
+          tier,
+          ap: seat.afterParty,
+        }),
+      },
     ],
   }));
 
