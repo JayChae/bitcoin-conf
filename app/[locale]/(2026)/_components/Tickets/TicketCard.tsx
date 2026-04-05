@@ -1,4 +1,4 @@
-import { Check } from "lucide-react";
+import { Check, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Link } from "@/i18n/navigation";
 
@@ -10,11 +10,7 @@ type Benefit = {
 type SaleStatus = "upcoming" | "open" | "closed";
 
 type Props = {
-  tier: "vip" | "premium" | "general";
   tierLabel: string;
-  totalSeats: number;
-  remainingSeats: number;
-  seatsLabel: string;
   benefits: Benefit[];
   ctaLabel: string;
   ctaHref: string;
@@ -30,14 +26,13 @@ type Props = {
   saleStatus: SaleStatus;
   closedLabel: string;
   comingSoonLabel: string;
+  // Best offer
+  bestOffer?: boolean;
+  bestOfferLabel?: string;
 };
 
 export default function TicketCard({
-  tier,
   tierLabel,
-  totalSeats,
-  remainingSeats,
-  seatsLabel,
   benefits,
   ctaLabel,
   ctaHref,
@@ -50,6 +45,8 @@ export default function TicketCard({
   saleStatus,
   closedLabel,
   comingSoonLabel,
+  bestOffer,
+  bestOfferLabel,
 }: Props) {
   return (
     <div
@@ -59,22 +56,22 @@ export default function TicketCard({
         "transition-all duration-250 ease-out hover:-translate-y-1 hover:border-white/15",
       )}
     >
+      {/* Best Offer banner */}
+      {bestOffer && (
+        <div className="flex items-center justify-center gap-1.5 py-2.5 bg-white/[0.07] border-b border-white/10">
+          <Sparkles className="size-3.5 text-white/70" />
+          <span className="text-xs font-semibold tracking-widest uppercase text-white/80">
+            {bestOfferLabel}
+          </span>
+        </div>
+      )}
+
       <div className="flex flex-col flex-grow p-6 md:p-10">
-        {/* Header: tier + seats */}
-        <div className="flex items-center justify-between mb-6 md:mb-8">
+        {/* Header: tier */}
+        <div className="mb-6 md:mb-8">
           <h3 className={cn("text-2xl md:text-3xl font-bold", "text-white")}>
             {tierLabel}
           </h3>
-          <div
-            className={cn(
-              "px-3 py-1 rounded-full text-xs border tabular-nums",
-              remainingSeats / totalSeats <= 0.2
-                ? "bg-red-500/10 border-red-500/30 text-red-300"
-                : "bg-white/5 border-white/[0.08] text-white/40",
-            )}
-          >
-            {remainingSeats}/{totalSeats} {seatsLabel}
-          </div>
         </div>
 
         {/* Early Bird - desktop only */}

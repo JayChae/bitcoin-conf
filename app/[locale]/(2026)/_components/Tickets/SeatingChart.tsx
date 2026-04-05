@@ -2,11 +2,13 @@ import { getTranslations } from "next-intl/server";
 import { TICKETS } from "../../_constants/tickets";
 import { TIER_COLORS } from "../../_constants/seats";
 
-const TIERS = TICKETS.map((t) => ({
-  key: t.tier,
-  seats: t.totalSeats,
-  color: TIER_COLORS[t.tier === "general" ? "regular" : t.tier],
-}));
+const TIERS = [...TICKETS]
+  .reverse()
+  .map((t) => ({
+    key: t.tier,
+    seats: t.totalSeats,
+    color: TIER_COLORS[t.tier === "general" ? "regular" : t.tier],
+  }));
 
 // Fan arc path builder: concentric arcs from center top
 function fanArc(

@@ -4,7 +4,6 @@ import TicketCard from "./TicketCard";
 import StudentTicketCard from "./StudentTicketCard";
 import { TICKETS } from "../../_constants/tickets";
 import { getDiscountedPrice, isDiscounted, formatKRW } from "../../_utils/tickets";
-import { getRemainingSeatsByTier } from "../../_utils/seats";
 import { getCurrentPhase, getSaleStatus } from "@/lib/pricing";
 
 const PHASE_KEYS: Record<string, { phase: string; discount: string }> = {
@@ -15,7 +14,6 @@ const PHASE_KEYS: Record<string, { phase: string; discount: string }> = {
 export default async function TicketsGrid() {
   const t = await getTranslations("Tickets2026");
   const locale = await getLocale();
-  const remaining = await getRemainingSeatsByTier();
   const saleStatus = await getSaleStatus();
 
   const studentBenefitKeys = [
@@ -47,11 +45,7 @@ export default async function TicketsGrid() {
           return (
             <div key={ticket.tier}>
               <TicketCard
-                tier={ticket.tier}
                 tierLabel={t(ticket.tier)}
-                totalSeats={ticket.totalSeats}
-                remainingSeats={remaining[ticket.tier]}
-                seatsLabel={t("seats")}
                 benefits={benefits}
                 ctaLabel={t("ctaBuy")}
                 ctaHref={`/tickets/${ticket.tier}`}
@@ -64,6 +58,8 @@ export default async function TicketsGrid() {
                 saleStatus={saleStatus}
                 closedLabel={t("closed")}
                 comingSoonLabel={t("comingSoon")}
+                bestOffer={ticket.tier === "premium"}
+                bestOfferLabel={t("bestOffer")}
               />
             </div>
           );
