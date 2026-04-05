@@ -2,7 +2,10 @@
 
 import { useState, useCallback, useRef } from "react";
 import { useTranslations } from "next-intl";
-import type { TierKey, PricingPhase } from "@/app/[locale]/(2026)/_types/tickets";
+import type {
+  TierKey,
+  PricingPhase,
+} from "@/app/[locale]/(2026)/_types/tickets";
 import type { SeatHoldRequest } from "@/app/[locale]/(2026)/_types/seats";
 import { TICKETS } from "@/app/[locale]/(2026)/_constants/tickets";
 import { useSeatAvailability } from "@/hooks/useSeatAvailability";
@@ -51,7 +54,8 @@ export default function PurchaseFlow({
   );
 
   // Seat availability polling
-  const { seatStatuses, loading: seatsLoading } = useSeatAvailability(selectedSection);
+  const { seatStatuses, loading: seatsLoading } =
+    useSeatAvailability(selectedSection);
   const { sectionCounts } = useZoneAvailability(tier);
 
   const handleSelectZone = useCallback((sectionId: string) => {
@@ -112,7 +116,9 @@ export default function PurchaseFlow({
         seats.push({
           section: sectionId,
           seat: num,
-          afterParty: afterPartyIncluded || (afterPartySeats[sectionId]?.has(num) ?? false),
+          afterParty:
+            afterPartyIncluded ||
+            (afterPartySeats[sectionId]?.has(num) ?? false),
         });
       }
     }
@@ -151,7 +157,7 @@ export default function PurchaseFlow({
   return (
     <div className="flex flex-col gap-6">
       {/* Seat Map Overview */}
-      <SeatMapOverview />
+      {/* <SeatMapOverview /> */}
 
       {/* Zone Selector */}
       <div className="rounded-2xl p-4 md:p-8 bg-black/40 backdrop-blur-xl border border-white/10">
@@ -174,7 +180,7 @@ export default function PurchaseFlow({
           sectionId={selectedSection}
           selectedSeats={
             selectedSection
-              ? selectedSeats[selectedSection] ?? new Set()
+              ? (selectedSeats[selectedSection] ?? new Set())
               : new Set()
           }
           onToggleSeat={toggleSeat}

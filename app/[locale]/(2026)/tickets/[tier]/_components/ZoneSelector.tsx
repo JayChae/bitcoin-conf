@@ -68,10 +68,10 @@ export default function ZoneSelector({
         {/* Context sections (display-only) */}
         {contextRows.map((ids, rowIdx) => (
           <div key={rowIdx} className="flex flex-col items-center gap-1">
-            <span className="text-[10px] md:text-xs text-white/30 font-medium">
+            <span className="text-xs md:text-sm text-white/60 font-medium">
               {contextLabels[rowIdx]}
             </span>
-            <div className="flex items-end justify-center gap-1 md:gap-1.5">
+            <div className="flex items-end justify-center gap-1.5 md:gap-2">
               {ids.map((id, i) => {
                 const offsetY = getCurveOffset(i, ids.length);
                 return (
@@ -79,13 +79,13 @@ export default function ZoneSelector({
                     key={id}
                     style={{ transform: `translateY(${offsetY}px)` }}
                     className={cn(
-                      "flex items-center justify-center rounded-md border px-2 py-1.5 md:px-3 md:py-2",
-                      "opacity-30",
+                      "flex items-center justify-center rounded-md border px-2 py-2 md:px-4 md:py-3",
+                      "opacity-60",
                       TIER_BORDER.unavailable,
                       TIER_BG_MUTED.unavailable,
                     )}
                   >
-                    <span className="text-[10px] md:text-xs font-bold text-white/50">
+                    <span className="text-xs md:text-sm font-bold text-white/60">
                       {id}
                     </span>
                   </div>
