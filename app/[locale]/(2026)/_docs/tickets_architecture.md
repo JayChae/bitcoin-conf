@@ -167,6 +167,21 @@ Line 3: After Party    × 1    ₩50,000  (할인 미적용)         seat: A-5
 | **held** (임시 잠금) | 누군가 결제 중인 좌석 (7분 제한) | 회색 처리, 클릭 불가 |
 | **sold** (판매 완료) | 결제 완료된 좌석 | 회색 + X 표시, 영구 비활성 |
 
+### 판매 상태 (Sale Status)
+
+> 코드: [lib/pricing.ts](lib/pricing.ts) (`getSaleStatus()`)
+
+좌석 상태(available/held/sold)와 별개로, **전체 판매 가능 여부**를 제어하는 설정입니다.
+어드민 페이지(`/admin`)에서 변경하며, `pricing:config`의 `saleStatus` 필드에 저장됩니다.
+
+| 상태 | 의미 | 구매 버튼 | 좌석 선택 페이지 |
+|------|------|----------|----------------|
+| **upcoming** (판매 예정) | 아직 판매 시작 전 | 비활성 ("Coming Soon") | 접근 시 티켓 목록으로 리다이렉트 |
+| **open** (판매 진행) | 구매 가능 상태 | 활성 (클릭 가능) | 정상 접근 |
+| **closed** (판매 마감) | 판매 종료 | 비활성 ("마감") | 접근 시 티켓 목록으로 리다이렉트 |
+
+**Redis가 비어있을 때 기본값은 `"upcoming"`** — 어드민에서 `"open"`으로 변경해야 판매가 시작됩니다.
+
 ---
 
 ## 6. 예매 흐름 (사용자 시점)
@@ -300,7 +315,7 @@ Redis TTL(7분)이 자동 만료를 처리하므로, 세션 추적 없이도 시
 | 현재 가격 조회 | `GET /api/pricing/current?tier=premium` | [route.ts](app/api/pricing/current/route.ts) | 현재 페이즈, 할인율, Phase 2 잔여 수량 |
 | 어드민 로그인 | `POST /api/admin/auth` | [route.ts](app/api/admin/auth/route.ts) | 비밀번호 검증 → 세션 쿠키 발급 |
 | 할인 설정 조회 | `GET /api/admin/pricing` | [route.ts](app/api/admin/pricing/route.ts) | 현재 할인 설정 + 티어별 상태 |
-| 할인 설정 변경 | `PUT /api/admin/pricing` | [route.ts](app/api/admin/pricing/route.ts) | 할인 설정 저장 (Redis) |
+| 할인 설정 변경 | `PUT /api/admin/pricing` | [route.ts](app/api/admin/pricing/route.ts) | 할인 설정 + 판매 상태 저장 (Redis) |
 | 좌석 현황 조회 | `GET /api/admin/seats` | [route.ts](app/api/admin/seats/route.ts) | 티어별 요약 + 전체 구매 내역 |
 
 ### 각 API 상세
