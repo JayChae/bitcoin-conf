@@ -1,0 +1,286 @@
+{%- comment -%}
+  Bilingual Email Template (Korean/English) — Bitcoin Korea Conference
+  Simplified for conference tickets only: seat info + QR codes for check-in.
+
+  SETUP: Cart must pass attribute "lang" with value "ko" or "en".
+  SETUP: Line items must have properties: seat_section, seat_number, after_party, _qr_token.
+  APPLY: Shopify Admin > Settings > Notifications > Order confirmation
+{%- endcomment -%}
+
+{%- assign is_ko = true -%}
+{%- if attributes.lang == "en" or attributes.Locale == "en" -%}
+  {%- assign is_ko = false -%}
+{%- endif -%}
+
+{% capture email_title %}
+  {% if is_ko %}구매해 주셔서 감사합니다!{% else %}Thank you for your purchase!{% endif %}
+{% endcapture %}
+
+<!DOCTYPE html>
+<html lang="{% if is_ko %}ko{% else %}en{% endif %}">
+  <head>
+    <title>{{ email_title }}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="dark">
+    <style>
+      body, table, td, p, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+      body { margin: 0 !important; padding: 0 !important; background-color: #000000 !important; color: #ffffff; }
+      a { color: #FF8C00; text-decoration: none; }
+      @media only screen and (max-width: 620px) {
+        .container { width: 100% !important; padding: 0 16px !important; }
+      }
+    </style>
+  </head>
+
+  <body style="margin:0; padding:0; background-color:#000000; color:#ffffff; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size:14px; line-height:1.6;">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#000000;">
+      <tr>
+        <td align="center" style="padding:0;">
+          <table class="container" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px; width:100%;">
+
+            <!-- Header: Logo + Order Number -->
+            <tr>
+              <td align="center" style="padding:40px 24px 20px;">
+                {%- if shop.email_logo_url %}
+                  <img src="{{shop.email_logo_url}}" alt="{{ shop.name }}" width="{{ shop.email_logo_width }}" style="display:block; margin:0 auto;">
+                {%- else %}
+                  <h1 style="margin:0; font-size:24px; font-weight:700; color:#ffffff;">
+                    <a href="{{shop.url}}" style="color:#ffffff; text-decoration:none;">{{ shop.name }}</a>
+                  </h1>
+                {%- endif %}
+                <p style="margin:12px 0 0; font-size:13px; color:rgba(255,255,255,0.5);">
+                  {% if is_ko %}주문번호{% else %}Order{% endif %} {{ order_name }}
+                </p>
+              </td>
+            </tr>
+
+            <!-- Gradient Divider -->
+            <tr>
+              <td style="padding:0 24px;">
+                <div style="height:3px; border-radius:2px; background:linear-gradient(90deg, #FF8C00, #FF4500, #E91E8C, #9C40FF);"></div>
+              </td>
+            </tr>
+
+            <!-- Thank You Message -->
+            <tr>
+              <td style="padding:32px 24px 24px;">
+                <h2 style="margin:0 0 8px; font-size:24px; font-weight:700; color:#ffffff; text-align:center;">{{ email_title }}</h2>
+                <p style="margin:0; font-size:15px; color:rgba(255,255,255,0.7); text-align:center;">
+                  {% if is_ko %}아래 QR 코드를 체크인 시 제시해주세요.{% else %}Please present the QR code below at check-in.{% endif %}
+                </p>
+              </td>
+            </tr>
+
+            <!-- Ticket Cards (Boarding Pass Style) -->
+            {% for line in line_items %}
+              {% if line.properties["_qr_token"] %}
+                <tr>
+                  <td style="padding:0 24px 16px;">
+                    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#1a1412; border-radius:12px; border:1px solid rgba(255,255,255,0.08); border-left:4px solid #FF8C00;">
+                      <tr>
+                        <td style="padding:24px 24px 0;">
+                          <!-- Ticket Title -->
+                          <p style="margin:0 0 16px; font-size:11px; font-weight:700; color:rgba(255,255,255,0.4); text-transform:uppercase; letter-spacing:1.5px;">
+                            {% case line.product.handle %}{% when 'vip-ticket' %}VIP Ticket{% when 'premium-ticket' %}Premium Ticket{% when 'general-ticket' %}General Ticket{% when 'after-party' %}After Party{% else %}{{ line.title }}{% endcase %}
+                          </p>
+
+                          <!-- Section & Seat (two columns) -->
+                          {% if line.properties["seat_section"] and line.properties["seat_number"] %}
+                            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:16px;">
+                              <tr>
+                                <td width="50%" valign="top">
+                                  <p style="margin:0 0 2px; font-size:11px; font-weight:600; color:rgba(255,255,255,0.35); text-transform:uppercase; letter-spacing:1px;">
+                                    {% if is_ko %}섹션{% else %}Section{% endif %}
+                                  </p>
+                                  <p style="margin:0; font-size:28px; font-weight:800; color:#FF8C00; line-height:1.2;">
+                                    {{ line.properties["seat_section"] }}
+                                  </p>
+                                </td>
+                                <td width="50%" valign="top">
+                                  <p style="margin:0 0 2px; font-size:11px; font-weight:600; color:rgba(255,255,255,0.35); text-transform:uppercase; letter-spacing:1px;">
+                                    {% if is_ko %}좌석{% else %}Seat{% endif %}
+                                  </p>
+                                  <p style="margin:0; font-size:28px; font-weight:800; color:#ffffff; line-height:1.2;">
+                                    {{ line.properties["seat_number"] }}
+                                  </p>
+                                </td>
+                              </tr>
+                            </table>
+                          {% endif %}
+
+                          <!-- After Party Badge (only when included) -->
+                          {% if line.properties["after_party"] == "true" %}
+                            <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:16px;">
+                              <tr>
+                                <td style="background-color:rgba(255,140,0,0.15); border:1px solid rgba(255,140,0,0.4); border-radius:20px; padding:4px 12px; font-size:12px; font-weight:600; color:#FF8C00;">
+                                  ✓ {% if is_ko %}네트워킹 파티 포함{% else %}Networking Party included{% endif %}
+                                </td>
+                              </tr>
+                            </table>
+                          {% endif %}
+                        </td>
+                      </tr>
+
+                      <!-- Dashed Divider -->
+                      <tr>
+                        <td style="padding:0 24px;">
+                          <div style="border-top:2px dashed rgba(255,255,255,0.12);"></div>
+                        </td>
+                      </tr>
+
+                      <!-- QR Code -->
+                      <tr>
+                        <td align="center" style="padding:20px 24px 24px;">
+                          <div style="display:inline-block; background:#ffffff; border-radius:8px; padding:8px;">
+                            <img src="https://bitcoinkoreaconference.com/api/qr/{{ line.properties['_qr_token'] }}"
+                                 width="180" height="180" alt="Check-in QR Code"
+                                 style="display:block; width:180px; height:180px;" />
+                          </div>
+                          <p style="margin:10px 0 0; font-size:11px; color:rgba(255,255,255,0.4); letter-spacing:0.3px;">
+                            {% if is_ko %}체크인 시 이 QR 코드를 제시해주세요{% else %}Present this QR code at check-in{% endif %}
+                          </p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              {% endif %}
+            {% endfor %}
+
+            <!-- Order Summary -->
+            <tr>
+              <td style="padding:0 24px 16px;">
+                <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#1a1412; border-radius:12px; border:1px solid rgba(255,255,255,0.08);">
+                  <tr>
+                    <td style="padding:20px 20px 16px;">
+                      <h3 style="margin:0; font-size:16px; font-weight:600; color:#ffffff;">{% if is_ko %}주문 요약{% else %}Order summary{% endif %}</h3>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding:0 20px;">
+                      <div style="height:1px; background-color:rgba(255,255,255,0.08);"></div>
+                    </td>
+                  </tr>
+
+                  <!-- Line Items -->
+                  <tr>
+                    <td style="padding:16px 20px;">
+                      {% for line in subtotal_line_items %}
+                        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:8px;">
+                          <tr>
+                            <td style="font-size:14px; color:#ffffff;">
+                              {% case line.product.handle %}{% when 'vip-ticket' %}VIP Ticket{% when 'premium-ticket' %}Premium Ticket{% when 'general-ticket' %}General Ticket{% when 'after-party' %}After Party{% else %}{{ line.title }}{% endcase %}
+                              &times; {{ line.quantity }}
+                              {% if line.properties["seat_section"] and line.properties["seat_number"] %}
+                                <span style="color:#FF8C00; font-size:13px;"> ({{ line.properties["seat_section"] }}-{{ line.properties["seat_number"] }})</span>
+                              {% endif %}
+                              {% if line.discount_allocations %}
+                                {% for da in line.discount_allocations %}
+                                  {% if da.discount_application.target_selection != 'all' %}
+                                    <br><span style="font-size:12px; color:#FF8C00;">{{ da.discount_application.title | upcase }} (-{{ da.amount | money }})</span>
+                                  {% endif %}
+                                {% endfor %}
+                              {% endif %}
+                            </td>
+                            <td width="100" align="right" valign="top" style="white-space:nowrap;">
+                              {% if line.original_line_price != line.final_line_price %}
+                                <p style="margin:0; font-size:12px; color:rgba(255,255,255,0.4); text-decoration:line-through;">{{ line.original_line_price | money }}</p>
+                              {% endif %}
+                              <p style="margin:0; font-size:14px; font-weight:600; color:#ffffff;">{{ line.final_line_price | money }}</p>
+                            </td>
+                          </tr>
+                        </table>
+                      {% endfor %}
+                    </td>
+                  </tr>
+
+                  <!-- Totals -->
+                  <tr>
+                    <td style="padding:0 20px;">
+                      <div style="height:1px; background-color:rgba(255,255,255,0.08);"></div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding:16px 20px 20px;">
+                      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                        <tr>
+                          <td style="padding:4px 0; font-size:14px; color:rgba(255,255,255,0.6);">{% if is_ko %}소계{% else %}Subtotal{% endif %}</td>
+                          <td align="right" style="padding:4px 0; font-size:14px; color:#ffffff;">{{ subtotal_price | money }}</td>
+                        </tr>
+                        {% if total_discounts > 0 %}
+                          <tr>
+                            <td style="padding:4px 0; font-size:14px; color:#FF8C00;">{% if is_ko %}할인{% else %}Discount{% endif %}</td>
+                            <td align="right" style="padding:4px 0; font-size:14px; color:#FF8C00;">-{{ total_discounts | money }}</td>
+                          </tr>
+                        {% endif %}
+                        {% if tax_price and tax_price > 0 %}
+                          <tr>
+                            <td style="padding:4px 0; font-size:14px; color:rgba(255,255,255,0.6);">{% if is_ko %}세금{% else %}Tax{% endif %}</td>
+                            <td align="right" style="padding:4px 0; font-size:14px; color:#ffffff;">{{ tax_price | money }}</td>
+                          </tr>
+                        {% endif %}
+                        <tr>
+                          <td colspan="2" style="padding:8px 0 0;">
+                            <div style="height:1px; background-color:rgba(255,255,255,0.08);"></div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style="padding:8px 0 0; font-size:16px; font-weight:700; color:#ffffff;">{% if is_ko %}합계{% else %}Total{% endif %}</td>
+                          <td align="right" style="padding:8px 0 0; font-size:16px; font-weight:700; color:#ffffff;">{{ total_price | money_with_currency }}</td>
+                        </tr>
+                        {% if total_discounts > 0 %}
+                          <tr>
+                            <td colspan="2" align="right" style="padding:4px 0 0; font-size:13px; color:#FF8C00;">
+                              {% if is_ko %}{{ total_discounts | money }} 절약하셨습니다{% else %}You saved {{ total_discounts | money }}{% endif %}
+                            </td>
+                          </tr>
+                        {% endif %}
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- Event Info -->
+            <tr>
+              <td style="padding:0 24px 16px;">
+                <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#1a1412; border-radius:12px; border:1px solid rgba(255,255,255,0.08);">
+                  <tr>
+                    <td style="padding:20px;">
+                      <h3 style="margin:0 0 12px; font-size:16px; font-weight:600; color:#ffffff;">{% if is_ko %}안내 사항{% else %}Event Information{% endif %}</h3>
+                      <p style="margin:0 0 6px; font-size:14px; color:rgba(255,255,255,0.7);">📅 {% if is_ko %}2026년 11월 7-8일{% else %}November 7-8, 2026{% endif %}</p>
+                      <p style="margin:0 0 6px; font-size:14px; color:rgba(255,255,255,0.7);">📍 {% if is_ko %}코엑스, 서울{% else %}COEX, Seoul{% endif %}</p>
+                      <p style="margin:0 0 6px; font-size:14px; color:rgba(255,255,255,0.7);">🕘 {% if is_ko %}입장 시작: 오전 9시{% else %}Doors open at 9:00 AM{% endif %}</p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- Footer -->
+            <tr>
+              <td style="padding:24px 24px 16px;">
+                <div style="height:1px; background-color:rgba(255,255,255,0.06);"></div>
+              </td>
+            </tr>
+            <tr>
+              <td align="center" style="padding:0 24px 40px;">
+                <p style="margin:0 0 8px; font-size:13px; color:rgba(255,255,255,0.4); line-height:1.6;">
+                  {% if is_ko %}
+                    문의사항이 있으시면 <a href="mailto:{{ shop.email }}" style="color:#FF8C00;">{{ shop.email }}</a>로 연락해 주세요.
+                  {% else %}
+                    Questions? Contact us at <a href="mailto:{{ shop.email }}" style="color:#FF8C00;">{{ shop.email }}</a>
+                  {% endif %}
+                </p>
+                <p style="margin:0; font-size:12px; color:rgba(255,255,255,0.25);">{{ shop.name }}</p>
+              </td>
+            </tr>
+
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

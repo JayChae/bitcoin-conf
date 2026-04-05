@@ -1,0 +1,28 @@
+# dependencies
+node_modules/
+
+# build
+.next/
+out/
+build/
+
+# large binary files
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.gif
+*.svg
+*.pdf
+*.woff
+*.woff2
+*.ttf
+*.eot
+
+# public assets
+public/avatars/
+public/fonts/
+public/2026/
+public/markets/
+public/docs/
+public/sponsors/
