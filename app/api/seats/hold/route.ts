@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
       : seats;
 
   try {
-    const result = await holdSeats(sessionId, normalizedSeats, tier);
+    const result = await holdSeats(normalizedSeats, tier, sessionId);
 
     if (!result.success) {
       return NextResponse.json(

@@ -11,8 +11,6 @@ export type SeatStatus = "available" | "held" | "sold";
 
 export type SeatStatusInfo = {
   status: SeatStatus;
-  sessionId?: string;
-  heldAt?: string;
   tier?: string;
   afterParty?: boolean;
 };

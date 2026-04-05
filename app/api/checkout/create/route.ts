@@ -1,54 +1,57 @@
 import { NextRequest, NextResponse } from "next/server";
-import { redis } from "@/lib/redis";
-import { saveCheckoutMapping } from "@/lib/seat-lock";
+import { holdSeats, saveCheckoutMapping } from "@/lib/seat-lock";
 import { createCheckoutCart } from "@/lib/shopify";
 import { getCurrentPhase } from "@/lib/pricing";
 import type { TierKey } from "@/app/[locale]/(2026)/_types/tickets";
-import type { SeatHoldRequest, SeatStatusInfo } from "@/app/[locale]/(2026)/_types/seats";
+import type { SeatHoldRequest } from "@/app/[locale]/(2026)/_types/seats";
+
+const VALID_TIERS: TierKey[] = ["vip", "premium", "general"];
 
 export async function POST(request: NextRequest) {
-  const { sessionId } = await request.json();
+  const body = await request.json();
+  const { seats, tier } = body as {
+    seats: SeatHoldRequest[];
+    tier: TierKey;
+  };
 
-  if (!sessionId) {
+  if (!seats?.length || !tier) {
     return NextResponse.json(
-      { error: "sessionId required" },
+      { error: "Missing required fields" },
       { status: 400 },
     );
   }
 
-  // Get held seats
-  const holdsData = await redis.get<SeatHoldRequest[]>(`holds:${sessionId}`);
-  if (!holdsData || holdsData.length === 0) {
+  if (!VALID_TIERS.includes(tier)) {
+    return NextResponse.json({ error: "Invalid tier" }, { status: 400 });
+  }
+
+  // VIP includes after party — force true regardless of client value
+  const normalizedSeats =
+    tier === "vip"
+      ? seats.map((s) => ({ ...s, afterParty: true }))
+      : seats;
+
+  // Step 1: Atomically hold seats (7 min TTL)
+  const holdResult = await holdSeats(normalizedSeats, tier);
+
+  if (!holdResult.success) {
     return NextResponse.json(
-      { error: "No active holds found" },
-      { status: 404 },
+      { error: holdResult.error ?? "Seats unavailable", failedSeats: holdResult.failedSeats },
+      { status: 409 },
     );
   }
 
-  // Get tier from the first held seat
-  const firstSeat = holdsData[0];
-  const seatData = await redis.get<SeatStatusInfo>(
-    `seat:${firstSeat.section}:${firstSeat.seat}`,
-  );
-  if (!seatData || seatData.status !== "held") {
-    return NextResponse.json({ error: "Hold expired" }, { status: 410 });
-  }
-
-  const tier = seatData.tier as TierKey;
-
+  // Step 2: Create Shopify checkout
   try {
     const phase = await getCurrentPhase(tier);
-    const { cartId, checkoutUrl } = await createCheckoutCart(holdsData, tier, phase);
+    const { cartId, checkoutUrl } = await createCheckoutCart(normalizedSeats, tier, phase);
 
-    // Remove query parameters from cartId for consistent Redis key mapping
-    // Shopify returns: gid://shopify/Cart/xxx?key=yyy
-    // We need to store: gid://shopify/Cart/xxx
     const cleanCartId = cartId.split('?')[0];
 
-    console.log("[checkout] phase:", phase, "tier:", tier, "cleanCartId:", cleanCartId, "seats:", holdsData.length);
+    console.log("[checkout] phase:", phase, "tier:", tier, "cleanCartId:", cleanCartId, "seats:", normalizedSeats.length);
 
-    await saveCheckoutMapping(cleanCartId, sessionId, holdsData, tier, phase);
-    return NextResponse.json({ checkoutUrl, cartId });
+    await saveCheckoutMapping(cleanCartId, normalizedSeats, tier, phase);
+    return NextResponse.json({ checkoutUrl });
   } catch (error) {
     console.error("Failed to create checkout:", error);
     return NextResponse.json(

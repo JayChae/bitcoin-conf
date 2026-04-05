@@ -61,12 +61,14 @@ export default function SeatSelector({
   selectedSeats,
   onToggleSeat,
   seatStatuses = {},
+  loading = false,
 }: {
   tier: TierKey;
   sectionId: string | null;
   selectedSeats: Set<number>;
   onToggleSeat: (sectionId: string, seatNumber: number) => void;
   seatStatuses?: Record<number, SeatStatus>;
+  loading?: boolean;
 }) {
   const t = useTranslations("Tickets2026");
 
@@ -99,8 +101,23 @@ export default function SeatSelector({
 
       <p className="text-xs text-white/40">{t("selectSeat")}</p>
 
-      <div className="overflow-x-auto p-2">
-        <div className="flex flex-col items-center gap-1.5 md:gap-2 min-w-max">
+      <div className="relative overflow-x-auto p-2">
+        {loading && (
+          <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/40 rounded-lg">
+            <svg
+              className="h-6 w-6 animate-spin text-white/60"
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+            </svg>
+          </div>
+        )}
+        <div className={cn(
+          "flex flex-col items-center gap-1.5 md:gap-2 min-w-max",
+          loading && "pointer-events-none opacity-50",
+        )}>
           {section.rows.map((count, rowIdx) => {
             const rowSeats: number[] = [];
             for (let i = 0; i < count; i++) {

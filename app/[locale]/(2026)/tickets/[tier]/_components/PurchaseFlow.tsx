@@ -1,14 +1,12 @@
 "use client";
 
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useState, useCallback, useRef } from "react";
 import { useTranslations } from "next-intl";
 import type { TierKey, PricingPhase } from "@/app/[locale]/(2026)/_types/tickets";
 import type { SeatHoldRequest } from "@/app/[locale]/(2026)/_types/seats";
 import { TICKETS } from "@/app/[locale]/(2026)/_constants/tickets";
-import { useSessionId } from "@/hooks/useSessionId";
 import { useSeatAvailability } from "@/hooks/useSeatAvailability";
 import { useZoneAvailability } from "@/hooks/useZoneAvailability";
-import { useHoldTimer } from "@/hooks/useHoldTimer";
 import SeatMapOverview from "./SeatMapOverview";
 import ZoneSelector from "./ZoneSelector";
 import SeatSelector from "./SeatSelector";
@@ -25,7 +23,6 @@ export default function PurchaseFlow({
   phase: PricingPhase;
 }) {
   const t = useTranslations("Tickets2026");
-  const sessionId = useSessionId();
 
   const [selectedSection, setSelectedSection] = useState<string | null>(null);
   const [selectedSeats, setSelectedSeats] = useState<
@@ -54,31 +51,8 @@ export default function PurchaseFlow({
   );
 
   // Seat availability polling
-  const { seatStatuses } = useSeatAvailability(selectedSection);
+  const { seatStatuses, loading: seatsLoading } = useSeatAvailability(selectedSection);
   const { sectionCounts } = useZoneAvailability(tier);
-
-  // Hold timer
-  const {
-    formatted: timerDisplay,
-    isExpired,
-    startTimer,
-  } = useHoldTimer();
-
-  // Handle timer expiration — release holds and reset
-  useEffect(() => {
-    if (!isExpired || !sessionId) return;
-
-    fetch("/api/seats/release", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ sessionId }),
-    });
-
-    setHoldState("idle");
-    setSelectedSeats({});
-    setAfterPartySeats({});
-    setHoldError(t("holdExpired"));
-  }, [isExpired, sessionId, t]);
 
   const handleSelectZone = useCallback((sectionId: string) => {
     setSelectedSection(sectionId);
@@ -132,8 +106,6 @@ export default function PurchaseFlow({
   );
 
   const handlePurchase = useCallback(async () => {
-    if (!sessionId) return;
-
     const seats: SeatHoldRequest[] = [];
     for (const [sectionId, seatSet] of Object.entries(selectedSeats)) {
       for (const num of [...seatSet].sort((a, b) => a - b)) {
@@ -147,56 +119,34 @@ export default function PurchaseFlow({
 
     if (seats.length === 0) return;
 
-    setHoldState("holding");
+    setHoldState("loading");
     setHoldError(null);
 
     try {
-      // Step 1: Hold seats (7 min lock)
-      const holdRes = await fetch("/api/seats/hold", {
+      const res = await fetch("/api/checkout/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sessionId, seats, tier }),
+        body: JSON.stringify({ seats, tier }),
       });
 
-      if (!holdRes.ok) {
-        const data = await holdRes.json();
+      if (!res.ok) {
+        const data = await res.json();
         setHoldState("error");
         if (data.failedSeats) {
           setHoldError(t("seatsTaken"));
-        } else if (data.error?.includes("already have")) {
-          setHoldError(t("alreadyHeld"));
         } else {
           setHoldError(t("holdError"));
         }
         return;
       }
 
-      // Step 2: Start countdown timer
-      startTimer();
-
-      // Step 3: Create Shopify checkout
-      setHoldState("checking_out");
-      const checkoutRes = await fetch("/api/checkout/create", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sessionId }),
-      });
-
-      if (!checkoutRes.ok) {
-        setHoldState("error");
-        setHoldError(t("holdError"));
-        return;
-      }
-
-      const { checkoutUrl } = await checkoutRes.json();
-
-      // Step 4: Redirect to Shopify payment page
+      const { checkoutUrl } = await res.json();
       window.location.href = checkoutUrl;
     } catch {
       setHoldState("error");
       setHoldError(t("holdError"));
     }
-  }, [sessionId, selectedSeats, afterPartySeats, afterPartyIncluded, tier, startTimer, t]);
+  }, [selectedSeats, afterPartySeats, afterPartyIncluded, tier, t]);
 
   return (
     <div className="flex flex-col gap-6">
@@ -229,6 +179,7 @@ export default function PurchaseFlow({
           }
           onToggleSeat={toggleSeat}
           seatStatuses={seatStatuses}
+          loading={seatsLoading}
         />
       </div>
 
@@ -251,7 +202,6 @@ export default function PurchaseFlow({
         locale={locale}
         onPurchase={handlePurchase}
         holdState={holdState}
-        timerDisplay={timerDisplay}
         holdError={holdError}
         phase={phase}
       />

@@ -19,7 +19,7 @@
 
 영화관 예매와 같은 방식입니다:
 
-1. 좌석을 고르고 "결제하기"를 누르면 → 해당 좌석이 **7분간 임시로 잠깁니다**
+1. 좌석을 고르고 "구매하기"를 누르면 → 해당 좌석이 **7분간 임시로 잠기고** Shopify 결제 페이지로 이동
 2. 잠긴 동안 다른 사람은 그 좌석을 선택할 수 없습니다
 3. 7분 안에 결제하면 → 좌석이 **확정** 됩니다
 4. 7분이 지나면 → 잠금이 **자동 해제**되어 다른 사람이 선택할 수 있습니다
@@ -172,7 +172,6 @@ Line 3: After Party    × 1    ₩50,000  (할인 미적용)         seat: A-5
 ## 6. 예매 흐름 (사용자 시점)
 
 > UI 전체 플로우: [tickets/[tier]/_components/PurchaseFlow.tsx](app/[locale]/(2026)/tickets/[tier]/_components/PurchaseFlow.tsx)
-> 세션 ID: [hooks/useSessionId.ts](hooks/useSessionId.ts) · 타이머: [hooks/useHoldTimer.ts](hooks/useHoldTimer.ts)
 
 ```
 ① 좌석 선택 화면 입장
@@ -180,32 +179,37 @@ Line 3: After Party    × 1    ₩50,000  (할인 미적용)         seat: A-5
    화면에 빈 좌석 / 잠긴 좌석 / 판매된 좌석이 표시됨
    (3초마다 자동 갱신 — 현재 보고 있는 섹션만)
    ↓
+   섹션 전환 시 좌석 상태 로딩 중에는 로딩 오버레이 표시 (클릭 방지)
+   ↓
 ② 섹션을 선택하고, 원하는 좌석을 클릭 (여러 개 가능)
    ↓
    이 단계에서는 서버에 요청하지 않음 — 화면에서만 선택 표시
    ↓
 ③ (Premium/General만) 좌석별로 애프터파티 참가 여부 선택
    ↓
-④ "결제하기" 버튼 클릭
+④ "구매하기" 버튼 클릭 (로딩 스피너 표시)
    ↓
-   서버에 "이 좌석들을 잡아주세요" 요청
+   서버가 한 번의 API 호출로 좌석 잠금 + Shopify 결제 페이지 생성
    ↓
-   ┌─ 성공: 좌석 7분간 잠금 → ⑤로 이동
+   ┌─ 성공: 좌석 7분간 잠금 + 즉시 Shopify 결제 페이지로 이동
    └─ 실패: "이미 다른 분이 선택한 좌석입니다" 안내
    ↓
-⑤ Shopify 결제 페이지로 이동 (7분 타이머 시작)
+⑤ Shopify 결제 페이지
    ↓
    장바구니에 티켓 + 애프터파티(선택된 경우) 포함
    ↓
    ┌─ 결제 완료: 좌석이 "판매 완료"로 확정
-   └─ 결제 포기/시간 초과: 7분 후 좌석 자동 해제
+   └─ 결제 포기/시간 초과: 7분 후 좌석 자동 해제 (Redis TTL)
 ```
+
+> **설계 원칙**: 프론트엔드에 세션 ID나 타이머가 없습니다. 좌석 만료는 Redis TTL이 서버사이드에서 처리합니다.
+> "구매하기" 클릭 시 단일 API 호출(`POST /api/checkout/create`)로 좌석 잠금과 결제 페이지 생성을 한 번에 처리합니다.
 
 ---
 
 ## 7. 동시성 제어 — 같은 좌석 충돌 방지
 
-> Lua 스크립트: [lib/seat-lock.ts:48-75](lib/seat-lock.ts#L48-L75) (LUA_HOLD), [lib/seat-lock.ts:147-157](lib/seat-lock.ts#L147-L157) (LUA_RELEASE_SEAT)
+> Lua 스크립트: [lib/seat-lock.ts](lib/seat-lock.ts) (LUA_HOLD_SIMPLE, LUA_HOLD_WITH_SESSION)
 
 ### 시나리오: A와 B가 동시에 C-1 좌석을 선택
 
@@ -224,36 +228,33 @@ A: 결제 페이지로 이동          B: "이미 선택된 좌석입니다" 표
 
 ### 좌석 수 제한
 
-한 사람이 좌석을 독점하지 못하도록 제한을 둡니다:
+한 요청에서 좌석을 독점하지 못하도록 제한을 둡니다:
 
 | 티켓 종류 | 한 번에 최대 hold 가능 좌석 수 | 이유 |
 |-----------|-------------------------------|------|
 | VIP | 4석 | VIP 좌석이 전체 21석뿐이므로 엄격하게 제한 |
 | Premium / General | 10석 | 단체 참가도 허용하되, 과도한 독점 방지 |
 
-이 제한은 서버 API(hold 요청 시)에서 검증합니다. 브라우저에서만 제한하면 우회 가능하기 때문입니다.
+이 제한은 서버 API에서 검증합니다. 브라우저에서만 제한하면 우회 가능하기 때문입니다.
 
 ---
 
 ## 8. 데이터 저장 구조 (Redis)
 
-> 키 생성 함수: [lib/seat-lock.ts:15-23](lib/seat-lock.ts#L15-L23) · TTL 상수: [lib/seat-lock.ts:6-7](lib/seat-lock.ts#L6-L7)
+> 키 생성 함수: [lib/seat-lock.ts](lib/seat-lock.ts) · TTL 상수: [lib/seat-lock.ts](lib/seat-lock.ts)
 
-Redis에 저장되는 정보는 **4종류**입니다:
+Redis에 저장되는 정보는 **3종류**입니다 (메인 구매 플로우 기준):
 
 | 키 형태 | 저장 내용 | 자동 삭제 | 비유 |
 |---------|----------|----------|------|
-| `seat:{섹션}:{번호}` | 좌석 상태 (held/sold, 누가, 언제, 애프터파티 여부) | held: 7분 후 삭제 / sold: 삭제 안 됨 | 좌석에 붙인 "예약됨" 스티커 |
-| `holds:{세션ID}` | 해당 사용자가 잡은 좌석 목록 | 7분 후 삭제 | 사용자의 예매 메모장 |
-| `checkout:{장바구니ID}` | 결제 중인 좌석과 사용자 연결 정보 + 구매 시점 페이즈 | 30분 후 삭제 | 매표소 대기표 |
+| `seat:{섹션}:{번호}` | 좌석 상태 (held/sold, 티어, 애프터파티 여부) | held: 7분 후 삭제 / sold: 삭제 안 됨 | 좌석에 붙인 "예약됨" 스티커 |
+| `checkout:{장바구니ID}` | 결제 중인 좌석 목록 + 티어 + 구매 시점 페이즈 | 30분 후 삭제 | 매표소 대기표 |
 | `webhook:order:{주문ID}` | `"1"` (처리 완료 표시) | 24시간 후 삭제 | 중복 처리 방지 도장 |
 
 **예시) `seat:A:5` 키에 저장되는 정보:**
 ```json
 {
   "status": "held",
-  "sessionId": "sess_1709308800000_abc123def",
-  "heldAt": "2026-03-01T10:00:00Z",
   "tier": "premium",
   "afterParty": true
 }
@@ -261,15 +262,15 @@ Redis에 저장되는 정보는 **4종류**입니다:
 
 `webhook:order:{주문ID}` 키는 Shopify 웹훅의 **멱등성(idempotency)**을 보장합니다.
 Shopify가 같은 주문 완료 알림을 여러 번 보내더라도, 이 키가 이미 존재하면 두 번째부터는 무시합니다.
-([app/api/webhooks/shopify/route.ts:29-33](app/api/webhooks/shopify/route.ts#L29-L33) 참고)
 
-### 왜 기존 문서의 `lock:seat:*` 키를 제거했나요?
+> **레거시**: `/api/seats/hold` 엔드포인트(sessionId 기반)를 사용하면 `holds:{sessionId}` 키가 추가로 생성됩니다. 메인 구매 플로우에서는 사용하지 않습니다.
 
-기존 설계에서는 `lock:seat:C:1` (5초 TTL)이라는 별도의 "충돌 방지 잠금" 키가 있었습니다.
-하지만 Redis의 SETNX 명령 자체가 이미 원자적(한 번에 하나만 성공)이고,
-여러 좌석을 동시에 잠그는 경우에는 Lua 스크립트가 원자성을 보장하므로,
-별도 lock 키 없이도 충돌이 완벽히 방지됩니다.
-키가 적을수록 시스템이 단순하고 관리하기 쉽습니다.
+### 왜 `holds:{sessionId}` 키를 메인 플로우에서 제거했나요?
+
+이전 설계에서는 사용자를 세션 ID로 추적하고, 재시도 시 이전 좌석을 자동 해제했습니다.
+하지만 세션 ID 관리(생성, localStorage 저장, API 전달)와 프론트엔드 타이머가 불필요한 복잡도를 추가했습니다.
+Redis TTL(7분)이 자동 만료를 처리하므로, 세션 추적 없이도 시스템이 정상 동작합니다.
+재시도 시 이전 좌석이 최대 7분간 잠기는 트레이드오프가 있지만, 컨퍼런스 규모에서 영향이 미미합니다.
 
 ---
 
@@ -282,10 +283,15 @@ Shopify가 같은 주문 완료 알림을 여러 번 보내더라도, 이 키가
 | 기능 | 경로 | 코드 | 설명 |
 |------|------|------|------|
 | 좌석 상태 조회 | `GET /api/seats/status?section=A` | [route.ts](app/api/seats/status/route.ts) | "A 섹션 좌석들 상태 알려줘" |
-| 좌석 임시 잠금 | `POST /api/seats/hold` | [route.ts](app/api/seats/hold/route.ts) | "이 좌석들 7분간 잡아줘" |
-| 잠금 해제 | `POST /api/seats/release` | [route.ts](app/api/seats/release/route.ts) | "잡아둔 좌석 취소할게" |
-| 결제 생성 | `POST /api/checkout/create` | [route.ts](app/api/checkout/create/route.ts) | "Shopify 결제 페이지 만들어줘" |
+| 좌석 잠금 + 결제 생성 | `POST /api/checkout/create` | [route.ts](app/api/checkout/create/route.ts) | 좌석 잠금 + Shopify 결제 페이지 생성 (통합) |
 | 결제 완료 수신 | `POST /api/webhooks/shopify` | [route.ts](app/api/webhooks/shopify/route.ts) | Shopify가 "결제 완료됐어" 알림 |
+
+### 레거시 좌석 API (어드민/테스트용)
+
+| 기능 | 경로 | 코드 | 설명 |
+|------|------|------|------|
+| 좌석 임시 잠금 | `POST /api/seats/hold` | [route.ts](app/api/seats/hold/route.ts) | sessionId 기반 좌석 잠금 |
+| 잠금 해제 | `POST /api/seats/release` | [route.ts](app/api/seats/release/route.ts) | sessionId 기반 좌석 해제 |
 
 ### 할인/어드민 API
 
@@ -303,26 +309,18 @@ Shopify가 같은 주문 완료 알림을 여러 번 보내더라도, 이 키가
 - 브라우저가 3초마다 호출해서 화면을 갱신합니다
 - 섹션을 지정하는 이유: 전체 1,039석을 매번 조회하면 낭비이므로, 현재 보고 있는 섹션만
 
-**좌석 임시 잠금** `POST /api/seats/hold`
-- 요청 예시: `{ sessionId: "sess_170930_abc", seats: [{section: "A", seat: 5, afterParty: true}, ...] }`
-- 모든 좌석이 비었으면 → 7분간 잠금, 성공 응답
-- 하나라도 이미 잡혀있으면 → 전부 실패, 어떤 좌석이 문제인지 알려줌
-- 좌석 수 제한도 여기서 검증 (VIP 최대 4석, 일반 최대 10석)
-
-**잠금 해제** `POST /api/seats/release`
-- 요청 예시: `{ sessionId: "sess_170930_abc" }`
-- 해당 사용자가 잡은 모든 좌석을 즉시 해제합니다
-- 사용자가 "다시 선택할게요"를 눌렀을 때 호출
-
-**결제 생성** `POST /api/checkout/create`
-- 요청 예시: `{ sessionId: "sess_170930_abc" }`
+**좌석 잠금 + 결제 생성 (통합)** `POST /api/checkout/create`
+- 요청 예시: `{ seats: [{section: "A", seat: 5, afterParty: true}, ...], tier: "premium" }`
 - 동작 순서:
-  1. Redis에서 해당 사용자의 hold 좌석 확인
-  2. `getCurrentPhase(tier)` 호출하여 현재 할인 페이즈 확인
-  3. Shopify 장바구니 생성 (티켓 라인 아이템 + After Party 라인 아이템 분리)
-  4. 페이즈에 따라 할인 코드 적용 (`cartDiscountCodesUpdate` mutation)
-  5. Shopify 결제 페이지 URL 반환
-- 장바구니 ID + 현재 페이즈를 Redis에 저장 (나중에 결제 완료 시 좌석과 연결 + Phase 2 카운터 정확도 보장)
+  1. 좌석/티어 검증 (좌석 수 제한, 티어 매칭)
+  2. Lua 스크립트로 원자적 좌석 잠금 (7분 TTL)
+  3. `getCurrentPhase(tier)` 호출하여 현재 할인 페이즈 확인
+  4. Shopify 장바구니 생성 (티켓 라인 아이템 + After Party 라인 아이템 분리)
+  5. 페이즈에 따라 할인 코드 적용 (`cartDiscountCodesUpdate` mutation)
+  6. Redis에 checkout 매핑 저장 (좌석 목록, 티어, 페이즈)
+  7. Shopify 결제 페이지 URL 반환
+- 좌석이 이미 잡혀있으면 → 409 응답 + `failedSeats` 배열
+- Shopify API 실패 시 → 500 응답 (좌석은 7분 TTL 후 자동 해제, 재시도 가능)
 
 **결제 완료 수신** `POST /api/webhooks/shopify`
 - Shopify가 결제 완료 시 자동으로 호출하는 알림
@@ -345,65 +343,37 @@ Shopify가 같은 주문 완료 알림을 여러 번 보내더라도, 이 키가
 
 ### ~~[심각] 티어 검증 누락 — 가격 조작 가능~~ ✅ 해결됨
 
-> [lib/seat-lock.ts:96-106](lib/seat-lock.ts#L96-L106)
-
 `holdSeats()`에서 각 좌석의 실제 tier를 [`getSeatTier()`](app/[locale]/(2026)/_utils/seats.ts)로 확인하여, 요청된 tier와 불일치하면 거부합니다.
 예를 들어 VIP 좌석(C-1)을 "general" tier로 hold 요청하면 `"Seat C-1 is not a general seat"` 에러를 반환합니다.
 
-```typescript
-// lib/seat-lock.ts:96-106
-const expectedSeatTier = TIER_TO_SEAT_TIER[tier];
-for (const s of seats) {
-  const actual = getSeatTier(s.section, s.seat);
-  if (actual !== expectedSeatTier) {
-    return { success: false, error: `Seat ${s.section}-${s.seat} is not a ${tier} seat` };
-  }
-}
-```
-
 ### ~~[심각] SHOPIFY_WEBHOOK_SECRET 미설정~~ ✅ 해결됨
-
-> [app/api/webhooks/shopify/route.ts:11](app/api/webhooks/shopify/route.ts#L11)
 
 `.env`에 `SHOPIFY_WEBHOOK_SECRET`이 설정되어 Webhook HMAC 검증이 정상 동작합니다.
 
-### [높음] 세션 ID 우회로 좌석 독점 가능
+### ~~[높음] HMAC 비교가 타이밍 공격에 취약~~ ✅ 해결됨
 
-> [hooks/useSessionId.ts](hooks/useSessionId.ts)
+`crypto.timingSafeEqual()`을 사용하여 HMAC 서명을 상수 시간으로 비교합니다.
+맞든 틀리든 비교 시간이 동일하므로 타이밍 사이드채널이 차단됩니다.
 
-**세션 ID란?**
-사용자를 구별하기 위한 고유 번호입니다. 로그인 없이 브라우저의 localStorage에 자동 생성됩니다.
-"이 브라우저 = 이 사람"으로 간주하는 방식입니다.
+### [높음] 좌석 독점 방지 미흡
 
-**문제:**
-VIP는 1인당 최대 4석, 일반은 최대 10석까지만 잡을 수 있도록 제한하고 있습니다.
-하지만 세션 ID가 브라우저마다 다르게 생성되므로:
+현재 좌석 수 제한(VIP 4석, 일반 10석)은 요청 단위로만 검증됩니다.
+같은 사람이 여러 브라우저/탭에서 반복 요청하면 제한을 우회할 수 있습니다.
 
 ```
 같은 사람이:
-  크롬 일반 모드      → sess_001 → VIP 4석 hold
-  크롬 시크릿 모드     → sess_002 → VIP 4석 hold
-  사파리              → sess_003 → VIP 4석 hold
+  크롬 일반 모드     → VIP 4석 hold 요청 ✅
+  크롬 시크릿 모드    → VIP 4석 hold 요청 ✅
+  사파리             → VIP 4석 hold 요청 ✅
   ────────────────────────────────────────
   합계: VIP 12석을 혼자 독점 (전체 21석 중 57%)
 ```
-
-서버 입장에서는 sess_001, 002, 003이 같은 사람인지 알 방법이 없습니다.
 
 **완화 방안**:
 - IP 기반 추가 제한 (동일 IP에서 N개 이상 hold 차단)
 - 또는 이메일/전화번호 인증 후 hold 허용
 
-### ~~[높음] HMAC 비교가 타이밍 공격에 취약~~ ✅ 해결됨
-
-> [app/api/webhooks/shopify/route.ts:22-24](app/api/webhooks/shopify/route.ts#L22-L24)
-
-`crypto.timingSafeEqual()`을 사용하여 HMAC 서명을 상수 시간으로 비교합니다.
-맞든 틀리든 비교 시간이 동일하므로 타이밍 사이드채널이 차단됩니다.
-
 ### [중간] sold 좌석의 영속성 보장 없음
-
-> [lib/seat-lock.ts:175-201](lib/seat-lock.ts#L175-L201)
 
 **문제:**
 결제가 완료된 좌석은 Redis에 `status: "sold"`로 저장되어 영구히 유지됩니다.
@@ -432,7 +402,7 @@ Upstash는 안정적인 서비스이지만, 어떤 서비스든 장애 가능성
 
 ```
 봇 공격 시나리오:
-  1초에 100번 hold 요청 → 좌석 대량 잠금
+  1초에 100번 checkout/create 요청 → 좌석 대량 잠금
   → 7분 후 자동 해제
   → 다시 대량 잠금
   → 반복...

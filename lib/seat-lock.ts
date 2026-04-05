@@ -50,12 +50,12 @@ export async function getSectionStatus(
 
 // ─── 2. 좌석 임시 잠금 (Lua 스크립트 — 원자적) ───
 
-const LUA_HOLD = `
+// Full version with holds key (used by /api/seats/hold with sessionId)
+const LUA_HOLD_WITH_SESSION = `
 local numSeats = tonumber(ARGV[1])
 local sessionId = ARGV[2]
 local ttl = tonumber(ARGV[3])
 
--- Check all seats are free
 local failed = {}
 for i = 1, numSeats do
   local val = redis.call('GET', KEYS[i])
@@ -68,21 +68,43 @@ if #failed > 0 then
   return cjson.encode({ success = false, failed = failed })
 end
 
--- All clear — set every seat + holds key
 for i = 1, numSeats do
   redis.call('SET', KEYS[i], ARGV[3 + i], 'EX', ttl)
 end
 
--- holds:{sessionId} is the last key
 redis.call('SET', KEYS[numSeats + 1], ARGV[3 + numSeats + 1], 'EX', ttl)
 
 return cjson.encode({ success = true })
 `;
 
+// Simple version: just check + set seats (used by checkout/create)
+const LUA_HOLD_SIMPLE = `
+local numSeats = tonumber(ARGV[1])
+local ttl = tonumber(ARGV[2])
+
+local failed = {}
+for i = 1, numSeats do
+  local val = redis.call('GET', KEYS[i])
+  if val then
+    table.insert(failed, i)
+  end
+end
+
+if #failed > 0 then
+  return cjson.encode({ success = false, failed = failed })
+end
+
+for i = 1, numSeats do
+  redis.call('SET', KEYS[i], ARGV[2 + i], 'EX', ttl)
+end
+
+return cjson.encode({ success = true })
+`;
+
 export async function holdSeats(
-  sessionId: string,
   seats: SeatHoldRequest[],
   tier: TierKey,
+  sessionId?: string,
 ): Promise<{
   success: boolean;
   error?: string;
@@ -108,45 +130,49 @@ export async function holdSeats(
     }
   }
 
-  // Auto-release existing holds before creating new ones
-  await releaseHolds(sessionId);
+  // Auto-release existing holds (only with sessionId)
+  if (sessionId) {
+    await releaseHolds(sessionId);
+  }
 
-  const now = new Date().toISOString();
-
-  // KEYS: [seat:A:1, seat:A:2, ..., holds:{sessionId}]
-  const keys = [
-    ...seats.map((s) => seatKey(s.section, s.seat)),
-    holdsKey(sessionId),
-  ];
-
-  // ARGV: [numSeats, sessionId, ttl, ...seatJSON, holdsJSON]
   const seatArgs = seats.map((s) =>
     JSON.stringify({
       status: "held",
-      sessionId,
-      heldAt: now,
       tier,
       afterParty: s.afterParty,
     } satisfies SeatStatusInfo),
   );
 
-  const holdsData = JSON.stringify(
-    seats.map((s) => ({
-      section: s.section,
-      seat: s.seat,
-      afterParty: s.afterParty,
-    })),
-  );
+  let raw: unknown;
 
-  const argv = [
-    seats.length.toString(),
-    sessionId,
-    HOLD_TTL.toString(),
-    ...seatArgs,
-    holdsData,
-  ];
+  if (sessionId) {
+    // Full mode: includes holds key for session tracking
+    const keys = [
+      ...seats.map((s) => seatKey(s.section, s.seat)),
+      holdsKey(sessionId),
+    ];
+    const holdsData = JSON.stringify(
+      seats.map((s) => ({
+        section: s.section,
+        seat: s.seat,
+        afterParty: s.afterParty,
+      })),
+    );
+    const argv = [
+      seats.length.toString(),
+      sessionId,
+      HOLD_TTL.toString(),
+      ...seatArgs,
+      holdsData,
+    ];
+    raw = await redis.eval(LUA_HOLD_WITH_SESSION, keys, argv);
+  } else {
+    // Simple mode: just hold seats, no session tracking
+    const keys = seats.map((s) => seatKey(s.section, s.seat));
+    const argv = [seats.length.toString(), HOLD_TTL.toString(), ...seatArgs];
+    raw = await redis.eval(LUA_HOLD_SIMPLE, keys, argv);
+  }
 
-  const raw = await redis.eval(LUA_HOLD, keys, argv);
   const result = typeof raw === "string" ? JSON.parse(raw) : raw;
 
   if (!result.success) {
@@ -159,7 +185,7 @@ export async function holdSeats(
   return { success: true };
 }
 
-// ─── 3. 잠금 해제 ───
+// ─── 3. 잠금 해제 (sessionId 기반 — /api/seats/hold 및 /api/seats/release용) ───
 
 const LUA_RELEASE_SEAT = `
 local val = redis.call('GET', KEYS[1])
@@ -193,7 +219,6 @@ export async function confirmSeats(
   cartId: string,
 ): Promise<{ confirmed: false } | { confirmed: true; tier: TierKey; seatCount: number; phase: PricingPhase }> {
   const data = await redis.get<{
-    sessionId: string;
     seats: SeatHoldRequest[];
     tier: TierKey;
     phase: PricingPhase;
@@ -207,13 +232,11 @@ export async function confirmSeats(
       seatKey(seat.section, seat.seat),
       JSON.stringify({
         status: "sold",
-        sessionId: data.sessionId,
         tier: data.tier,
         afterParty: seat.afterParty,
       } satisfies SeatStatusInfo),
     );
   }
-  pipeline.del(holdsKey(data.sessionId));
   await pipeline.exec();
 
   return { confirmed: true, tier: data.tier, seatCount: data.seats.length, phase: data.phase };
@@ -227,14 +250,13 @@ export async function deleteCheckoutMapping(cartId: string): Promise<void> {
 
 export async function saveCheckoutMapping(
   cartId: string,
-  sessionId: string,
   seats: SeatHoldRequest[],
   tier: TierKey,
   phase: PricingPhase,
 ): Promise<void> {
   await redis.set(
     checkoutKey(cartId),
-    JSON.stringify({ sessionId, seats, tier, phase }),
+    JSON.stringify({ seats, tier, phase }),
     { ex: CHECKOUT_TTL },
   );
 }
