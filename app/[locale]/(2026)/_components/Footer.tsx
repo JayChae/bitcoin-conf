@@ -30,6 +30,38 @@ export default async function Footer() {
                 @btckoreaconf
               </Link>
             </div>
+            <div className="flex items-center gap-2">
+              <Image
+                src="/sns/kakao.svg"
+                alt="KakaoTalk"
+                width={18}
+                height={18}
+                className="opacity-100"
+              />
+              <Link
+                href="http://pf.kakao.com/_EaShX"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white/60 hover:text-white text-sm transition-colors duration-200"
+              >
+                KakaoTalk
+              </Link>
+            </div>
+            <div className="flex items-center gap-2">
+              <Image
+                src="/sns/email.svg"
+                alt="Email"
+                width={18}
+                height={18}
+                className="opacity-100"
+              />
+              <Link
+                href="mailto:admin@bitomun.com"
+                className="text-white/60 hover:text-white text-sm transition-colors duration-200"
+              >
+                admin@bitomun.com
+              </Link>
+            </div>
           </div>
 
           {/* Location Section */}
