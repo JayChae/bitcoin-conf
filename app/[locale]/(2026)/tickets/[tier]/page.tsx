@@ -7,7 +7,8 @@ import {
   isDiscounted as checkDiscount,
   formatKRW,
 } from "../../_utils/tickets";
-import { getCurrentPhase } from "@/lib/pricing";
+import { getCurrentPhase, getSaleStatus } from "@/lib/pricing";
+import { redirect } from "next/navigation";
 import PurchaseFlow from "./_components/PurchaseFlow";
 
 type Props = {
@@ -18,6 +19,9 @@ export default async function TierPage({ params }: Props) {
   const { locale, tier } = await params;
 
   if (!isValidTier(tier)) notFound();
+
+  const saleStatus = await getSaleStatus();
+  if (saleStatus !== "open") redirect(`/${locale}/#tickets`);
 
   const t = await getTranslations("Tickets2026");
   const ticket = TICKETS.find((tk) => tk.tier === tier)!;

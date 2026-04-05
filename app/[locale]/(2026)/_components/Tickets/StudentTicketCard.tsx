@@ -7,6 +7,7 @@ type Props = {
   description: string;
   benefits: { text: string }[];
   notice?: string;
+  comingSoonLabel: string;
 };
 
 export default function StudentTicketCard({
@@ -15,6 +16,7 @@ export default function StudentTicketCard({
   description,
   benefits,
   notice,
+  comingSoonLabel,
 }: Props) {
   return (
     <div
@@ -78,7 +80,7 @@ export default function StudentTicketCard({
               "cursor-not-allowed",
             )}
           >
-            준비중
+            {comingSoonLabel}
           </button>
         </div>
       </div>

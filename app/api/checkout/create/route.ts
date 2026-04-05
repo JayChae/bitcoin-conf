@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { holdSeats, saveCheckoutMapping } from "@/lib/seat-lock";
 import { createCheckoutCart } from "@/lib/shopify";
-import { getCurrentPhase } from "@/lib/pricing";
+import { getCurrentPhase, getSaleStatus } from "@/lib/pricing";
 import type { TierKey } from "@/app/[locale]/(2026)/_types/tickets";
 import type { SeatHoldRequest } from "@/app/[locale]/(2026)/_types/seats";
 
@@ -24,6 +24,14 @@ export async function POST(request: NextRequest) {
 
   if (!VALID_TIERS.includes(tier)) {
     return NextResponse.json({ error: "Invalid tier" }, { status: 400 });
+  }
+
+  const saleStatus = await getSaleStatus();
+  if (saleStatus !== "open") {
+    return NextResponse.json(
+      { error: "Sales are not open" },
+      { status: 400 },
+    );
   }
 
   // VIP includes after party — force true regardless of client value

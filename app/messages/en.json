@@ -78,6 +78,8 @@
     "perTicket": "/ticket",
     "currency": "KRW",
     "ctaBuy": "Get Tickets",
+    "closed": "Sold Out",
+    "comingSoon": "Coming Soon",
     "phaseEarlybird1": "1st Early Bird",
     "phaseEarlybird2": "2nd Early Bird",
     "discountEarlybird1": "20% OFF",

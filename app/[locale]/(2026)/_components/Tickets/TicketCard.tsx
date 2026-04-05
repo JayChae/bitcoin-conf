@@ -7,6 +7,8 @@ type Benefit = {
   addon?: string;
 };
 
+type SaleStatus = "upcoming" | "open" | "closed";
+
 type Props = {
   tier: "vip" | "premium" | "general";
   tierLabel: string;
@@ -24,6 +26,10 @@ type Props = {
   // Phase
   phaseLabel: string;
   discountLabel: string;
+  // Sale status
+  saleStatus: SaleStatus;
+  closedLabel: string;
+  comingSoonLabel: string;
 };
 
 export default function TicketCard({
@@ -41,6 +47,9 @@ export default function TicketCard({
   isDiscounted,
   phaseLabel,
   discountLabel,
+  saleStatus,
+  closedLabel,
+  comingSoonLabel,
 }: Props) {
   return (
     <div
@@ -122,17 +131,31 @@ export default function TicketCard({
 
         {/* CTA */}
         <div className="mt-auto pt-8 md:pt-10">
-          <Link
-            href={ctaHref}
-            className={cn(
-              "w-full flex items-center justify-center",
-              "text-sm font-semibold py-3.5 px-6 rounded-full",
-              "bg-white/10 text-white border border-white/15",
-              "transition-colors duration-200 hover:bg-white/15",
-            )}
-          >
-            {ctaLabel}
-          </Link>
+          {saleStatus === "open" ? (
+            <Link
+              href={ctaHref}
+              className={cn(
+                "w-full flex items-center justify-center",
+                "text-sm font-semibold py-3.5 px-6 rounded-full",
+                "bg-white/10 text-white border border-white/15",
+                "transition-colors duration-200 hover:bg-white/15",
+              )}
+            >
+              {ctaLabel}
+            </Link>
+          ) : (
+            <button
+              disabled
+              className={cn(
+                "w-full flex items-center justify-center",
+                "text-sm font-semibold py-3.5 px-6 rounded-full",
+                "bg-white/10 text-white/40 border border-white/15",
+                "cursor-not-allowed",
+              )}
+            >
+              {saleStatus === "closed" ? closedLabel : comingSoonLabel}
+            </button>
+          )}
         </div>
       </div>
     </div>

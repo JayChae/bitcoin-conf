@@ -3,6 +3,8 @@ import type { PricingPhase, TierKey } from "@/app/[locale]/(2026)/_types/tickets
 
 // ─── Redis Data Structures ───
 
+export type SaleStatus = "upcoming" | "open" | "closed";
+
 export type PricingConfig = {
   phase1: {
     startDate: string; // ISO 8601
@@ -14,6 +16,7 @@ export type PricingConfig = {
     enabled: boolean;
   };
   override: PricingPhase | null;
+  saleStatus: SaleStatus;
 };
 
 const PRICING_CONFIG_KEY = "pricing:config";
@@ -34,6 +37,7 @@ const DEFAULT_CONFIG: PricingConfig = {
     enabled: false,
   },
   override: null,
+  saleStatus: "upcoming",
 };
 
 // ─── Phase Determination ───
@@ -65,6 +69,13 @@ export async function getCurrentPhase(tier?: TierKey): Promise<PricingPhase> {
   }
 
   return "regular";
+}
+
+// ─── Sale Status ───
+
+export async function getSaleStatus(): Promise<SaleStatus> {
+  const config = await getPricingConfig();
+  return config.saleStatus ?? "upcoming";
 }
 
 // ─── Config CRUD ───

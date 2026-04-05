@@ -70,6 +70,15 @@ export async function PUT(request: NextRequest) {
     }
   }
 
+  // Validate saleStatus
+  const validStatuses = ["upcoming", "open", "closed"];
+  if (body.saleStatus && !validStatuses.includes(body.saleStatus)) {
+    return NextResponse.json(
+      { error: "Invalid sale status" },
+      { status: 400 },
+    );
+  }
+
   await savePricingConfig(body);
 
   return NextResponse.json({ success: true });

@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useCallback, useMemo } from "react";
 
+type SaleStatus = "upcoming" | "open" | "closed";
+
 type PricingConfig = {
   phase1: {
     startDate: string;
@@ -13,6 +15,7 @@ type PricingConfig = {
     enabled: boolean;
   };
   override: string | null;
+  saleStatus: SaleStatus;
 };
 
 type PhaseSold = Record<string, Record<string, number>>;
@@ -212,7 +215,7 @@ export default function AdminPage() {
       <div className="flex gap-1 mb-8 bg-neutral-900 rounded-lg p-1">
         {(
           [
-            { value: "pricing", label: "할인 관리" },
+            { value: "pricing", label: "관리" },
             { value: "seats", label: "예약 현황" },
           ] as const
         ).map((t) => (
@@ -230,9 +233,49 @@ export default function AdminPage() {
         ))}
       </div>
 
-      {/* ─── Tab 1: 할인 관리 ─── */}
+      {/* ─── Tab 1: 관리 ─── */}
       {tab === "pricing" && (
         <>
+          {/* 판매 상태 */}
+          <section className="mb-10">
+            <h2 className="text-xs font-medium text-neutral-500 uppercase tracking-wider mb-4">
+              판매 상태
+            </h2>
+            <div className="space-y-1">
+              {(
+                [
+                  { value: "upcoming", label: "판매 예정", desc: "구매 버튼 비활성" },
+                  { value: "open", label: "판매 진행", desc: "구매 가능" },
+                  { value: "closed", label: "판매 마감", desc: "마감 표시" },
+                ] as const
+              ).map((option) => (
+                <label
+                  key={option.value}
+                  className={`flex items-center gap-3 px-3 py-3 rounded-lg cursor-pointer transition-colors ${
+                    editConfig.saleStatus === option.value
+                      ? "bg-neutral-800/80"
+                      : "hover:bg-neutral-800/40"
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="saleStatus"
+                    value={option.value}
+                    checked={editConfig.saleStatus === option.value}
+                    onChange={() =>
+                      updateConfig((c) => ({ ...c, saleStatus: option.value }))
+                    }
+                    className="w-3.5 h-3.5 accent-white"
+                  />
+                  <span className="text-sm text-neutral-200">{option.label}</span>
+                  <span className="text-xs text-neutral-500">{option.desc}</span>
+                </label>
+              ))}
+            </div>
+          </section>
+
+          <hr className="border-neutral-800 mb-10" />
+
           {/* 현재 현황 — server state */}
           <section className="mb-10">
             <h2 className="text-xs font-medium text-neutral-500 uppercase tracking-wider mb-4">
