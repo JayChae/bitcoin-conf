@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import { motion, AnimatePresence } from "motion/react";
 
 type CheckinResult =
   | { valid: false; reason: string }
@@ -21,6 +22,16 @@ export default function CheckinPage() {
   const scannerRef = useRef<HTMLDivElement>(null);
   const html5QrCodeRef = useRef<import("html5-qrcode").Html5Qrcode | null>(null);
   const lastScannedRef = useRef<string>("");
+  const dismissTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const dismissResult = useCallback(() => {
+    setResult(null);
+    lastScannedRef.current = "";
+    if (dismissTimerRef.current) {
+      clearTimeout(dismissTimerRef.current);
+      dismissTimerRef.current = null;
+    }
+  }, []);
 
   // ─── Verify Token ───
 
@@ -42,9 +53,29 @@ export default function CheckinPage() {
       const data: CheckinResult = await res.json();
       setResult(data);
 
-      // Reset duplicate guard after 3 seconds to allow re-scan
-      setTimeout(() => {
+      // Clear previous auto-dismiss timer
+      if (dismissTimerRef.current) {
+        clearTimeout(dismissTimerRef.current);
+      }
+
+      // Haptic feedback
+      try {
+        if (navigator.vibrate) {
+          if (!data.valid || data.alreadyCheckedIn) {
+            navigator.vibrate([200, 100, 200]);
+          } else {
+            navigator.vibrate(200);
+          }
+        }
+      } catch {
+        // vibrate not supported
+      }
+
+      // Auto-dismiss after 3 seconds
+      dismissTimerRef.current = setTimeout(() => {
+        setResult(null);
         lastScannedRef.current = "";
+        dismissTimerRef.current = null;
       }, 3000);
     } catch {
       setResult({ valid: false, reason: "Network error" });
@@ -115,6 +146,9 @@ export default function CheckinPage() {
   useEffect(() => {
     return () => {
       stopScanner();
+      if (dismissTimerRef.current) {
+        clearTimeout(dismissTimerRef.current);
+      }
     };
   }, [stopScanner]);
 
@@ -195,67 +229,101 @@ export default function CheckinPage() {
           </button>
         </form>
 
-        {/* Result Display */}
-        {result && (
-          <div
-            style={{
-              padding: 24,
-              borderRadius: 12,
-              border: `2px solid ${!result.valid ? "#FF4500" : result.alreadyCheckedIn ? "#FFD700" : "#4CAF50"}`,
-              background: !result.valid ? "rgba(255,69,0,0.1)" : result.alreadyCheckedIn ? "rgba(255,215,0,0.1)" : "rgba(76,175,80,0.1)",
-              textAlign: "center",
-            }}
-          >
-            {!result.valid ? (
-              <>
-                <p style={{ fontSize: 48, margin: "0 0 8px" }}>✗</p>
-                <p style={{ fontSize: 20, fontWeight: 700, color: "#FF4500", margin: "0 0 4px" }}>INVALID</p>
-                <p style={{ fontSize: 14, color: "rgba(255,255,255,0.6)", margin: 0 }}>{result.reason}</p>
-              </>
-            ) : result.alreadyCheckedIn ? (
-              <>
-                <p style={{ fontSize: 48, margin: "0 0 8px" }}>⚠</p>
-                <p style={{ fontSize: 20, fontWeight: 700, color: "#FFD700", margin: "0 0 12px" }}>ALREADY CHECKED IN</p>
-                <SeatInfo payload={result.payload} tierColors={tierColors} />
-                <p style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", marginTop: 12 }}>
-                  Checked in at: {new Date(result.checkedInAt!).toLocaleString("ko-KR")}
-                </p>
-              </>
-            ) : (
-              <>
-                <p style={{ fontSize: 48, margin: "0 0 8px" }}>✓</p>
-                <p style={{ fontSize: 20, fontWeight: 700, color: "#4CAF50", margin: "0 0 12px" }}>WELCOME</p>
-                <SeatInfo payload={result.payload} tierColors={tierColors} />
-              </>
-            )}
-          </div>
-        )}
       </div>
+
+      {/* Full-screen result overlay */}
+      <AnimatePresence>
+        {result && (
+          <CheckinResultOverlay
+            key="checkin-overlay"
+            result={result}
+            onDismiss={dismissResult}
+            tierColors={tierColors}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
 
-function SeatInfo({
-  payload,
+function CheckinResultOverlay({
+  result,
+  onDismiss,
   tierColors,
 }: {
-  payload: { sec: string; seat: number; tier: string; ap: boolean };
+  result: CheckinResult;
+  onDismiss: () => void;
   tierColors: Record<string, string>;
 }) {
+  const isInvalid = !result.valid;
+  const isDuplicate = result.valid && result.alreadyCheckedIn;
+
+  const config = isInvalid
+    ? { bg: "rgba(220, 38, 38, 0.95)", icon: "✗", label: "INVALID", sublabel: result.reason }
+    : isDuplicate
+      ? {
+          bg: "rgba(217, 119, 6, 0.95)",
+          icon: "⚠",
+          label: "ALREADY CHECKED IN",
+          sublabel: `Checked in at: ${new Date(result.checkedInAt!).toLocaleString("ko-KR")}`,
+        }
+      : { bg: "rgba(22, 163, 74, 0.95)", icon: "✓", label: "WELCOME", sublabel: null };
+
   return (
-    <div style={{ fontSize: 16, lineHeight: 1.8 }}>
-      <p style={{ margin: 0 }}>
-        <span style={{ color: tierColors[payload.tier] ?? "#fff", fontWeight: 700, textTransform: "uppercase" }}>
-          {payload.tier}
-        </span>
-      </p>
-      <p style={{ margin: 0 }}>
-        Section <span style={{ color: "#FF8C00", fontWeight: 700 }}>{payload.sec}</span>
-        {" · "}Seat <span style={{ fontWeight: 700 }}>{payload.seat}</span>
-      </p>
-      {payload.ap && (
-        <p style={{ margin: 0, color: "#FF8C00" }}>✓ After Party</p>
-      )}
-    </div>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+      onClick={onDismiss}
+      style={{
+        position: "fixed",
+        inset: 0,
+        zIndex: 50,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        background: config.bg,
+        cursor: "pointer",
+      }}
+    >
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.9 }}
+        transition={{ duration: 0.25, ease: "easeOut" }}
+        style={{ textAlign: "center", padding: 32, maxWidth: 400, width: "100%" }}
+      >
+        <p style={{ fontSize: 96, margin: "0 0 16px", lineHeight: 1 }}>{config.icon}</p>
+        <p style={{ fontSize: 32, fontWeight: 800, color: "#fff", margin: "0 0 16px", letterSpacing: "0.05em", textShadow: "0 2px 8px rgba(0,0,0,0.3)" }}>
+          {config.label}
+        </p>
+
+        {result.valid && (
+          <div style={{ fontSize: 24, lineHeight: 1.6, color: "rgba(255,255,255,0.95)" }}>
+            <p style={{ margin: "0 0 8px" }}>
+              <span style={{ color: tierColors[result.payload.tier] ?? "#fff", fontWeight: 800, textTransform: "uppercase", fontSize: 28, textShadow: "0 2px 8px rgba(0,0,0,0.3)" }}>
+                {result.payload.tier}
+              </span>
+            </p>
+            <p style={{ margin: 0, fontSize: 22 }}>
+              Section <span style={{ fontWeight: 700 }}>{result.payload.sec}</span>
+              {" · "}Seat <span style={{ fontWeight: 700 }}>{result.payload.seat}</span>
+            </p>
+            {result.payload.ap && (
+              <p style={{ margin: "8px 0 0", fontSize: 22 }}>✓ After Party</p>
+            )}
+          </div>
+        )}
+
+        {config.sublabel && (
+          <p style={{ fontSize: 16, color: "rgba(255,255,255,0.8)", marginTop: 16 }}>{config.sublabel}</p>
+        )}
+
+        <p style={{ fontSize: 14, color: "rgba(255,255,255,0.5)", marginTop: 32 }}>
+          Tap anywhere to dismiss
+        </p>
+      </motion.div>
+    </motion.div>
   );
 }

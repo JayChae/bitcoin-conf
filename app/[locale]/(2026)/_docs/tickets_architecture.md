@@ -123,9 +123,9 @@ Shopify에 **4개 상품**을 등록합니다. **재고 관리는 Shopify에서 
 
 | 상품명 | 타입 | 정가 | Variant ID |
 |--------|------|------|-----------|
-| VIP Ticket | Conference Ticket | ₩3,000,000 | `48806870352114` |
-| Premium Ticket | Conference Ticket | ₩330,000 | `48892186296562` |
-| General Ticket | Conference Ticket | ₩210,000 | `48806870450418` |
+| VIP Ticket | Conference Ticket | ₩2,400,000 | `48806870352114` |
+| Premium Ticket | Conference Ticket | ₩300,000 | `48892186296562` |
+| General Ticket | Conference Ticket | ₩240,000 | `48806870450418` |
 | After Party | Conference Add-on | ₩50,000 | `48892186329330` |
 
 **할인 코드:**
@@ -143,11 +143,11 @@ Shopify 할인 코드는 상품 단위로 적용됩니다. After Party가 티켓
 
 **장바구니 구성 예시** (Premium 2석, AP 1석, earlybird1 적용):
 ```
-Line 1: Premium Ticket × 1    ₩264,000 (₩330,000 × 0.8)   seat: A-5
-Line 2: Premium Ticket × 1    ₩264,000 (₩330,000 × 0.8)   seat: A-6
+Line 1: Premium Ticket × 1    ₩240,000 (₩300,000 × 0.8)   seat: A-5
+Line 2: Premium Ticket × 1    ₩240,000 (₩300,000 × 0.8)   seat: A-6
 Line 3: After Party    × 1    ₩50,000  (할인 미적용)         seat: A-5
 할인코드: EARLYBIRD20
-총액: ₩578,000
+총액: ₩530,000
 ```
 
 좌석 정보는 장바구니 라인 아이템의 `attributes`에 첨부됩니다:

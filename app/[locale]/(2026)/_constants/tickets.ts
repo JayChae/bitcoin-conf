@@ -5,7 +5,7 @@ export const AFTER_PARTY_PRICE = 50_000;
 export const TICKETS: TicketDef[] = [
   {
     tier: "general",
-    basePrice: 210_000,
+    basePrice: 240_000,
     totalSeats: 522,
     benefitKeys: [
       "mainStage",
@@ -18,7 +18,7 @@ export const TICKETS: TicketDef[] = [
   },
   {
     tier: "premium",
-    basePrice: 330_000,
+    basePrice: 300_000,
     totalSeats: 496,
     benefitKeys: [
       "includesGeneral",
@@ -31,7 +31,7 @@ export const TICKETS: TicketDef[] = [
   },
   {
     tier: "vip",
-    basePrice: 3_000_000,
+    basePrice: 2_400_000,
     totalSeats: 21,
     benefitKeys: [
       "includesPremium",

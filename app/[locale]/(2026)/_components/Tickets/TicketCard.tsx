@@ -48,12 +48,15 @@ export default function TicketCard({
   bestOffer,
   bestOfferLabel,
 }: Props) {
-  return (
+  const card = (
     <div
       className={cn(
         "relative flex flex-col rounded-2xl overflow-hidden h-full",
-        "bg-[#15122a]/90 backdrop-blur-2xl border border-white/10",
-        "transition-all duration-250 ease-out hover:-translate-y-1 hover:border-white/15",
+        "bg-[#15122a]/90 backdrop-blur-2xl border",
+        "transition-all duration-250 ease-out",
+        bestOffer
+          ? "border-transparent"
+          : "border-white/10 hover:border-white/15 hover:-translate-y-1",
       )}
     >
       {/* Best Offer banner */}
@@ -154,6 +157,25 @@ export default function TicketCard({
             </button>
           )}
         </div>
+      </div>
+    </div>
+  );
+
+  if (!bestOffer) return card;
+
+  return (
+    <div className="relative rounded-2xl p-[2px] overflow-hidden h-full transition-transform duration-250 ease-out hover:-translate-y-1">
+      {/* Spinning conic-gradient border */}
+      <div
+        className="absolute inset-[-50%] animate-spin-slow"
+        style={{
+          background:
+            "conic-gradient(from 0deg, #00f0ff, #a855f7, #ff00aa, #f97316, #00f0ff)",
+        }}
+      />
+      {/* Card content */}
+      <div className="relative h-full">
+        {card}
       </div>
     </div>
   );
