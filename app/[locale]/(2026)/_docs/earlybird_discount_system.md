@@ -57,6 +57,7 @@ Phase 2는 **티어별로 독립** 판단합니다:
 ```
 lib/
 ├── pricing.ts           ← 핵심: 페이즈 결정, Redis 설정 관리, 할인 계산
+├── seat-lock.ts         ← 좌석 잠금 + 관리자 요약 (getAllSeatSummary)
 ├── shopify-config.ts    ← Variant ID + 할인 코드 매핑
 └── shopify.ts           ← Shopify 장바구니 생성 + 할인 코드 적용
 
@@ -64,12 +65,13 @@ app/api/
 ├── pricing/current/route.ts    ← 현재 페이즈 조회 (public)
 ├── admin/auth/route.ts         ← 어드민 로그인
 ├── admin/pricing/route.ts      ← 어드민 할인 설정 CRUD
+├── admin/seats/route.ts        ← 좌석 현황 조회 (관리자)
 ├── checkout/create/route.ts    ← 체크아웃 시 할인 코드 적용
-└── webhooks/shopify/route.ts   ← 결제 완료 시 Phase 2 카운터 증가
+└── webhooks/shopify/route.ts   ← 결제 완료 시 Phase 2 카운터 증가 + 이메일 저장
 
 app/admin/
 ├── layout.tsx    ← 최소 레이아웃 (noindex)
-└── page.tsx      ← 어드민 대시보드 UI
+└── page.tsx      ← 어드민 대시보드 UI (할인 관리 + 예약 현황 탭)
 ```
 
 ### 데이터 흐름
@@ -153,7 +155,9 @@ AP에도 할인이 적용되는 문제가 발생합니다.
 
 ### UI 구성
 
-어드민 페이지는 **라디오 버튼 1개**로 할인 모드를 선택하는 단순한 구조입니다.
+어드민 페이지는 **탭 2개**로 구성됩니다: **할인 관리** / **예약 현황**.
+
+#### 할인 관리 탭
 
 **1) 현재 상태 대시보드:**
 - 티어별 현재 적용 페이즈 표시 (서버에서 실제 계산된 값)
@@ -170,6 +174,21 @@ AP에도 할인이 적용되는 문제가 발생합니다.
 - Early Bird 2 선택 시: 티어별 최대 할인 티켓 수
 
 할인율은 EB1=20%, EB2=10%으로 고정이며 어드민에서 변경할 수 없습니다.
+
+#### 예약 현황 탭
+
+**1) 좌석 현황 카드:**
+- VIP / Premium / General 티어별 판매수/총좌석수 + 프로그레스 바
+- 전체 점유율 (%)
+- 애프터파티 참가자 수
+
+**2) 구매 내역:**
+- 전체 판매 좌석 목록 (좌석번호, 티어, 애프터파티, 이메일)
+- 티어/섹션 필터
+- CSV 다운로드 버튼
+- 모바일: 카드 레이아웃 / 데스크탑: 테이블 (스크롤 가능)
+
+데이터는 `/api/admin/seats` API에서 10초 간격으로 자동 갱신됩니다.
 
 ### 타임존
 
