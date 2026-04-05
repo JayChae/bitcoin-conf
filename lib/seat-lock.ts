@@ -271,25 +271,32 @@ export type SoldSeatRecord = {
   tier: string;
   afterParty: boolean;
   email?: string;
+  checkedIn: boolean;
+  checkedInAt?: string;
 };
 
 export type SeatSummary = {
   byTier: Record<string, { total: number; sold: number; remaining: number }>;
   afterPartyCount: number;
+  checkedInCount: number;
   fillRate: number;
   soldSeats: SoldSeatRecord[];
 };
 
 export async function getAllSeatSummary(): Promise<SeatSummary> {
-  const allStatuses = await Promise.all(
-    SECTIONS.map(async (cfg) => {
-      const keys = Array.from({ length: cfg.totalSeats }, (_, i) =>
-        seatKey(cfg.id, i + 1),
-      );
-      const values = await redis.mget<(SeatStatusInfo | null)[]>(...keys);
-      return { section: cfg, values };
-    }),
-  );
+  // Fetch seat statuses and check-in records in parallel
+  const [allStatuses, checkinMap] = await Promise.all([
+    Promise.all(
+      SECTIONS.map(async (cfg) => {
+        const keys = Array.from({ length: cfg.totalSeats }, (_, i) =>
+          seatKey(cfg.id, i + 1),
+        );
+        const values = await redis.mget<(SeatStatusInfo | null)[]>(...keys);
+        return { section: cfg, values };
+      }),
+    ),
+    buildCheckinMap(),
+  ]);
 
   const byTier: Record<string, { total: number; sold: number; remaining: number }> = {
     vip: { total: 0, sold: 0, remaining: 0 },
@@ -298,6 +305,7 @@ export async function getAllSeatSummary(): Promise<SeatSummary> {
   };
 
   let afterPartyCount = 0;
+  let checkedInCount = 0;
   let totalAvailable = 0;
   let totalSold = 0;
   const soldSeats: SoldSeatRecord[] = [];
@@ -319,12 +327,17 @@ export async function getAllSeatSummary(): Promise<SeatSummary> {
         totalSold++;
         if (info.afterParty) afterPartyCount++;
 
+        const checkedInAt = checkinMap.get(`${section.id}:${seatNumber}`);
+        if (checkedInAt) checkedInCount++;
+
         soldSeats.push({
           section: section.id,
           seat: seatNumber,
           tier: ticketTier,
           afterParty: info.afterParty ?? false,
           email: info.email,
+          checkedIn: !!checkedInAt,
+          checkedInAt,
         });
       }
     }
@@ -338,7 +351,28 @@ export async function getAllSeatSummary(): Promise<SeatSummary> {
     ? Math.round((totalSold / totalAvailable) * 1000) / 10
     : 0;
 
-  return { byTier, afterPartyCount, fillRate, soldSeats };
+  return { byTier, afterPartyCount, checkedInCount, fillRate, soldSeats };
+}
+
+/** Scan all checkin:* keys and build a Map<"section:seat", timestamp> */
+async function buildCheckinMap(): Promise<Map<string, string>> {
+  const map = new Map<string, string>();
+  const checkinKeys = await redis.keys("checkin:*");
+  if (checkinKeys.length === 0) return map;
+
+  const values = await redis.mget<(string | null)[]>(...checkinKeys);
+  for (let i = 0; i < checkinKeys.length; i++) {
+    const ts = values[i];
+    if (!ts) continue;
+    // key format: checkin:{cid}:{section}:{seat}
+    const parts = checkinKeys[i].split(":");
+    if (parts.length >= 4) {
+      const section = parts[2];
+      const seat = parts[3];
+      map.set(`${section}:${seat}`, ts);
+    }
+  }
+  return map;
 }
 
 // ─── 7. 구역별 남은 좌석 수 조회 ───

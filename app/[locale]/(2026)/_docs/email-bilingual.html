@@ -72,58 +72,74 @@
               </td>
             </tr>
 
-            <!-- Seat Cards with QR Codes -->
+            <!-- Ticket Cards (Boarding Pass Style) -->
             {% for line in line_items %}
-              {% if line.properties["seat_section"] and line.properties["seat_number"] %}
+              {% if line.properties["_qr_token"] %}
                 <tr>
                   <td style="padding:0 24px 16px;">
-                    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#1a1412; border-radius:12px; border:1px solid rgba(255,140,0,0.3);">
+                    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#1a1412; border-radius:12px; border:1px solid rgba(255,255,255,0.08); border-left:4px solid #FF8C00;">
                       <tr>
-                        <td style="padding:20px;">
+                        <td style="padding:24px 24px 0;">
                           <!-- Ticket Title -->
-                          <p style="margin:0 0 4px; font-size:12px; font-weight:600; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:0.5px;">
+                          <p style="margin:0 0 16px; font-size:11px; font-weight:700; color:rgba(255,255,255,0.4); text-transform:uppercase; letter-spacing:1.5px;">
                             {% if line.presentment_title %}{{ line.presentment_title }}{% elsif line.title %}{{ line.title }}{% else %}{{ line.product.title }}{% endif %}
                           </p>
 
-                          <!-- Section · Seat -->
-                          <p style="margin:0 0 8px; font-size:22px; font-weight:700; color:#ffffff;">
-                            <span style="color:#FF8C00;">{{ line.properties["seat_section"] }}</span>
-                            <span style="color:rgba(255,255,255,0.3);"> · </span>
-                            {% if is_ko %}좌석{% else %}Seat{% endif %} {{ line.properties["seat_number"] }}
-                          </p>
-
-                          <!-- After Party -->
-                          {% if line.properties["after_party"] == "true" %}
-                            <p style="margin:0 0 16px; font-size:14px; color:#FF8C00;">
-                              ✓ {% if is_ko %}네트워킹 파티 포함{% else %}Networking Party included{% endif %}
-                            </p>
-                          {% else %}
-                            <p style="margin:0 0 16px; font-size:14px; color:rgba(255,255,255,0.3);">
-                              {% if is_ko %}네트워킹 파티 미포함{% else %}Networking Party not included{% endif %}
-                            </p>
-                          {% endif %}
-
-                          <!-- QR Code -->
-                          {% if line.properties["_qr_token"] %}
-                            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                          <!-- Section & Seat (two columns) -->
+                          {% if line.properties["seat_section"] and line.properties["seat_number"] %}
+                            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:16px;">
                               <tr>
-                                <td align="center" style="padding:8px 0;">
-                                  <div style="display:inline-block; background:#ffffff; border-radius:8px; padding:8px;">
-                                    <img src="https://bitcoin-conf-git-ticket-2026-03-21-jaychaes-projects.vercel.app/api/qr/{{ line.properties['_qr_token'] }}"
-                                         width="200" height="200" alt="Check-in QR Code"
-                                         style="display:block; width:200px; height:200px;" />
-                                  </div>
+                                <td width="50%" valign="top">
+                                  <p style="margin:0 0 2px; font-size:11px; font-weight:600; color:rgba(255,255,255,0.35); text-transform:uppercase; letter-spacing:1px;">
+                                    {% if is_ko %}섹션{% else %}Section{% endif %}
+                                  </p>
+                                  <p style="margin:0; font-size:28px; font-weight:800; color:#FF8C00; line-height:1.2;">
+                                    {{ line.properties["seat_section"] }}
+                                  </p>
                                 </td>
-                              </tr>
-                              <tr>
-                                <td align="center" style="padding:8px 0 0;">
-                                  <p style="margin:0; font-size:12px; color:rgba(255,255,255,0.5);">
-                                    {% if is_ko %}체크인 시 이 QR 코드를 제시해주세요{% else %}Present this QR code at check-in{% endif %}
+                                <td width="50%" valign="top">
+                                  <p style="margin:0 0 2px; font-size:11px; font-weight:600; color:rgba(255,255,255,0.35); text-transform:uppercase; letter-spacing:1px;">
+                                    {% if is_ko %}좌석{% else %}Seat{% endif %}
+                                  </p>
+                                  <p style="margin:0; font-size:28px; font-weight:800; color:#ffffff; line-height:1.2;">
+                                    {{ line.properties["seat_number"] }}
                                   </p>
                                 </td>
                               </tr>
                             </table>
                           {% endif %}
+
+                          <!-- After Party Badge (only when included) -->
+                          {% if line.properties["after_party"] == "true" %}
+                            <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:16px;">
+                              <tr>
+                                <td style="background-color:rgba(255,140,0,0.15); border:1px solid rgba(255,140,0,0.4); border-radius:20px; padding:4px 12px; font-size:12px; font-weight:600; color:#FF8C00;">
+                                  ✓ {% if is_ko %}네트워킹 파티 포함{% else %}Networking Party included{% endif %}
+                                </td>
+                              </tr>
+                            </table>
+                          {% endif %}
+                        </td>
+                      </tr>
+
+                      <!-- Dashed Divider -->
+                      <tr>
+                        <td style="padding:0 24px;">
+                          <div style="border-top:2px dashed rgba(255,255,255,0.12);"></div>
+                        </td>
+                      </tr>
+
+                      <!-- QR Code -->
+                      <tr>
+                        <td align="center" style="padding:20px 24px 24px;">
+                          <div style="display:inline-block; background:#ffffff; border-radius:8px; padding:8px;">
+                            <img src="https://bitcoin-conf-git-ticket-2026-03-21-jaychaes-projects.vercel.app/api/qr/{{ line.properties['_qr_token'] }}"
+                                 width="180" height="180" alt="Check-in QR Code"
+                                 style="display:block; width:180px; height:180px;" />
+                          </div>
+                          <p style="margin:10px 0 0; font-size:11px; color:rgba(255,255,255,0.4); letter-spacing:0.3px;">
+                            {% if is_ko %}체크인 시 이 QR 코드를 제시해주세요{% else %}Present this QR code at check-in{% endif %}
+                          </p>
                         </td>
                       </tr>
                     </table>
@@ -237,7 +253,6 @@
                       <p style="margin:0 0 6px; font-size:14px; color:rgba(255,255,255,0.7);">📅 {% if is_ko %}2026년 11월 7-8일{% else %}November 7-8, 2026{% endif %}</p>
                       <p style="margin:0 0 6px; font-size:14px; color:rgba(255,255,255,0.7);">📍 {% if is_ko %}코엑스, 서울{% else %}COEX, Seoul{% endif %}</p>
                       <p style="margin:0 0 6px; font-size:14px; color:rgba(255,255,255,0.7);">🕘 {% if is_ko %}입장 시작: 오전 9시{% else %}Doors open at 9:00 AM{% endif %}</p>
-                      <p style="margin:0; font-size:14px; color:rgba(255,255,255,0.7);">🪪 {% if is_ko %}유효한 신분증을 지참해주세요{% else %}Please bring a valid photo ID{% endif %}</p>
                     </td>
                   </tr>
                 </table>

@@ -35,11 +35,14 @@ type SoldSeatRecord = {
   tier: string;
   afterParty: boolean;
   email?: string;
+  checkedIn: boolean;
+  checkedInAt?: string;
 };
 
 type SeatSummary = {
   byTier: Record<string, { total: number; sold: number; remaining: number }>;
   afterPartyCount: number;
+  checkedInCount: number;
   fillRate: number;
   soldSeats: SoldSeatRecord[];
 };
@@ -61,6 +64,8 @@ export default function AdminPage() {
   const [tab, setTab] = useState<Tab>("pricing");
   const [tierFilter, setTierFilter] = useState("all");
   const [sectionFilter, setSectionFilter] = useState("all");
+  const [apFilter, setApFilter] = useState("all");
+  const [checkinFilter, setCheckinFilter] = useState("all");
 
   const fetchData = useCallback(async () => {
     const [pricingRes, seatsRes] = await Promise.all([
@@ -146,9 +151,11 @@ export default function AdminPage() {
     let result = [...seatData.soldSeats];
     if (tierFilter !== "all") result = result.filter((s) => s.tier === tierFilter);
     if (sectionFilter !== "all") result = result.filter((s) => s.section === sectionFilter);
+    if (apFilter !== "all") result = result.filter((s) => apFilter === "yes" ? s.afterParty : !s.afterParty);
+    if (checkinFilter !== "all") result = result.filter((s) => checkinFilter === "yes" ? s.checkedIn : !s.checkedIn);
     result.sort((a, b) => a.section.localeCompare(b.section) || a.seat - b.seat);
     return result;
-  }, [seatData, tierFilter, sectionFilter]);
+  }, [seatData, tierFilter, sectionFilter, apFilter, checkinFilter]);
 
   const downloadCSV = (seats: SoldSeatRecord[]) => {
     const header = "좌석,티어,애프터파티,이메일";
@@ -570,17 +577,31 @@ export default function AdminPage() {
                 {seatData.afterPartyCount}명
               </span>
             </div>
+            <div className="flex items-center justify-between text-sm py-2">
+              <span className="text-neutral-500">체크인</span>
+              <span className="text-neutral-200 tabular-nums">
+                {seatData.checkedInCount}/{seatData.soldSeats.length}명
+              </span>
+            </div>
           </section>
 
           <hr className="border-neutral-800 mb-10" />
 
           <section className="mb-10">
-            <h2 className="text-xs font-medium text-neutral-500 uppercase tracking-wider mb-4">
-              구매 내역
-              <span className="ml-2 text-neutral-600">
-                {filteredSeats.length}건
-              </span>
-            </h2>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xs font-medium text-neutral-500 uppercase tracking-wider">
+                구매 내역
+                <span className="ml-2 text-neutral-600">
+                  {filteredSeats.length}건
+                </span>
+              </h2>
+              <button
+                onClick={() => downloadCSV(filteredSeats)}
+                className="px-3 py-1.5 rounded-lg bg-neutral-800 border border-neutral-700 text-sm text-neutral-300 hover:bg-neutral-700 transition-colors"
+              >
+                CSV 다운로드
+              </button>
+            </div>
             <div className="flex gap-2 mb-4 flex-wrap">
               <select
                 value={tierFilter}
@@ -608,12 +629,24 @@ export default function AdminPage() {
                     </option>
                   ))}
               </select>
-              <button
-                onClick={() => downloadCSV(filteredSeats)}
-                className="ml-auto px-3 py-1.5 rounded-lg bg-neutral-800 border border-neutral-700 text-sm text-neutral-300 hover:bg-neutral-700 transition-colors"
+              <select
+                value={apFilter}
+                onChange={(e) => setApFilter(e.target.value)}
+                className="px-3 py-1.5 rounded-lg bg-neutral-900 border border-neutral-800 text-sm text-neutral-300 focus:outline-none focus:border-neutral-600"
               >
-                CSV 다운로드
-              </button>
+                <option value="all">AP 전체</option>
+                <option value="yes">AP O</option>
+                <option value="no">AP X</option>
+              </select>
+              <select
+                value={checkinFilter}
+                onChange={(e) => setCheckinFilter(e.target.value)}
+                className="px-3 py-1.5 rounded-lg bg-neutral-900 border border-neutral-800 text-sm text-neutral-300 focus:outline-none focus:border-neutral-600"
+              >
+                <option value="all">체크인 전체</option>
+                <option value="yes">체크인 O</option>
+                <option value="no">체크인 X</option>
+              </select>
             </div>
 
             {filteredSeats.length === 0 ? (
@@ -633,6 +666,9 @@ export default function AdminPage() {
                           {s.section}-{s.seat}
                         </span>
                         <div className="flex items-center gap-2">
+                          {s.checkedIn && (
+                            <span className="text-xs text-emerald-500">IN</span>
+                          )}
                           <span className="text-xs text-neutral-500">
                             {s.tier.toUpperCase()}
                           </span>
@@ -653,7 +689,8 @@ export default function AdminPage() {
                       <tr className="text-left text-xs text-neutral-600 border-b border-neutral-800">
                         <th className="pb-2 font-medium">좌석</th>
                         <th className="pb-2 font-medium">티어</th>
-                        <th className="pb-2 font-medium">AP</th>
+                        <th className="pb-2 font-medium text-center">AP</th>
+                        <th className="pb-2 font-medium text-center">체크인</th>
                         <th className="pb-2 font-medium">이메일</th>
                       </tr>
                     </thead>
@@ -669,9 +706,16 @@ export default function AdminPage() {
                           <td className="py-2 text-neutral-400">
                             {s.tier.toUpperCase()}
                           </td>
-                          <td className="py-2">
+                          <td className="py-2 text-center">
                             {s.afterParty ? (
                               <span className="text-amber-500">O</span>
+                            ) : (
+                              <span className="text-neutral-700">-</span>
+                            )}
+                          </td>
+                          <td className="py-2 text-center">
+                            {s.checkedIn ? (
+                              <span className="text-emerald-500" title={s.checkedInAt ? new Date(s.checkedInAt).toLocaleString("ko-KR") : ""}>O</span>
                             ) : (
                               <span className="text-neutral-700">-</span>
                             )}
