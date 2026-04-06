@@ -48,22 +48,22 @@ export default function TicketCard({
   bestOffer,
   bestOfferLabel,
 }: Props) {
-  const card = (
+  return (
     <div
       className={cn(
         "relative flex flex-col rounded-2xl overflow-hidden h-full",
-        "bg-[#15122a]/90 backdrop-blur-2xl border",
+        "bg-[#15122a]/90 backdrop-blur-2xl",
         "transition-all duration-250 ease-out",
         bestOffer
-          ? "border-transparent"
-          : "border-white/10 hover:border-white/15 hover:-translate-y-1",
+          ? "border-2 border-glow-purple/40 hover:-translate-y-1 animate-glow-pulse"
+          : "border border-white/10 hover:border-white/15 hover:-translate-y-1",
       )}
     >
       {/* Best Offer banner */}
       {bestOffer && (
-        <div className="flex items-center justify-center gap-1.5 py-2.5 bg-white/[0.07] border-b border-white/10">
-          <Sparkles className="size-3.5 text-white/70" />
-          <span className="text-xs font-semibold tracking-widest uppercase text-white/80">
+        <div className="flex items-center justify-center gap-2 py-2.5 border-b border-glow-purple/15 bg-gradient-to-r from-glow-blue/10 via-glow-purple/10 to-glow-pink/10">
+          <Sparkles className="size-3.5 text-glow-pink/70" />
+          <span className="text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-glow-blue/80 via-glow-purple to-glow-pink bg-clip-text text-transparent">
             {bestOfferLabel}
           </span>
         </div>
@@ -157,25 +157,6 @@ export default function TicketCard({
             </button>
           )}
         </div>
-      </div>
-    </div>
-  );
-
-  if (!bestOffer) return card;
-
-  return (
-    <div className="relative rounded-2xl p-[2px] overflow-hidden h-full transition-transform duration-250 ease-out hover:-translate-y-1">
-      {/* Spinning conic-gradient border */}
-      <div
-        className="absolute inset-[-50%] animate-spin-slow"
-        style={{
-          background:
-            "conic-gradient(from 0deg, #00f0ff, #a855f7, #ff00aa, #f97316, #00f0ff)",
-        }}
-      />
-      {/* Card content */}
-      <div className="relative h-full">
-        {card}
       </div>
     </div>
   );

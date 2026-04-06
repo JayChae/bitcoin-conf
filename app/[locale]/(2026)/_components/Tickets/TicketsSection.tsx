@@ -23,7 +23,7 @@ export default async function TicketsSection() {
           </h2>
         </div>
 
-        <TicketsGrid />
+        <TicketsGrid saleStatus={saleStatus} />
 
         <div className="flex justify-center mt-10 md:mt-12">
           <Link

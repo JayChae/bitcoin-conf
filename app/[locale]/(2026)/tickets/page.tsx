@@ -1,9 +1,11 @@
 import { getTranslations } from "next-intl/server";
 import SeatingChart from "../_components/Tickets/SeatingChart";
 import TicketsGrid from "../_components/Tickets/TicketsGrid";
+import { getSaleStatus } from "@/lib/pricing";
 
 export default async function TicketsPage() {
   const t = await getTranslations("Tickets2026");
+  const saleStatus = await getSaleStatus();
 
   return (
     <main className="relative z-10 min-h-screen pt-28 pb-20 px-4">
@@ -18,7 +20,7 @@ export default async function TicketsPage() {
         </div>
 
         <SeatingChart />
-        <TicketsGrid />
+        {saleStatus !== "upcoming" && <TicketsGrid saleStatus={saleStatus} />}
       </div>
     </main>
   );

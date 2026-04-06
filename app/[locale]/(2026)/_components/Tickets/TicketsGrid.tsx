@@ -4,19 +4,20 @@ import TicketCard from "./TicketCard";
 import StudentTicketCard from "./StudentTicketCard";
 import { TICKETS } from "../../_constants/tickets";
 import { getDiscountedPrice, isDiscounted, formatKRW } from "../../_utils/tickets";
-import { getCurrentPhase, getSaleStatus } from "@/lib/pricing";
+import { getCurrentPhase } from "@/lib/pricing";
 
 const PHASE_KEYS: Record<string, { phase: string; discount: string }> = {
   earlybird1: { phase: "phaseEarlybird1", discount: "discountEarlybird1" },
   earlybird2: { phase: "phaseEarlybird2", discount: "discountEarlybird2" },
 };
 
-export default async function TicketsGrid() {
+export default async function TicketsGrid({
+  saleStatus,
+}: {
+  saleStatus: "open" | "closed";
+}) {
   const t = await getTranslations("Tickets2026");
   const locale = await getLocale();
-  const saleStatus = await getSaleStatus();
-
-  if (saleStatus === "upcoming") return null;
 
   const studentBenefitKeys = [
     "studentBenefitNote",
