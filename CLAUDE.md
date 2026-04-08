@@ -37,4 +37,4 @@ Each year edition has its own `_components/`, `layout.tsx`, and `page.tsx`. Shar
 
 ## Must
 
-Mobile First Design
+Mobile First Design (tailwind)
