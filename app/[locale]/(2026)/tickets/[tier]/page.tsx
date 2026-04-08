@@ -21,7 +21,7 @@ export default async function TierPage({ params }: Props) {
   if (!isValidTier(tier)) notFound();
 
   const saleStatus = await getSaleStatus();
-  if (saleStatus !== "open") redirect(`/${locale}/#tickets`);
+  // if (saleStatus !== "open") redirect(`/${locale}/#tickets`);
 
   const t = await getTranslations("Tickets2026");
   const ticket = TICKETS.find((tk) => tk.tier === tier)!;
