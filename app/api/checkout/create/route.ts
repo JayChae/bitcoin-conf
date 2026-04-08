@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid tier" }, { status: 400 });
   }
 
-  const saleStatus = await getSaleStatus();
+  // const saleStatus = await getSaleStatus();
   // if (saleStatus !== "open") {
   //   return NextResponse.json(
   //     { error: "Sales are not open" },
