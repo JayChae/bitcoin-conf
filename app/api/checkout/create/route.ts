@@ -27,12 +27,12 @@ export async function POST(request: NextRequest) {
   }
 
   const saleStatus = await getSaleStatus();
-  if (saleStatus !== "open") {
-    return NextResponse.json(
-      { error: "Sales are not open" },
-      { status: 400 },
-    );
-  }
+  // if (saleStatus !== "open") {
+  //   return NextResponse.json(
+  //     { error: "Sales are not open" },
+  //     { status: 400 },
+  //   );
+  // }
 
   // VIP includes after party — force true regardless of client value
   const normalizedSeats =
