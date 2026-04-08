@@ -8,7 +8,7 @@ export default async function TicketsSection() {
   const t = await getTranslations("Tickets2026");
   const saleStatus = await getSaleStatus();
 
-  if (saleStatus === "upcoming") return null;
+  // if (saleStatus === "upcoming") return null;
 
   return (
     <section id="tickets" className="scroll-mt-24 pb-20 px-4">
@@ -23,7 +23,7 @@ export default async function TicketsSection() {
           </h2>
         </div>
 
-        <TicketsGrid saleStatus={saleStatus} />
+        <TicketsGrid saleStatus={"open"} />
 
         <div className="flex justify-center mt-10 md:mt-12">
           <Link
