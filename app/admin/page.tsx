@@ -256,10 +256,14 @@ export default function AdminPage() {
               ).map((phase) => {
                 const isActive = serverActiveMode === phase.key;
                 const tierSold = phaseSold[phase.key] ?? {};
-                const totalSold =
-                  (tierSold.vip ?? 0) +
-                  (tierSold.premium ?? 0) +
-                  (tierSold.general ?? 0);
+                const tiersForPhase =
+                  phase.key === "earlybird2"
+                    ? (["premium", "general"] as const)
+                    : (["vip", "premium", "general"] as const);
+                const totalSold = tiersForPhase.reduce(
+                  (sum, t) => sum + (tierSold[t] ?? 0),
+                  0,
+                );
                 return (
                   <div
                     key={phase.key}
@@ -284,8 +288,8 @@ export default function AdminPage() {
                         </span>
                       )}
                     </div>
-                    <div className="grid grid-cols-3 gap-3">
-                      {(["vip", "premium", "general"] as const).map((tier) => {
+                    <div className={`grid gap-3 ${tiersForPhase.length === 2 ? "grid-cols-2" : "grid-cols-3"}`}>
+                      {tiersForPhase.map((tier) => {
                         const sold = tierSold[tier] ?? 0;
                         const isEB2 = phase.key === "earlybird2";
                         const max = isEB2
@@ -434,8 +438,8 @@ export default function AdminPage() {
                 <label className="block text-xs text-neutral-500 mb-3">
                   티어별 최대 할인 티켓 수
                 </label>
-                <div className="grid grid-cols-3 gap-4">
-                  {["vip", "premium", "general"].map((tier) => (
+                <div className="grid grid-cols-2 gap-4">
+                  {["premium", "general"].map((tier) => (
                     <div key={tier}>
                       <label className="block text-xs text-neutral-600 mb-1.5">
                         {tier.toUpperCase()}

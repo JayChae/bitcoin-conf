@@ -9,15 +9,17 @@
 | 구분 | Phase 1 (earlybird1) | Phase 2 (earlybird2) | Regular |
 |------|---------------------|---------------------|---------|
 | **할인율** | 20% | 10% | 0% (정가) |
-| **조건** | 기간 한정 | 갯수 한정 (티어별) | 기본값 |
-| **적용 대상** | 티켓만 (AP 제외) | 티켓만 (AP 제외) | — |
+| **조건** | 기간 한정 | 갯수 한정 (Premium/General만) | 기본값 |
+| **적용 대상** | 티켓만 (AP 제외) | Premium/General만 (VIP, AP 제외) | — |
 | **Shopify 코드** | `EARLYBIRD20` | `EARLYBIRD10` | 없음 |
+
+> **VIP는 Phase 2 대상이 아닙니다.** Phase 1 종료 후 바로 정가로 전환됩니다.
 
 **가격 예시:**
 
 | 티어 | 정가 | Phase 1 (20%) | Phase 2 (10%) |
 |------|------|--------------|--------------|
-| VIP | ₩2,400,000 | ₩1,920,000 | ₩2,160,000 |
+| VIP | ₩2,400,000 | ₩1,920,000 | — (Phase 2 대상 아님) |
 | Premium | ₩300,000 | ₩240,000 | ₩270,000 |
 | General | ₩240,000 | ₩192,000 | ₩216,000 |
 | After Party | ₩50,000 | ₩50,000 | ₩50,000 |
@@ -37,14 +39,14 @@
 ② Phase 1: 기간 한정
    → enabled && 현재 시각이 startDate~endDate 사이이면 "earlybird1"
    ↓ (조건 미충족)
-③ Phase 2: 갯수 한정 (티어별)
-   → enabled && 해당 티어의 판매수 < maxTickets이면 "earlybird2"
-   ↓ (조건 미충족)
+③ Phase 2: 갯수 한정 (Premium/General만, VIP 제외)
+   → enabled && PHASE2_TIERS에 포함 && 해당 티어의 판매수 < maxTickets이면 "earlybird2"
+   ↓ (조건 미충족 또는 VIP)
 ④ Regular (정가)
 ```
 
-Phase 2는 **티어별로 독립** 판단합니다:
-- VIP: 10장 할인 → 10장 팔리면 VIP만 정가 전환
+Phase 2는 **Premium/General만** 대상이며, 티어별로 독립 판단합니다:
+- VIP: Phase 2 대상 아님 — Phase 1 종료 후 바로 정가 전환
 - Premium: 100장 할인 → 100장 팔리면 Premium만 정가 전환
 - General: 100장 할인 → General은 아직 할인 중일 수 있음
 
@@ -255,9 +257,9 @@ hold 시점에 카운트하면 실제 판매되지 않은 수량이 포함되어
 ### 시나리오 2: 갯수 한정 할인만 사용
 
 1. 어드민에서 "Early Bird 2" 선택
-2. 티어별 최대 수량 설정 (예: VIP 10장, Premium 100장, General 100장)
+2. 티어별 최대 수량 설정 (예: Premium 100장, General 100장) — VIP는 Phase 2 대상 아님
 3. 저장
-4. 각 티어별 할당량까지 10% 할인
+4. Premium/General 할당량까지 10% 할인 (VIP는 즉시 정가)
 5. 할당량 소진된 티어부터 정가 전환
 
 ### 시나리오 3: EB1 → EB2 순차 전환
@@ -273,9 +275,9 @@ hold 시점에 카운트하면 실제 판매되지 않은 수량이 포함되어
 
 ### 시나리오 5: 특정 티어만 할인 종료 (EB2 자동)
 
-Early Bird 2에서 VIP 10장이 먼저 소진되면:
-- VIP: 정가 (자동)
-- Premium: 여전히 10% 할인 (100장 미달)
+Early Bird 2에서 Premium 100장이 먼저 소진되면:
+- VIP: 정가 (Phase 2 대상 아님)
+- Premium: 정가 (자동 전환)
 - General: 여전히 10% 할인 (100장 미달)
 
 ---
@@ -287,7 +289,6 @@ Early Bird 2에서 VIP 10장이 먼저 소진되면:
 Phase 2 카운터(`pricing:phase2_sold:*`)는 자동으로 리셋되지 않습니다.
 필요 시 Upstash 콘솔에서 수동 리셋:
 ```
-SET pricing:phase2_sold:vip 0
 SET pricing:phase2_sold:premium 0
 SET pricing:phase2_sold:general 0
 ```
