@@ -56,8 +56,8 @@ export default function ZoneSelector({
   const contextLabels = CONTEXT_LABELS[tier];
 
   return (
-    <div className="overflow-x-auto">
-      <div className="flex flex-col items-center gap-4 md:gap-6 py-4 min-w-max">
+    <div className="overflow-x-auto md:overflow-x-visible">
+      <div className="flex flex-col items-center gap-4 md:gap-6 py-4 min-w-max md:min-w-0">
         {/* Stage */}
         <div className="w-48 md:w-64 py-2 rounded-lg bg-white/10 border border-white/20 text-center">
           <span className="text-xs md:text-sm font-medium text-white/70 tracking-widest uppercase">

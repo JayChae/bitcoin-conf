@@ -25,7 +25,7 @@ export default async function Layout2026({ children, params }: Props) {
 
   return (
     <>
-      <div className="fixed inset-0 z-0 bg-black" />
+      <div className="fixed inset-0 z-0 bg-[#101018]" />
       <div className="relative z-10">
         <Nav items={navItems[lang]} />
         <div className="min-h-screen">{children}</div>

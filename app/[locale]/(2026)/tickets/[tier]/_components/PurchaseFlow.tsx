@@ -160,15 +160,13 @@ export default function PurchaseFlow({
       {/* <SeatMapOverview /> */}
 
       {/* Zone Selector */}
-      <div className="rounded-2xl p-4 md:p-8 bg-black/40 backdrop-blur-xl border border-white/10">
-        <ZoneSelector
-          tier={tier}
-          selectedSeats={selectedSeats}
-          selectedSection={selectedSection}
-          onSelectZone={handleSelectZone}
-          sectionCounts={sectionCounts}
-        />
-      </div>
+      <ZoneSelector
+        tier={tier}
+        selectedSeats={selectedSeats}
+        selectedSection={selectedSection}
+        onSelectZone={handleSelectZone}
+        sectionCounts={sectionCounts}
+      />
 
       {/* Seat Selector */}
       <div
