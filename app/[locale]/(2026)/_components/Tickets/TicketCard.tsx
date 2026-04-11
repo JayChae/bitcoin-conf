@@ -58,15 +58,15 @@ export default function TicketCard({
         "bg-[#15122a]/90 backdrop-blur-2xl",
         "transition-all duration-250 ease-out",
         bestOffer
-          ? "border-2 border-glow-purple/40 hover:-translate-y-1 animate-glow-pulse"
+          ? "border-2 border-glow-purple/60 hover:-translate-y-1 animate-glow-pulse"
           : "border border-white/10 hover:border-white/15 hover:-translate-y-1",
       )}
     >
       {/* Best Offer banner */}
       {bestOffer && (
-        <div className="flex items-center justify-center gap-2 py-2.5 border-b border-glow-purple/15 bg-gradient-to-r from-glow-blue/10 via-glow-purple/10 to-glow-pink/10">
-          <Sparkles className="size-3.5 text-glow-pink/70" />
-          <span className="text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-glow-blue/80 via-glow-purple to-glow-pink bg-clip-text text-transparent">
+        <div className="flex items-center justify-center gap-2 py-2.5 border-b border-glow-purple/20 bg-gradient-to-r from-glow-blue/15 via-glow-purple/15 to-glow-pink/15">
+          <Sparkles className="size-3.5 text-glow-pink" />
+          <span className="text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-[#7BA4F7] via-[#C084FC] to-[#F0ABFC] bg-clip-text text-transparent">
             {bestOfferLabel}
           </span>
         </div>
@@ -143,8 +143,10 @@ export default function TicketCard({
               className={cn(
                 "w-full flex items-center justify-center",
                 "text-sm font-semibold py-3.5 px-6 rounded-full",
-                "bg-white/10 text-white border border-white/15",
-                "transition-colors duration-200 hover:bg-white/15",
+                "transition-colors duration-200",
+                bestOffer
+                  ? "bg-gradient-to-r from-glow-purple to-glow-pink text-white hover:opacity-90"
+                  : "bg-white/10 text-white border border-white/15 hover:bg-white/15",
               )}
             >
               {ctaLabel}
