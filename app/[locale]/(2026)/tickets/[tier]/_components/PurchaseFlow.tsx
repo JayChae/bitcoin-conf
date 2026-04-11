@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useRef } from "react";
+import { AnimatePresence, motion } from "motion/react";
 import { useTranslations } from "next-intl";
 import type {
   TierKey,
@@ -10,11 +11,12 @@ import type { SeatHoldRequest } from "@/app/[locale]/(2026)/_types/seats";
 import { TICKETS } from "@/app/[locale]/(2026)/_constants/tickets";
 import { useSeatAvailability } from "@/hooks/useSeatAvailability";
 import { useZoneAvailability } from "@/hooks/useZoneAvailability";
-import SeatMapOverview from "./SeatMapOverview";
 import ZoneSelector from "./ZoneSelector";
 import SeatSelector from "./SeatSelector";
 import AfterPartyAddon from "./AfterPartyAddon";
 import SelectionSummary, { type HoldState } from "./SelectionSummary";
+
+type Step = "seats" | "afterParty";
 
 export default function PurchaseFlow({
   tier,
@@ -27,6 +29,7 @@ export default function PurchaseFlow({
 }) {
   const t = useTranslations("Tickets2026");
 
+  const [step, setStep] = useState<Step>("seats");
   const [selectedSection, setSelectedSection] = useState<string | null>(null);
   const [selectedSeats, setSelectedSeats] = useState<
     Record<string, Set<number>>
@@ -42,11 +45,6 @@ export default function PurchaseFlow({
   const ticket = TICKETS.find((tk) => tk.tier === tier)!;
   const hasAfterPartyAddon = !!ticket.addonKeys?.includes("afterPartyOption");
   const afterPartyIncluded = tier === "vip";
-
-  const totalCount = Object.values(selectedSeats).reduce(
-    (sum, set) => sum + set.size,
-    0,
-  );
 
   const afterPartyCount = Object.values(afterPartySeats).reduce(
     (sum, set) => sum + set.size,
@@ -109,7 +107,11 @@ export default function PurchaseFlow({
     [],
   );
 
+  const isSubmittingRef = useRef(false);
+
   const handlePurchase = useCallback(async () => {
+    if (isSubmittingRef.current) return;
+
     const seats: SeatHoldRequest[] = [];
     for (const [sectionId, seatSet] of Object.entries(selectedSeats)) {
       for (const num of [...seatSet].sort((a, b) => a - b)) {
@@ -125,24 +127,26 @@ export default function PurchaseFlow({
 
     if (seats.length === 0) return;
 
+    isSubmittingRef.current = true;
     setHoldState("loading");
     setHoldError(null);
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15_000);
 
     try {
       const res = await fetch("/api/checkout/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ seats, tier, locale }),
+        signal: controller.signal,
       });
 
       if (!res.ok) {
-        const data = await res.json();
+        let failedSeats = false;
+        try { failedSeats = !!(await res.json()).failedSeats; } catch {}
         setHoldState("error");
-        if (data.failedSeats) {
-          setHoldError(t("seatsTaken"));
-        } else {
-          setHoldError(t("holdError"));
-        }
+        setHoldError(failedSeats ? t("seatsTaken") : t("holdError"));
         return;
       }
 
@@ -151,66 +155,101 @@ export default function PurchaseFlow({
     } catch {
       setHoldState("error");
       setHoldError(t("holdError"));
+    } finally {
+      clearTimeout(timeoutId);
+      isSubmittingRef.current = false;
     }
   }, [selectedSeats, afterPartySeats, afterPartyIncluded, tier, locale, t]);
 
+  const handleNext = useCallback(() => {
+    if (hasAfterPartyAddon) {
+      setStep("afterParty");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      handlePurchase();
+    }
+  }, [hasAfterPartyAddon, handlePurchase]);
+
+  const handleBack = useCallback(() => {
+    setStep("seats");
+    setHoldState("idle");
+    setHoldError(null);
+  }, []);
+
   return (
-    <div className="flex flex-col gap-6">
-      {/* Seat Map Overview */}
-      {/* <SeatMapOverview /> */}
+    <AnimatePresence mode="wait">
+      {step === "seats" && (
+        <motion.div
+          key="seats"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -20 }}
+          transition={{ duration: 0.25 }}
+          className="flex flex-col gap-6"
+        >
+          {/* Zone Selector */}
+          <ZoneSelector
+            tier={tier}
+            selectedSeats={selectedSeats}
+            selectedSection={selectedSection}
+            onSelectZone={handleSelectZone}
+            sectionCounts={sectionCounts}
+          />
 
-      {/* Zone Selector */}
-      <div className="rounded-2xl p-4 md:p-8 bg-black/40 backdrop-blur-xl border border-white/10">
-        <ZoneSelector
-          tier={tier}
-          selectedSeats={selectedSeats}
-          selectedSection={selectedSection}
-          onSelectZone={handleSelectZone}
-          sectionCounts={sectionCounts}
-        />
-      </div>
+          {/* Seat Selector */}
+          <div
+            ref={seatSelectorRef}
+            className="rounded-2xl p-4 md:p-8 bg-black/40 backdrop-blur-xl border border-white/10"
+          >
+            <SeatSelector
+              tier={tier}
+              sectionId={selectedSection}
+              selectedSeats={
+                selectedSection
+                  ? (selectedSeats[selectedSection] ?? new Set())
+                  : new Set()
+              }
+              onToggleSeat={toggleSeat}
+              seatStatuses={seatStatuses}
+              loading={seatsLoading}
+            />
+          </div>
 
-      {/* Seat Selector */}
-      <div
-        ref={seatSelectorRef}
-        className="rounded-2xl p-4 md:p-8 bg-black/40 backdrop-blur-xl border border-white/10"
-      >
-        <SeatSelector
-          tier={tier}
-          sectionId={selectedSection}
-          selectedSeats={
-            selectedSection
-              ? (selectedSeats[selectedSection] ?? new Set())
-              : new Set()
-          }
-          onToggleSeat={toggleSeat}
-          seatStatuses={seatStatuses}
-          loading={seatsLoading}
-        />
-      </div>
-
-      {/* After Party Add-on */}
-      {hasAfterPartyAddon && totalCount > 0 && (
-        <AfterPartyAddon
-          tier={tier}
-          selectedSeats={selectedSeats}
-          afterPartySeats={afterPartySeats}
-          onToggle={toggleAfterParty}
-          locale={locale}
-        />
+          {/* Sticky Summary — "다음" when afterParty addon available */}
+          <SelectionSummary
+            tier={tier}
+            selectedSeats={selectedSeats}
+            afterPartyCount={afterPartyCount}
+            locale={locale}
+            onPurchase={handlePurchase}
+            onNext={hasAfterPartyAddon ? handleNext : undefined}
+            holdState={holdState}
+            holdError={holdError}
+            phase={phase}
+          />
+        </motion.div>
       )}
 
-      {/* Sticky Summary + Purchase */}
-      <SelectionSummary
-        tier={tier}
-        selectedSeats={selectedSeats}
-        afterPartyCount={afterPartyCount}
-        locale={locale}
-        onPurchase={handlePurchase}
-        holdState={holdState}
-        holdError={holdError}
-        phase={phase}
-      />
-    </div>
+      {step === "afterParty" && (
+        <motion.div
+          key="afterParty"
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: 20 }}
+          transition={{ duration: 0.25 }}
+        >
+          <AfterPartyAddon
+            selectedSeats={selectedSeats}
+            afterPartySeats={afterPartySeats}
+            onToggle={toggleAfterParty}
+            locale={locale}
+            onPurchase={handlePurchase}
+            onBack={handleBack}
+            holdState={holdState}
+            holdError={holdError}
+          />
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }

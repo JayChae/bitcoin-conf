@@ -4,19 +4,23 @@ import { cn } from "@/lib/utils";
 type Props = {
   tierLabel: string;
   freeLabel: string;
+  subLabel?: string;
   description: string;
   benefits: { text: string }[];
   notice?: string;
-  comingSoonLabel: string;
+  applyLabel: string;
+  applyHref: string;
 };
 
 export default function StudentTicketCard({
   tierLabel,
   freeLabel,
+  subLabel,
   description,
   benefits,
   notice,
-  comingSoonLabel,
+  applyLabel,
+  applyHref,
 }: Props) {
   return (
     <div
@@ -44,6 +48,9 @@ export default function StudentTicketCard({
               {freeLabel}
             </span>
           </div>
+          {subLabel && (
+            <p className="text-xs text-white/40 mt-2">{subLabel}</p>
+          )}
         </div>
 
         {/* Divider */}
@@ -71,17 +78,19 @@ export default function StudentTicketCard({
 
         {/* CTA */}
         <div className="mt-auto pt-8 md:pt-10">
-          <button
-            disabled
+          <a
+            href={applyHref}
+            target="_blank"
+            rel="noopener noreferrer"
             className={cn(
               "w-full flex items-center justify-center",
               "text-sm font-semibold py-3.5 px-6 rounded-full",
-              "bg-white/10 text-white/40 border border-white/15",
-              "cursor-not-allowed",
+              "bg-white/10 text-white border border-white/15",
+              "transition-colors duration-200 hover:bg-white/15",
             )}
           >
-            {comingSoonLabel}
-          </button>
+            {applyLabel}
+          </a>
         </div>
       </div>
     </div>

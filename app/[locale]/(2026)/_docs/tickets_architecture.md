@@ -349,7 +349,7 @@ Redis TTL(7분)이 자동 만료를 처리하므로, 세션 추적 없이도 시
 
 **현재 가격 조회** `GET /api/pricing/current?tier=premium`
 - 현재 적용 중인 페이즈, 할인율 반환
-- `tier` 파라미터 제공 시 Phase 2 잔여 수량도 포함
+- `tier` 파라미터 제공 시 Phase 2 잔여 수량도 포함 (VIP는 Phase 2 대상이 아니므로 제외)
 - 클라이언트 컴포넌트에서 동적 가격 표시에 사용
 
 **좌석 현황 조회** `GET /api/admin/seats`

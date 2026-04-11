@@ -22,15 +22,9 @@ export default function CheckinPage() {
   const scannerRef = useRef<HTMLDivElement>(null);
   const html5QrCodeRef = useRef<import("html5-qrcode").Html5Qrcode | null>(null);
   const lastScannedRef = useRef<string>("");
-  const dismissTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
   const dismissResult = useCallback(() => {
     setResult(null);
     lastScannedRef.current = "";
-    if (dismissTimerRef.current) {
-      clearTimeout(dismissTimerRef.current);
-      dismissTimerRef.current = null;
-    }
   }, []);
 
   // ─── Verify Token ───
@@ -53,11 +47,6 @@ export default function CheckinPage() {
       const data: CheckinResult = await res.json();
       setResult(data);
 
-      // Clear previous auto-dismiss timer
-      if (dismissTimerRef.current) {
-        clearTimeout(dismissTimerRef.current);
-      }
-
       // Haptic feedback
       try {
         if (navigator.vibrate) {
@@ -71,12 +60,6 @@ export default function CheckinPage() {
         // vibrate not supported
       }
 
-      // Auto-dismiss after 3 seconds
-      dismissTimerRef.current = setTimeout(() => {
-        setResult(null);
-        lastScannedRef.current = "";
-        dismissTimerRef.current = null;
-      }, 3000);
     } catch {
       setResult({ valid: false, reason: "Network error" });
     }
@@ -146,9 +129,6 @@ export default function CheckinPage() {
   useEffect(() => {
     return () => {
       stopScanner();
-      if (dismissTimerRef.current) {
-        clearTimeout(dismissTimerRef.current);
-      }
     };
   }, [stopScanner]);
 
@@ -167,7 +147,7 @@ export default function CheckinPage() {
   const tierColors: Record<string, string> = {
     vip: "#FFD700",
     premium: "#FF8C00",
-    general: "#4CAF50",
+    general: "#FFFFFF",
   };
 
   return (

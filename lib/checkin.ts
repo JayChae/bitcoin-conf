@@ -29,14 +29,15 @@ export async function processCheckin(token: string): Promise<CheckinResult> {
   }
 
   const key = checkinKey(payload.cid, payload.sec, payload.seat);
-  const existing = await redis.get<string>(key);
-
-  if (existing) {
-    return { valid: true, alreadyCheckedIn: true, payload, checkedInAt: existing };
-  }
-
   const now = new Date().toISOString();
-  await redis.set(key, now);
+
+  // Atomic check-in: SETNX returns true only for the first call
+  const wasSet = await redis.setnx(key, now);
+
+  if (!wasSet) {
+    const checkedInAt = await redis.get<string>(key);
+    return { valid: true, alreadyCheckedIn: true, payload, checkedInAt: checkedInAt! };
+  }
 
   return { valid: true, alreadyCheckedIn: false, payload };
 }

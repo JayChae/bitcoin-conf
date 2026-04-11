@@ -20,6 +20,7 @@ export default function SelectionSummary({
   afterPartyCount,
   locale,
   onPurchase,
+  onNext,
   holdState = "idle",
   holdError = null,
   phase,
@@ -29,6 +30,7 @@ export default function SelectionSummary({
   afterPartyCount: number;
   locale: string;
   onPurchase: () => void;
+  onNext?: () => void;
   holdState?: HoldState;
   holdError?: string | null;
   phase: PricingPhase;
@@ -70,12 +72,15 @@ export default function SelectionSummary({
               {t("totalPrice")}
               {formatKRW(grandTotal, locale)}
               {t("currency")}
+              <span className="text-[10px] text-white/40 font-normal ml-1">
+                ({t("vatNote")})
+              </span>
             </div>
           </div>
 
           <button
             type="button"
-            onClick={onPurchase}
+            onClick={onNext ?? onPurchase}
             disabled={isLoading}
             className={cn(
               "px-5 py-2.5 rounded-xl text-sm font-bold min-w-[90px] flex items-center justify-center",
@@ -96,7 +101,7 @@ export default function SelectionSummary({
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
               </svg>
             ) : (
-              t("ctaBuy")
+              onNext ? t("next") : t("ctaBuy")
             )}
           </button>
         </div>

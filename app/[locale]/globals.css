@@ -443,12 +443,12 @@ button {
 @keyframes glow-pulse {
   0%,
   100% {
-    box-shadow: 0 0 15px rgba(140, 80, 200, 0.1),
-      0 0 40px rgba(47, 75, 162, 0.06);
+    box-shadow: 0 0 20px rgba(140, 80, 200, 0.25),
+      0 0 50px rgba(47, 75, 162, 0.12);
   }
   50% {
-    box-shadow: 0 0 20px rgba(140, 80, 200, 0.18),
-      0 0 60px rgba(47, 75, 162, 0.1);
+    box-shadow: 0 0 30px rgba(140, 80, 200, 0.35),
+      0 0 70px rgba(47, 75, 162, 0.18);
   }
 }
 
