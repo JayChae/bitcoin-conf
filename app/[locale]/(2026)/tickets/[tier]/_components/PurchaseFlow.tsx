@@ -107,7 +107,11 @@ export default function PurchaseFlow({
     [],
   );
 
+  const isSubmittingRef = useRef(false);
+
   const handlePurchase = useCallback(async () => {
+    if (isSubmittingRef.current) return;
+
     const seats: SeatHoldRequest[] = [];
     for (const [sectionId, seatSet] of Object.entries(selectedSeats)) {
       for (const num of [...seatSet].sort((a, b) => a - b)) {
@@ -123,24 +127,26 @@ export default function PurchaseFlow({
 
     if (seats.length === 0) return;
 
+    isSubmittingRef.current = true;
     setHoldState("loading");
     setHoldError(null);
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15_000);
 
     try {
       const res = await fetch("/api/checkout/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ seats, tier, locale }),
+        signal: controller.signal,
       });
 
       if (!res.ok) {
-        const data = await res.json();
+        let failedSeats = false;
+        try { failedSeats = !!(await res.json()).failedSeats; } catch {}
         setHoldState("error");
-        if (data.failedSeats) {
-          setHoldError(t("seatsTaken"));
-        } else {
-          setHoldError(t("holdError"));
-        }
+        setHoldError(failedSeats ? t("seatsTaken") : t("holdError"));
         return;
       }
 
@@ -149,6 +155,9 @@ export default function PurchaseFlow({
     } catch {
       setHoldState("error");
       setHoldError(t("holdError"));
+    } finally {
+      clearTimeout(timeoutId);
+      isSubmittingRef.current = false;
     }
   }, [selectedSeats, afterPartySeats, afterPartyIncluded, tier, locale, t]);
 
