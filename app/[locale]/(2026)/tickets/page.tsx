@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import SeatingChart from "../_components/Tickets/SeatingChart";
+import SeatMapOverview from "../_components/Tickets/SeatMapOverview";
 import TicketsGrid from "../_components/Tickets/TicketsGrid";
 import { getSaleStatus } from "@/lib/pricing";
 
@@ -18,8 +19,8 @@ export default async function TicketsPage() {
             {t("pageDescription")}
           </p>
         </div>
-
         <SeatingChart />
+        <SeatMapOverview />
         {saleStatus !== "upcoming" && <TicketsGrid saleStatus={saleStatus} />}
       </div>
     </main>

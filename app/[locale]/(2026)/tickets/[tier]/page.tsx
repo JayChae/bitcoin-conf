@@ -9,6 +9,7 @@ import {
 } from "../../_utils/tickets";
 import { getCurrentPhase, getSaleStatus } from "@/lib/pricing";
 import { redirect } from "next/navigation";
+import SeatMapOverview from "../../_components/Tickets/SeatMapOverview";
 import PurchaseFlow from "./_components/PurchaseFlow";
 
 type Props = {
@@ -48,6 +49,7 @@ export default async function TierPage({ params }: Props) {
           </p>
         </div>
 
+        <SeatMapOverview />
         <PurchaseFlow tier={tier} locale={locale} phase={phase} />
       </div>
     </main>
