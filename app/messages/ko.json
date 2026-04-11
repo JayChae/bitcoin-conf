@@ -113,6 +113,11 @@
     "studentIdRequired": "학생증 혹은 재학증명서 현장 확인",
     "studentBenefitNote": "프리미엄 티켓과 동일한 혜택 제공",
     "vatNote": "VAT 별도",
+    "next": "다음",
+    "goBack": "좌석 다시 선택",
+    "addAllAfterParty": "전체 티켓에 추가",
+    "removeAllAfterParty": "전체 해제",
+    "afterPartyStepDescription": "네트워킹 파티에서 연사, 참가자들과 교류하세요.",
     "studentNotice": "신청 후 개별 공지",
     "ctaApply": "신청하기"
   },

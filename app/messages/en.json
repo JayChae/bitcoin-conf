@@ -114,6 +114,11 @@
     "studentIdRequired": "Student ID or enrollment certificate required on-site",
     "studentBenefitNote": "Same benefits as Premium ticket",
     "vatNote": "VAT not included",
+    "next": "Next",
+    "goBack": "Reselect seats",
+    "addAllAfterParty": "Add to all tickets",
+    "removeAllAfterParty": "Remove all",
+    "afterPartyStepDescription": "Network with speakers and attendees",
     "studentNotice": "Individual notification after application",
     "ctaApply": "Apply"
   },
