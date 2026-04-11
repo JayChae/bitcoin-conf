@@ -73,6 +73,7 @@
     "frontSeats": "Front row seats",
     "vipDinnerParty": "VIP Dinner party",
     "allBtcWeekEvents": "Free access to all Bitcoin Korea Week events",
+    "afterPartyFree": "Free networking party access",
     "afterPartyOption": "Networking party",
     "afterPartyAddon": "50,000 KRW",
     "afterPartyDescription": "Add networking party access to your tickets",
@@ -112,6 +113,8 @@
     "studentDescription": "University students aged 25 and under",
     "studentIdRequired": "Student ID or enrollment certificate required on-site",
     "studentBenefitNote": "Same benefits as Premium ticket",
+    "vatNote": "VAT not included",
+    "studentNotice": "Individual notification after application",
     "ctaApply": "Apply"
   },
   "Footer": {

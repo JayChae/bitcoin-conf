@@ -70,6 +70,9 @@ export default function SelectionSummary({
               {t("totalPrice")}
               {formatKRW(grandTotal, locale)}
               {t("currency")}
+              <span className="text-[10px] text-white/40 font-normal ml-1">
+                ({t("vatNote")})
+              </span>
             </div>
           </div>
 

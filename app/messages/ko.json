@@ -72,6 +72,7 @@
     "frontSeats": "앞 좌석 제공",
     "vipDinnerParty": "VIP Dinner 파티",
     "allBtcWeekEvents": "Bitcoin Korea Week 모든 행사 무료 참석",
+    "afterPartyFree": "네트워킹 파티 무료 입장",
     "afterPartyOption": "네트워킹 파티",
     "afterPartyAddon": "5만원",
     "afterPartyDescription": "티켓에 네트워킹 파티 입장권을 추가하세요",
@@ -111,6 +112,8 @@
     "studentDescription": "만 25세 이하 대학생",
     "studentIdRequired": "학생증 혹은 재학증명서 현장 확인",
     "studentBenefitNote": "프리미엄 티켓과 동일한 혜택 제공",
+    "vatNote": "VAT 별도",
+    "studentNotice": "신청 후 개별 공지",
     "ctaApply": "신청하기"
   },
   "Footer": {

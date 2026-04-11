@@ -22,6 +22,8 @@ type Props = {
   // Phase
   phaseLabel: string;
   discountLabel: string;
+  // Note
+  vatNote?: string;
   // Sale status
   saleStatus: SaleStatus;
   closedLabel: string;
@@ -42,6 +44,7 @@ export default function TicketCard({
   isDiscounted,
   phaseLabel,
   discountLabel,
+  vatNote,
   saleStatus,
   closedLabel,
   comingSoonLabel,
@@ -107,6 +110,9 @@ export default function TicketCard({
               {currencyLabel}
             </span>
           </div>
+          {vatNote && (
+            <p className="text-xs text-white/40 mt-2">{vatNote}</p>
+          )}
         </div>
 
         {/* Divider */}

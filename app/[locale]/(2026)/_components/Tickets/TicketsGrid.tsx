@@ -29,10 +29,12 @@ export default async function TicketsGrid({
         <StudentTicketCard
           tierLabel={t("student")}
           freeLabel={t("studentFree")}
+          subLabel={t("studentNotice")}
           description={t("studentDescription")}
           benefits={studentBenefitKeys.map((key) => ({ text: t(key) }))}
           notice={t("studentIdRequired")}
-          comingSoonLabel={t("comingSoon")}
+          applyLabel={t("ctaApply")}
+          applyHref="https://forms.gle/4K2PxaYT5PRzPQT26"
         />
       </div>
       {await Promise.all(
@@ -55,6 +57,7 @@ export default async function TicketsGrid({
                 currentPrice={formatKRW(currentPrice, locale)}
                 originalPrice={formatKRW(ticket.basePrice, locale)}
                 currencyLabel={t("currency")}
+                vatNote={t("vatNote")}
                 isDiscounted={discounted}
                 phaseLabel={phaseKey ? t(phaseKey.phase) : ""}
                 discountLabel={phaseKey ? t(phaseKey.discount) : ""}
