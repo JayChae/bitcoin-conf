@@ -68,7 +68,7 @@ export default async function RootLayout({ children, params }: Props) {
         <link rel="manifest" href="/favicon/site.webmanifest" />
       </head>
       <body
-        className={`antialiased size-full relative overflow-y-auto bg-black`}
+        className={`antialiased size-full relative overflow-y-auto bg-[#101018]`}
       >
         <NextIntlClientProvider>{children}</NextIntlClientProvider>
       </body>

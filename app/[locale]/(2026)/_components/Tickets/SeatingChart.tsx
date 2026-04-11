@@ -62,9 +62,6 @@ export default async function SeatingChart() {
   return (
     <div className="w-full max-w-lg md:max-w-2xl mx-auto mb-12 md:mb-16">
       <div className="bg-black/40 backdrop-blur-2xl border border-white/10 rounded-2xl p-5 md:p-8">
-        <h2 className="text-center text-sm md:text-base font-medium text-white/50 tracking-widest uppercase mb-5 md:mb-6">
-          {t("seatMap")}
-        </h2>
 
         <svg
           viewBox="0 0 400 260"

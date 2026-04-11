@@ -5,6 +5,7 @@ import {
   getCurrentPhase,
   getPhase2Sold,
   getAllPhaseSold,
+  PHASE2_TIERS,
   type PricingConfig,
 } from "@/lib/pricing";
 import { isValidSession } from "../auth/route";
@@ -57,9 +58,9 @@ export async function PUT(request: NextRequest) {
     }
   }
 
-  // Validate Phase 2 maxTickets
+  // Validate Phase 2 maxTickets (VIP is excluded from Phase 2)
   if (body.phase2?.enabled) {
-    for (const tier of TIERS) {
+    for (const tier of PHASE2_TIERS) {
       const max = body.phase2.maxTickets?.[tier];
       if (typeof max !== "number" || max < 1 || !Number.isInteger(max)) {
         return NextResponse.json(

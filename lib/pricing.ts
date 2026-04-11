@@ -12,7 +12,7 @@ export type PricingConfig = {
     enabled: boolean;
   };
   phase2: {
-    maxTickets: Record<TierKey, number>;
+    maxTickets: Partial<Record<TierKey, number>>;
     enabled: boolean;
   };
   override: PricingPhase | null;
@@ -33,7 +33,7 @@ const DEFAULT_CONFIG: PricingConfig = {
     enabled: false,
   },
   phase2: {
-    maxTickets: { vip: 10, premium: 100, general: 100 },
+    maxTickets: { premium: 100, general: 100 },
     enabled: false,
   },
   override: null,
@@ -59,8 +59,8 @@ export async function getCurrentPhase(tier?: TierKey): Promise<PricingPhase> {
     return "earlybird1";
   }
 
-  // Phase 2: quantity-limited (per tier)
-  if (config.phase2.enabled && tier) {
+  // Phase 2: quantity-limited (premium, general only — VIP skips Phase 2)
+  if (config.phase2.enabled && tier && PHASE2_TIERS.includes(tier)) {
     const sold = (await redis.get<number>(phase2SoldKey(tier))) ?? 0;
     const max = config.phase2.maxTickets[tier] ?? 0;
     if (sold < max) {
@@ -113,6 +113,8 @@ export async function incrementPhaseSold(
 }
 
 const TIERS: TierKey[] = ["vip", "premium", "general"];
+/** Phase 2 참여 티어. VIP는 Phase 2 대상 아님. */
+export const PHASE2_TIERS: TierKey[] = ["premium", "general"];
 const PHASES: PricingPhase[] = ["earlybird1", "earlybird2", "regular"];
 
 export async function getAllPhaseSold(): Promise<

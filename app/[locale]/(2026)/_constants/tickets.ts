@@ -24,8 +24,8 @@ export const TICKETS: TicketDef[] = [
       "includesGeneral",
       "welcomeGift",
       "centerSeats",
-      "loungeAccess",
       "speakerMaterials",
+      "networkingPartyNote",
     ],
     addonKeys: ["afterPartyOption"],
   },
@@ -35,10 +35,12 @@ export const TICKETS: TicketDef[] = [
     totalSeats: 21,
     benefitKeys: [
       "includesPremium",
+      "loungeAccess",
       "fastEntry",
       "frontSeats",
       "vipDinnerParty",
       "allBtcWeekEvents",
+      "afterPartyFree",
     ],
   },
 ];
