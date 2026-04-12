@@ -43,11 +43,11 @@ export default function SeatMapPdfViewer() {
     }
   }, []);
 
-  // Fit PDF width to container — fill the screen on mobile
+  // Fit PDF width to container — fill the screen on mobile, cap on desktop
   const handlePageLoadSuccess = useCallback(() => {
     if (containerRef.current) {
       const containerWidth = containerRef.current.clientWidth - 16;
-      setPageWidth(containerWidth);
+      setPageWidth(Math.min(containerWidth, 800));
     }
   }, []);
 
@@ -133,10 +133,7 @@ export default function SeatMapPdfViewer() {
       </div>
 
       {/* PDF container */}
-      <div
-        ref={containerRef}
-        className="relative flex-1 overflow-auto"
-      >
+      <div ref={containerRef} className="relative flex-1 overflow-auto">
         {loading && (
           <div className="absolute inset-0 flex items-center justify-center z-10">
             <div className="size-8 border-2 border-white/20 border-t-white/80 rounded-full animate-spin" />
