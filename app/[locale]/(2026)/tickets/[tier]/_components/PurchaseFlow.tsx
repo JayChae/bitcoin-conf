@@ -112,6 +112,9 @@ export default function PurchaseFlow({
   const handlePurchase = useCallback(async () => {
     if (isSubmittingRef.current) return;
 
+    alert("시스템 점검 중입니다. 잠시 후 다시 시도해주세요.\n\nSystem maintenance in progress. Please try again later.");
+    return;
+
     const seats: SeatHoldRequest[] = [];
     for (const [sectionId, seatSet] of Object.entries(selectedSeats)) {
       for (const num of [...seatSet].sort((a, b) => a - b)) {
