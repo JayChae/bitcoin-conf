@@ -10,16 +10,16 @@
 |------|---------------------|---------------------|---------|
 | **할인율** | 20% | 10% | 0% (정가) |
 | **조건** | 기간 한정 | 갯수 한정 (Premium/General만) | 기본값 |
-| **적용 대상** | 티켓만 (AP 제외) | Premium/General만 (VIP, AP 제외) | — |
+| **적용 대상** | Premium/General만 (VIP, AP 제외) | Premium/General만 (VIP, AP 제외) | — |
 | **Shopify 코드** | `EARLYBIRD20` | `EARLYBIRD10` | 없음 |
 
-> **VIP는 Phase 2 대상이 아닙니다.** Phase 1 종료 후 바로 정가로 전환됩니다.
+> **VIP는 모든 얼리버드 할인 대상이 아닙니다.** 항상 정가(₩2,400,000)로 판매됩니다.
 
 **가격 예시:**
 
 | 티어 | 정가 | Phase 1 (20%) | Phase 2 (10%) |
 |------|------|--------------|--------------|
-| VIP | ₩2,400,000 | ₩1,920,000 | — (Phase 2 대상 아님) |
+| VIP | ₩2,400,000 | — (할인 대상 아님) | — (할인 대상 아님) |
 | Premium | ₩300,000 | ₩240,000 | ₩270,000 |
 | General | ₩240,000 | ₩192,000 | ₩216,000 |
 | After Party | ₩50,000 | ₩50,000 | ₩50,000 |
@@ -33,22 +33,25 @@
 페이즈는 다음 우선순위로 결정됩니다:
 
 ```
+⓪ VIP 조기 반환
+   → tier가 "vip"이면 즉시 "regular" 반환 (모든 얼리버드 할인 대상 아님)
+   ↓ (VIP가 아닌 경우)
 ① 수동 오버라이드 (override)
    → 설정되어 있으면 무조건 해당 페이즈 적용
    ↓ (null이면)
 ② Phase 1: 기간 한정
    → enabled && 현재 시각이 startDate~endDate 사이이면 "earlybird1"
    ↓ (조건 미충족)
-③ Phase 2: 갯수 한정 (Premium/General만, VIP 제외)
+③ Phase 2: 갯수 한정 (Premium/General만)
    → enabled && PHASE2_TIERS에 포함 && 해당 티어의 판매수 < maxTickets이면 "earlybird2"
-   ↓ (조건 미충족 또는 VIP)
+   ↓ (조건 미충족)
 ④ Regular (정가)
 ```
 
-Phase 2는 **Premium/General만** 대상이며, 티어별로 독립 판단합니다:
-- VIP: Phase 2 대상 아님 — Phase 1 종료 후 바로 정가 전환
-- Premium: 100장 할인 → 100장 팔리면 Premium만 정가 전환
-- General: 100장 할인 → General은 아직 할인 중일 수 있음
+얼리버드 할인은 **Premium/General만** 대상이며, 티어별로 독립 판단합니다:
+- VIP: 모든 얼리버드 할인 대상 아님 — 항상 정가
+- Premium: Phase 1 (20%) + Phase 2 (100장 한정 10%) → 소진 시 정가 전환
+- General: Phase 1 (20%) + Phase 2 (100장 한정 10%) → 소진 시 정가 전환
 
 ---
 
@@ -128,8 +131,8 @@ Shopify 상품 가격은 항상 **정가**로 설정되어 있습니다.
 
 | 코드 | 할인율 | 대상 상품 | 제외 상품 |
 |------|-------|----------|----------|
-| `EARLYBIRD20` | 20% | VIP Ticket, Premium Ticket, General Ticket | After Party |
-| `EARLYBIRD10` | 10% | VIP Ticket, Premium Ticket, General Ticket | After Party |
+| `EARLYBIRD20` | 20% | Premium Ticket, General Ticket | VIP Ticket, After Party |
+| `EARLYBIRD10` | 10% | Premium Ticket, General Ticket | VIP Ticket, After Party |
 
 After Party를 별도 상품으로 분리한 이유:
 Shopify 할인 코드는 상품 단위로 적용되므로, 티켓과 같은 상품의 Variant로 구성하면

@@ -43,6 +43,9 @@ const DEFAULT_CONFIG: PricingConfig = {
 // ─── Phase Determination ───
 
 export async function getCurrentPhase(tier?: TierKey): Promise<PricingPhase> {
+  // VIP는 모든 얼리버드 할인 대상 아님 — 항상 정가
+  if (tier === "vip") return "regular";
+
   const config = await getPricingConfig();
 
   // Manual override takes priority
