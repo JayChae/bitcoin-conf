@@ -60,27 +60,33 @@ export async function POST(request: NextRequest) {
 
   console.log("[webhook] confirmSeats result:", JSON.stringify(result));
 
-  // Increment phase sold counters
-  if (result.confirmed) {
-    await incrementPhaseSold(result.phase, result.tier, result.seatCount);
-    console.log("[webhook] phase counter incremented:", result.phase, result.tier, "+", result.seatCount);
-
-    if (result.phase === "earlybird2") {
-      await incrementPhase2Sold(result.tier, result.seatCount);
-      console.log("[webhook] phase2 tier counter incremented:", result.tier, "+", result.seatCount);
-    }
+  // If confirmation failed (e.g. checkout mapping expired), return 500
+  // so Shopify retries the webhook. Do NOT mark as processed.
+  if (!result.confirmed) {
+    console.error("[webhook] confirmation failed — checkout mapping not found. orderId:", orderId, "cartId:", cartId);
+    return NextResponse.json(
+      { success: false, error: "Checkout mapping not found" },
+      { status: 500 },
+    );
   }
 
-  // Mark as processed (24h TTL)
+  // Increment phase sold counters
+  await incrementPhaseSold(result.phase, result.tier, result.seatCount);
+  console.log("[webhook] phase counter incremented:", result.phase, result.tier, "+", result.seatCount);
+
+  if (result.phase === "earlybird2") {
+    await incrementPhase2Sold(result.tier, result.seatCount);
+    console.log("[webhook] phase2 tier counter incremented:", result.tier, "+", result.seatCount);
+  }
+
+  // Mark as processed ONLY after successful confirmation (24h TTL)
   if (orderId) {
     await redis.set(`webhook:order:${orderId}`, "1", { ex: 86400 });
   }
 
   // Delete checkout mapping last — if earlier steps fail, Shopify retries
-  // can still find the mapping and re-process. TTL (30min) auto-cleans anyway.
-  if (result.confirmed) {
-    await deleteCheckoutMapping(cartId);
-  }
+  // can still find the mapping and re-process. TTL auto-cleans anyway.
+  await deleteCheckoutMapping(cartId);
 
-  return NextResponse.json({ success: true, confirmed: result.confirmed });
+  return NextResponse.json({ success: true, confirmed: true });
 }

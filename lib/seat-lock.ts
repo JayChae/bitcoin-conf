@@ -9,7 +9,7 @@ import type { SeatStatus, SeatStatusInfo, SeatHoldRequest } from "@/app/[locale]
 import type { TierKey, PricingPhase } from "@/app/[locale]/(2026)/_types/tickets";
 
 const HOLD_TTL = 7 * 60; // 7 minutes
-const CHECKOUT_TTL = 30 * 60; // 30 minutes
+const CHECKOUT_TTL = 3 * 60 * 60; // 3 hours
 
 const MAX_SEATS: Record<TierKey, number> = {
   vip: 4,
