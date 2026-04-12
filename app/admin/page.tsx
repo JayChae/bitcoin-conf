@@ -66,7 +66,7 @@ export default function AdminPage() {
   const [apFilter, setApFilter] = useState("all");
   const [checkinFilter, setCheckinFilter] = useState("all");
 
-  const fetchData = useCallback(async () => {
+  const fetchData = useCallback(async (isInitial = false) => {
     const [pricingRes, seatsRes] = await Promise.all([
       fetch("/api/admin/pricing"),
       fetch("/api/admin/seats"),
@@ -74,7 +74,7 @@ export default function AdminPage() {
     if (pricingRes.ok) {
       const d: PricingData = await pricingRes.json();
       setServerData(d);
-      setEditConfig(d.config);
+      if (isInitial) setEditConfig(d.config);
     } else if (pricingRes.status === 401) {
       router.refresh();
       return;
@@ -85,7 +85,7 @@ export default function AdminPage() {
   }, [router]);
 
   useEffect(() => {
-    fetchData();
+    fetchData(true);
   }, [fetchData]);
 
   useEffect(() => {
@@ -104,7 +104,7 @@ export default function AdminPage() {
     setSaving(false);
     if (res.ok) {
       alert("저장되었습니다.");
-      fetchData();
+      fetchData(true);
     } else {
       const err = await res.json();
       alert(`오류: ${err.error}`);
