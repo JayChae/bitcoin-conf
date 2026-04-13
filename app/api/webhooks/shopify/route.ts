@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
-import { confirmSeats, deleteCheckoutMapping } from "@/lib/seat-lock";
+import { confirmSeats, deleteCheckoutMapping, type ConfirmFailureReason } from "@/lib/seat-lock";
 import { redis } from "@/lib/redis";
 import { incrementPhase2Sold, incrementPhaseSold } from "@/lib/pricing";
 import { sendDiscordAlert } from "@/lib/discord";
@@ -66,29 +66,61 @@ export async function POST(request: NextRequest) {
 
     let result = await confirmSeats(matchedCartId, email);
 
-    // If not found, try with the raw cart token as it might be the full ID already
-    if (!result.confirmed && cartToken.startsWith("gid://")) {
+    // If mapping not found, try with the raw cart token as it might be the full ID already
+    if (!result.confirmed && result.reason === "mapping_expired" && cartToken.startsWith("gid://")) {
       matchedCartId = cartToken;
       result = await confirmSeats(matchedCartId, email);
     }
 
     console.log("[webhook] confirmSeats result:", JSON.stringify(result));
 
-    // If confirmation failed (e.g. checkout mapping expired or seats already sold),
-    // return 500 so Shopify retries the webhook. Do NOT mark as processed.
     if (!result.confirmed) {
-      console.error("[webhook] confirmation failed — checkout mapping not found. orderId:", orderId, "cartId:", matchedCartId);
+      const reason: ConfirmFailureReason = result.reason;
+      console.error("[webhook] confirmation failed:", { orderId, cartId: matchedCartId, reason });
+
       await sendDiscordAlert(
-        `🚨 **좌석 확정 실패 — 환불 필요**\n` +
+        `**좌석 확정 실패 — 환불 필요**\n` +
         `주문 ID: ${orderId}\n` +
         `이메일: ${email ?? "없음"}\n` +
         `Cart ID: ${matchedCartId}\n` +
-        `사유: checkout 매핑 없음 또는 좌석 이미 판매됨`,
+        `사유: ${reason}`,
       );
-      // Remove idempotency key so Shopify retry can re-process
+
+      // Permanent failures: stop retrying (return 200), keep idempotency key
+      if (reason === "mapping_expired" || reason === "already_sold") {
+        if (orderId) await redis.set(`webhook:order:${orderId}`, `failed:${reason}`, { ex: 86400 });
+        return NextResponse.json(
+          { success: false, error: reason, needsRefund: true },
+          { status: 200 },
+        );
+      }
+
+      // Transient failure (held_by_other): allow limited retries
+      if (reason === "held_by_other" && orderId) {
+        const retryKey = `webhook:retry:${orderId}`;
+        const retryCount = await redis.incr(retryKey);
+        if (retryCount === 1) await redis.expire(retryKey, 3600);
+
+        if (retryCount > 3) {
+          await redis.set(`webhook:order:${orderId}`, "failed:max_retries", { ex: 86400 });
+          return NextResponse.json(
+            { success: false, error: "Max retries exceeded", needsRefund: true },
+            { status: 200 },
+          );
+        }
+
+        // Allow Shopify retry
+        await redis.del(`webhook:order:${orderId}`);
+        return NextResponse.json(
+          { success: false, error: "held_by_other" },
+          { status: 500 },
+        );
+      }
+
+      // Unknown reason — allow retry
       if (orderId) await redis.del(`webhook:order:${orderId}`);
       return NextResponse.json(
-        { success: false, error: "Checkout mapping not found" },
+        { success: false, error: "Confirmation failed" },
         { status: 500 },
       );
     }
@@ -108,8 +140,29 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: true, confirmed: true });
   } catch (error) {
     console.error("[webhook] unexpected error:", error);
-    // Remove idempotency key so Shopify retry can re-process
-    if (orderId) await redis.del(`webhook:order:${orderId}`);
+
+    // Cap retries for unexpected errors
+    if (orderId) {
+      const retryKey = `webhook:retry:${orderId}`;
+      const retryCount = await redis.incr(retryKey);
+      if (retryCount === 1) await redis.expire(retryKey, 3600);
+
+      if (retryCount > 5) {
+        await sendDiscordAlert(
+          `**웹훅 처리 반복 실패**\n` +
+          `주문 ID: ${orderId}\n` +
+          `에러: ${error instanceof Error ? error.message : String(error)}`,
+        );
+        await redis.set(`webhook:order:${orderId}`, "failed:error", { ex: 86400 });
+        return NextResponse.json(
+          { success: false, error: "Internal error - max retries" },
+          { status: 200 },
+        );
+      }
+
+      await redis.del(`webhook:order:${orderId}`);
+    }
+
     return NextResponse.json(
       { success: false, error: "Internal error" },
       { status: 500 },

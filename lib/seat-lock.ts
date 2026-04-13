@@ -185,6 +185,39 @@ export async function holdSeats(
   return { success: true };
 }
 
+// ─── 2-1. 체크아웃 카트 ID 스탬프 + TTL 연장 ───
+
+const LUA_STAMP_CART_ID = `
+local numSeats = tonumber(ARGV[1])
+local cartId = ARGV[2]
+local extendedTTL = tonumber(ARGV[3])
+
+for i = 1, numSeats do
+  local val = redis.call('GET', KEYS[i])
+  if val then
+    local info = cjson.decode(val)
+    if info.status == 'held' then
+      info.cartId = cartId
+      redis.call('SET', KEYS[i], cjson.encode(info), 'EX', extendedTTL)
+    end
+  end
+end
+
+return cjson.encode({ success = true })
+`;
+
+export async function stampCartIdOnSeats(
+  seats: SeatHoldRequest[],
+  cartId: string,
+): Promise<void> {
+  const keys = seats.map((s) => seatKey(s.section, s.seat));
+  await redis.eval(LUA_STAMP_CART_ID, keys, [
+    seats.length.toString(),
+    cartId,
+    CHECKOUT_TTL.toString(),
+  ]);
+}
+
 // ─── 3. 잠금 해제 (sessionId 기반 — /api/seats/hold 및 /api/seats/release용) ───
 
 const LUA_RELEASE_SEAT = `
@@ -215,11 +248,15 @@ export async function releaseHolds(sessionId: string): Promise<void> {
 
 // ─── 4. 결제 완료 — 좌석 sold 확정 (Lua 원자적 처리) ───
 
-// 이미 sold인 좌석이 있으면 전체 실패 (다른 사용자가 먼저 구매)
-// held 또는 없음(만료) → sold 전환 허용
+// 소유권 검증 포함 좌석 확정:
+// - sold → 거부 (already_sold)
+// - held + 다른 cartId → 거부 (held_by_other)
+// - held + 같은 cartId / cartId 없음(레거시) / nil(만료) → 허용
 const LUA_CONFIRM_SEATS = `
 local numSeats = tonumber(ARGV[1])
+local cartId = ARGV[2]
 local failed = {}
+local reasons = {}
 
 for i = 1, numSeats do
   local val = redis.call('GET', KEYS[i])
@@ -227,32 +264,41 @@ for i = 1, numSeats do
     local info = cjson.decode(val)
     if info.status == 'sold' then
       table.insert(failed, i)
+      table.insert(reasons, 'already_sold')
+    elseif info.status == 'held' and info.cartId and info.cartId ~= cartId then
+      table.insert(failed, i)
+      table.insert(reasons, 'held_by_other')
     end
   end
 end
 
 if #failed > 0 then
-  return cjson.encode({ success = false, failed = failed })
+  return cjson.encode({ success = false, failed = failed, reasons = reasons })
 end
 
 for i = 1, numSeats do
-  redis.call('SET', KEYS[i], ARGV[1 + i])
+  redis.call('SET', KEYS[i], ARGV[2 + i])
 end
 
 return cjson.encode({ success = true })
 `;
 
+export type ConfirmFailureReason = "mapping_expired" | "already_sold" | "held_by_other";
+
 export async function confirmSeats(
   cartId: string,
   email?: string,
-): Promise<{ confirmed: false } | { confirmed: true; tier: TierKey; seatCount: number; phase: PricingPhase }> {
+): Promise<
+  | { confirmed: false; reason: ConfirmFailureReason }
+  | { confirmed: true; tier: TierKey; seatCount: number; phase: PricingPhase }
+> {
   const data = await redis.get<{
     seats: SeatHoldRequest[];
     tier: TierKey;
     phase: PricingPhase;
   }>(checkoutKey(cartId));
 
-  if (!data) return { confirmed: false };
+  if (!data) return { confirmed: false, reason: "mapping_expired" };
 
   const keys = data.seats.map((s) => seatKey(s.section, s.seat));
   const seatArgs = data.seats.map((seat) =>
@@ -267,13 +313,17 @@ export async function confirmSeats(
   const raw = await redis.eval(
     LUA_CONFIRM_SEATS,
     keys,
-    [data.seats.length.toString(), ...seatArgs],
+    [data.seats.length.toString(), cartId, ...seatArgs],
   );
 
   const result = typeof raw === "string" ? JSON.parse(raw) : raw;
   if (!result.success) {
-    console.error("[confirmSeats] failed — seats already sold:", result.failed);
-    return { confirmed: false };
+    const reasons = (result.reasons as string[]) ?? [];
+    const reason: ConfirmFailureReason = reasons.includes("already_sold")
+      ? "already_sold"
+      : "held_by_other";
+    console.error("[confirmSeats] failed:", { failed: result.failed, reasons, cartId });
+    return { confirmed: false, reason };
   }
 
   return { confirmed: true, tier: data.tier, seatCount: data.seats.length, phase: data.phase };
