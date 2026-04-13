@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { holdSeats, saveCheckoutMapping } from "@/lib/seat-lock";
+import { holdSeats, saveCheckoutMapping, releaseSeats } from "@/lib/seat-lock";
 import { createCheckoutCart } from "@/lib/shopify";
 import { getCurrentPhase, getSaleStatus } from "@/lib/pricing";
 import type { TierKey } from "@/app/[locale]/(2026)/_types/tickets";
@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
       ? seats.map((s) => ({ ...s, afterParty: true }))
       : seats;
 
-  // Step 1: Atomically hold seats (7 min TTL)
+  // Step 1: Atomically hold seats (30 min TTL)
   const holdResult = await holdSeats(normalizedSeats, tier);
 
   if (!holdResult.success) {
@@ -63,6 +63,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ checkoutUrl });
   } catch (error) {
     console.error("Failed to create checkout:", error);
+    // Release held seats so user can retry immediately
+    await releaseSeats(normalizedSeats);
     return NextResponse.json(
       { error: "Failed to create checkout" },
       { status: 500 },

@@ -8,7 +8,7 @@ import { getSeatTier } from "@/app/[locale]/(2026)/_utils/seats";
 import type { SeatStatus, SeatStatusInfo, SeatHoldRequest } from "@/app/[locale]/(2026)/_types/seats";
 import type { TierKey, PricingPhase } from "@/app/[locale]/(2026)/_types/tickets";
 
-const HOLD_TTL = 7 * 60; // 7 minutes
+const HOLD_TTL = 30 * 60; // 30 minutes
 const CHECKOUT_TTL = 3 * 60 * 60; // 3 hours
 
 const MAX_SEATS: Record<TierKey, number> = {
@@ -213,7 +213,34 @@ export async function releaseHolds(sessionId: string): Promise<void> {
   await pipeline.exec();
 }
 
-// ─── 4. 결제 완료 — 좌석 sold 확정 ───
+// ─── 4. 결제 완료 — 좌석 sold 확정 (Lua 원자적 처리) ───
+
+// 이미 sold인 좌석이 있으면 전체 실패 (다른 사용자가 먼저 구매)
+// held 또는 없음(만료) → sold 전환 허용
+const LUA_CONFIRM_SEATS = `
+local numSeats = tonumber(ARGV[1])
+local failed = {}
+
+for i = 1, numSeats do
+  local val = redis.call('GET', KEYS[i])
+  if val then
+    local info = cjson.decode(val)
+    if info.status == 'sold' then
+      table.insert(failed, i)
+    end
+  end
+end
+
+if #failed > 0 then
+  return cjson.encode({ success = false, failed = failed })
+end
+
+for i = 1, numSeats do
+  redis.call('SET', KEYS[i], ARGV[1 + i])
+end
+
+return cjson.encode({ success = true })
+`;
 
 export async function confirmSeats(
   cartId: string,
@@ -227,25 +254,41 @@ export async function confirmSeats(
 
   if (!data) return { confirmed: false };
 
-  const pipeline = redis.pipeline();
-  for (const seat of data.seats) {
-    pipeline.set(
-      seatKey(seat.section, seat.seat),
-      JSON.stringify({
-        status: "sold",
-        tier: data.tier,
-        afterParty: seat.afterParty,
-        ...(email && { email }),
-      } satisfies SeatStatusInfo),
-    );
+  const keys = data.seats.map((s) => seatKey(s.section, s.seat));
+  const seatArgs = data.seats.map((seat) =>
+    JSON.stringify({
+      status: "sold",
+      tier: data.tier,
+      afterParty: seat.afterParty,
+      ...(email && { email }),
+    } satisfies SeatStatusInfo),
+  );
+
+  const raw = await redis.eval(
+    LUA_CONFIRM_SEATS,
+    keys,
+    [data.seats.length.toString(), ...seatArgs],
+  );
+
+  const result = typeof raw === "string" ? JSON.parse(raw) : raw;
+  if (!result.success) {
+    console.error("[confirmSeats] failed — seats already sold:", result.failed);
+    return { confirmed: false };
   }
-  await pipeline.exec();
 
   return { confirmed: true, tier: data.tier, seatCount: data.seats.length, phase: data.phase };
 }
 
 export async function deleteCheckoutMapping(cartId: string): Promise<void> {
   await redis.del(checkoutKey(cartId));
+}
+
+// ─── 4-1. 좌석 즉시 해제 (Shopify 체크아웃 생성 실패 시) ───
+
+export async function releaseSeats(seats: SeatHoldRequest[]): Promise<void> {
+  if (seats.length === 0) return;
+  const keys = seats.map((s) => seatKey(s.section, s.seat));
+  await redis.del(...keys);
 }
 
 // ─── 5. 장바구니 ↔ 좌석 매핑 저장 ───
