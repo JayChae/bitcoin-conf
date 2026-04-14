@@ -14,6 +14,7 @@ export type SeatStatusInfo = {
   tier?: string;
   afterParty?: boolean;
   email?: string;
+  cartId?: string;
 };
 
 export type SeatHoldRequest = {

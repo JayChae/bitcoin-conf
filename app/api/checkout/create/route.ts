@@ -1,13 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
-import { holdSeats, saveCheckoutMapping } from "@/lib/seat-lock";
+import { holdSeats, saveCheckoutMapping, releaseSeats, stampCartIdOnSeats } from "@/lib/seat-lock";
 import { createCheckoutCart } from "@/lib/shopify";
 import { getCurrentPhase, getSaleStatus } from "@/lib/pricing";
+import { redis } from "@/lib/redis";
 import type { TierKey } from "@/app/[locale]/(2026)/_types/tickets";
 import type { SeatHoldRequest } from "@/app/[locale]/(2026)/_types/seats";
 
 const VALID_TIERS: TierKey[] = ["vip", "premium", "general"];
 
 export async function POST(request: NextRequest) {
+  // Rate limiting: 5 checkout attempts per IP per minute
+  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+  const rateLimitKey = `ratelimit:checkout:${ip}`;
+  const count = await redis.incr(rateLimitKey);
+  if (count === 1) await redis.expire(rateLimitKey, 60);
+  if (count > 5) {
+    return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+  }
+
   const body = await request.json();
   const { seats, tier, locale } = body as {
     seats: SeatHoldRequest[];
@@ -40,7 +50,7 @@ export async function POST(request: NextRequest) {
       ? seats.map((s) => ({ ...s, afterParty: true }))
       : seats;
 
-  // Step 1: Atomically hold seats (7 min TTL)
+  // Step 1: Atomically hold seats (30 min TTL)
   const holdResult = await holdSeats(normalizedSeats, tier);
 
   if (!holdResult.success) {
@@ -59,10 +69,14 @@ export async function POST(request: NextRequest) {
 
     console.log("[checkout] phase:", phase, "tier:", tier, "cleanCartId:", cleanCartId, "seats:", normalizedSeats.length);
 
+    // Stamp cartId on held seats for ownership verification + extend TTL to match checkout mapping
+    await stampCartIdOnSeats(normalizedSeats, cleanCartId);
     await saveCheckoutMapping(cleanCartId, normalizedSeats, tier, phase);
     return NextResponse.json({ checkoutUrl });
   } catch (error) {
     console.error("Failed to create checkout:", error);
+    // Release held seats so user can retry immediately
+    await releaseSeats(normalizedSeats);
     return NextResponse.json(
       { error: "Failed to create checkout" },
       { status: 500 },
