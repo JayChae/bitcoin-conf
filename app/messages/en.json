@@ -11,6 +11,16 @@
     "location": "COEX Samsung",
     "date": "November 7-8, 2026"
   },
+  "Speakers2026": {
+    "sectionTitle": "Speakers",
+    "pageTitle": "Speakers",
+    "pageSubtitle": "Meet the bitcoin voices coming to Seoul",
+    "difficultyLabel": "Lecture difficulty",
+    "lectureLabel": "Lecture topic",
+    "backToList": "Back to speakers",
+    "prev": "Previous",
+    "next": "Next"
+  },
   "Speakers": {
     "title": "Speakers",
     "moreText": "More",

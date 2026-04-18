@@ -11,6 +11,16 @@
     "location": "코엑스 삼성",
     "date": "2026년 11월 7일 ~ 8일"
   },
+  "Speakers2026": {
+    "sectionTitle": "연사 소개",
+    "pageTitle": "연사 소개",
+    "pageSubtitle": "서울로 오는 비트코인의 목소리들",
+    "difficultyLabel": "강의 난이도",
+    "lectureLabel": "강의 주제",
+    "backToList": "연사자 목록으로",
+    "prev": "이전",
+    "next": "다음"
+  },
   "Speakers": {
     "title": "연사 소개",
     "moreText": "더보기",

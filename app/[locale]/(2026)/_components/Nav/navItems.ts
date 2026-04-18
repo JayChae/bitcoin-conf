@@ -4,10 +4,12 @@ export type NavItem = {
 };
 
 const enItems: NavItem[] = [
+  { label: "Speakers", href: "/speakers" },
   { label: "Tickets", href: "/tickets" },
 ];
 
 const koItems: NavItem[] = [
+  { label: "연사 소개", href: "/speakers" },
   { label: "티켓", href: "/tickets" },
 ];
 
