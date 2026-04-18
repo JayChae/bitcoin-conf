@@ -1,12 +1,13 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { ArrowRight } from "lucide-react";
+import type { Locale } from "@/i18n/routing";
 import speakers from "@/app/messages/2026/speakers";
 import SpeakersGrid from "./SpeakersGrid";
 
 export default async function SpeakersSection() {
   const t = await getTranslations("Speakers2026");
-  const locale = (await getLocale()) as "en" | "ko";
+  const locale = (await getLocale()) as Locale;
   const list = speakers[locale];
 
   if (list.length === 0) return null;

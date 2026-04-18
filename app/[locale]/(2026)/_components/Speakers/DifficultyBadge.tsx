@@ -1,32 +1,17 @@
-import { cn } from "@/lib/utils";
+import type { Difficulty } from "@/app/messages/2026/speakers";
 
 type Props = {
-  difficulty: string;
-  className?: string;
+  difficulty: Difficulty;
+  label: string;
 };
 
-const dotByValue: Record<string, string> = {
-  High: "bg-glow-pink",
-  "상": "bg-glow-pink",
-  Medium: "bg-[#C084FC]",
-  "중": "bg-[#C084FC]",
-  Low: "bg-[#7BA4F7]",
-  "하": "bg-[#7BA4F7]",
-};
-
-const fallback = "bg-white/40";
-
-export default function DifficultyBadge({ difficulty, className }: Props) {
-  const dot = dotByValue[difficulty] ?? fallback;
+export default function DifficultyBadge({ difficulty, label }: Props) {
   return (
-    <span
-      className={cn(
-        "inline-flex items-center gap-1.5 text-[10px] font-semibold tracking-[0.18em] uppercase text-white/75",
-        className,
-      )}
-    >
-      <span className={cn("size-1.5 rounded-full", dot)} />
-      {difficulty}
-    </span>
+    <div className="inline-flex items-baseline gap-2.5">
+      <span className="text-[10px] font-medium tracking-[0.22em] uppercase text-white/50">
+        {label}
+      </span>
+      <span className="text-sm font-semibold text-white">{difficulty}</span>
+    </div>
   );
 }

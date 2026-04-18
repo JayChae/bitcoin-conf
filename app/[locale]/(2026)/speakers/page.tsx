@@ -1,4 +1,5 @@
 import { getLocale, getTranslations } from "next-intl/server";
+import type { Locale } from "@/i18n/routing";
 import speakers from "@/app/messages/2026/speakers";
 import SpeakersGrid from "../_components/Speakers/SpeakersGrid";
 
@@ -12,7 +13,7 @@ export async function generateMetadata() {
 
 export default async function SpeakersPage() {
   const t = await getTranslations("Speakers2026");
-  const locale = (await getLocale()) as "en" | "ko";
+  const locale = (await getLocale()) as Locale;
   const list = speakers[locale];
 
   return (
