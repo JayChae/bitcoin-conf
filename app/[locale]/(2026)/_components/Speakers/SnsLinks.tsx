@@ -34,7 +34,7 @@ export default function SnsLinks({ links, size, className }: Props) {
           rel="noopener noreferrer"
           aria-label={link.type}
           className={cn(
-            "inline-flex items-center justify-center rounded-full transition-colors",
+            "relative z-20 inline-flex items-center justify-center rounded-full transition-colors",
             v.box,
             v.chrome,
           )}

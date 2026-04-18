@@ -55,13 +55,12 @@ export default function SpeakerCard({ speaker }: Props) {
         <p className="text-xs text-white/65 line-clamp-2 leading-snug sm:mt-1.5 sm:min-h-[2.4em]">
           {speaker.subtitle.join(" · ")}
         </p>
-        {/* z-20 keeps SNS clickable above the stretched link */}
-        <div className="sm:hidden relative z-20 mt-1">
+        <div className="sm:hidden mt-1">
           <SnsLinks links={speaker.links} size="xs" />
         </div>
       </div>
 
-      <div className="hidden sm:flex relative z-20 mt-auto pt-5 items-center justify-center sm:order-3">
+      <div className="hidden sm:flex mt-auto pt-5 items-center justify-center sm:order-3">
         <SnsLinks links={speaker.links} size="xs" />
       </div>
     </div>
