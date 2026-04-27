@@ -35,6 +35,8 @@ export default async function TicketsGrid({
           notice={t("studentIdRequired")}
           applyLabel={t("ctaApply")}
           applyHref="https://forms.gle/4K2PxaYT5PRzPQT26"
+          closed
+          closedLabel={t("closed")}
         />
       </div>
       {await Promise.all(

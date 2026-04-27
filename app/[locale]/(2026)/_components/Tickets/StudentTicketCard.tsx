@@ -10,6 +10,8 @@ type Props = {
   notice?: string;
   applyLabel: string;
   applyHref: string;
+  closed?: boolean;
+  closedLabel?: string;
 };
 
 export default function StudentTicketCard({
@@ -21,6 +23,8 @@ export default function StudentTicketCard({
   notice,
   applyLabel,
   applyHref,
+  closed,
+  closedLabel,
 }: Props) {
   return (
     <div
@@ -78,19 +82,33 @@ export default function StudentTicketCard({
 
         {/* CTA */}
         <div className="mt-auto pt-8 md:pt-10">
-          <a
-            href={applyHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={cn(
-              "w-full flex items-center justify-center",
-              "text-sm font-semibold py-3.5 px-6 rounded-full",
-              "bg-white/10 text-white border border-white/15",
-              "transition-colors duration-200 hover:bg-white/15",
-            )}
-          >
-            {applyLabel}
-          </a>
+          {closed ? (
+            <button
+              disabled
+              className={cn(
+                "w-full flex items-center justify-center",
+                "text-sm font-semibold py-3.5 px-6 rounded-full",
+                "bg-white/10 text-white/40 border border-white/15",
+                "cursor-not-allowed",
+              )}
+            >
+              {closedLabel}
+            </button>
+          ) : (
+            <a
+              href={applyHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={cn(
+                "w-full flex items-center justify-center",
+                "text-sm font-semibold py-3.5 px-6 rounded-full",
+                "bg-white/10 text-white border border-white/15",
+                "transition-colors duration-200 hover:bg-white/15",
+              )}
+            >
+              {applyLabel}
+            </a>
+          )}
         </div>
       </div>
     </div>
