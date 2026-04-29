@@ -139,7 +139,11 @@
     "location": "Location",
     "day1": "Nov 7",
     "day2": "Nov 8",
-    "address1": "COEX, 513 Yeongdong-daero, Gangnam-gu, Seoul",
-    "address2": "19, Myeongdong 11-gil, Jung-gu, Seoul Korea Federation of Banks Hall, 2F International Conference Room"
+    "venue1": "COEX",
+    "address1": "513 Yeongdong-daero, Gangnam-gu, Seoul",
+    "venue2_1": "Korea Federation of Banks",
+    "address2": "19 Myeongdong 11-gil, Jung-gu, Seoul (2F International Conference Room)",
+    "venue2_2": "Community House Masil",
+    "address2_2": "14 Myeongdong 11-gil, Jung-gu, Seoul"
   }
 }

@@ -74,16 +74,30 @@ export default async function Footer() {
                 <p className="text-white/80 text-sm font-medium mb-1">
                   {t("day1")}
                 </p>
-                <p className="text-white/60 text-sm leading-relaxed">
-                  {t("address1")}
-                </p>
+                <div>
+                  <p className="text-white/80 text-sm">{t("venue1")}</p>
+                  <p className="text-white/60 text-sm leading-relaxed">
+                    {t("address1")}
+                  </p>
+                </div>
               </div>
               <div>
                 <p className="text-white/80 text-sm font-medium mb-1">
                   {t("day2")}
                 </p>
-                <div className="space-y-1">
-                  <p className="text-white/60 text-sm">{t("address2")}</p>
+                <div className="space-y-3">
+                  <div>
+                    <p className="text-white/80 text-sm">{t("venue2_1")}</p>
+                    <p className="text-white/60 text-sm leading-relaxed">
+                      {t("address2")}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-white/80 text-sm">{t("venue2_2")}</p>
+                    <p className="text-white/60 text-sm leading-relaxed">
+                      {t("address2_2")}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
