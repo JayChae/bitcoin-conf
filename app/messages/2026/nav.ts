@@ -4,7 +4,7 @@ export type NavItem = { label: string; href: string };
 export const hrefList = {
   home: "#home",
   speakers: "/speakers",
-  schedule: "#schedule",
+  schedule: "/schedule",
   lightningMarket: "#lightningMarket",
   sponsors: "#sponsors",
   tickets: "/tickets",

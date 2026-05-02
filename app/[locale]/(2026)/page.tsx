@@ -6,6 +6,7 @@ import ComingSoon from "./_components/ComingSoon";
 import Section from "./_components/Section";
 import Sponsor from "./_components/Sponsor";
 import SpeakersSection from "./_components/Speakers/SpeakersSection";
+import LocationSection from "./_components/Location/LocationSection";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -29,7 +30,7 @@ export default async function Home2026({ params }: Props) {
       />
       <TicketsSection />
       <SpeakersSection />
-      <ComingSoon />
+      <LocationSection />
       <Section id="sponsors" title={tSponsor("title")}>
         <Sponsor
           diamondTitle={tSponsor("diamond")}
@@ -39,6 +40,7 @@ export default async function Home2026({ params }: Props) {
           comingSoonText={tSponsor("comingSoon")}
         />
       </Section>
+      <ComingSoon />
     </main>
   );
 }

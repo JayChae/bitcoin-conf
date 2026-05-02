@@ -4,6 +4,7 @@ import { getTranslations } from "next-intl/server";
 
 export default async function Footer() {
   const t = await getTranslations("Footer");
+  const tLoc = await getTranslations("Location2026");
   return (
     <footer className="bg-black/40 backdrop-blur-sm border-t border-white/10 py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -72,30 +73,36 @@ export default async function Footer() {
             <div className="space-y-4">
               <div>
                 <p className="text-white/80 text-sm font-medium mb-1">
-                  {t("day1")}
+                  {tLoc("day1Short")}
                 </p>
                 <div>
-                  <p className="text-white/80 text-sm">{t("venue1")}</p>
+                  <p className="text-white/80 text-sm">
+                    {tLoc("venueCoexName")}
+                  </p>
                   <p className="text-white/60 text-sm leading-relaxed">
-                    {t("address1")}
+                    {tLoc("venueCoexAddress")}
                   </p>
                 </div>
               </div>
               <div>
                 <p className="text-white/80 text-sm font-medium mb-1">
-                  {t("day2")}
+                  {tLoc("day2Short")}
                 </p>
                 <div className="space-y-3">
                   <div>
-                    <p className="text-white/80 text-sm">{t("venue2_1")}</p>
+                    <p className="text-white/80 text-sm">
+                      {tLoc("venueKfbName")}
+                    </p>
                     <p className="text-white/60 text-sm leading-relaxed">
-                      {t("address2")}
+                      {tLoc("venueKfbAddress")}
                     </p>
                   </div>
                   <div>
-                    <p className="text-white/80 text-sm">{t("venue2_2")}</p>
+                    <p className="text-white/80 text-sm">
+                      {tLoc("venueMasilName")}
+                    </p>
                     <p className="text-white/60 text-sm leading-relaxed">
-                      {t("address2_2")}
+                      {tLoc("venueMasilAddress")}
                     </p>
                   </div>
                 </div>

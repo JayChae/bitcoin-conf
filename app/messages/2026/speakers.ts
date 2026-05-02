@@ -127,6 +127,29 @@ const items: SpeakerSource[] = [
     },
   },
   {
+    slug: "stephan-livera",
+    image: "/2026/speakers/Stephan_Livera.webp",
+    difficulty: "Low",
+    links: [
+      { type: "x", url: "https://x.com/stephanlivera" },
+      { type: "website", url: "https://stephanlivera.com" },
+    ],
+    i18n: {
+      en: {
+        title: "Stephan Livera",
+        subtitle: ["Bitcoin & Economics Podcaster"],
+        bio: "Stephan Livera is the host of the Stephan Livera Podcast, a leading Bitcoin show covering the technology and economics behind Bitcoin. He also invests in and advises Bitcoin companies including Oranje and Bringin, and is a frequent speaker at Bitcoin conferences around the world.",
+        lectureTitle: "",
+      },
+      ko: {
+        title: "Stephan Livera",
+        subtitle: ["비트코인과 경제 전문 팟캐스터"],
+        bio: "Stephan Livera는 비트코인의 기술과 경제를 다루는 대표적인 비트코인 쇼인 Stephan Livera Podcast의 진행자입니다. 또한 Oranje, Bringin 등 비트코인 기업에 투자하고 자문하며, 전 세계 비트코인 컨퍼런스에서 자주 연사로 활동하고 있습니다.",
+        lectureTitle: "",
+      },
+    },
+  },
+  {
     slug: "louis-ko",
     image: "/2026/speakers/poedae.webp",
     difficulty: "Medium",
