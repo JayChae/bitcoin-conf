@@ -23,11 +23,17 @@ export type Speaker = {
   subtitle: string[];
   bio: string;
   lectureTitle: string;
+  topic?: string;
+  session?: string;
+  stage?: string;
   difficulty: Difficulty;
   links: SNS[];
 };
 
-type LocaleContent = Pick<Speaker, "title" | "subtitle" | "bio" | "lectureTitle">;
+type LocaleContent = Pick<
+  Speaker,
+  "title" | "subtitle" | "bio" | "lectureTitle" | "topic" | "session" | "stage"
+>;
 
 type SpeakerSource = Omit<Speaker, keyof LocaleContent> & {
   i18n: { en: LocaleContent; ko: LocaleContent };

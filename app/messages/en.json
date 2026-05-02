@@ -22,7 +22,13 @@
     "lectureLabel": "Lecture topic",
     "backToList": "Back to speakers",
     "prev": "Previous",
-    "next": "Next"
+    "next": "Next",
+    "topicLabel": "Topic",
+    "sessionLabel": "Session",
+    "stageLabel": "Stage",
+    "bioLabel": "Speaker Bio",
+    "viewDetails": "View Details",
+    "comingSoon": "Coming Soon"
   },
   "Speakers": {
     "title": "Speakers",
