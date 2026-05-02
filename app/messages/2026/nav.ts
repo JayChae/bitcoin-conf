@@ -3,7 +3,7 @@ import tickets from "../2025/tickets";
 export type NavItem = { label: string; href: string };
 export const hrefList = {
   home: "#home",
-  speakers: "#speakers",
+  speakers: "/speakers",
   schedule: "#schedule",
   lightningMarket: "#lightningMarket",
   sponsors: "#sponsors",
