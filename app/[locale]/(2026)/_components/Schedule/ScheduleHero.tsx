@@ -1,11 +1,14 @@
 type Props = {
   title: string;
-  subtitle: string;
+  meta: string;
 };
 
-export default function ScheduleHero({ title, subtitle }: Props) {
+export default function ScheduleHero({ title, meta }: Props) {
   return (
     <div className="text-center mb-10 md:mb-12">
+      <p className="font-[family-name:var(--font-ubuntu-mono)] uppercase tracking-[0.3em] text-[10px] md:text-xs text-white/55 mb-4 md:mb-5">
+        {meta}
+      </p>
       <div className="relative inline-block">
         <div className="absolute inset-0 section-title-glow pointer-events-none" />
         <h1
@@ -15,9 +18,6 @@ export default function ScheduleHero({ title, subtitle }: Props) {
           {title}
         </h1>
       </div>
-      <p className="text-base md:text-lg text-white/60 max-w-2xl mx-auto mt-3 px-4">
-        {subtitle}
-      </p>
     </div>
   );
 }

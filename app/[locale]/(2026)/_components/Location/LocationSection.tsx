@@ -2,12 +2,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import Section from "../Section";
 import VenueCard from "./VenueCard";
-import { venues, type VenueId } from "@/app/messages/2026/venues";
-
-function mapUrl(id: VenueId, locale: Locale) {
-  const v = venues[id];
-  return locale === "ko" ? v.naverMapUrl : v.googleMapUrl;
-}
+import { venueMapUrl } from "@/app/messages/2026/venues";
 
 export default async function LocationSection() {
   const t = await getTranslations("Location2026");
@@ -35,7 +30,7 @@ export default async function LocationSection() {
             {
               name: t("venueCoexName"),
               address: t("venueCoexAddress"),
-              mapUrl: mapUrl("coex", locale),
+              mapUrl: venueMapUrl("coex", locale),
             },
           ]}
         />
@@ -59,12 +54,12 @@ export default async function LocationSection() {
             {
               name: t("venueKfbName"),
               address: t("venueKfbAddress"),
-              mapUrl: mapUrl("kfb", locale),
+              mapUrl: venueMapUrl("kfb", locale),
             },
             {
               name: t("venueMasilName"),
               address: t("venueMasilAddress"),
-              mapUrl: mapUrl("masil", locale),
+              mapUrl: venueMapUrl("masil", locale),
             },
           ]}
         />

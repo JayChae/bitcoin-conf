@@ -158,11 +158,10 @@
   },
   "Schedule2026": {
     "pageTitle": "일정",
-    "pageSubtitle": "2026년 11월 7-8일 서울에서 펼쳐지는 전체 일정입니다.",
+    "pageMeta": "2026.11.07 → 11.08 · SEOUL",
+    "pageMetaDescription": "Bitcoin Korea Conference 2026 · 코엑스 & 명동",
     "day1Label": "1일차 · 11월 7일",
     "day2Label": "2일차 · 11월 8일",
-    "day1VenueLine": "코엑스, 서울 강남",
-    "day2VenueLine": "서울 명동 · 2개 트랙 동시 진행",
     "trackKeynote": "키노트",
     "trackPanel": "패널",
     "trackWorkshop": "워크숍",
@@ -171,7 +170,7 @@
     "venueCoex": "메인 홀",
     "venueKfb": "은행회관",
     "venueMasil": "마실",
-    "tba": "추후 공개",
+    "tbaEyebrow": "프로그램 공개 예정",
     "comingSoonTitle": "세션 일정 추후 공개",
     "comingSoonSubtitle": "프로그램이 확정되는 대로 세션이 순차적으로 공개됩니다.",
     "viewSpeakers": "연사 라인업 보기"

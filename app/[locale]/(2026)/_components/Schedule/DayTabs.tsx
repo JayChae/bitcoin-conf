@@ -6,7 +6,6 @@ import type { DayId } from "@/app/messages/2026/schedules";
 export type DayTabItem = {
   id: DayId;
   tabLabel: string;
-  venueLine: string;
   panel: ReactNode;
 };
 
@@ -14,13 +13,15 @@ type Props = {
   days: DayTabItem[];
 };
 
-const accentBar: Record<DayId, string> = {
-  day1: "bg-[#8C50C8]",
-  day2: "bg-[#E947F5]",
+const activeStyle: Record<DayId, string> = {
+  day1: "bg-[#8C50C8]/22 border-[#8C50C8]/55 text-white shadow-[0_0_20px_-6px_rgba(140,80,200,0.55)]",
+  day2: "bg-[#E947F5]/22 border-[#E947F5]/55 text-white shadow-[0_0_20px_-6px_rgba(233,71,245,0.55)]",
 };
 
-const fadeMask =
-  "linear-gradient(to bottom, transparent 0%, black 4%, black 96%, transparent 100%)";
+const dotStyle: Record<DayId, string> = {
+  day1: "bg-[#C8A0FF]",
+  day2: "bg-[#F490FF]",
+};
 
 export default function DayTabs({ days }: Props) {
   const [activeId, setActiveId] = useState(days[0]?.id);
@@ -30,14 +31,11 @@ export default function DayTabs({ days }: Props) {
 
   return (
     <div>
-      <div
-        className="sticky top-16 z-20 -mx-4 px-4
-                   bg-[#0a0814]/80 backdrop-blur-xl border-b border-white/10"
-      >
+      <div className="sticky top-16 z-20 -mx-4 px-4 py-4 md:py-5 bg-[#0a0814]/85 backdrop-blur-xl">
         <div
           role="tablist"
           aria-label="Schedule day"
-          className="flex items-stretch max-w-3xl mx-auto"
+          className="mx-auto flex w-full max-w-md items-center gap-1 rounded-full border border-white/12 bg-white/[0.04] p-1.5"
         >
           {days.map((d) => {
             const isActive = d.id === active.id;
@@ -50,43 +48,33 @@ export default function DayTabs({ days }: Props) {
                 aria-controls={`panel-${d.id}`}
                 id={`tab-${d.id}`}
                 onClick={() => setActiveId(d.id)}
-                className={`relative flex-1 px-4 py-5 md:py-6 text-sm md:text-base
-                            font-[family-name:var(--font-ubuntu-mono)] uppercase tracking-[0.2em]
-                            transition-colors duration-200
+                className={`relative flex-1 inline-flex items-center justify-center gap-1.5 md:gap-2
+                            rounded-full border px-2 md:px-4 py-2.5 md:py-3
+                            text-[11px] md:text-sm whitespace-nowrap
+                            font-[family-name:var(--font-ubuntu-mono)] uppercase tracking-[0.08em] md:tracking-[0.18em]
+                            transition-all duration-200
                             ${
                               isActive
-                                ? "text-white font-semibold"
-                                : "text-white/35 hover:text-white/65 font-medium"
+                                ? activeStyle[d.id]
+                                : "border-transparent text-white/45 hover:text-white/80 hover:bg-white/[0.05]"
                             }`}
               >
-                {d.tabLabel}
                 <span
                   aria-hidden
-                  className={`absolute left-1/2 -translate-x-1/2 bottom-0 h-[2px] transition-all duration-300
-                              ${
-                                isActive
-                                  ? `${accentBar[d.id]} w-12`
-                                  : "bg-transparent w-0"
-                              }`}
+                  className={`size-1.5 rounded-full transition-opacity ${
+                    isActive ? `${dotStyle[d.id]} opacity-100` : "bg-white/40 opacity-50"
+                  }`}
                 />
+                <span className={isActive ? "font-semibold" : "font-medium"}>
+                  {d.tabLabel}
+                </span>
               </button>
             );
           })}
         </div>
       </div>
 
-      <div className="relative isolate">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-y-0 -inset-x-4 md:-inset-x-12 -z-10
-                     backdrop-blur-md bg-[#0a0814]/80"
-          style={{ maskImage: fadeMask, WebkitMaskImage: fadeMask }}
-        />
-
-        <p className="text-center text-white/55 text-sm md:text-base pt-8 pb-10 px-4 font-[family-name:var(--font-ubuntu-mono)] tracking-wide">
-          {active.venueLine}
-        </p>
-
+      <div className="pt-8 md:pt-10">
         {days.map((d) => (
           <div
             key={d.id}

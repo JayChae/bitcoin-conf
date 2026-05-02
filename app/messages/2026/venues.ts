@@ -1,3 +1,5 @@
+import type { Locale } from "@/i18n/routing";
+
 export type VenueId = "coex" | "kfb" | "masil";
 
 type VenueMeta = {
@@ -5,6 +7,11 @@ type VenueMeta = {
   naverMapUrl: string;
   googleMapUrl: string;
 };
+
+export function venueMapUrl(id: VenueId, locale: Locale): string {
+  const v = venues[id];
+  return locale === "ko" ? v.naverMapUrl : v.googleMapUrl;
+}
 
 export const venues: Record<VenueId, VenueMeta> = {
   coex: {

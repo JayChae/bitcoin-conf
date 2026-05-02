@@ -32,6 +32,7 @@ export default async function ScheduleTimeline({ day, locale }: Props) {
   if (day.sessions.length === 0) {
     return (
       <EmptyDay
+        eyebrow={t("tbaEyebrow")}
         title={t("comingSoonTitle")}
         subtitle={t("comingSoonSubtitle")}
         ctaLabel={t("viewSpeakers")}
