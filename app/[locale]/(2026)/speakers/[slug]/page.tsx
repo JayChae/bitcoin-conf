@@ -56,7 +56,7 @@ export default async function SpeakerDetailPage({
 
   return (
     <main className="relative z-10 min-h-screen pt-28 pb-24 px-4">
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-4xl mx-auto">
         <Link
           href="/speakers"
           className="group inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-white/70 hover:text-white transition-colors mb-12 md:mb-16"
@@ -65,50 +65,45 @@ export default async function SpeakerDetailPage({
           {t("backToList")}
         </Link>
 
-        <header className="grid md:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] gap-8 md:gap-12 lg:gap-16 items-center">
-          <div className="relative aspect-square rounded-2xl overflow-hidden">
+        <div className="grid md:grid-cols-[260px_1fr] gap-8 md:gap-12 items-start">
+          <div className="relative aspect-square w-full max-w-[260px] mx-auto md:mx-0 rounded-2xl overflow-hidden">
             <Image
               src={speaker.image}
               alt={speaker.title}
               fill
               priority
-              sizes="(min-width: 768px) 40vw, 100vw"
+              sizes="(min-width: 768px) 260px, 100vw"
               className="object-cover"
             />
           </div>
 
-          <div className="flex flex-col gap-5">
-            <DifficultyBadge
-              difficulty={speaker.difficulty}
-              label={t("difficultyLabel")}
-            />
+          <div className="flex flex-col gap-5 min-w-0">
+            <DifficultyBadge difficulty={speaker.difficulty} />
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-[1.05] tracking-tight">
               {speaker.title}
             </h1>
-            <div className="flex flex-col gap-1 text-base md:text-lg text-white/60 leading-relaxed">
+            <div className="flex flex-col gap-1 text-lg md:text-xl text-white/60 leading-relaxed">
               {speaker.subtitle.map((line) => (
                 <p key={line}>{line}</p>
               ))}
             </div>
             <SnsLinks links={speaker.links} size="md" className="mt-1" />
-          </div>
-        </header>
 
-        <div className="mt-16 md:mt-24 max-w-2xl">
-          <div className="text-[15px] md:text-base text-white/75 leading-[1.85] whitespace-pre-line font-light">
-            {speaker.bio}
-          </div>
-
-          {speaker.lectureTitle && (
-            <div className="mt-12 pl-5 border-l-2 border-glow-purple/60">
-              <div className="text-[10px] font-medium tracking-[0.25em] uppercase text-glow-pink mb-2">
-                {t("lectureLabel")}
-              </div>
-              <div className="text-xl md:text-2xl font-semibold text-white leading-snug">
-                {speaker.lectureTitle}
-              </div>
+            <div className="mt-10 md:mt-12 text-base md:text-lg text-white/75 leading-[1.85] whitespace-pre-line font-light">
+              {speaker.bio}
             </div>
-          )}
+
+            {speaker.lectureTitle && (
+              <div className="mt-8 pl-5 border-l-2 border-glow-purple/60">
+                <div className="text-xs font-medium tracking-[0.25em] uppercase text-glow-pink mb-2">
+                  {t("lectureLabel")}
+                </div>
+                <div className="text-2xl md:text-3xl font-semibold text-white leading-snug">
+                  {speaker.lectureTitle}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
 
         {(prev || next) && (
