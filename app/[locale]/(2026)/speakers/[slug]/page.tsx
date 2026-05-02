@@ -6,6 +6,7 @@ import { Link } from "@/i18n/navigation";
 import { routing, type Locale } from "@/i18n/routing";
 import speakers, { type Speaker } from "@/app/messages/2026/speakers";
 import DifficultyBadge from "../../_components/Speakers/DifficultyBadge";
+import InfoField from "../../_components/Speakers/InfoField";
 import SnsLinks from "../../_components/Speakers/SnsLinks";
 
 type Params = { locale: Locale; slug: string };
@@ -88,6 +89,27 @@ export default async function SpeakerDetailPage({
               ))}
             </div>
             <SnsLinks links={speaker.links} size="md" className="mt-1" />
+
+            <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-5">
+              <InfoField
+                label={t("topicLabel")}
+                value={speaker.topic}
+                variant="topic"
+                comingSoonText={t("comingSoon")}
+              />
+              <InfoField
+                label={t("sessionLabel")}
+                value={speaker.session}
+                variant="session"
+                comingSoonText={t("comingSoon")}
+              />
+              <InfoField
+                label={t("stageLabel")}
+                value={speaker.stage}
+                variant="stage"
+                comingSoonText={t("comingSoon")}
+              />
+            </div>
 
             <div className="mt-10 md:mt-12 text-base md:text-lg text-white/75 leading-[1.85] whitespace-pre-line font-light">
               {speaker.bio}

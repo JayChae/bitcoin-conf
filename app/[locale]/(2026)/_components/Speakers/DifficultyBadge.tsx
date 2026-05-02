@@ -1,7 +1,10 @@
 import { getTranslations } from "next-intl/server";
 import type { Difficulty } from "@/app/messages/2026/speakers";
 
-const LEVEL: Record<Difficulty, { count: 1 | 2 | 3; color: string }> = {
+export const DIFFICULTY_LEVEL: Record<
+  Difficulty,
+  { count: 1 | 2 | 3; color: string }
+> = {
   Low: { count: 1, color: "bg-emerald-400" },
   Medium: { count: 2, color: "bg-amber-400" },
   High: { count: 3, color: "bg-glow-pink" },
@@ -13,7 +16,7 @@ export default async function DifficultyBadge({
   difficulty: Difficulty;
 }) {
   const t = await getTranslations("Speakers2026");
-  const { count, color } = LEVEL[difficulty];
+  const { count, color } = DIFFICULTY_LEVEL[difficulty];
 
   return (
     <div className="inline-flex items-center gap-3">
