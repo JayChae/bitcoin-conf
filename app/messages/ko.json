@@ -28,7 +28,8 @@
     "stageLabel": "스테이지",
     "bioLabel": "연사소개",
     "viewDetails": "정보 보기",
-    "comingSoon": "추후 공개"
+    "comingSoon": "추후 공개",
+    "viewAll": "모든 연사 보기"
   },
   "Speakers": {
     "title": "연사 소개",

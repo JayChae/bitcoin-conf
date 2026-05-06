@@ -156,6 +156,26 @@ const items: SpeakerSource[] = [
     },
   },
   {
+    slug: "duncan-dean",
+    image: "/2026/speakers/Duncan_Dean.webp",
+    difficulty: "High",
+    links: [],
+    i18n: {
+      en: {
+        title: "Duncan Dean",
+        subtitle: ["Engineer, Second"],
+        bio: "Duncan Dean is a Bitcoin Lightning Network developer, currently contributing to Bark, Second's implementation of the Ark protocol. Ark is a next-generation Bitcoin Layer 2 solution designed to address Lightning's channel management complexity and liquidity challenges, enabling users to make instant, low-cost off-chain payments without operating their own channels.",
+        lectureTitle: "",
+      },
+      ko: {
+        title: "Duncan Dean",
+        subtitle: ["Engineer, Second"],
+        bio: "비트코인 라이트닝 네트워크 개발자로 활동하고 있으며, 현재는 Second사의 Ark 프로토콜 구현체인 Bark 개발에 참여하고 있습니다. Ark는 라이트닝의 채널 관리 복잡성과 유동성 문제를 해결하기 위해 등장한 차세대 비트코인 Layer 2 솔루션으로, 사용자가 별도의 채널 운영 없이도 즉각적이고 저렴한 오프체인 결제를 이용할 수 있도록 합니다.",
+        lectureTitle: "",
+      },
+    },
+  },
+  {
     slug: "louis-ko",
     image: "/2026/speakers/poedae.webp",
     difficulty: "Medium",

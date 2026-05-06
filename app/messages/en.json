@@ -28,7 +28,8 @@
     "stageLabel": "Stage",
     "bioLabel": "Speaker Bio",
     "viewDetails": "View Details",
-    "comingSoon": "Coming Soon"
+    "comingSoon": "Coming Soon",
+    "viewAll": "View all speakers"
   },
   "Speakers": {
     "title": "Speakers",

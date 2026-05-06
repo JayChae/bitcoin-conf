@@ -8,7 +8,7 @@ import SpeakersGrid from "./SpeakersGrid";
 export default async function SpeakersSection() {
   const t = await getTranslations("Speakers2026");
   const locale = (await getLocale()) as Locale;
-  const list = speakers[locale];
+  const list = speakers[locale].slice(0, 6);
 
   if (list.length === 0) return null;
 
@@ -32,7 +32,7 @@ export default async function SpeakersSection() {
             href="/speakers"
             className="group relative inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-white/10 backdrop-blur-2xl text-white text-base font-semibold border border-white/15 transition-colors duration-200 hover:bg-white/15 active:scale-[0.97]"
           >
-            {t("pageTitle")}
+            {t("viewAll")}
             <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
         </div>
