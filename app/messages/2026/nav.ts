@@ -5,6 +5,7 @@ export const hrefList = {
   home: "#home",
   speakers: "/speakers",
   schedule: "/schedule",
+  sideEvents: "/side-events",
   lightningMarket: "#lightningMarket",
   sponsors: "#sponsors",
   tickets: "/tickets",
@@ -13,6 +14,7 @@ export const hrefList = {
 const enItems: NavItem[] = [
   { label: "Schedule", href: hrefList.schedule },
   { label: "Speakers", href: hrefList.speakers },
+  { label: "Side Events", href: hrefList.sideEvents },
   { label: "Lightning Market", href: hrefList.lightningMarket },
   { label: "Tickets", href: hrefList.tickets },
   { label: "Sponsors", href: hrefList.sponsors },
@@ -21,6 +23,7 @@ const enItems: NavItem[] = [
 const koItems: NavItem[] = [
   { label: "일정", href: hrefList.schedule },
   { label: "연사 소개", href: hrefList.speakers },
+  { label: "사이드 이벤트", href: hrefList.sideEvents },
   { label: "라이트닝 마켓", href: hrefList.lightningMarket },
   { label: "티켓", href: hrefList.tickets },
   { label: "후원사", href: hrefList.sponsors },
