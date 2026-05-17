@@ -36,6 +36,22 @@
     "moreText": "More",
     "closeText": "Close"
   },
+  "SideEvents2026": {
+    "sectionTitle": "Side Events",
+    "pageTitle": "Side Events",
+    "pageSubtitle": "Events surrounding the main conference week",
+    "viewAll": "View all side events",
+    "dateLabel": "Date",
+    "hostLabel": "Host",
+    "themeLabel": "Theme",
+    "viewDetails": "View Details",
+    "viewWebsite": "Visit Website",
+    "backToList": "Back to side events",
+    "prev": "Previous",
+    "next": "Next",
+    "imageComingSoon": "Image coming soon",
+    "comingSoon": "Coming Soon"
+  },
   "Schedule": {
     "title": "Schedule",
     "triggerText": "View details"

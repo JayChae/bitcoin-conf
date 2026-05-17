@@ -36,6 +36,22 @@
     "moreText": "더보기",
     "closeText": "접기"
   },
+  "SideEvents2026": {
+    "sectionTitle": "사이드 이벤트",
+    "pageTitle": "사이드 이벤트",
+    "pageSubtitle": "컨퍼런스 주간을 함께 채우는 부대 행사들",
+    "viewAll": "전체 사이드 이벤트 보기",
+    "dateLabel": "일정",
+    "hostLabel": "주최",
+    "themeLabel": "주제",
+    "viewDetails": "자세히 보기",
+    "viewWebsite": "공식 웹사이트",
+    "backToList": "사이드 이벤트 목록으로",
+    "prev": "이전",
+    "next": "다음",
+    "imageComingSoon": "이미지 준비 중",
+    "comingSoon": "추후 공개"
+  },
   "Schedule": {
     "title": "일정",
     "triggerText": "자세히 보기"

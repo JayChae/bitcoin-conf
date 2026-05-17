@@ -1,4 +1,4 @@
-const badgeVariants = {
+export const badgeVariants = {
   topic: "bg-glow-blue/15 border-glow-blue/40 text-[#C8D6FF]",
   session: "bg-glow-purple/15 border-glow-purple/40 text-[#E0C8FF]",
   stage: "bg-glow-pink/15 border-glow-pink/40 text-[#F8C8FF]",

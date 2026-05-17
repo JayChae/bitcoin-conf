@@ -6,6 +6,7 @@ import ComingSoon from "./_components/ComingSoon";
 import Section from "./_components/Section";
 import Sponsor from "./_components/Sponsor";
 import SpeakersSection from "./_components/Speakers/SpeakersSection";
+import SideEventsSection from "./_components/SideEvents/SideEventsSection";
 import LocationSection from "./_components/Location/LocationSection";
 
 type Props = {
@@ -30,6 +31,7 @@ export default async function Home2026({ params }: Props) {
       />
       <TicketsSection />
       <SpeakersSection />
+      <SideEventsSection />
       <LocationSection />
       <Section id="sponsors" title={tSponsor("title")}>
         <Sponsor
