@@ -13,8 +13,14 @@ const sponsors: {
   bronze: Sponsor[];
 } = {
   diamond: [],
-  gold: [],
-  silver: [
+  gold: [
+    {
+      name: "HRF",
+      url: "https://hrf.org",
+      image: "/sponsors/hrf.png",
+      alt: "Human Rights Foundation",
+      customImageClass: "h-[75px] sm:h-[95px] md:h-[120px] lg:h-[145px]",
+    },
     {
       name: "Wallet of Satoshi",
       url: "https://walletofsatoshi.com",
@@ -22,6 +28,7 @@ const sponsors: {
       alt: "Wallet of Satoshi",
     },
   ],
+  silver: [],
   bronze: [],
 } as const;
 
