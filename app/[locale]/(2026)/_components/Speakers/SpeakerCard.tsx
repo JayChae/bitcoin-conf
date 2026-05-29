@@ -4,20 +4,11 @@ import { Link } from "@/i18n/navigation";
 import type { Speaker } from "@/app/messages/2026/speakers";
 import { DIFFICULTY_LEVEL } from "./DifficultyBadge";
 import InfoField, { EYEBROW_CLASS } from "./InfoField";
-
-type Labels = {
-  topic: string;
-  session: string;
-  stage: string;
-  bio: string;
-  cta: string;
-  comingSoon: string;
-  difficulty: string;
-};
+import type { SpeakerLabels } from "./labels";
 
 type Props = {
   speaker: Speaker;
-  labels: Labels;
+  labels: SpeakerLabels;
 };
 
 export default function SpeakerCard({ speaker, labels }: Props) {

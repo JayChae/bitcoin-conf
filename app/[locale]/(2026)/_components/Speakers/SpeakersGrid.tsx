@@ -1,6 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import type { Speaker } from "@/app/messages/2026/speakers";
 import SpeakerCard from "./SpeakerCard";
+import { getSpeakerLabels } from "./labels";
 
 type Props = {
   speakers: Speaker[];
@@ -8,15 +9,7 @@ type Props = {
 
 export default async function SpeakersGrid({ speakers }: Props) {
   const t = await getTranslations("Speakers2026");
-  const labels = {
-    topic: t("topicLabel"),
-    session: t("sessionLabel"),
-    stage: t("stageLabel"),
-    bio: t("bioLabel"),
-    cta: t("viewDetails"),
-    comingSoon: t("comingSoon"),
-    difficulty: t("difficultyLabel"),
-  };
+  const labels = getSpeakerLabels(t);
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-5 lg:gap-6">
