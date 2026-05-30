@@ -2,22 +2,13 @@ import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import type { Speaker } from "@/app/messages/2026/speakers";
-import { DIFFICULTY_LEVEL } from "./DifficultyBadge";
+import DifficultyDots from "./DifficultyDots";
 import InfoField, { EYEBROW_CLASS } from "./InfoField";
-
-type Labels = {
-  topic: string;
-  session: string;
-  stage: string;
-  bio: string;
-  cta: string;
-  comingSoon: string;
-  difficulty: string;
-};
+import type { SpeakerLabels } from "./labels";
 
 type Props = {
   speaker: Speaker;
-  labels: Labels;
+  labels: SpeakerLabels;
 };
 
 export default function SpeakerCard({ speaker, labels }: Props) {
@@ -85,18 +76,7 @@ export default function SpeakerCard({ speaker, labels }: Props) {
           </div>
           <div className="col-span-2 flex flex-col gap-1.5">
             <span className={EYEBROW_CLASS}>{labels.difficulty}</span>
-            <div className="flex items-center gap-1.5">
-              {Array.from({ length: 3 }, (_, i) => (
-                <span
-                  key={i}
-                  className={`size-2 rounded-full ${
-                    i < DIFFICULTY_LEVEL[speaker.difficulty].count
-                      ? DIFFICULTY_LEVEL[speaker.difficulty].color
-                      : "bg-white/15"
-                  }`}
-                />
-              ))}
-            </div>
+            <DifficultyDots difficulty={speaker.difficulty} />
           </div>
         </div>
 
@@ -108,10 +88,10 @@ export default function SpeakerCard({ speaker, labels }: Props) {
         </div>
 
         <div className="mt-auto flex justify-end items-center gap-1.5 pt-1">
-          <span className="text-sm font-medium text-[#F8C8FF] group-hover:text-white transition-colors">
+          <span className="text-sm font-medium text-glow-pink-soft group-hover:text-white transition-colors">
             {labels.cta}
           </span>
-          <ArrowUpRight className="size-4 text-[#F8C8FF] group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+          <ArrowUpRight className="size-4 text-glow-pink-soft group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
         </div>
       </div>
     </div>

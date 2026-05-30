@@ -3,7 +3,8 @@ import { Link } from "@/i18n/navigation";
 import { ArrowRight } from "lucide-react";
 import type { Locale } from "@/i18n/routing";
 import speakers from "@/app/messages/2026/speakers";
-import SpeakersGrid from "./SpeakersGrid";
+import SpeakersCarousel from "./SpeakersCarousel";
+import { getSpeakerLabels } from "./labels";
 
 export default async function SpeakersSection() {
   const t = await getTranslations("Speakers2026");
@@ -11,6 +12,8 @@ export default async function SpeakersSection() {
   const list = speakers[locale].slice(0, 6);
 
   if (list.length === 0) return null;
+
+  const labels = getSpeakerLabels(t);
 
   return (
     <section id="speakers" className="scroll-mt-24 pb-20 pt-20 px-4">
@@ -25,7 +28,7 @@ export default async function SpeakersSection() {
           </h2>
         </div>
 
-        <SpeakersGrid speakers={list} />
+        <SpeakersCarousel speakers={list} labels={labels} />
 
         <div className="flex justify-center mt-10 md:mt-12">
           <Link

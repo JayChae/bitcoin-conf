@@ -33,7 +33,7 @@ Each year edition has its own `_components/`, `layout.tsx`, and `page.tsx`. Shar
 
 **UI libraries:** shadcn/ui (new-york style), GSAP, Framer Motion (`motion`), Three.js, OGL, Lucide icons. Component registry includes ReactBits (`@react-bits`).
 
-**Styling:** Tailwind CSS 4 with PostCSS. Custom local fonts: SUIT (body), Ubuntu Mono, Neurimbo Gothic — loaded via `next/font/local` in the root layout.
+**Styling:** Tailwind CSS 4 with PostCSS. Custom local fonts: SUIT (body), Ubuntu Mono, Neurimbo Gothic — loaded via `next/font/local` in the root layout. Use the `cn` helper from `@/lib/utils` for any conditional/merged classNames (never build them with template literals or string concatenation); plain static class strings can stay as-is.
 
 ## Must
 

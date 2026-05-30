@@ -7,12 +7,10 @@ export type Sponsor = {
 };
 
 const sponsors: {
-  diamond: Sponsor[];
   gold: Sponsor[];
   silver: Sponsor[];
   bronze: Sponsor[];
 } = {
-  diamond: [],
   gold: [
     {
       name: "HRF",

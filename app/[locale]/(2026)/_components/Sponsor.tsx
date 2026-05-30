@@ -15,7 +15,6 @@ type TierConfig = {
 };
 
 type Props = {
-  diamondTitle: string;
   goldTitle: string;
   silverTitle: string;
   bronzeTitle: string;
@@ -23,23 +22,12 @@ type Props = {
 };
 
 export default function Sponsor({
-  diamondTitle,
   goldTitle,
   silverTitle,
   bronzeTitle,
   comingSoonText = "Coming Soon",
 }: Props) {
   const tiers: TierConfig[] = [
-    {
-      key: "diamond",
-      title: diamondTitle,
-      sponsors: sponsors.diamond,
-      logoSize: "h-[60px] sm:h-[80px] md:h-[100px] lg:h-[120px]",
-      titleSize: "text-xl sm:text-2xl md:text-3xl lg:text-4xl",
-      accentColor: "#B9F2FF",
-      glowColor: "rgba(185, 242, 255, 0.15)",
-      lineGradient: "from-transparent via-cyan-400/80 to-transparent",
-    },
     {
       key: "gold",
       title: goldTitle,

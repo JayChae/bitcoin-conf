@@ -23,6 +23,8 @@
     "backToList": "Back to speakers",
     "prev": "Previous",
     "next": "Next",
+    "carousel": "Speakers carousel",
+    "slide": "Slide",
     "topicLabel": "Topic",
     "sessionLabel": "Session",
     "stageLabel": "Stage",
@@ -76,7 +78,6 @@
   },
   "Sponsor": {
     "title": "Sponsors",
-    "diamond": "Diamond Sponsor",
     "gold": "Gold Sponsor",
     "silver": "Silver Sponsor",
     "bronze": "Bronze Sponsor",

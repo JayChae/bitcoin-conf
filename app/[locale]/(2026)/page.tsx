@@ -35,7 +35,6 @@ export default async function Home2026({ params }: Props) {
       <LocationSection />
       <Section id="sponsors" title={tSponsor("title")}>
         <Sponsor
-          diamondTitle={tSponsor("diamond")}
           goldTitle={tSponsor("gold")}
           silverTitle={tSponsor("silver")}
           bronzeTitle={tSponsor("bronze")}
