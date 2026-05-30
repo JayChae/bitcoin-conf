@@ -180,7 +180,7 @@ const items: SpeakerSource[] = [
   {
     slug: "louis-ko",
     image: "/2026/speakers/poedae.webp",
-    difficulty: "Medium",
+    difficulty: "Low",
     links: [
       { type: "x", url: "https://x.com/Coconut_BTC" },
       { type: "website", url: "https://www.bitcoincenterseoul.com" },
@@ -203,7 +203,7 @@ const items: SpeakerSource[] = [
   {
     slug: "kang-jaenam",
     image: "/2026/speakers/Kang_Jaenam.webp",
-    difficulty: "Medium",
+    difficulty: "Low",
     links: [
       { type: "website", url: "https://blog.naver.com/taxmade_official" },
     ],
@@ -225,7 +225,7 @@ const items: SpeakerSource[] = [
   {
     slug: "keypleb",
     image: "/2026/speakers/keypleb.webp",
-    difficulty: "Medium",
+    difficulty: "Low",
     links: [
       { type: "website", url: "https://codeorange.dev/" },
       { type: "x", url: "https://x.com/codeorangedevs" },

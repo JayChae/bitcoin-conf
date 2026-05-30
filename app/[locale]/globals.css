@@ -58,6 +58,10 @@ button {
   --color-glow-blue: #2F4BA2;
   --color-glow-purple: #8C50C8;
   --color-glow-pink: #E947F5;
+  /* 연사 카드/캐러셀 액센트 및 캐러셀 내비 버튼 표면색 */
+  --color-glow-pink-soft: #F8C8FF;
+  --color-nav-surface: #1b1635;
+  --color-nav-surface-hover: #262049;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-pretendard: var(--font-pretendard);
