@@ -20,6 +20,8 @@ export default function SpeakersCarousel({ speakers, labels }: Props) {
   const viewportRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const touchStart = useRef<{ x: number; y: number } | null>(null);
+  // 스와이프 속도(velocity) 계산용 시작 시각(ms)
+  const touchStartTime = useRef(0);
   // 가로 스와이프로 확정된 제스처인지 (세로 스크롤과 구분)
   const horizontalSwipe = useRef(false);
   // 방금 스와이프했는지 — 스와이프 직후 합성되는 클릭이 카드 링크로
@@ -112,6 +114,7 @@ export default function SpeakersCarousel({ speakers, labels }: Props) {
   // touch-action: pan-y 로 세로 스크롤은 브라우저에 맡기고 가로 이동만 직접 처리한다.
   const onTouchStart = (e: React.TouchEvent) => {
     touchStart.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    touchStartTime.current = e.timeStamp;
     horizontalSwipe.current = false;
     didSwipe.current = false;
     setAnimate(false);
@@ -143,18 +146,46 @@ export default function SpeakersCarousel({ speakers, labels }: Props) {
       track.style.transform = `translateX(-${baseOffset - dragRef.current}px)`;
     }
   };
-  const onTouchEnd = () => {
+  const onTouchEnd = (e: React.TouchEvent) => {
+    // dragRef는 가로 스와이프로 확정된 뒤에만 갱신되므로, moved가 0이 아니면
+    // 이미 가로 제스처였다는 뜻이다.
     const moved = dragRef.current;
     dragRef.current = 0;
     touchStart.current = null;
     horizontalSwipe.current = false;
     if (!moved) return;
-    // 스냅(또는 제자리 복귀)을 부드럽게 애니메이션하고, 리렌더로 transform을 회수한다
+
+    // 끈 거리 또는 튕긴 속도 중 하나만 충족해도 다음/이전 칸으로 넘긴다.
+    // 거리 임계값은 한 칸 너비의 1/5(빠르게 짧게 튕기는 제스처도 받도록 낮춤).
+    const elapsed = Math.max(1, e.timeStamp - touchStartTime.current);
+    const velocity = moved / elapsed; // px/ms
+    const distanceThreshold = measured ? step / 5 : 50;
+    const velocityThreshold = 0.4; // px/ms — 빠른 플릭 인식
+    const forward = moved <= -distanceThreshold || velocity <= -velocityThreshold;
+    const backward = moved >= distanceThreshold || velocity >= velocityThreshold;
+
+    const next = forward
+      ? Math.min(maxIndex, active + 1)
+      : backward
+        ? Math.max(0, active - 1)
+        : active;
+
+    // 스냅(또는 제자리 복귀)을 부드럽게 애니메이션한다.
     setAnimate(true);
-    // 한 칸 너비의 1/4 이상 끌면 다음/이전 칸으로 이동
-    const threshold = measured ? step / 4 : 50;
-    if (moved <= -threshold) goTo(active + 1);
-    else if (moved >= threshold) goTo(active - 1);
+
+    if (next !== active) {
+      // 칸이 바뀌면 baseOffset이 달라져 React가 새 위치로 transform을 다시 쓰며
+      // 슬라이드를 애니메이션한다. 슬라이드는 React에 맡긴다.
+      setActive(next);
+    } else {
+      // 제자리 복귀: active가 그대로라 baseOffset이 안 바뀌어 React는 transform을
+      // 다시 쓰지 않는다(드래그 중 DOM을 직접 건드려 손가락 위치에 멈춰 있는 상태).
+      // 다음 프레임에 기준 위치로 직접 되돌려 복귀 애니메이션이 항상 동작하게 한다.
+      requestAnimationFrame(() => {
+        const track = trackRef.current;
+        if (track) track.style.transform = `translateX(-${baseOffset}px)`;
+      });
+    }
   };
 
   // 스와이프 직후 브라우저가 합성하는 클릭이 카드 링크로 잘못 이동하는 것을 막는다.
