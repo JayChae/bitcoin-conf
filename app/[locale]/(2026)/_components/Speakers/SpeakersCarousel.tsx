@@ -20,6 +20,14 @@ export default function SpeakersCarousel({ speakers, labels }: Props) {
   const viewportRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const touchStart = useRef<{ x: number; y: number } | null>(null);
+  // 가로 스와이프로 확정된 제스처인지 (세로 스크롤과 구분)
+  const horizontalSwipe = useRef(false);
+  // 방금 스와이프했는지 — 스와이프 직후 합성되는 클릭이 카드 링크로
+  // 잘못 이동하는 것을 막기 위한 플래그
+  const didSwipe = useRef(false);
+  // 드래그 중 손가락을 따라가는 추가 오프셋(px). 매 프레임 리렌더를 피하려고
+  // state 대신 ref에 담고 트랙 transform을 직접 갱신한다.
+  const dragRef = useRef(0);
 
   const [active, setActive] = useState(0);
   // step: 한 칸(카드 + gap) 너비, max: 최대 이동 거리, perView: 동시에 보이는 카드 수
@@ -97,22 +105,67 @@ export default function SpeakersCarousel({ speakers, labels }: Props) {
     [maxIndex]
   );
 
-  // 모바일 스와이프: 세로 스크롤과 구분하기 위해 가로 이동이 더 크고 50px 이상일 때만 반응
+  // 끝을 넘어가지 않도록 clamp한 기준 위치 (드래그 오프셋을 더하기 전)
+  const baseOffset = Math.min(active * step, max);
+
+  // 모바일 스와이프: 손가락을 따라 실시간으로 이동하고, 놓으면 가까운 칸으로 스냅.
+  // touch-action: pan-y 로 세로 스크롤은 브라우저에 맡기고 가로 이동만 직접 처리한다.
   const onTouchStart = (e: React.TouchEvent) => {
     touchStart.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    horizontalSwipe.current = false;
+    didSwipe.current = false;
+    setAnimate(false);
   };
-  const onTouchEnd = (e: React.TouchEvent) => {
+  const onTouchMove = (e: React.TouchEvent) => {
     if (!touchStart.current) return;
-    const dx = e.changedTouches[0].clientX - touchStart.current.x;
-    const dy = e.changedTouches[0].clientY - touchStart.current.y;
+    const dx = e.touches[0].clientX - touchStart.current.x;
+    const dy = e.touches[0].clientY - touchStart.current.y;
+    // 아직 방향이 정해지지 않았으면 우세한 축으로 확정한다
+    if (!horizontalSwipe.current) {
+      // 세로 이동이 우세하면 이번 제스처는 캐러셀에서 손을 뗀다
+      if (Math.abs(dy) > Math.abs(dx)) {
+        touchStart.current = null;
+        return;
+      }
+      // 가로 이동이 8px를 넘고 세로보다 클 때만 가로 스와이프로 확정
+      if (Math.abs(dx) <= 8 || Math.abs(dx) <= Math.abs(dy)) return;
+      horizontalSwipe.current = true;
+    }
+    // 양 끝에서는 저항을 주어 과한 끌림을 줄인다
+    const resistance =
+      (active <= 0 && dx > 0) || (active >= maxIndex && dx < 0) ? 0.3 : 1;
+    dragRef.current = dx * resistance;
+    // 가로 스와이프가 발생했으므로, 직후의 클릭은 무시하도록 표시
+    didSwipe.current = true;
+    // 리렌더 없이 손가락을 따라가도록 트랙 transform을 직접 갱신
+    const track = trackRef.current;
+    if (track) {
+      track.style.transform = `translateX(-${baseOffset - dragRef.current}px)`;
+    }
+  };
+  const onTouchEnd = () => {
+    const moved = dragRef.current;
+    dragRef.current = 0;
     touchStart.current = null;
-    if (Math.abs(dx) < 50 || Math.abs(dx) <= Math.abs(dy)) return;
-    if (dx < 0) goTo(active + 1);
-    else goTo(active - 1);
+    horizontalSwipe.current = false;
+    if (!moved) return;
+    // 스냅(또는 제자리 복귀)을 부드럽게 애니메이션하고, 리렌더로 transform을 회수한다
+    setAnimate(true);
+    // 한 칸 너비의 1/4 이상 끌면 다음/이전 칸으로 이동
+    const threshold = measured ? step / 4 : 50;
+    if (moved <= -threshold) goTo(active + 1);
+    else if (moved >= threshold) goTo(active - 1);
   };
 
-  // 끝을 넘어가지 않도록 clamp (렌더 시점의 active/metrics에서 직접 파생)
-  const offset = Math.min(active * step, max);
+  // 스와이프 직후 브라우저가 합성하는 클릭이 카드 링크로 잘못 이동하는 것을 막는다.
+  // capture 단계에서 가로채 링크의 onClick까지 전파되지 않게 한다.
+  const onClickCapture = (e: React.MouseEvent) => {
+    if (!didSwipe.current) return;
+    e.preventDefault();
+    e.stopPropagation();
+    didSwipe.current = false;
+  };
+
   const atStart = active <= 0;
   const atEnd = active >= maxIndex;
 
@@ -120,12 +173,14 @@ export default function SpeakersCarousel({ speakers, labels }: Props) {
     <div className="relative">
       <div
         ref={viewportRef}
-        className="overflow-hidden"
+        className="overflow-hidden touch-pan-y"
         role="region"
         aria-roledescription="carousel"
         aria-label={labels.carousel}
         onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
         onTouchEnd={onTouchEnd}
+        onClickCapture={onClickCapture}
       >
         <div
           ref={trackRef}
@@ -133,7 +188,7 @@ export default function SpeakersCarousel({ speakers, labels }: Props) {
             "flex gap-4 md:gap-5 lg:gap-6",
             animate && "transition-transform duration-500 ease-out"
           )}
-          style={{ transform: `translateX(-${offset}px)` }}
+          style={{ transform: `translateX(-${baseOffset}px)` }}
         >
           {speakers.map((speaker, i) => {
             // 현재 화면에 보이는 카드만 포커스/스크린리더에 노출
