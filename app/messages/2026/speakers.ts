@@ -297,7 +297,7 @@ const items: SpeakerSource[] = [
   {
     slug: "rama-gan",
     image: "/2026/speakers/Rama_Gan.webp",
-    difficulty: "Medium",
+    difficulty: "Low",
     links: [
       { type: "website", url: "https://v1.penlock.io/en/" },
       { type: "nostr", url: "https://nosta.me/nostr@penlock.io" },
@@ -320,7 +320,7 @@ const items: SpeakerSource[] = [
   {
     slug: "matthew-vuk",
     image: "/2026/speakers/Matthew_Vuk.webp",
-    difficulty: "High",
+    difficulty: "Medium",
     links: [
       { type: "website", url: "https://second.tech/" },
       { type: "x", url: "https://x.com/matthewvuk2" },
@@ -343,7 +343,7 @@ const items: SpeakerSource[] = [
   {
     slug: "robin",
     image: "/2026/speakers/Robin.webp",
-    difficulty: "Medium",
+    difficulty: "Low",
     links: [
       {
         type: "website",
