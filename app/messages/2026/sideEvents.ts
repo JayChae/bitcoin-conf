@@ -52,7 +52,7 @@ const items: SideEventSource[] = [
   },
   {
     slug: "vip-dinner-party",
-    image: null,
+    image: "/2026/side-events/vip-dinner-party.webp",
     links: [],
     i18n: {
       en: {
@@ -62,7 +62,7 @@ const items: SideEventSource[] = [
         shortDescription:
           "An intimate dinner gathering for VIP ticket holders, speakers, and partners on the eve of the conference.",
         description:
-          "An exclusive dinner party for VIP ticket holders, speakers, and partners on the Friday before the main conference. Details and the venue will be announced closer to the date.",
+          "On the eve of the conference, we've set aside a place for those closest to us.\n\nThe VIP Dinner Party is a private dinner for VIP ticket holders, speakers, and partners of the Bitcoin Korea Conference. Over a carefully prepared premium hanwoo course, it's an evening to share thoughts and stories with one another — not on stage, but around a relaxed dinner table.\n\nDepth over formality, conversation over business cards. Start the conversations you won't have time for at the conference right here.",
       },
       ko: {
         title: "VIP 디너 파티",
@@ -71,7 +71,7 @@ const items: SideEventSource[] = [
         shortDescription:
           "컨퍼런스 전야, VIP 티켓 소지자·연사·파트너를 위한 프라이빗 디너 자리.",
         description:
-          "컨퍼런스 개막 전날 금요일 저녁, VIP 티켓 소지자·연사·파트너를 위한 프라이빗 디너 파티가 진행됩니다. 장소와 세부 일정은 추후 안내 예정입니다.",
+          "컨퍼런스의 막이 오르기 전날 밤, 가장 가까운 분들을 위한 자리를 마련했습니다.\n\nVIP 디너 파티는 비트코인 코리아 컨퍼런스의 VIP 티켓 소지자, 연사, 그리고 파트너분을 위한 프라이빗 디너입니다. 정성껏 준비한 프리미엄 한우 코스와 함께, 무대 위가 아닌 편안한 식탁에서 서로의 생각과 이야기를 나누는 저녁입니다.\n\n격식보다 깊이를, 명함보다 대화를. 컨퍼런스에서 다 나누지 못할 이야기를 이곳에서 먼저 시작하세요.",
       },
     },
   },

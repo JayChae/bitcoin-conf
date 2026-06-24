@@ -269,6 +269,124 @@ const items: SpeakerSource[] = [
     },
   },
   {
+    slug: "nedalba",
+    image: "/2026/speakers/Nedalba.webp",
+    difficulty: "Low",
+    links: [
+      {
+        type: "youtube",
+        url: "https://www.youtube.com/channel/UCT_RhM-i6or1qS1JRm4Bqrw",
+      },
+      { type: "x", url: "https://x.com/nldd21" },
+    ],
+    i18n: {
+      en: {
+        title: "네딸바",
+        subtitle: ["Bitcoin YouTuber"],
+        bio: "네딸바 is a Bitcoin YouTuber and translator. He translated 'The Blocksize War' and 'The Bitcoin Standard' into Korean, helping bring foundational Bitcoin literature to Korean readers.",
+        lectureTitle: "",
+      },
+      ko: {
+        title: "네딸바",
+        subtitle: ["유튜버"],
+        bio: "네딸바는 비트코인 유튜버이자 번역가다. 'The Blocksize War'와 'The Bitcoin Standard(달러는 어떻게 세계를 지배하게 되었는가)'를 우리말로 옮기며, 비트코인의 대표적인 저작들을 한국 독자들에게 소개해 왔다.",
+        lectureTitle: "",
+      },
+    },
+  },
+  {
+    slug: "rama-gan",
+    image: "/2026/speakers/Rama_Gan.webp",
+    difficulty: "Medium",
+    links: [
+      { type: "website", url: "https://v1.penlock.io/en/" },
+      { type: "nostr", url: "https://nosta.me/nostr@penlock.io" },
+    ],
+    i18n: {
+      en: {
+        title: "Rama Gan",
+        subtitle: ["Creator of Penlock"],
+        bio: "Rama is a software engineer and Bitcoiner who has devoted himself to making the future of self-custody simpler and more robust. The tool he created, Penlock, is a printable encryption wheel that lets anyone split a seed phrase into a 2-of-3 multi-phrase backup using nothing but paper and pen — no electronics required. Because only two of the three pieces are needed to recover assets, the setup stays secure even if one is lost or stolen, and a breach of any single location never exposes the whole. Most importantly, even if the original mnemonic (seed phrase) is lost entirely, the full seed phrase can be reconstructed from any two of the three pieces using the Penlock wheel. This lets users design remote recovery and inheritance plans on their own, without relying on any company or third party. No power, no battery, and no internet connection is required — Rama has focused on 'low-tech' solutions that anyone can hold in their hands and use directly, rather than flashy technology. His work is an attempt to realize Bitcoin's ideal of 'being your own bank' without compromising on privacy, security, or sovereignty.",
+        lectureTitle: "",
+      },
+      ko: {
+        title: "Rama Gan",
+        subtitle: ["Penlock 개발자"],
+        bio: "라마(Rama)는 자가 수탁(self-custody)의 미래를 더 단순하고 견고하게 만드는 일에 몰두해 온 소프트웨어 엔지니어이자 비트코이너입니다. 그가 만든 펜록(Penlock)은 인쇄해서 사용할 수 있는 암호화 휠로, 전자기기 없이 종이와 펜만으로 시드 문구를 2-of-3 멀티프레이즈 백업으로 직접 나눌 수 있게 해주는 도구입니다. 세 조각 중 두 개만 있으면 자산을 복구할 수 있기 때문에, 하나를 분실하거나 도난당해도 안전하며 어느 한 곳이 뚫려도 전체가 노출되지 않습니다. 무엇보다 원본 니모닉(시드 문구)을 통째로 잃어버려도, 세 조각 중 두 개만 남아 있으면 펜록 휠로 다시 시드 문구 전체를 복원해낼 수 있다는 점이 핵심입니다. 덕분에 사용자는 특정 기업이나 제3자에 의존하지 않고 원격지 복구와 상속 계획까지 스스로 설계할 수 있습니다. 전원도, 배터리도, 인터넷 연결도 필요 없으며, 라마는 화려한 기술보다 누구나 손에 쥐고 직접 써볼 수 있는 '로우테크' 해법에 주목해 왔습니다. 그의 작업은 '스스로 자신의 은행이 되라'는 비트코인의 이상을 프라이버시·보안·주권 어느 하나도 타협하지 않으면서 실현하려는 시도입니다.",
+        lectureTitle: "",
+      },
+    },
+  },
+  {
+    slug: "matthew-vuk",
+    image: "/2026/speakers/Matthew_Vuk.webp",
+    difficulty: "High",
+    links: [
+      { type: "website", url: "https://second.tech/" },
+      { type: "x", url: "https://x.com/matthewvuk2" },
+    ],
+    i18n: {
+      en: {
+        title: "Matthew Vuk",
+        subtitle: ["Protocol Researcher, Second"],
+        bio: "Based in Waterloo, Canada, Matthew Vuk works as a researcher at Second, the company developing Ark, a Bitcoin Layer 2 payment protocol. Ark is a Layer 2 protocol that aims to enable off-chain Bitcoin transactions at very low cost, without complex pre-setup such as opening channels. It works directly on top of today's Bitcoin without consensus rule changes or new op_codes, offering easy onboarding, low and predictable fees, instant settlement, Lightning Network compatibility, and control over one's own funds. The protocol revolves around an 'Ark server': users connect to this server to transact directly with one another, and can also transact with the broader Lightning Network through the server's Lightning gateway. At the heart of Ark is a new scaling model called the 'virtual UTXO (VTXO)' — a series of pre-signed off-chain transactions that a user can broadcast on-chain to reclaim their funds at any time in an emergency.",
+        lectureTitle: "",
+      },
+      ko: {
+        title: "Matthew Vuk",
+        subtitle: ["Protocol Researcher, Second"],
+        bio: "Matthew Vuk은 캐나다 워털루를 기반으로, 비트코인 2계층 결제 프로토콜 Ark를 개발하는 회사 Second에서 리서처로 일하고 있습니다. Ark는 채널 개설 같은 복잡한 사전 설정 없이 매우 낮은 비용으로 오프체인 비트코인 거래를 가능하게 하는 것을 목표로 하는 레이어 2 프로토콜입니다. Ark는 합의 규칙 변경이나 새로운 op_code 없이 오늘날의 비트코인 위에서 바로 작동하며, 간편한 온보딩, 낮고 예측 가능한 수수료, 즉각적인 결제, 라이트닝 네트워크 호환, 그리고 자기 자금에 대한 통제권을 제공합니다. 이 프로토콜은 'Ark 서버'를 중심으로 동작하는데, 사용자는 이 서버에 연결해 서로 직접 거래하고, 서버의 라이트닝 게이트웨이를 통해 더 넓은 라이트닝 네트워크와도 거래할 수 있습니다. Ark의 핵심은 '가상 UTXO(VTXO)'라는 새로운 확장 모델로, VTXO는 사용자가 비상시 언제든 온체인으로 자금을 회수하기 위해 브로드캐스트할 수 있는 일련의 사전 서명된 오프체인 거래입니다.",
+        lectureTitle: "",
+      },
+    },
+  },
+  {
+    slug: "robin",
+    image: "/2026/speakers/Robin.webp",
+    difficulty: "Medium",
+    links: [
+      {
+        type: "website",
+        url: "https://www.satlantis.io/p/npub1n49a5d4r3ha3e25nam6rcr075g0eyh9n3cenhaapxuz4zzuqkszspqazdd",
+      },
+      { type: "x", url: "https://x.com/bitcoinpusan" },
+    ],
+    i18n: {
+      en: {
+        title: "Robin",
+        subtitle: ["Founder, Bitcoin in Pusan"],
+        bio: "Robin is a European-born developer who has lived in Korea for more than five years, and the founder of 'Bitcoin in Pusan,' a Busan-based Bitcoin community. Before starting Bitcoin in Pusan, he worked as an open-source developer in the ecash space, contributing to Bitcoin ecosystem projects, and has long been interested in connecting Bitcoin technology to the lives of real users. He created Bitcoin in Pusan at a time when the region had no Bitcoin community at all; within just one year of its launch, it grew into a community with regular meetups, lectures, workshops, and events — as well as its own physical space. At this conference, Robin will share the experiences and lessons he gained over the past year building Bitcoin in Pusan, and will talk about how anyone can build their own Bitcoin network.",
+        lectureTitle: "",
+      },
+      ko: {
+        title: "Robin",
+        subtitle: ["BiP 설립자"],
+        bio: "Robin은 한국에 5년 넘게 거주해 온 유럽 출신 개발자이자, 부산 기반 비트코인 커뮤니티 'Bitcoin in Pusan'의 설립자다. 그는 'Bitcoin in Pusan'을 시작하기 전까지 ecash 분야의 오픈소스 개발자로서 비트코인 생태계 프로젝트에 참여해 왔으며, 비트코인 기술을 실제 사용자의 삶에 연결하는 데 오랜 관심을 기울여 왔다. 'Bitcoin in Pusan'은 지역에 비트코인 커뮤니티가 전무하던 상황에서 그가 직접 만든 모임으로, 출범 1년 만에 정기 모임과 강의, 워크숍, 각종 행사는 물론 자체 물리적 공간까지 갖춘 커뮤니티로 성장했다. 이번 컨퍼런스에서 Robin은 지난 1년간 'Bitcoin in Pusan'을 일구며 얻은 경험과 교훈을 공유하고, 누구나 자신만의 비트코인 네트워크를 구축할 수 있다는 점을 이야기할 예정이다.",
+        lectureTitle: "",
+      },
+    },
+  },
+  {
+    slug: "spector",
+    image: "/2026/speakers/Spector.webp",
+    difficulty: "Low",
+    links: [],
+    i18n: {
+      en: {
+        title: "Spector",
+        subtitle: ["Bitcoin Korea Conference Host"],
+        bio: "Spector is a Bitcoiner who has devoted himself to building up Korea's Bitcoin community on a solid foundation. He has consistently held offline meetups to grow the domestic community, and personally runs education programs for newcomers encountering Bitcoin for the first time. By planning and building out the (former) Bitcoin Mini Conference — the largest 'Bitcoin only' event in Korea — he proved firsthand what the power of community can be. He has also taken the stage as a speaker at overseas conferences, bringing diverse cultures from abroad into Korea while serving as a bridge that introduces Korea's Bitcoin industry to the world. Rather than flashy discourse, he has steadily devoted himself to the 'work on the ground' — helping people gather, learn, and take sovereignty over their own assets in person. His path is bringing Bitcoin's ideals to bloom in the language of community, on Korean soil.",
+        lectureTitle: "",
+      },
+      ko: {
+        title: "스펙터",
+        subtitle: ["Bitcoin Korea Conference 호스트"],
+        bio: "스펙터는 한국 비트코인 커뮤니티를 단단하게 키워내는 일에 몰두해 온 비트코이너입니다. 그는 국내 커뮤니티 빌딩을 위해 오프라인 모임을 꾸준히 열어 왔으며, 비트코인을 처음 접하는 일반인을 위한 교육도 직접 진행하고 있습니다. 국내 최대 규모의 '비트코인 온리' 행사인 (구)비트코인 미니 컨퍼런스를 기획하고 일궈내며 커뮤니티의 힘이 무엇인지를 몸소 증명해 보였습니다. 또한 해외 컨퍼런스에 연사로 참가하여 다양한 해외의 문화를 한국으로 들여오는 한편, 한국의 비트코인 산업을 세계에 알리는 가교 역할을 함께 해 왔습니다. 화려한 담론보다 사람들이 직접 모이고, 배우고, 스스로 자기 자산의 주권을 쥐도록 돕는 '현장의 일'에 꾸준히 천착해 온 인물입니다. 그의 행보는 비트코인의 이상을, 한국이라는 토양 위에서 커뮤니티의 언어로 피워내고 있습니다.",
+        lectureTitle: "",
+      },
+    },
+  },
+  {
     slug: "pororo",
     image: "/2026/speakers/pororo.webp",
     difficulty: "Medium",
