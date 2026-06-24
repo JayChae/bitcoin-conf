@@ -17,6 +17,9 @@
 /.next/
 /out/
 
+# generated tickets (contain live QR tokens — never commit)
+/scripts/out/
+
 # production
 /build
 
