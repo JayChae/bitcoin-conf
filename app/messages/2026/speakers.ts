@@ -89,6 +89,26 @@ const items: SpeakerSource[] = [
     },
   },
   {
+    slug: "dan-gould",
+    image: "/2026/speakers/Dan_Gould.webp",
+    difficulty: "High",
+    links: [],
+    i18n: {
+      en: {
+        title: "Dan Gould",
+        subtitle: ["Founder, Payjoin Foundation"],
+        bio: "Dan Gould is a Bitcoin privacy developer, lead developer of the Payjoin Dev Kit and founder of the Payjoin Foundation. His work on serverless payjoin (BIP 77) makes privacy-preserving payments practical for everyday wallets and exchanges, and is shipping in integrations with Bull Bitcoin and Cake Wallet.",
+        lectureTitle: "",
+      },
+      ko: {
+        title: "Dan Gould",
+        subtitle: ["Founder, Payjoin Foundation"],
+        bio: "Dan Gould는 비트코인 프라이버시 개발자이자 Payjoin Dev Kit의 리드 개발자, 그리고 Payjoin Foundation의 설립자입니다. 그의 서버리스 페이조인(Serverless Payjoin, BIP 77) 연구는 일상적으로 사용하는 지갑과 거래소에서도 프라이버시를 보호하는 결제를 실용적으로 구현할 수 있도록 했으며, 현재 Bull Bitcoin과 Cake Wallet에 통합되어 서비스되고 있습니다.",
+        lectureTitle: "",
+      },
+    },
+  },
+  {
     slug: "adam-gibson",
     image: "/2026/speakers/Adam_Gibson.webp",
     difficulty: "High",
