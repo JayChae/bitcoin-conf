@@ -29,7 +29,10 @@ export default function PartnerLogo({
       width={partner.width}
       height={partner.height}
       sizes={sizes}
-      className={cn(imageClassName, partner.invert && "[filter:invert(1)]")}
+      // 검정/짙은 로고(dark)는 흰색으로 반전해 어두운 배경(밴드·카드)에서 노출.
+      // scale: 여백 많은 로고 크기 보정 — 근본 해결은 원본 이미지 여백 트림(TODO: 도구 확보 시).
+      style={partner.scale ? { transform: `scale(${partner.scale})` } : undefined}
+      className={cn(imageClassName, partner.dark && "brightness-0 invert")}
     />
   );
 

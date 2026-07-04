@@ -6,8 +6,9 @@ type Props = {
   partners: Partner[];
 };
 
+// 마퀴 밴드와 동일 계열: 반투명 카드(bg-white/10) + 검정 로고는 흰색 반전(PartnerLogo).
 const TILE =
-  "flex aspect-[3/2] items-center justify-center rounded-2xl bg-neutral-400 p-6 transition-transform duration-300 sm:p-8";
+  "flex aspect-[3/2] items-center justify-center rounded-2xl bg-white/10 p-6 transition-transform duration-300 sm:p-8";
 const LOGO_CLASS = "max-h-full w-auto max-w-full object-contain";
 const LOGO_SIZES = "(min-width: 1024px) 260px, (min-width: 640px) 30vw, 45vw";
 

@@ -11,8 +11,9 @@ export default async function PartnersSection() {
 
   return (
     <Section id="partners" title={t("sectionTitle")}>
-      {/* 회색 배경 띠: 흰/검은 글자 로고가 섞여 있어 중간 회색으로 깔아 노출 */}
-      <div className="w-full bg-neutral-400 py-10 md:py-14">
+      {/* 반투명 밴드(bg-white/10). 로고는 카드 없이 밴드 위에 직접,
+          높이 기준으로 크기 통일(PartnersMarquee). 검정 로고는 흰색 반전. */}
+      <div className="w-full bg-white/10 py-8 md:py-10">
         <PartnersMarquee partners={partners} />
       </div>
 
