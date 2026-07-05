@@ -15,12 +15,12 @@ const LOGO_CLASS = "h-12 w-auto sm:h-16 md:h-20";
 export default function PartnersMarquee({ partners }: Props) {
   // 끊김 없는 무한 루프를 위해 리스트를 두 번 렌더 → translateX(-50%) 루프.
   // 각 항목에 좌우 동일 패딩을 줘 한 세트의 폭이 정확히 절반이 되도록 한다.
-  // 호버 정지/모션 최소화는 globals.css 의 `.partners-marquee` 규칙이 담당.
+  // 호버 정지/모션 최소화는 globals.css 의 `.marquee` 규칙이 담당.
   const loop = [...partners, ...partners];
 
   return (
-    <div className="partners-marquee relative w-full [mask-image:linear-gradient(to_right,transparent,#000_6%,#000_94%,transparent)]">
-      <ul className="animate-partners-scroll flex w-max items-center">
+    <div className="marquee relative w-full [mask-image:linear-gradient(to_right,transparent,#000_6%,#000_94%,transparent)]">
+      <ul className="animate-marquee-scroll flex w-max items-center">
         {loop.map((p, i) => {
           const dup = i >= partners.length;
           // 표시 폭 = 높이 × (원본 비율 × scale). 각 브레이크포인트 높이에 맞춰 sizes 생성.

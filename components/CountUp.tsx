@@ -118,5 +118,11 @@ export default function CountUp({
     return () => unsubscribe();
   }, [springValue, separator, maxDecimals]);
 
-  return <span className={className} ref={ref} />;
+  // 서버 렌더링과 JS 비활성 환경에서도 최종 값이 보이도록 children으로 출력한다.
+  // 마운트 후에는 위 이펙트들이 textContent를 덮어쓰며 애니메이션을 시작한다.
+  return (
+    <span className={className} ref={ref}>
+      {String(direction === "down" ? from : to)}
+    </span>
+  );
 }

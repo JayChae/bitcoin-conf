@@ -6,6 +6,7 @@ import ComingSoon from "./_components/ComingSoon";
 import Section from "./_components/Section";
 import Sponsor from "./_components/Sponsor";
 import SpeakersSection from "./_components/Speakers/SpeakersSection";
+import RecapSection from "./_components/Recap/RecapSection";
 import PartnersSection from "./_components/Partners/PartnersSection";
 import SideEventsSection from "./_components/SideEvents/SideEventsSection";
 import LocationSection from "./_components/Location/LocationSection";
@@ -31,6 +32,7 @@ export default async function Home2026({ params }: Props) {
         date={tHero("date")}
       />
       <TicketsSection />
+      <RecapSection />
       <PartnersSection />
       <SpeakersSection />
       <SideEventsSection />

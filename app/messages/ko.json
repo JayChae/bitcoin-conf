@@ -60,6 +60,16 @@
     "imageComingSoon": "이미지 준비 중",
     "comingSoon": "추후 공개"
   },
+  "Recap2026": {
+    "sectionTitle": "2025 돌아보기",
+    "lead": "지난 겨울, 400여 명의 비트코이너가 서울에 모여 강연, 워크숍, 아시아 최대 규모의 라이트닝 마켓을 함께했습니다. 지난 컨퍼런스를 확인하세요.",
+    "highlightsAlt": "2025 컨퍼런스 현장 사진",
+    "videoTitle": "2025 비트코인 미니 컨퍼런스 하이라이트 영상",
+    "readArticle": "기사 읽기",
+    "viewAll": "뉴스·리뷰 전체 보기",
+    "pageTitle": "2025 돌아보기",
+    "pageSubtitle": "언론 보도와 리뷰로 만나는 지난 컨퍼런스"
+  },
   "Schedule": {
     "title": "일정",
     "triggerText": "자세히 보기"

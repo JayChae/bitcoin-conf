@@ -60,6 +60,16 @@
     "imageComingSoon": "Image coming soon",
     "comingSoon": "Coming Soon"
   },
+  "Recap2026": {
+    "sectionTitle": "2025 Recap",
+    "lead": "Last winter, 400+ bitcoiners gathered in Seoul for two days of talks, workshops, and Asia's largest Lightning Market. Here's what it looked like.",
+    "highlightsAlt": "2025 conference photo",
+    "videoTitle": "2025 Bitcoin Mini Conference recap video",
+    "readArticle": "Read article",
+    "viewAll": "View all news & reviews",
+    "pageTitle": "2025 Recap",
+    "pageSubtitle": "The last conference through press coverage and reviews"
+  },
   "Schedule": {
     "title": "Schedule",
     "triggerText": "View details"

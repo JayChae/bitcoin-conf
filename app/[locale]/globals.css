@@ -466,35 +466,35 @@ button {
   outline-offset: 2px;
 }
 
-/* 파트너 로고 무한 마퀴 (한 세트 폭 = 50% → translateX(-50%) 시 끊김 없이 루프) */
-.partners-marquee {
+/* 무한 마퀴 공통 동작 — 파트너 로고·리캡 사진 스트립이 공유 (한 세트 폭 = 50% → translateX(-50%) 시 끊김 없이 루프) */
+.marquee {
   overflow: hidden;
 }
 
-@keyframes partners-scroll {
+@keyframes marquee-scroll {
   to {
     transform: translateX(-50%);
   }
 }
 
-.animate-partners-scroll {
-  animation: partners-scroll 50s linear infinite;
+.animate-marquee-scroll {
+  animation: marquee-scroll 50s linear infinite;
   will-change: transform;
 }
 
 /* 호버 시 마퀴 정지 — hover 가능한 입력 기기에서만 (터치에서 멈춤 고착 방지) */
 @media (hover: hover) {
-  .partners-marquee:hover .animate-partners-scroll {
+  .marquee:hover .animate-marquee-scroll {
     animation-play-state: paused;
   }
 }
 
 /* 모션 최소화 설정: 자동 스크롤 끄고 가로 스크롤로 전체 열람 (중복본은 숨김) */
 @media (prefers-reduced-motion: reduce) {
-  .animate-partners-scroll {
+  .animate-marquee-scroll {
     animation: none;
   }
-  .partners-marquee {
+  .marquee {
     overflow-x: auto;
   }
   .marquee-dup {
