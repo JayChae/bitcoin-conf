@@ -2,6 +2,9 @@ import { ImageResponse } from "next/og";
 import { readFile } from "fs/promises";
 import { join } from "path";
 
+// The card never varies, so render it once at build instead of on every scrape.
+export const dynamic = "force-static";
+
 export async function GET() {
   const logoData = await readFile(
     join(process.cwd(), "public", "logo-v2.png")
@@ -36,7 +39,7 @@ export async function GET() {
             textAlign: "center",
           }}
         >
-          Bitcoin Korea Conference
+          Bitcoin Mini Conference
         </div>
         <div
           style={{
@@ -46,7 +49,7 @@ export async function GET() {
             textAlign: "center",
           }}
         >
-          COEX, Seoul
+          Seoul, 2025
         </div>
       </div>
     ),

@@ -9,6 +9,7 @@ import {
   badgeVariants,
 } from "../../_components/Speakers/InfoField";
 import SideEventImage from "../../_components/SideEvents/SideEventImage";
+import { pageMetadata } from "../../_utils/metadata";
 
 type Params = { locale: Locale; slug: string };
 
@@ -26,15 +27,13 @@ export async function generateMetadata({
   const { locale, slug } = await params;
   const event = sideEvents[locale].find((e) => e.slug === slug);
   if (!event) return {};
-  return {
+  return pageMetadata({
+    locale,
+    pathname: `/side-events/${slug}`,
     title: event.title,
     description: event.shortDescription,
-    openGraph: {
-      title: event.title,
-      description: event.shortDescription,
-      ...(event.image ? { images: [{ url: event.image }] } : {}),
-    },
-  };
+    ogImage: event.image ? { url: event.image } : undefined,
+  });
 }
 
 export default async function SideEventDetailPage({

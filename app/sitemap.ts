@@ -1,8 +1,7 @@
 import { MetadataRoute } from "next";
+import { BASE_URL as baseUrl } from "./_utils/seo";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://bitcoinkoreaconference.com";
-
   return [
     {
       url: baseUrl,

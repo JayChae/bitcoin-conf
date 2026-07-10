@@ -5,13 +5,15 @@ import { RECAP_VIDEO_ID } from "@/app/messages/2026/recap";
 import HighlightsMarquee from "../_components/Recap/HighlightsMarquee";
 import RecapVideo from "../_components/Recap/RecapVideo";
 import PressCard from "../_components/Recap/PressCard";
+import { pageMetadata } from "../_utils/metadata";
 
 export async function generateMetadata() {
   const t = await getTranslations("Recap2026");
-  return {
+  return pageMetadata({
+    pathname: "/recap",
     title: t("pageTitle"),
     description: t("pageSubtitle"),
-  };
+  });
 }
 
 export default async function RecapPage() {

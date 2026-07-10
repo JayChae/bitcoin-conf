@@ -1,3 +1,5 @@
+import type { SeoMessages } from "@/app/_utils/seo";
+
 export const seoMessages = {
   en: {
     title: "Bitcoin Korea Conference - COEX",
@@ -19,10 +21,7 @@ export const seoMessages = {
     classification: "Bitcoin Conference",
     subject: "Bitcoin",
     audience: "Bitcoin enthusiasts, developers",
-    robots: "index, follow",
-    googlebot: "index, follow",
     revisitAfter: "7 days",
-    language: "en",
     geo: {
       region: "KR-11",
       placename: "COEX, Samsung, South Korea",
@@ -48,15 +47,10 @@ export const seoMessages = {
     classification: "비트코인 컨퍼런스",
     subject: "비트코인",
     audience: "비트코이너",
-    robots: "index, follow",
-    googlebot: "index, follow",
     revisitAfter: "7 days",
-    language: "ko",
     geo: {
       region: "KR-11",
       placename: "코엑스, 삼성, 대한민국",
     },
   },
-} as const;
-
-export type SeoLanguage = keyof typeof seoMessages;
+} as const satisfies SeoMessages;

@@ -8,6 +8,7 @@ import speakers, { type Speaker } from "@/app/messages/2026/speakers";
 import DifficultyBadge from "../../_components/Speakers/DifficultyBadge";
 import InfoField from "../../_components/Speakers/InfoField";
 import SnsLinks from "../../_components/Speakers/SnsLinks";
+import { pageMetadata } from "../../_utils/metadata";
 
 type Params = { locale: Locale; slug: string };
 
@@ -25,16 +26,13 @@ export async function generateMetadata({
   const { locale, slug } = await params;
   const speaker = speakers[locale].find((s) => s.slug === slug);
   if (!speaker) return {};
-  const description = speaker.subtitle.join(" · ");
-  return {
+  return pageMetadata({
+    locale,
+    pathname: `/speakers/${slug}`,
     title: speaker.title,
-    description,
-    openGraph: {
-      title: speaker.title,
-      description,
-      images: [{ url: speaker.image }],
-    },
-  };
+    description: speaker.subtitle.join(" · "),
+    ogImage: { url: speaker.image },
+  });
 }
 
 export default async function SpeakerDetailPage({

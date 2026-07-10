@@ -3,6 +3,16 @@ import SeatingChart from "../_components/Tickets/SeatingChart";
 import SeatMapOverview from "../_components/Tickets/SeatMapOverview";
 import TicketsGrid from "../_components/Tickets/TicketsGrid";
 import { getSaleStatus } from "@/lib/pricing";
+import { pageMetadata } from "../_utils/metadata";
+
+export async function generateMetadata() {
+  const t = await getTranslations("Tickets2026");
+  return pageMetadata({
+    pathname: "/tickets",
+    title: t("pageTitle"),
+    description: t("pageDescription"),
+  });
+}
 
 export default async function TicketsPage() {
   const t = await getTranslations("Tickets2026");
