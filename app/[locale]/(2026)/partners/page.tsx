@@ -1,13 +1,15 @@
 import { getTranslations } from "next-intl/server";
 import partners from "@/app/messages/2026/partners";
 import PartnersGrid from "../_components/Partners/PartnersGrid";
+import { pageMetadata } from "../_utils/metadata";
 
 export async function generateMetadata() {
   const t = await getTranslations("Partners2026");
-  return {
+  return pageMetadata({
+    pathname: "/partners",
     title: t("pageTitle"),
     description: t("pageSubtitle"),
-  };
+  });
 }
 
 export default async function PartnersPage() {

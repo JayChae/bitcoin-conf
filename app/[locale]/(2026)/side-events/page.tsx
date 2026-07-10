@@ -2,13 +2,15 @@ import { getLocale, getTranslations } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import sideEvents from "@/app/messages/2026/sideEvents";
 import SideEventsGrid from "../_components/SideEvents/SideEventsGrid";
+import { pageMetadata } from "../_utils/metadata";
 
 export async function generateMetadata() {
   const t = await getTranslations("SideEvents2026");
-  return {
+  return pageMetadata({
+    pathname: "/side-events",
     title: t("pageTitle"),
     description: t("pageSubtitle"),
-  };
+  });
 }
 
 export default async function SideEventsPage() {

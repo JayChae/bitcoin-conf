@@ -2,13 +2,15 @@ import { getLocale, getTranslations } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import speakers from "@/app/messages/2026/speakers";
 import SpeakersGrid from "../_components/Speakers/SpeakersGrid";
+import { pageMetadata } from "../_utils/metadata";
 
 export async function generateMetadata() {
   const t = await getTranslations("Speakers2026");
-  return {
+  return pageMetadata({
+    pathname: "/speakers",
     title: t("pageTitle"),
     description: t("pageSubtitle"),
-  };
+  });
 }
 
 export default async function SpeakersPage() {

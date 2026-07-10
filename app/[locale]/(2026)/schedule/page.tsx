@@ -7,13 +7,15 @@ import SchedulePanelLocation from "../_components/Schedule/SchedulePanelLocation
 import DayTabs, {
   type DayTabItem,
 } from "../_components/Schedule/DayTabs";
+import { pageMetadata } from "../_utils/metadata";
 
 export async function generateMetadata() {
   const t = await getTranslations("Schedule2026");
-  return {
+  return pageMetadata({
+    pathname: "/schedule",
     title: t("pageTitle"),
     description: t("pageMetaDescription"),
-  };
+  });
 }
 
 export default async function SchedulePage() {

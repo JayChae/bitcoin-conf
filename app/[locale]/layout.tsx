@@ -5,8 +5,11 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { setRequestLocale } from "next-intl/server";
 import localFont from "next/font/local";
-import { generateSEOMetadata, generateStructuredData } from "../_utils/seo";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import { BASE_URL } from "../_utils/seo";
+
+// Resolves the relative og:image paths returned by generateSEOMetadata.
+export const metadata: Metadata = { metadataBase: new URL(BASE_URL) };
 
 const suitFont = localFont({
   src: "../../public/fonts/SUIT-Variable.woff2",
@@ -33,21 +36,12 @@ export default async function RootLayout({ children, params }: Props) {
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
 
-  const structuredData = generateStructuredData(locale);
-
   return (
     <html
       lang={locale}
       className={`size-full ${suitFont.className} ${ubuntuMonoFont.variable} ${neurimboGothicFont.variable}`}
     >
       <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(structuredData),
-          }}
-        />
-
         <link
           rel="apple-touch-icon"
           sizes="180x180"
