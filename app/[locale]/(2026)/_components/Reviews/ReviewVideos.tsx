@@ -43,32 +43,32 @@ export default function ReviewVideos({
           title={current.title}
           autoStart={selections > 0}
           onPlay={() => setPlaying(true)}
-          className="lg:aspect-auto lg:h-full"
         />
       </div>
 
-      <ul className="flex flex-col gap-3 lg:col-span-5">
+      {/* lg: 그리드 행 높이는 16:9 플레이어가 정하고, 카드들이 flex-1 로 그 높이를 나눠 채운다. */}
+      <ul className="flex flex-col justify-center gap-3 lg:col-span-5 lg:h-full">
         {videos.map((v, i) => {
           const isSelected = i === active;
           const isPlaying = isSelected && playing;
           return (
-            <li key={v.id}>
+            <li key={v.id} className="lg:min-h-0 lg:flex-1">
               <button
                 type="button"
                 onClick={() => select(i)}
                 aria-current={isSelected || undefined}
                 aria-label={`${playLabel}: ${v.title}`}
                 className={cn(
-                  "group flex w-full items-center gap-3 rounded-xl border p-2.5 text-left transition-colors",
+                  "group flex w-full items-center gap-3 rounded-xl border p-2.5 text-left transition-colors lg:h-full lg:gap-4 lg:p-3",
                   isSelected
                     ? "border-glow-pink/60 bg-white/[0.06] ring-1 ring-glow-pink/40"
                     : "border-white/10 bg-[#15122a]/60 hover:border-white/25 hover:bg-white/[0.04]"
                 )}
               >
-                <span className="relative aspect-video w-28 shrink-0 overflow-hidden rounded-lg bg-black">
+                <span className="relative aspect-video w-28 shrink-0 overflow-hidden rounded-lg bg-black lg:h-full lg:w-auto">
                   {/* eslint-disable-next-line @next/next/no-img-element -- 원격 유튜브 썸네일: next/image 로 바꾸면 remotePatterns 필요 */}
                   <img
-                    src={ytThumb(v.id, "mq")}
+                    src={ytThumb(v.id, "hq")}
                     alt=""
                     loading="lazy"
                     className="absolute inset-0 h-full w-full object-cover"
@@ -84,7 +84,7 @@ export default function ReviewVideos({
                 </span>
 
                 <span className="min-w-0 flex-1">
-                  <span className="line-clamp-2 block text-sm font-semibold leading-snug text-white">
+                  <span className="line-clamp-2 block text-sm font-semibold leading-snug text-white lg:text-base">
                     {v.title}
                   </span>
                   <span className="mt-1 line-clamp-1 block text-xs text-white/50">
