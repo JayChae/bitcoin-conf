@@ -5,23 +5,35 @@ import type { Locale } from "@/i18n/routing";
 export type Shot = { src: string; width: number; height: number };
 
 export const REVIEW_SHOTS: Shot[] = [
-  { src: "/2025-reviews/1.jpg", width: 1090, height: 1280 },
-  { src: "/2025-reviews/2.jpg", width: 858, height: 1280 },
-  { src: "/2025-reviews/3.jpg", width: 1103, height: 1280 },
-  { src: "/2025-reviews/4.jpg", width: 754, height: 1280 },
-  { src: "/2025-reviews/5.jpg", width: 810, height: 1280 },
-  { src: "/2025-reviews/6.jpg", width: 1113, height: 1280 },
-  { src: "/2025-reviews/7.jpg", width: 1179, height: 1201 },
-  { src: "/2025-reviews/8.jpg", width: 1179, height: 1276 },
-  { src: "/2025-reviews/9.jpg", width: 919, height: 1280 },
-  { src: "/2025-reviews/10.jpg", width: 1108, height: 1280 },
-  { src: "/2025-reviews/11.jpg", width: 792, height: 1280 },
-  { src: "/2025-reviews/12.jpg", width: 1102, height: 1280 },
-  { src: "/2025-reviews/13.jpg", width: 1179, height: 815 },
-  { src: "/2025-reviews/14.jpg", width: 964, height: 1280 },
-  { src: "/2025-reviews/15.jpg", width: 1178, height: 1074 },
-  { src: "/2025-reviews/16.jpg", width: 1178, height: 1068 },
-  { src: "/2025-reviews/17.jpg", width: 1178, height: 1247 },
+  { src: "/2025-reviews/1.webp", width: 1178, height: 1068 },
+  { src: "/2025-reviews/2.webp", width: 1100, height: 952 },
+  { src: "/2025-reviews/3.webp", width: 754, height: 1280 },
+  { src: "/2025-reviews/4.webp", width: 1100, height: 1183 },
+  { src: "/2025-reviews/5.webp", width: 810, height: 1280 },
+  { src: "/2025-reviews/6.webp", width: 1178, height: 1074 },
+  { src: "/2025-reviews/7.webp", width: 1100, height: 1585 },
+  { src: "/2025-reviews/8.webp", width: 1179, height: 1276 },
+  { src: "/2025-reviews/9.webp", width: 1108, height: 1280 },
+  { src: "/2025-reviews/10.webp", width: 858, height: 1280 },
+  { src: "/2025-reviews/11.webp", width: 919, height: 1280 },
+  { src: "/2025-reviews/12.webp", width: 1100, height: 435 },
+  { src: "/2025-reviews/13.webp", width: 792, height: 1280 },
+  { src: "/2025-reviews/14.webp", width: 1113, height: 1280 },
+  { src: "/2025-reviews/15.webp", width: 1100, height: 2088 },
+  { src: "/2025-reviews/16.webp", width: 1100, height: 1712 },
+  { src: "/2025-reviews/17.webp", width: 1100, height: 3960 },
+  { src: "/2025-reviews/18.webp", width: 1102, height: 1160 },
+  { src: "/2025-reviews/19.webp", width: 1090, height: 1280 },
+  { src: "/2025-reviews/20.webp", width: 1100, height: 435 },
+  { src: "/2025-reviews/21.webp", width: 1100, height: 435 },
+  { src: "/2025-reviews/22.webp", width: 964, height: 1280 },
+  { src: "/2025-reviews/23.webp", width: 1179, height: 1201 },
+  { src: "/2025-reviews/24.webp", width: 1103, height: 1280 },
+  { src: "/2025-reviews/25.webp", width: 1179, height: 722 },
+  { src: "/2025-reviews/26.webp", width: 1100, height: 388 },
+  { src: "/2025-reviews/27.webp", width: 960, height: 1280 },
+  { src: "/2025-reviews/28.webp", width: 960, height: 1280 },
+  { src: "/2025-reviews/29.webp", width: 1178, height: 1247 },
 ];
 
 export type ReviewVideo = { id: string; channel: string; title: string };
@@ -46,22 +58,23 @@ const videoItems: VideoSource[] = [
       en: "Bitcoin ⚡️ Lightning Market, talks & the center | 2025 Mini Conference Vlog Ep.2",
     },
   },
-  {
-    id: "mFJQ2aZaius",
-    channel: "토미네이터TV",
-    title: {
-      ko: "수십, 수백억 자산가들과 함께 있었던 걸까... 비트코인 미니 컨퍼런스 후기",
-      en: "Was I sitting among multimillionaires? A Bitcoin Mini Conference review",
-    },
-  },
-  {
-    id: "X7YKmSuWpRc",
-    channel: "지분전쟁⚡️산원수⚡️비트벌새",
-    title: {
-      ko: "2025 비트코인 미니 컨퍼런스 후기",
-      en: "2025 Bitcoin Mini Conference review",
-    },
-  },
+  // 아래 채널들은 게시 허락 대기 중 — 확답 받으면 주석 해제.
+  // {
+  //   id: "mFJQ2aZaius",
+  //   channel: "토미네이터TV",
+  //   title: {
+  //     ko: "수십, 수백억 자산가들과 함께 있었던 걸까... 비트코인 미니 컨퍼런스 후기",
+  //     en: "Was I sitting among multimillionaires? A Bitcoin Mini Conference review",
+  //   },
+  // },
+  // {
+  //   id: "X7YKmSuWpRc",
+  //   channel: "지분전쟁⚡️산원수⚡️비트벌새",
+  //   title: {
+  //     ko: "2025 비트코인 미니 컨퍼런스 후기",
+  //     en: "2025 Bitcoin Mini Conference review",
+  //   },
+  // },
 ];
 
 export const reviewVideos = {
