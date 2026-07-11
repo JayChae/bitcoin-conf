@@ -66,9 +66,22 @@
     "highlightsAlt": "2025 conference photo",
     "videoTitle": "2025 Bitcoin Mini Conference recap video",
     "readArticle": "Read article",
-    "viewAll": "View all news & reviews",
     "pageTitle": "2025 Recap",
     "pageSubtitle": "The last conference through press coverage and reviews"
+  },
+  "Reviews2026": {
+    "sectionTitle": "Attendee Reviews",
+    "lead": "What bitcoiners who were there shared on X and YouTube after the two days.",
+    "snsHeading": "From X (Twitter)",
+    "videoHeading": "On YouTube",
+    "shotAlt": "Attendee review of the 2025 Bitcoin Mini Conference (post on X)",
+    "openReview": "Open review",
+    "closeLightbox": "Close",
+    "prevReview": "Previous review",
+    "nextReview": "Next review",
+    "nowPlaying": "Now playing",
+    "playVideo": "Play video",
+    "viewAllNews": "View all news & reviews"
   },
   "Schedule": {
     "title": "Schedule",

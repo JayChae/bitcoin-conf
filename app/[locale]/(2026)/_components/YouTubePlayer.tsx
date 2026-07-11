@@ -8,20 +8,33 @@ type Props = {
   videoId: string;
   title: string;
   className?: string;
+  autoStart?: boolean;
+  onPlay?: () => void;
 };
+
+// 유튜브 썸네일 CDN 규칙 — 파사드와 플레이리스트가 공유한다.
+// maxres 는 없는 영상이 있어 404 가능, mq/hq 는 항상 존재한다.
+export const ytThumb = (videoId: string, size: "maxres" | "hq" | "mq") =>
+  `https://i.ytimg.com/vi/${videoId}/${size}default.jpg`;
 
 // 클릭 전에는 유튜브 플레이어 대신 썸네일 파사드만 렌더해 초기 로드 비용을 없앤다.
 // className 으로 aspect-video 를 덮어써 부모 높이에 맞춰 늘릴 수 있다(홈 lg 그리드).
 // 그 경우 재생 중인 플레이어는 박스 안에서 16:9 로 세로 중앙 정렬되고,
 // 남는 영역은 검은 바 대신 웰 색(#0d0a1c)으로 채워진다.
-export default function RecapVideo({ videoId, title, className }: Props) {
-  const [playing, setPlaying] = useState(false);
+// autoStart 는 리뷰 플레이리스트처럼 key 로 리마운트하며 즉시 재생시킬 때 쓴다.
+// onPlay 는 파사드 클릭으로 시작된 재생을 부모에게 알린다 — 부모가 재생 상태를
+// 따로 표시한다면(플레이리스트의 "재생 중" 배지) 이 신호 없이는 어긋난다.
+export default function YouTubePlayer({
+  videoId,
+  title,
+  className,
+  autoStart = false,
+  onPlay,
+}: Props) {
+  const [playing, setPlaying] = useState(autoStart);
   const [thumbFallback, setThumbFallback] = useState(false);
 
-  // maxresdefault 가 없는 영상은 404 → hqdefault 로 폴백.
-  const thumb = thumbFallback
-    ? `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`
-    : `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`;
+  const thumb = ytThumb(videoId, thumbFallback ? "hq" : "maxres");
 
   return (
     <div
@@ -44,7 +57,10 @@ export default function RecapVideo({ videoId, title, className }: Props) {
       ) : (
         <button
           type="button"
-          onClick={() => setPlaying(true)}
+          onClick={() => {
+            setPlaying(true);
+            onPlay?.();
+          }}
           aria-label={title}
           className="group absolute inset-0 h-full w-full cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-glow-purple/50"
         >

@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
-import { useState } from "react";
-import { handleModalRef } from "@/app/_utils/modal";
+import { useEffect, useState } from "react";
+import { openModal } from "@/app/_utils/modal";
 
 // 모달 컴포넌트
 function Modal({
@@ -15,13 +15,15 @@ function Modal({
   onClose: () => void;
   image: string;
 }) {
+  useEffect(() => {
+    if (!isOpen) return;
+    return openModal(onClose);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
-      ref={() => handleModalRef(onClose)}
-    >
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
       <div className="absolute inset-0 bg-black/80" onClick={onClose} />
 
@@ -50,13 +52,13 @@ export default function BrochureModalTrigger({ triggerText, image }: Props) {
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const openModal = () => setIsOpen(true);
+  const showModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
 
   return (
     <>
       <button
-        onClick={openModal}
+        onClick={showModal}
         className="group relative inline-flex items-center justify-center gap-3 px-10 py-3 bg-orange-500/80 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 ease-out cursor-pointer"
       >
         {triggerText}

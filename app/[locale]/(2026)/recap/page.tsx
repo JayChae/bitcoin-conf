@@ -3,8 +3,9 @@ import type { Locale } from "@/i18n/routing";
 import press from "@/app/messages/2026/press";
 import { RECAP_VIDEO_ID } from "@/app/messages/2026/recap";
 import HighlightsMarquee from "../_components/Recap/HighlightsMarquee";
-import RecapVideo from "../_components/Recap/RecapVideo";
+import YouTubePlayer from "../_components/YouTubePlayer";
 import PressCard from "../_components/Recap/PressCard";
+import ReviewsBlock from "../_components/Reviews/ReviewsBlock";
 import { pageMetadata } from "../_utils/metadata";
 
 export async function generateMetadata() {
@@ -38,7 +39,7 @@ export default async function RecapPage() {
         </div>
 
         <div className="max-w-4xl mx-auto mb-12 md:mb-16">
-          <RecapVideo videoId={RECAP_VIDEO_ID} title={t("videoTitle")} />
+          <YouTubePlayer videoId={RECAP_VIDEO_ID} title={t("videoTitle")} />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5 lg:gap-6">
@@ -49,6 +50,10 @@ export default async function RecapPage() {
               ctaLabel={t("readArticle")}
             />
           ))}
+        </div>
+
+        <div className="mt-16 md:mt-24">
+          <ReviewsBlock variant="grid" />
         </div>
       </div>
     </main>
