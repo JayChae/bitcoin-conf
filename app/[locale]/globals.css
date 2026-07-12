@@ -501,3 +501,67 @@ button {
     display: none;
   }
 }
+
+/* 세로 무한 마퀴 — SNS 후기 월 (한 세트 높이 = 50% → translateY(-50%) 시 끊김 없이 루프).
+   높이는 CSS 변수로 주입한다: 이 규칙이 @layer 밖이라 Tailwind h-[] 유틸을 이겨버리므로,
+   변수로 둬야 브레이크포인트별 재지정과 reduced-motion 복원이 가능하다. */
+.marquee-y {
+  overflow: hidden;
+  height: var(--wall-h, 640px);
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    #000 8%,
+    #000 92%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    #000 8%,
+    #000 92%,
+    transparent
+  );
+}
+
+@keyframes marquee-scroll-y {
+  to {
+    transform: translateY(-50%);
+  }
+}
+
+/* will-change 는 쓰지 않는다: 재생 중인 transform 애니메이션은 어차피 합성 레이어로 승격되고,
+   정지 상태(호버·라이트박스·reduced-motion)에서도 수천 px 짜리 레이어가 계속 메모리에 남는다. */
+.animate-marquee-y {
+  animation: marquee-scroll-y var(--marquee-duration, 60s) linear infinite;
+}
+
+/* 키보드 탐색 중 · 라이트박스가 덮고 있는 동안 정지 (안 보이는 벽을 합성하지 않는다).
+   :focus-within 이 아니라 :has(:focus-visible) 여야 한다 — 카드는 button 이라 클릭만 해도
+   포커스를 먹고, 라이트박스를 닫을 때 openModal 이 그 카드로 포커스를 되돌린다.
+   :focus-within 이면 한 번 클릭한 뒤로 벽이 영영 멈춘 채로 남는다. */
+.marquee-y:has(:focus-visible) .animate-marquee-y,
+.marquee-y-paused .animate-marquee-y {
+  animation-play-state: paused;
+}
+
+/* 호버 정지는 hover 가능한 기기에서만 — 터치에서 멈춤 고착 방지 */
+@media (hover: hover) {
+  .marquee-y:hover .animate-marquee-y {
+    animation-play-state: paused;
+  }
+}
+
+/* 모션 최소화: 애니메이션·마스크 끄고 컬럼을 전체 높이로 펼쳐 세로로 열람.
+   중복본 숨김은 가로 마퀴와 공유하는 .marquee-dup 이 담당한다. */
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee-y {
+    animation: none;
+  }
+  .marquee-y {
+    height: auto;
+    overflow: visible;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+}

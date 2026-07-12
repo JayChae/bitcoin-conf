@@ -66,9 +66,22 @@
     "highlightsAlt": "2025 컨퍼런스 현장 사진",
     "videoTitle": "2025 비트코인 미니 컨퍼런스 하이라이트 영상",
     "readArticle": "기사 읽기",
-    "viewAll": "뉴스·리뷰 전체 보기",
     "pageTitle": "2025 돌아보기",
     "pageSubtitle": "언론 보도와 리뷰로 만나는 지난 컨퍼런스"
+  },
+  "Reviews2026": {
+    "sectionTitle": "참가자 후기",
+    "lead": "현장을 다녀온 분들의 X와 유튜브에 남긴 생생한 후기입니다.",
+    "snsHeading": "X(트위터) 후기",
+    "videoHeading": "영상 후기",
+    "shotAlt": "2025 비트코인 미니 컨퍼런스 참가자 후기 (X 게시물)",
+    "openReview": "후기 크게 보기",
+    "closeLightbox": "닫기",
+    "prevReview": "이전 후기",
+    "nextReview": "다음 후기",
+    "nowPlaying": "재생 중",
+    "playVideo": "영상 재생",
+    "viewAllNews": "뉴스·리뷰 전체 보기"
   },
   "Schedule": {
     "title": "일정",

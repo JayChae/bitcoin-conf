@@ -4,7 +4,8 @@ import Image from "next/image";
 import { type Market, type Product } from "@/app/messages/2025/markets";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
-import { handleModalRef } from "@/app/_utils/modal";
+import { useEffect } from "react";
+import { openModal } from "@/app/_utils/modal";
 
 type Props = {
   market: Market | null;
@@ -14,14 +15,17 @@ type Props = {
 
 export default function MarketModal({ market, isOpen, onClose }: Props) {
   const t = useTranslations("LightningMarket");
+  const shown = isOpen && market != null;
+
+  useEffect(() => {
+    if (!shown) return;
+    return openModal(onClose);
+  }, [shown, onClose]);
 
   if (!isOpen || !market) return null;
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
-      ref={() => handleModalRef(onClose)}
-    >
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
       <div
         className="absolute inset-0 bg-black/80 backdrop-blur-sm animate-in fade-in duration-300"
