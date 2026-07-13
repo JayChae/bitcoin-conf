@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
+import { Link as I18nLink } from "@/i18n/navigation";
 
 export default async function Footer() {
   const t = await getTranslations("Footer");
@@ -126,7 +127,27 @@ export default async function Footer() {
 
         {/* Bottom Section */}
         <div className="border-t border-white/10 pt-6 mt-6">
-          <div className="flex justify-center">
+          <div className="flex flex-col items-center gap-3">
+            <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2">
+              <I18nLink
+                href="/policy/refund"
+                className="text-white/60 hover:text-white text-sm transition-colors duration-200"
+              >
+                {t("refundPolicy")}
+              </I18nLink>
+              <I18nLink
+                href="/policy/privacy"
+                className="text-white/80 hover:text-white text-sm font-medium transition-colors duration-200"
+              >
+                {t("privacyPolicy")}
+              </I18nLink>
+              <I18nLink
+                href="/policy/terms"
+                className="text-white/60 hover:text-white text-sm transition-colors duration-200"
+              >
+                {t("termsOfUse")}
+              </I18nLink>
+            </nav>
             <p className="text-white/60 text-sm">
               © 2026 Bitcoin Korea Conference. All rights reserved.
             </p>

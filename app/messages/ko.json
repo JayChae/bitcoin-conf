@@ -191,7 +191,18 @@
     "contact": "Contact",
     "email": "문의 이메일:",
     "donation": "후원",
-    "location": "장소"
+    "location": "장소",
+    "refundPolicy": "환불 정책",
+    "privacyPolicy": "개인정보 처리방침",
+    "termsOfUse": "이용약관"
+  },
+  "Policy": {
+    "refundTitle": "환불 정책",
+    "refundDescription": "비트코인 코리아 컨퍼런스 2026 티켓 환불 정책 안내입니다.",
+    "privacyTitle": "개인정보 처리방침",
+    "privacyDescription": "비토문의 개인정보 수집·이용 목적 및 보호 조치를 안내합니다.",
+    "termsTitle": "이용약관",
+    "termsDescription": "비트코인 코리아 컨퍼런스 공식 웹사이트 이용약관입니다."
   },
   "Location2026": {
     "sectionTitle": "장소",

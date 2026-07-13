@@ -192,7 +192,18 @@
     "contact": "Contact",
     "email": "Email:",
     "donation": "Donation",
-    "location": "Location"
+    "location": "Location",
+    "refundPolicy": "Refund Policy",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfUse": "Terms of Use"
+  },
+  "Policy": {
+    "refundTitle": "Refund Policy",
+    "refundDescription": "Ticket refund policy for Bitcoin Korea Conference 2026 (in Korean).",
+    "privacyTitle": "Privacy Policy",
+    "privacyDescription": "How Bitomun collects, uses, and protects personal data (in Korean).",
+    "termsTitle": "Terms of Use",
+    "termsDescription": "Terms of use for the Bitcoin Korea Conference website (in Korean)."
   },
   "Location2026": {
     "sectionTitle": "Location",
