@@ -3,7 +3,7 @@ import { getLocale } from "next-intl/server";
 import { getPathname } from "@/i18n/navigation";
 import { routing, type Locale } from "@/i18n/routing";
 
-export const BASE_URL = "https://bitcoinkoreaconference.com";
+export const BASE_URL = "https://www.bitcoinkoreaconference.com";
 
 export interface EventPlace {
   name: string;
