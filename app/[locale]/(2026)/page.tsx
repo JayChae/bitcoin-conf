@@ -32,12 +32,11 @@ export default async function Home2026({ params }: Props) {
         location={tHero("location")}
         date={tHero("date")}
       />
-      <TicketsSection />
       <RecapSection />
       <ReviewsSection />
-      <PartnersSection />
       <SpeakersSection />
       <SideEventsSection />
+      <TicketsSection />
       <LocationSection />
       <Section id="sponsors" title={tSponsor("title")}>
         <Sponsor
@@ -47,6 +46,7 @@ export default async function Home2026({ params }: Props) {
           comingSoonText={tSponsor("comingSoon")}
         />
       </Section>
+      <PartnersSection />
       <ComingSoon />
     </main>
   );

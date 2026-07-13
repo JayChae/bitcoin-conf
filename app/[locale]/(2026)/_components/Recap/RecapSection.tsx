@@ -15,7 +15,8 @@ export default async function RecapSection() {
   if (articles.length === 0) return null;
 
   return (
-    <section id="recap" className="scroll-mt-24 pb-20 pt-20">
+    // 히어로(h-lvh) 바로 다음 섹션 — 위 마진 없이 스크롤 시작하자마자 보여야 한다
+    <section id="recap" className="scroll-mt-24">
       <div className="max-w-7xl mx-auto px-4">
         <SectionTitle title={t("sectionTitle")} className="mb-4" />
 
@@ -29,18 +30,18 @@ export default async function RecapSection() {
       <div className="max-w-7xl mx-auto px-4 mt-10 md:mt-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
           <div className="lg:col-span-7">
-            <YouTubePlayer
-              videoId={RECAP_VIDEO_ID}
-              title={t("videoTitle")}
-              className="lg:aspect-auto lg:h-full"
-            />
+            <YouTubePlayer videoId={RECAP_VIDEO_ID} title={t("videoTitle")} />
           </div>
-          <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-5 lg:auto-rows-fr">
+          {/* lg: 행 높이는 16:9 플레이어가 정한다 — 컴팩트 카드(2줄 클램프)의 총
+              min-content 가 플레이어보다 항상 작아서다. 카드 열은 auto-rows-fr 로
+              그 높이를 균등 분할하므로 목록의 위아래가 영상 모서리와 딱 맞는다. */}
+          <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-4 lg:grid-cols-1 lg:auto-rows-fr lg:gap-3">
             {articles.map((article) => (
               <PressCard
                 key={article.id}
                 article={article}
                 ctaLabel={t("readArticle")}
+                compact
               />
             ))}
           </div>

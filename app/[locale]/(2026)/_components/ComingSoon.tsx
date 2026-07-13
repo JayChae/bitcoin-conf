@@ -8,7 +8,7 @@ type Props = {
 
 export default function ComingSoon({ title, description }: Props) {
   return (
-    <div className="w-full mb-20 px-4">
+    <div className="w-full mt-40 md:mt-44 mb-20 px-4">
       <div className="max-w-6xl mx-auto">
         <div className="relative w-full aspect-video rounded-2xl overflow-hidden">
           <Image

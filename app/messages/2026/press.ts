@@ -67,6 +67,26 @@ const items: PressSource[] = [
       },
     },
   },
+  {
+    id: "freezine-2024",
+    url: "https://www.freezinenews.com/news/articleView.html?idxno=9682",
+    i18n: {
+      en: {
+        outlet: "Freezine News",
+        date: "Jan 1, 2025",
+        headline: "'2024 Bitcoin Mini Conference' Held to a Full House",
+        excerpt:
+          "Eight speakers and around 200 attendees gathered in Gangnam, Seoul to unpack what bitcoin really is — wrapping up with hands-on Lightning payments.",
+      },
+      ko: {
+        outlet: "프리진뉴스",
+        date: "2025. 1. 1.",
+        headline: "'2024년 비트코인 미니 컨퍼런스' 성황리에 개최",
+        excerpt:
+          "서울 강남에서 연사 8인과 약 200명의 참가자가 모여 비트코인의 본질적 의미를 논의하고, 행사 후 라이트닝 결제 체험까지 이어진 현장을 전했다.",
+      },
+    },
+  },
 ];
 
 const press = {

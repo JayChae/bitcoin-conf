@@ -12,7 +12,7 @@ export default async function SideEventsSection() {
   if (list.length === 0) return null;
 
   return (
-    <section id="side-events" className="scroll-mt-24 pb-20 pt-20 px-4">
+    <section id="side-events" className="scroll-mt-24 mt-40 md:mt-44 px-4">
       <div className="max-w-7xl mx-auto">
         <div className="relative inline-block mb-10 md:mb-12 w-full text-center">
           <div className="absolute inset-0 section-title-glow pointer-events-none" />

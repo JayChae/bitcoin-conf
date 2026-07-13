@@ -15,7 +15,8 @@ export default function Hero({ tagline, title, location, date }: Props) {
   const restOfTitle = titleParts.slice(1).join(" "); // "Korea Conference" or "코리아 컨퍼런스"
 
   return (
-    <section className="h-dvh flex flex-col items-center justify-center gap-4 md:gap-6 text-white px-4">
+    // h-lvh: 모바일 주소창이 접혀도(뷰포트 최대 기준) 아래 섹션이 첫 화면에 안 비친다
+    <section className="h-lvh mb-5 md:mb-0 flex flex-col items-center justify-center gap-4 md:gap-6 text-white px-4">
       <div className="text-2xl md:text-4xl lg:text-5xl font-semibold text-center">
         {tagline}
       </div>

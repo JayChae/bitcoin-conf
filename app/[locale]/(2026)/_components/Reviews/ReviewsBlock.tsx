@@ -1,8 +1,9 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import { cn } from "@/lib/utils";
 import type { Locale } from "@/i18n/routing";
-import { reviewVideos } from "@/app/messages/2026/reviews";
+import { reviewPosts, reviewVideos } from "@/app/messages/2026/reviews";
 import ReviewGallery from "./ReviewGallery";
+import ReviewPosts from "./ReviewPosts";
 import ReviewVideos from "./ReviewVideos";
 import { getReviewLabels } from "./labels";
 import { EYEBROW_CLASS } from "../Speakers/InfoField";
@@ -33,6 +34,7 @@ export default async function ReviewsBlock({ variant }: Props) {
   const t = await getTranslations("Reviews2026");
   const locale = (await getLocale()) as Locale;
   const videos = reviewVideos[locale];
+  const posts = reviewPosts[locale];
   const labels = getReviewLabels(t);
 
   return (
@@ -52,6 +54,16 @@ export default async function ReviewsBlock({ variant }: Props) {
             nowPlayingLabel={labels.nowPlaying}
             playLabel={labels.playVideo}
           />
+        </>
+      )}
+
+      {posts.length > 0 && (
+        <>
+          <SubHeading
+            label={t("blogHeading")}
+            className="mb-5 mt-14 md:mt-16"
+          />
+          <ReviewPosts posts={posts} ctaLabel={t("readPost")} />
         </>
       )}
     </>
