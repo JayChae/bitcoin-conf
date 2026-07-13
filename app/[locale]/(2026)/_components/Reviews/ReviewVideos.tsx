@@ -46,65 +46,69 @@ export default function ReviewVideos({
         />
       </div>
 
-      {/* lg: 그리드 행 높이는 16:9 플레이어가 정하고, 카드들이 flex-1 로 그 높이를 나눠 채운다. */}
-      <ul className="flex flex-col justify-center gap-3 lg:col-span-5 lg:h-full">
-        {videos.map((v, i) => {
-          const isSelected = i === active;
-          const isPlaying = isSelected && playing;
-          return (
-            <li key={v.id} className="lg:min-h-0 lg:flex-1">
-              <button
-                type="button"
-                onClick={() => select(i)}
-                aria-current={isSelected || undefined}
-                aria-label={`${playLabel}: ${v.title}`}
-                className={cn(
-                  "group flex w-full items-center gap-3 rounded-xl border p-2.5 text-left transition-colors lg:h-full lg:gap-4 lg:p-3",
-                  isSelected
-                    ? "border-glow-pink/60 bg-white/[0.06] ring-1 ring-glow-pink/40"
-                    : "border-white/10 bg-[#15122a]/60 hover:border-white/25 hover:bg-white/[0.04]"
-                )}
-              >
-                <span className="relative aspect-video w-28 shrink-0 overflow-hidden rounded-lg bg-black lg:h-full lg:w-auto">
-                  {/* eslint-disable-next-line @next/next/no-img-element -- 원격 유튜브 썸네일: next/image 로 바꾸면 remotePatterns 필요 */}
-                  <img
-                    src={ytThumb(v.id, "hq")}
-                    alt=""
-                    loading="lazy"
-                    className="absolute inset-0 h-full w-full object-cover"
-                  />
-                  <span
-                    aria-hidden="true"
-                    className="absolute inset-0 grid place-items-center bg-black/25 transition-colors group-hover:bg-black/10"
-                  >
-                    <span className="grid size-8 place-items-center rounded-full border border-white/20 bg-black/60 backdrop-blur-md">
-                      <Play className="size-3.5 translate-x-px fill-white text-white" />
-                    </span>
-                  </span>
-                </span>
-
-                <span className="min-w-0 flex-1">
-                  <span className="line-clamp-2 block text-sm font-semibold leading-snug text-white lg:text-base">
-                    {v.title}
-                  </span>
-                  <span className="mt-1 line-clamp-1 block text-xs text-white/50">
-                    {v.channel}
-                  </span>
-                  {isPlaying && (
-                    <span className="mt-1.5 inline-flex items-center gap-1.5 text-[11px] font-semibold text-glow-pink-soft">
-                      <span className="relative flex size-1.5">
-                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-glow-pink-soft opacity-75" />
-                        <span className="relative inline-flex size-1.5 rounded-full bg-glow-pink-soft" />
-                      </span>
-                      {nowPlayingLabel}
-                    </span>
+      {/* lg: 그리드 행 높이는 16:9 플레이어가 정한다. 목록은 absolute 라 행 높이에 관여하지
+          않고, max-h-full 로 그 높이까지만 차지한 뒤 넘치면 스크롤된다 — 영상이 늘어나도
+          카드가 눌리지 않는다. pr-2 는 얇은 스크롤바가 카드 테두리를 물지 않게 하는 여백. */}
+      <div className="lg:relative lg:col-span-5">
+        <ul className="slim-scrollbar flex flex-col gap-3 lg:absolute lg:inset-x-0 lg:top-0 lg:max-h-full lg:overflow-y-auto lg:pr-2">
+          {videos.map((v, i) => {
+            const isSelected = i === active;
+            const isPlaying = isSelected && playing;
+            return (
+              <li key={v.id}>
+                <button
+                  type="button"
+                  onClick={() => select(i)}
+                  aria-current={isSelected || undefined}
+                  aria-label={`${playLabel}: ${v.title}`}
+                  className={cn(
+                    "group flex w-full items-center gap-3 rounded-xl border p-2.5 text-left transition-colors lg:gap-4 lg:p-3",
+                    isSelected
+                      ? "border-glow-pink/60 bg-white/[0.06] ring-1 ring-glow-pink/40"
+                      : "border-white/10 bg-[#15122a]/60 hover:border-white/25 hover:bg-white/[0.04]"
                   )}
-                </span>
-              </button>
-            </li>
-          );
-        })}
-      </ul>
+                >
+                  <span className="relative aspect-video w-28 shrink-0 overflow-hidden rounded-lg bg-black lg:w-36">
+                    {/* eslint-disable-next-line @next/next/no-img-element -- 원격 유튜브 썸네일: next/image 로 바꾸면 remotePatterns 필요 */}
+                    <img
+                      src={ytThumb(v.id, "hq")}
+                      alt=""
+                      loading="lazy"
+                      className="absolute inset-0 h-full w-full object-cover"
+                    />
+                    <span
+                      aria-hidden="true"
+                      className="absolute inset-0 grid place-items-center bg-black/25 transition-colors group-hover:bg-black/10"
+                    >
+                      <span className="grid size-8 place-items-center rounded-full border border-white/20 bg-black/60 backdrop-blur-md">
+                        <Play className="size-3.5 translate-x-px fill-white text-white" />
+                      </span>
+                    </span>
+                  </span>
+
+                  <span className="min-w-0 flex-1">
+                    <span className="line-clamp-2 block text-sm font-semibold leading-snug text-white lg:text-base">
+                      {v.title}
+                    </span>
+                    <span className="mt-1 line-clamp-1 block text-xs text-white/50">
+                      {v.channel}
+                    </span>
+                    {isPlaying && (
+                      <span className="mt-1.5 inline-flex items-center gap-1.5 text-[11px] font-semibold text-glow-pink-soft">
+                        <span className="relative flex size-1.5">
+                          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-glow-pink-soft opacity-75" />
+                          <span className="relative inline-flex size-1.5 rounded-full bg-glow-pink-soft" />
+                        </span>
+                        {nowPlayingLabel}
+                      </span>
+                    )}
+                  </span>
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
     </div>
   );
 }

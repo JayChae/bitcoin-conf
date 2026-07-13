@@ -58,21 +58,38 @@ const videoItems: VideoSource[] = [
       en: "Bitcoin ⚡️ Lightning Market, talks & the center | 2025 Mini Conference Vlog Ep.2",
     },
   },
-  // 아래 채널들은 게시 허락 대기 중 — 확답 받으면 주석 해제.
+  {
+    id: "X7YKmSuWpRc",
+    channel: "지분전쟁⚡️산원수⚡️비트벌새",
+    title: {
+      ko: "2025 비트코인 미니 컨퍼런스 후기",
+      en: "2025 Bitcoin Mini Conference review",
+    },
+  },
+  {
+    id: "H93TIth1bqI",
+    channel: "리스펙 투자플랜",
+    title: {
+      ko: "“11월에 큰거 온다” 지금부터 미리 미리 준비해라! 이때 모두 만나게 된다 🚀",
+      en: "“Something big is coming in November” — get ready now, this is where everyone meets 🚀",
+    },
+  },
+  {
+    // 쇼츠(9:16) — 16:9 플레이어 안에서 좌우 필러박스로 재생된다.
+    id: "fduF-yz3lsw",
+    channel: "리스펙 투자플랜",
+    title: {
+      ko: "비트맥시, 비트코이너들은 여기 다 모였다! ⚡️⚡️",
+      en: "Bitcoin maxis — every Bitcoiner was here! ⚡️⚡️",
+    },
+  },
+  // 아래 채널은 게시 허락 대기 중 — 확답 받으면 주석 해제.
   // {
   //   id: "mFJQ2aZaius",
   //   channel: "토미네이터TV",
   //   title: {
   //     ko: "수십, 수백억 자산가들과 함께 있었던 걸까... 비트코인 미니 컨퍼런스 후기",
   //     en: "Was I sitting among multimillionaires? A Bitcoin Mini Conference review",
-  //   },
-  // },
-  // {
-  //   id: "X7YKmSuWpRc",
-  //   channel: "지분전쟁⚡️산원수⚡️비트벌새",
-  //   title: {
-  //     ko: "2025 비트코인 미니 컨퍼런스 후기",
-  //     en: "2025 Bitcoin Mini Conference review",
   //   },
   // },
 ];

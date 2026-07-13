@@ -399,6 +399,34 @@ button {
   scrollbar-color: rgba(139, 92, 246, 0.4) transparent;
 }
 
+/* 얇은 스크롤바. 카드 사이에 끼는 목록(후기 영상 플레이리스트)용 —
+   전역 10px 그라데이션 썸이 카드 옆에 붙으면 너무 두껍고 시끄럽다. */
+.slim-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.slim-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.slim-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border: 0;
+  border-radius: 999px;
+  box-shadow: none;
+}
+
+.slim-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.28);
+  box-shadow: none;
+}
+
+/* Firefox */
+.slim-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.16) transparent;
+}
+
 @keyframes violet-glow {
   0%,
   100% {
