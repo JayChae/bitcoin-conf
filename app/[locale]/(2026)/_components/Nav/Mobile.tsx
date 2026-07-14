@@ -5,6 +5,7 @@ import { type NavItem } from "./navItems";
 
 type Props = {
   items: NavItem[];
+  ticket: NavItem;
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
   handleClick: (e: React.MouseEvent, href: string) => void;
@@ -13,6 +14,7 @@ type Props = {
 
 export default function Mobile({
   items,
+  ticket,
   isOpen,
   setIsOpen,
   handleClick,
@@ -67,16 +69,12 @@ export default function Mobile({
               </Link>
             ))}
             <div className="pt-2 border-t border-white/10">
-              <div className="px-3 py-2 text-white/60 font-medium text-base ">
-                History
-              </div>
               <Link
-                href="/"
-                locale={locale.split("/")[0] + "/2025"}
-                className="text-sm text-white/80 hover:text-white block px-3 py-2 font-medium transition-colors duration-200 cursor-pointer"
+                href={ticket.href}
+                className="block text-center px-3 py-2 text-base font-semibold text-[#101018] bg-white/90 rounded-full border border-white transition-all duration-150 ease-out hover:bg-[#E947F5] hover:border-[#E947F5] hover:text-white hover:shadow-[0_0_24px_-4px_rgba(233,71,245,0.85)] active:scale-[0.97] cursor-pointer"
                 onClick={() => setIsOpen(false)}
               >
-                2025
+                {ticket.label}
               </Link>
             </div>
             <div className="pt-2 border-t border-white/10">

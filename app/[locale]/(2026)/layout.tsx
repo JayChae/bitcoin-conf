@@ -1,7 +1,7 @@
 import { setRequestLocale } from "next-intl/server";
 import Nav from "./_components/Nav";
 import Footer from "./_components/Footer";
-import navItems from "@/app/messages/2026/nav";
+import navItems, { ticketCta } from "@/app/messages/2026/nav";
 import ColorBends from "@/components/ColorBends";
 
 import LiquidEther from "@/components/LiquidEther";
@@ -31,7 +31,7 @@ export default async function Layout2026({ children, params }: Props) {
       <StructuredData locale={locale} seoMessages={seoMessages} event={event} />
       <div className="fixed inset-0 z-0 bg-[#101018]" />
       <div className="relative z-10">
-        <Nav items={navItems[lang]} />
+        <Nav items={navItems[lang]} ticket={ticketCta[lang]} />
         <div className="min-h-screen">{children}</div>
         <Footer />
       </div>

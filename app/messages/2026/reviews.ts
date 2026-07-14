@@ -83,18 +83,64 @@ const videoItems: VideoSource[] = [
       en: "Bitcoin maxis — every Bitcoiner was here! ⚡️⚡️",
     },
   },
-  // 아래 채널은 게시 허락 대기 중 — 확답 받으면 주석 해제.
-  // {
-  //   id: "mFJQ2aZaius",
-  //   channel: "토미네이터TV",
-  //   title: {
-  //     ko: "수십, 수백억 자산가들과 함께 있었던 걸까... 비트코인 미니 컨퍼런스 후기",
-  //     en: "Was I sitting among multimillionaires? A Bitcoin Mini Conference review",
-  //   },
-  // },
+  {
+    id: "mFJQ2aZaius",
+    channel: "토미네이터TV",
+    title: {
+      ko: "수십, 수백억 자산가들과 함께 있었던 걸까... 비트코인 미니 컨퍼런스 후기",
+      en: "Was I sitting among multimillionaires? A Bitcoin Mini Conference review",
+    },
+  },
 ];
 
 export const reviewVideos = {
   en: videoItems.map(({ title, ...common }) => ({ ...common, title: title.en })),
   ko: videoItems.map(({ title, ...common }) => ({ ...common, title: title.ko })),
 } satisfies Record<Locale, ReviewVideo[]>;
+
+export type ReviewPost = {
+  url: string;
+  author: string;
+  date: string;
+  title: string;
+  thumb: Shot;
+};
+
+// 네이버 블로그 후기 — 임베드가 막혀 있어 링크 카드로 소개한다.
+// author 는 블로그 닉네임(고유명사)이라 로케일 공통, 최신 글이 앞.
+// thumb 은 포스트 대표 이미지(og:image)를 받아 둔 로컬 사본.
+type PostSource = {
+  url: string;
+  author: string;
+  thumb: Shot;
+  date: { en: string; ko: string };
+  title: { en: string; ko: string };
+};
+
+const postItems: PostSource[] = [
+  {
+    url: "https://blog.naver.com/rusiper1000/224094724332",
+    author: "타락천사",
+    thumb: { src: "/blog-reviews/1.webp", width: 600, height: 801 },
+    date: { en: "Dec 2, 2025", ko: "2025. 12. 2." },
+    title: {
+      ko: "2025 비트코인 미니 컨퍼런스(1일차) 후기",
+      en: "2025 Bitcoin Mini Conference — Day 1 review",
+    },
+  },
+  {
+    url: "https://blog.naver.com/rusiper1000/223709292562",
+    author: "타락천사",
+    thumb: { src: "/blog-reviews/2.webp", width: 600, height: 801 },
+    date: { en: "Dec 31, 2024", ko: "2024. 12. 31." },
+    title: {
+      ko: "2024 비트코인 미니 컨퍼런스(Bitcoin Mini Conference) 후기",
+      en: "2024 Bitcoin Mini Conference review",
+    },
+  },
+];
+
+export const reviewPosts = {
+  en: postItems.map((p) => ({ ...p, date: p.date.en, title: p.title.en })),
+  ko: postItems.map((p) => ({ ...p, date: p.date.ko, title: p.title.ko })),
+} satisfies Record<Locale, ReviewPost[]>;

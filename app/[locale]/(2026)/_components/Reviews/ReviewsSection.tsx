@@ -7,7 +7,7 @@ export default async function ReviewsSection() {
   const t = await getTranslations("Reviews2026");
 
   return (
-    <section id="reviews" className="scroll-mt-24 pb-20 pt-20">
+    <section id="reviews" className="scroll-mt-24 mt-40 md:mt-44">
       <div className="mx-auto max-w-7xl px-4">
         <SectionTitle title={t("sectionTitle")} className="mb-4" />
 

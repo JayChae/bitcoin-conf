@@ -17,13 +17,13 @@ import { Check, ChevronDown, Globe } from "lucide-react";
 
 type Props = {
   items: NavItem[];
+  ticket: NavItem;
 };
 
-export default function Nav({ items }: Props) {
+export default function Nav({ items, ticket }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const locale = useLocale();
-  const lang = locale.split("/")[0];
 
   const handleClick = (e: React.MouseEvent, href: string) => {
     if (href.startsWith("#")) {
@@ -36,6 +36,8 @@ export default function Nav({ items }: Props) {
           behavior: "smooth",
           block: "start",
         });
+      } else {
+        router.push("/" + href);
       }
     }
     setIsOpen(false);
@@ -84,37 +86,6 @@ export default function Nav({ items }: Props) {
                   />
                 </Link>
               ))}
-
-              {/* History Dropdown */}
-              <DropdownMenu>
-                <DropdownMenuTrigger>
-                  <div className="text-white/80 text-lg font-light cursor-pointer flex items-center justify-center">
-                    <SplitText
-                      text="History"
-                      triggerOn="hover"
-                      from={{ opacity: 0, y: 10 }}
-                      to={{ opacity: 1, y: 0 }}
-                      duration={0.8}
-                      delay={80}
-                      ease="power3.out"
-                    />
-                  </div>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  className="bg-black/90 border-white/20 backdrop-blur-md min-w-24"
-                  sideOffset={12}
-                >
-                  <DropdownMenuItem className="text-md focus:bg-white/10 focus:text-white">
-                    <Link
-                      href="/"
-                      locale={lang + "/2025"}
-                      className="flex items-center gap-2 w-full text-white/80 hover:text-white cursor-pointer"
-                    >
-                      2025
-                    </Link>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
 
               {/* Language Switcher */}
               <DropdownMenu>
@@ -165,12 +136,21 @@ export default function Nav({ items }: Props) {
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
+
+              {/* Ticket CTA */}
+              <Link
+                href={ticket.href}
+                className="inline-flex items-center px-5 py-2 rounded-full bg-white/90 backdrop-blur-2xl text-[#101018] text-base font-semibold border border-white transition-all duration-150 ease-out hover:bg-[#E947F5] hover:border-[#E947F5] hover:text-white hover:shadow-[0_0_24px_-4px_rgba(233,71,245,0.85)] hover:-translate-y-0.5 active:scale-[0.97]"
+              >
+                {ticket.label}
+              </Link>
             </div>
           </div>
 
           {/* Mobile Navigation */}
           <Mobile
             items={items}
+            ticket={ticket}
             isOpen={isOpen}
             setIsOpen={setIsOpen}
             handleClick={handleClick}
