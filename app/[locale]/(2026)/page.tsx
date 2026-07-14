@@ -11,6 +11,7 @@ import ReviewsSection from "./_components/Reviews/ReviewsSection";
 import PartnersSection from "./_components/Partners/PartnersSection";
 import SideEventsSection from "./_components/SideEvents/SideEventsSection";
 import LocationSection from "./_components/Location/LocationSection";
+import { ticketCta } from "@/app/messages/2026/nav";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -20,6 +21,8 @@ export default async function Home2026({ params }: Props) {
   const { locale } = await params;
   const tHero = await getTranslations("Hero2026");
   const tSponsor = await getTranslations("Sponsor");
+  // Nav와 같은 출처를 쓰면 티켓 CTA 문구가 저절로 동기화된다.
+  const cta = ticketCta[locale];
 
   return (
     <main className="">
@@ -31,6 +34,11 @@ export default async function Home2026({ params }: Props) {
         title={tHero("title")}
         location={tHero("location")}
         date={tHero("date")}
+        ctaLabel={cta.label}
+        ctaHref={cta.href}
+        statAttendeesLabel={tHero("statAttendeesLabel")}
+        statMarketValue={tHero("statMarketValue")}
+        statMarketLabel={tHero("statMarketLabel")}
       />
       <RecapSection />
       <ReviewsSection />

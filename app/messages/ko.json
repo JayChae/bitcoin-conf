@@ -9,7 +9,10 @@
     "tagline": "대한민국 대표 비트코인 컨퍼런스",
     "title": "Bitcoin Korea Conference",
     "location": "코엑스 삼성",
-    "date": "2026년 11월 7일 ~ 8일"
+    "date": "2026년 11월 7일 ~ 8일",
+    "statAttendeesLabel": "2025 참가자",
+    "statMarketValue": "한국 최대",
+    "statMarketLabel": "라이트닝 마켓"
   },
   "Speakers2026": {
     "sectionTitle": "연사 소개",

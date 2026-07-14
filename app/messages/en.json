@@ -9,7 +9,10 @@
     "tagline": "Korea's Premier Bitcoin Conference",
     "title": "Bitcoin Korea Conference",
     "location": "COEX Samsung",
-    "date": "November 7-8, 2026"
+    "date": "November 7-8, 2026",
+    "statAttendeesLabel": "2025 Attendees",
+    "statMarketValue": "Korea's Largest",
+    "statMarketLabel": "Lightning Market"
   },
   "Speakers2026": {
     "sectionTitle": "Speakers",
