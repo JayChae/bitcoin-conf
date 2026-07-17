@@ -31,12 +31,21 @@ export default function CountUp({
   const ref = useRef<HTMLSpanElement>(null);
   const motionValue = useMotionValue(direction === "down" ? to : from);
 
-  const damping = 20 + 40 * (1 / duration);
-  const stiffness = 100 * (1 / duration);
-
+  // duration/bounce 로 스프링을 정의한다 — duration 이 실제 시간이 되어 아래 onEnd
+  // 타이머와도 맞는다. stiffness/damping/mass 를 주면 motion 이 duration·bounce 를
+  // 무시하므로 셋 다 주지 않는다.
+  // 예전엔 damping=20+40/duration, stiffness=100/duration 을 파생시켰는데, 둘의 비가
+  // 100/(20·duration+40) 으로 묶여 어떤 duration 을 줘도 심한 과감쇠(ζ≈3)였다.
+  // 그래서 목표값이 클수록 마지막 자릿수가 기어갔다 (to=1000 이 1000 에 닿는 데 8초).
+  //
+  // ★ useSpring 의 duration 은 밀리초다 (motion-dom springDefaults.duration = 800).
+  //   초로 주면 findSpring 이 최소값 0.01초로 clamp 해 애니메이션이 사라진다.
+  //   이 컴포넌트의 duration prop 은 초이므로(호출부·onEnd 타이머 모두 초 기준)
+  //   반드시 변환해서 넘긴다.
+  // bounce=0: 오버슛하면 카운터가 목표값을 넘었다 되돌아와 오작동처럼 보인다.
   const springValue = useSpring(motionValue, {
-    damping,
-    stiffness,
+    duration: duration * 1000,
+    bounce: 0,
   });
 
   const isInView = useInView(ref, { once: true, margin: "0px" });

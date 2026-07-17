@@ -9,10 +9,15 @@
     "tagline": "Korea's Premier Bitcoin Conference",
     "title": "Bitcoin Korea Conference",
     "location": "COEX Samsung",
-    "date": "November 7-8, 2026",
-    "statAttendeesLabel": "2025 Attendees",
-    "statMarketValue": "Korea's Largest",
-    "statMarketLabel": "Lightning Market"
+    "date": "November 7-8, 2026"
+  },
+  "Stats2026": {
+    "marketValue": "Korea's Largest",
+    "marketLabel": "Lightning Market",
+    "speakersLabel": "Korean & Global Speakers",
+    "attendeesLabel": "Total Attendees",
+    "editionValue": "3rd",
+    "editionLabel": "Edition"
   },
   "Speakers2026": {
     "sectionTitle": "Speakers",
@@ -65,7 +70,7 @@
   },
   "Recap2026": {
     "sectionTitle": "2025 Recap",
-    "lead": "Last winter, 400+ bitcoiners gathered in Seoul for two days of talks, workshops, and Asia's largest Lightning Market. Here's what it looked like.",
+    "lead": "Last winter, 800+ bitcoiners gathered in Seoul for two days of talks, workshops, and Asia's largest Lightning Market. Here's what it looked like.",
     "highlightsAlt": "2025 conference photo",
     "videoTitle": "2025 Bitcoin Mini Conference recap video",
     "readArticle": "Read article",
