@@ -2,7 +2,6 @@ import { getTranslations } from "next-intl/server";
 import Hero from "./_components/Hero";
 import TicketsSection from "./_components/Tickets/TicketsSection";
 import FloatingLines from "@/components/FloatingLines";
-import ComingSoon from "./_components/ComingSoon";
 import Section from "./_components/Section";
 import Sponsor from "./_components/Sponsor";
 import SpeakersSection from "./_components/Speakers/SpeakersSection";
@@ -54,7 +53,6 @@ export default async function Home2026({ params }: Props) {
         />
       </Section>
       <PartnersSection />
-      <ComingSoon />
     </main>
   );
 }
