@@ -6,7 +6,7 @@ export const hrefList = {
   sideEvents: "/side-events",
   lightningMarket: "#lightningMarket",
   recap: "/recap",
-  sponsors: "#sponsors",
+  sponsors: "/sponsors",
   tickets: "/tickets",
 };
 

@@ -48,7 +48,6 @@
   },
   "Partners2026": {
     "sectionTitle": "Our Team's Conference Track Record",
-    "viewAll": "전체 보기",
     "pageTitle": "Our Team's Conference Track Record",
     "pageSubtitle": "우리 팀이 여러 컨퍼런스에서 함께해온 기업들"
   },
@@ -119,8 +118,16 @@
     "gold": "Gold Sponsor",
     "silver": "Silver Sponsor",
     "bronze": "Bronze Sponsor",
-    "individual": "Individual Sponsor",
-    "comingSoon": "준비 중"
+    "individual": "Individual Sponsor"
+  },
+  "Sponsors2026": {
+    "pageTitle": "후원사",
+    "pageSubtitle": "2026 비트코인 코리아 컨퍼런스를 함께 만들어가는 후원사입니다.",
+    "inquiryLead": "2026 비트코인 코리아 컨퍼런스와 함께할 후원사를 찾고 있습니다.",
+    "inquiryCta": "후원 문의",
+    "viewAll": "후원사 전체 보기",
+    "pastTitle": "역대 후원사",
+    "pastSubtitle": "지난 컨퍼런스를 함께해주신 후원사입니다."
   },
   "Tickets2026": {
     "sectionTitle": "티켓",
