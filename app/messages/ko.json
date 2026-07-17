@@ -161,6 +161,7 @@
     "phaseEarlybird2": "2차 얼리버드",
     "discountEarlybird1": "20% 할인",
     "discountEarlybird2": "10% 할인",
+    "phase2Limit": "2차 얼리버드 100명 한정",
     "savings": "{amount}원 절약",
     "seatMap": "좌석 배치도",
     "tapToExpand": "탭하여 확대",

@@ -162,6 +162,7 @@
     "phaseEarlybird2": "2nd Early Bird",
     "discountEarlybird1": "20% OFF",
     "discountEarlybird2": "10% OFF",
+    "phase2Limit": "2nd Early Bird — Limited to 100",
     "savings": "Save {amount} KRW",
     "seatMap": "Seat Map",
     "tapToExpand": "Tap to expand",
