@@ -14,7 +14,7 @@ type Props = {
 export default function SpeakerCard({ speaker, labels }: Props) {
   return (
     <div
-      className="group relative rounded-2xl
+      className="group relative h-full rounded-2xl
         bg-[#15122a]/90 backdrop-blur-2xl
         border border-white/10 hover:border-white/25
         transition-all duration-300

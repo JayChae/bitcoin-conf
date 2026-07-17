@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
@@ -14,7 +14,30 @@ type Props = {
 };
 
 const NAV_BUTTON_CLASS =
-  "hidden md:flex absolute top-1/2 -translate-y-1/2 size-14 items-center justify-center rounded-full bg-nav-surface border border-white/15 text-white shadow-xl shadow-black/50 transition-all duration-200 hover:bg-nav-surface-hover hover:border-white/25 active:scale-95 disabled:opacity-0 disabled:pointer-events-none z-20";
+  "hidden md:flex absolute top-1/2 -translate-y-1/2 size-16 items-center justify-center rounded-full bg-nav-surface border border-white/15 text-white shadow-xl shadow-black/50 transition-all duration-200 hover:bg-nav-surface-hover hover:border-white/25 active:scale-95 disabled:opacity-0 disabled:pointer-events-none z-20";
+
+// lg부터 2×2로 4장씩, 그 아래는 1장씩 넘긴다. 카드가 가로로 읽히는 순서를 지키려면
+// 한 열씩이 아니라 페이지 단위로 넘겨야 해서, 페이지 크기를 JS로 정한다.
+const LG_QUERY = "(min-width: 1024px)";
+const PER_PAGE_DESKTOP = 4;
+const PER_PAGE_MOBILE = 1;
+// 모바일은 1장씩이라 전원을 다 넣으면 도트가 너무 많아진다. 앞 8명만 보여주고
+// 나머지는 "모든 연사 보기"로 넘긴다.
+const MOBILE_LIMIT = 8;
+
+function chunk<T>(items: T[], size: number): T[][] {
+  const pages = Array.from({ length: Math.ceil(items.length / size) }, (_, i) =>
+    items.slice(i * size, i * size + size),
+  );
+  // 연사 수가 페이지 크기로 나누어떨어지지 않으면 마지막 페이지가 비어 보인다.
+  // 앞쪽 연사를 다시 끌어와 칸을 채운다. 단 전체가 한 페이지도 못 채우는 경우엔
+  // 같은 페이지에 같은 연사가 중복되므로 그대로 둔다.
+  const last = pages.at(-1);
+  if (last && last.length < size && items.length >= size) {
+    last.push(...items.slice(0, size - last.length));
+  }
+  return pages;
+}
 
 export default function SpeakersCarousel({ speakers, labels }: Props) {
   const viewportRef = useRef<HTMLDivElement>(null);
@@ -32,25 +55,39 @@ export default function SpeakersCarousel({ speakers, labels }: Props) {
   const dragRef = useRef(0);
 
   const [active, setActive] = useState(0);
-  // step: 한 칸(카드 + gap) 너비, max: 최대 이동 거리, perView: 동시에 보이는 카드 수
-  const [metrics, setMetrics] = useState({ step: 0, max: 0, perView: 1 });
+  // step: 한 페이지(+gap) 너비, max: 최대 이동 거리
+  const [metrics, setMetrics] = useState({ step: 0, max: 0 });
   // 슬라이드 이동 시에만 애니메이션 (리사이즈 시에는 즉시 반영)
   const [animate, setAnimate] = useState(false);
+  // 서버/첫 렌더는 모바일 기준으로 두고, 마운트 후 실제 화면 폭에 맞춘다.
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia(LG_QUERY);
+    const apply = () => setIsDesktop(mq.matches);
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
+
+  const pages = useMemo(() => {
+    const list = isDesktop ? speakers : speakers.slice(0, MOBILE_LIMIT);
+    return chunk(list, isDesktop ? PER_PAGE_DESKTOP : PER_PAGE_MOBILE);
+  }, [speakers, isDesktop]);
 
   const measure = useCallback(() => {
     const track = trackRef.current;
     const viewport = viewportRef.current;
     if (!track || !viewport || track.children.length < 1) {
-      return { step: 0, max: 0, perView: 1 };
+      return { step: 0, max: 0 };
     }
     const first = track.children[0] as HTMLElement;
     const second = track.children[1] as HTMLElement | undefined;
-    const step = second ? second.offsetLeft - first.offsetLeft : first.offsetWidth;
+    const step = second
+      ? second.offsetLeft - first.offsetLeft
+      : first.offsetWidth;
     const max = Math.max(0, track.scrollWidth - viewport.clientWidth);
-    // 보이는 카드 수를 뷰포트/스텝 비율로 직접 계산 (round(max/step) 추정으로 인한 도트 오차 방지)
-    const perView =
-      step > 0 ? Math.max(1, Math.round(viewport.clientWidth / step)) : 1;
-    return { step, max, perView };
+    return { step, max };
   }, []);
 
   // 레이아웃 변화(리사이즈·폰트/이미지 로드로 인한 리플로우 등)를 ResizeObserver로 감지.
@@ -67,11 +104,7 @@ export default function SpeakersCarousel({ speakers, labels }: Props) {
         setAnimate(false);
         const next = measure();
         setMetrics((prev) =>
-          prev.step === next.step &&
-          prev.max === next.max &&
-          prev.perView === next.perView
-            ? prev
-            : next
+          prev.step === next.step && prev.max === next.max ? prev : next,
         );
       });
     };
@@ -86,12 +119,10 @@ export default function SpeakersCarousel({ speakers, labels }: Props) {
     };
   }, [measure]);
 
-  const { step, max, perView } = metrics;
+  const { step, max } = metrics;
   const measured = step > 0;
-  // 한 번에 한 장씩 이동하므로 위치(도트) 수 = 전체 - 동시 노출 수 + 1
-  const positions = measured
-    ? Math.max(1, speakers.length - perView + 1)
-    : speakers.length;
+  // 한 페이지가 뷰포트를 꽉 채우므로 위치(도트) 수 = 페이지 수
+  const positions = pages.length;
   const maxIndex = positions - 1;
 
   // 레이아웃 변화로 위치 수가 줄어들면 active를 범위 안으로 다시 clamp
@@ -104,7 +135,7 @@ export default function SpeakersCarousel({ speakers, labels }: Props) {
       setAnimate(true);
       setActive(Math.max(0, Math.min(maxIndex, index)));
     },
-    [maxIndex]
+    [maxIndex],
   );
 
   // 끝을 넘어가지 않도록 clamp한 기준 위치 (드래그 오프셋을 더하기 전)
@@ -161,8 +192,10 @@ export default function SpeakersCarousel({ speakers, labels }: Props) {
     const velocity = moved / elapsed; // px/ms
     const distanceThreshold = measured ? step / 5 : 50;
     const velocityThreshold = 0.4; // px/ms — 빠른 플릭 인식
-    const forward = moved <= -distanceThreshold || velocity <= -velocityThreshold;
-    const backward = moved >= distanceThreshold || velocity >= velocityThreshold;
+    const forward =
+      moved <= -distanceThreshold || velocity <= -velocityThreshold;
+    const backward =
+      moved >= distanceThreshold || velocity >= velocityThreshold;
 
     const next = forward
       ? Math.min(maxIndex, active + 1)
@@ -201,73 +234,84 @@ export default function SpeakersCarousel({ speakers, labels }: Props) {
   const atEnd = active >= maxIndex;
 
   return (
-    <div className="relative">
-      <div
-        ref={viewportRef}
-        className="overflow-hidden touch-pan-y"
-        role="region"
-        aria-roledescription="carousel"
-        aria-label={labels.carousel}
-        onTouchStart={onTouchStart}
-        onTouchMove={onTouchMove}
-        onTouchEnd={onTouchEnd}
-        onClickCapture={onClickCapture}
-      >
+    <div>
+      {/* 화살표의 top-1/2이 카드 영역 기준이 되도록, 도트는 이 relative 밖에 둔다.
+          (도트까지 감싸면 기준 높이가 늘어나 화살표가 아래로 치우친다) */}
+      <div className="relative">
         <div
-          ref={trackRef}
-          className={cn(
-            "flex gap-4 md:gap-5 lg:gap-6",
-            animate && "transition-transform duration-500 ease-out"
-          )}
-          style={{ transform: `translateX(-${baseOffset}px)` }}
+          ref={viewportRef}
+          className="overflow-hidden touch-pan-y"
+          role="region"
+          aria-roledescription="carousel"
+          aria-label={labels.carousel}
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
+          onClickCapture={onClickCapture}
         >
-          {speakers.map((speaker, i) => {
-            // 현재 화면에 보이는 카드만 포커스/스크린리더에 노출
-            const visible =
-              !measured || (i >= active && i < active + perView);
-            return (
-              <div
-                key={speaker.slug}
-                className="shrink-0 w-full lg:w-[calc(50%-0.75rem)]"
-                inert={!visible}
-                aria-hidden={!visible}
-              >
-                <SpeakerCard speaker={speaker} labels={labels} />
-              </div>
-            );
-          })}
+          <div
+            ref={trackRef}
+            className={cn(
+              "flex gap-4 md:gap-5 lg:gap-6",
+              animate && "transition-transform duration-500 ease-out",
+            )}
+            style={{ transform: `translateX(-${baseOffset}px)` }}
+          >
+            {pages.map((page, p) => {
+              // 현재 페이지의 카드만 포커스/스크린리더에 노출
+              const visible = p === active;
+              return (
+                <div
+                  key={page[0].slug}
+                  // lg에서 행을 2개로 고정해야 카드가 4장 미만인 마지막 페이지에서도
+                  // 카드가 세로로 늘어나지 않고 제 높이를 유지한다.
+                  className="shrink-0 w-full grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-2 gap-4 md:gap-5 lg:gap-6"
+                  inert={!visible}
+                  aria-hidden={!visible}
+                >
+                  {page.map((speaker) => (
+                    <SpeakerCard
+                      key={speaker.slug}
+                      speaker={speaker}
+                      labels={labels}
+                    />
+                  ))}
+                </div>
+              );
+            })}
+          </div>
         </div>
-      </div>
 
-      {/* 좌우 버튼 (데스크톱) */}
-      <button
-        type="button"
-        aria-label={labels.prev}
-        onClick={() => goTo(active - 1)}
-        disabled={atStart}
-        className={cn(NAV_BUTTON_CLASS, "left-0 -translate-x-1/2")}
-      >
-        <ChevronLeft className="size-7 text-glow-pink-soft" />
-      </button>
-      {/* 마지막 장에서는 다음 버튼이 전체 연사 목록으로 이동 */}
-      {atEnd ? (
-        <Link
-          href="/speakers"
-          aria-label={labels.viewAll}
-          className={cn(NAV_BUTTON_CLASS, "right-0 translate-x-1/2")}
-        >
-          <ChevronRight className="size-7 text-glow-pink-soft" />
-        </Link>
-      ) : (
+        {/* 좌우 버튼 (데스크톱) */}
         <button
           type="button"
-          aria-label={labels.next}
-          onClick={() => goTo(active + 1)}
-          className={cn(NAV_BUTTON_CLASS, "right-0 translate-x-1/2")}
+          aria-label={labels.prev}
+          onClick={() => goTo(active - 1)}
+          disabled={atStart}
+          className={cn(NAV_BUTTON_CLASS, "left-0 -translate-x-1/4")}
         >
-          <ChevronRight className="size-7 text-glow-pink-soft" />
+          <ChevronLeft className="size-8 text-glow-pink-soft" />
         </button>
-      )}
+        {/* 마지막 장에서는 다음 버튼이 전체 연사 목록으로 이동 */}
+        {atEnd ? (
+          <Link
+            href="/speakers"
+            aria-label={labels.viewAll}
+            className={cn(NAV_BUTTON_CLASS, "right-0 translate-x-1/4")}
+          >
+            <ChevronRight className="size-8 text-glow-pink-soft" />
+          </Link>
+        ) : (
+          <button
+            type="button"
+            aria-label={labels.next}
+            onClick={() => goTo(active + 1)}
+            className={cn(NAV_BUTTON_CLASS, "right-0 translate-x-1/4")}
+          >
+            <ChevronRight className="size-8 text-glow-pink-soft" />
+          </button>
+        )}
+      </div>
 
       {/* 도트 인디케이터 (측정 완료 후, 이동 가능한 위치별) */}
       {measured && positions > 1 && (
@@ -283,7 +327,7 @@ export default function SpeakersCarousel({ speakers, labels }: Props) {
                 "h-2 rounded-full transition-all duration-300",
                 i === active
                   ? "w-6 bg-glow-pink-soft"
-                  : "w-2 bg-white/25 hover:bg-white/40"
+                  : "w-2 bg-white/25 hover:bg-white/40",
               )}
             />
           ))}

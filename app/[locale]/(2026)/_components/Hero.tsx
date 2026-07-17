@@ -1,4 +1,3 @@
-import BlurText from "@/components/BlurText";
 import HeroTicketCta from "./HeroTicketCta";
 
 type Props = {
@@ -43,19 +42,9 @@ export default function Hero({
         </div>
         {/* 이틀간 장소가 다르므로 날짜별 장소를 따로 세워 첫 화면에서 바로 구분되게 한다. */}
         <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 text-2xl md:text-3xl font-semibold mt-8">
-          <BlurText
-            text={day1Location}
-            className="text-2xl md:text-3xl font-semibold"
-            delay={100}
-            animateBy="letters"
-          />
+          <div className="text-2xl md:text-3xl font-semibold">{day1Location}</div>
           <div className="hidden md:block text-white/40">|</div>
-          <BlurText
-            text={day2Location}
-            className="text-2xl md:text-3xl font-semibold"
-            delay={100}
-            animateBy="letters"
-          />
+          <div className="text-2xl md:text-3xl font-semibold">{day2Location}</div>
         </div>
         <HeroTicketCta label={ctaLabel} href={ctaHref} />
       </div>

@@ -8,7 +8,7 @@ import ViewAllLink from "../ViewAllLink";
 export default async function SpeakersSection() {
   const t = await getTranslations("Speakers2026");
   const locale = (await getLocale()) as Locale;
-  const list = speakers[locale].slice(0, 6);
+  const list = speakers[locale];
 
   if (list.length === 0) return null;
 
