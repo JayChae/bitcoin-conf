@@ -48,7 +48,6 @@
   },
   "Partners2026": {
     "sectionTitle": "Our Team's Conference Track Record",
-    "viewAll": "View all partners",
     "pageTitle": "Our Team's Conference Track Record",
     "pageSubtitle": "Companies our team has worked with across conferences"
   },
@@ -120,8 +119,16 @@
     "gold": "Gold Sponsor",
     "silver": "Silver Sponsor",
     "bronze": "Bronze Sponsor",
-    "individual": "Individual Sponsor",
-    "comingSoon": "Coming Soon"
+    "individual": "Individual Sponsor"
+  },
+  "Sponsors2026": {
+    "pageTitle": "Sponsors",
+    "pageSubtitle": "The sponsors building the 2026 Bitcoin Korea Conference with us.",
+    "inquiryLead": "We're looking for partners to build the 2026 Bitcoin Korea Conference with us.",
+    "inquiryCta": "Become a Sponsor",
+    "viewAll": "View all sponsors",
+    "pastTitle": "Past Sponsors",
+    "pastSubtitle": "Sponsors who supported our previous conferences."
   },
   "Tickets2026": {
     "sectionTitle": "Tickets",

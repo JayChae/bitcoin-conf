@@ -22,10 +22,11 @@ export function logoScale(p: Partner): number {
 }
 
 // 노출 순서 = /public/partners/N.webp 파일 번호순 (1~26).
-// 원본 이미지는 어두운 배경 노출용으로 가공 완료 상태:
-//   - 투명 여백 트림(알파 바운딩 박스 기준)
-//   - 검정/짙은 무채색 픽셀 → 흰색 (브랜드 색은 보존, 단색 로고는 명도 반전으로 명암 유지)
-// → 코드에서 색 반전(brightness/invert)이나 크기 스케일 보정을 하지 않는다.
+// 원본 이미지는 투명 여백 트림(알파 바운딩 박스 기준)만 되어 있고, 색은 브랜드 원본 그대로다.
+// → 폴라리티가 섞여 있다: 2(HRF)·3(Blockstream)은 검정 워드마크, 8(Keystone)은 흰색.
+//   그래서 그리드(PartnersGrid)는 양쪽 대비를 다 확보하는 중간 회색 타일(bg-neutral-400)에
+//   올린다. 어두운 배경에 직접 올리면 검정 워드마크가 보이지 않으니 주의.
+// → 코드에서 색 반전(brightness/invert)은 하지 않는다. 크기는 logoScale 로만 보정한다.
 const partners: Partner[] = [
   { image: "/partners/1.webp", alt: "Wallet of Satoshi", width: 2476, height: 293, url: "https://www.walletofsatoshi.com" },
   { image: "/partners/2.webp", alt: "Human Rights Foundation", width: 1171, height: 323, url: "https://hrf.org" },

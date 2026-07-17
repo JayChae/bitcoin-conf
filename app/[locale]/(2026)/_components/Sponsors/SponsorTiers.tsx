@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import sponsors, { type Sponsor } from "@/app/messages/2026/sponsors";
 import { cn } from "@/lib/utils";
 
@@ -14,23 +15,13 @@ type TierConfig = {
   lineGradient: string;
 };
 
-type Props = {
-  goldTitle: string;
-  silverTitle: string;
-  bronzeTitle: string;
-  comingSoonText?: string;
-};
+export default async function SponsorTiers() {
+  const t = await getTranslations("Sponsor");
 
-export default function Sponsor({
-  goldTitle,
-  silverTitle,
-  bronzeTitle,
-  comingSoonText = "Coming Soon",
-}: Props) {
-  const tiers: TierConfig[] = [
+  const allTiers: TierConfig[] = [
     {
       key: "gold",
-      title: goldTitle,
+      title: t("gold"),
       sponsors: sponsors.gold,
       logoSize: "h-[50px] sm:h-[65px] md:h-[80px] lg:h-[100px]",
       titleSize: "text-lg sm:text-xl md:text-2xl lg:text-3xl",
@@ -40,7 +31,7 @@ export default function Sponsor({
     },
     {
       key: "silver",
-      title: silverTitle,
+      title: t("silver"),
       sponsors: sponsors.silver,
       logoSize: "h-[40px] sm:h-[55px] md:h-[70px] lg:h-[85px]",
       titleSize: "text-base sm:text-lg md:text-xl lg:text-2xl",
@@ -50,7 +41,7 @@ export default function Sponsor({
     },
     {
       key: "bronze",
-      title: bronzeTitle,
+      title: t("bronze"),
       sponsors: sponsors.bronze,
       logoSize: "h-[35px] sm:h-[45px] md:h-[55px] lg:h-[70px]",
       titleSize: "text-sm sm:text-base md:text-lg lg:text-xl",
@@ -60,6 +51,11 @@ export default function Sponsor({
     },
   ];
 
+  // 빈 티어는 라벨·구분선까지 통째로 숨긴다("준비 중" 표기 대신 후원 문의 CTA 가 그 역할).
+  // 렌더 시점 계산이라 sponsors.ts 에 실버가 채워지면 저절로 다시 나타난다.
+  const tiers = allTiers.filter((tier) => tier.sponsors.length > 0);
+  if (tiers.length === 0) return null;
+
   return (
     <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 md:px-8 flex flex-col gap-20 sm:gap-24 md:gap-28">
       {tiers.map((tier, i) => (
@@ -67,7 +63,6 @@ export default function Sponsor({
           key={tier.key}
           className="flex flex-col items-center gap-6 sm:gap-8 md:gap-10"
         >
-          {/* Tier label with gradient line */}
           <div className="w-full flex items-center gap-3 sm:gap-4 md:gap-6">
             <div
               className={cn("h-[1.5px] flex-1 bg-gradient-to-r", tier.lineGradient)}
@@ -86,42 +81,34 @@ export default function Sponsor({
             />
           </div>
 
-          {/* Sponsor logos or Coming Soon */}
-          {tier.sponsors.length > 0 ? (
-            <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-8 md:gap-12 lg:gap-16">
-              {tier.sponsors.map((sponsor, j) => (
-                <Link
-                  key={j}
-                  href={sponsor.url}
-                  target="_blank"
-                  className="group relative flex items-center justify-center"
-                >
-                  <div
-                    className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-2xl scale-150"
-                    style={{ backgroundColor: tier.glowColor }}
+          <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-8 md:gap-12 lg:gap-16">
+            {tier.sponsors.map((sponsor, j) => (
+              <Link
+                key={j}
+                href={sponsor.url}
+                target="_blank"
+                className="group relative flex items-center justify-center"
+              >
+                <div
+                  className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-2xl scale-150"
+                  style={{ backgroundColor: tier.glowColor }}
+                />
+                <div className="relative p-3 sm:p-4 md:p-5 rounded-xl transition-transform duration-300 group-hover:scale-105">
+                  <Image
+                    src={sponsor.image}
+                    alt={sponsor.alt}
+                    width={400}
+                    height={200}
+                    className={cn(
+                      "w-auto object-contain transition-all duration-300 group-hover:brightness-110",
+                      sponsor.customImageClass || tier.logoSize,
+                    )}
                   />
-                  <div className="relative p-3 sm:p-4 md:p-5 rounded-xl transition-transform duration-300 group-hover:scale-105">
-                    <Image
-                      src={sponsor.image}
-                      alt={sponsor.alt}
-                      width={400}
-                      height={200}
-                      className={cn(
-                        "w-auto object-contain brightness-90 group-hover:brightness-110 transition-all duration-300",
-                        sponsor.customImageClass || tier.logoSize,
-                      )}
-                    />
-                  </div>
-                </Link>
-              ))}
-            </div>
-          ) : (
-            <p className="text-sm sm:text-base text-white/30 tracking-widest uppercase">
-              {comingSoonText}
-            </p>
-          )}
+                </div>
+              </Link>
+            ))}
+          </div>
 
-          {/* Bottom fade line for last tier */}
           {i === tiers.length - 1 && (
             <div
               className={cn(
