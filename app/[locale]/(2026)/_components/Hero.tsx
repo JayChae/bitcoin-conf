@@ -4,8 +4,8 @@ import HeroTicketCta from "./HeroTicketCta";
 type Props = {
   tagline: string;
   title: string;
-  location: string;
-  date: string;
+  day1Location: string;
+  day2Location: string;
   ctaLabel: string;
   ctaHref: string;
 };
@@ -13,8 +13,8 @@ type Props = {
 export default function Hero({
   tagline,
   title,
-  location,
-  date,
+  day1Location,
+  day2Location,
   ctaLabel,
   ctaHref,
 }: Props) {
@@ -41,15 +41,21 @@ export default function Hero({
             {restOfTitle}
           </span>
         </div>
+        {/* 이틀간 장소가 다르므로 날짜별 장소를 따로 세워 첫 화면에서 바로 구분되게 한다. */}
         <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 text-2xl md:text-3xl font-semibold mt-8">
           <BlurText
-            text={location}
+            text={day1Location}
             className="text-2xl md:text-3xl font-semibold"
             delay={100}
             animateBy="letters"
           />
-          <div className="hidden md:block">|</div>
-          <div>{date}</div>
+          <div className="hidden md:block text-white/40">|</div>
+          <BlurText
+            text={day2Location}
+            className="text-2xl md:text-3xl font-semibold"
+            delay={100}
+            animateBy="letters"
+          />
         </div>
         <HeroTicketCta label={ctaLabel} href={ctaHref} />
       </div>

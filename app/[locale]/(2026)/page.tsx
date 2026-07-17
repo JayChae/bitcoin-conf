@@ -33,8 +33,8 @@ export default async function Home2026({ params }: Props) {
       <Hero
         tagline={tHero("tagline")}
         title={tHero("title")}
-        location={tHero("location")}
-        date={tHero("date")}
+        day1Location={tHero("day1Location")}
+        day2Location={tHero("day2Location")}
         ctaLabel={cta.label}
         ctaHref={cta.href}
       />

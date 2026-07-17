@@ -431,8 +431,28 @@ const items: SpeakerSource[] = [
   },
 ];
 
-const sortedItems = [...items].sort((a, b) =>
-  a.i18n.en.title.localeCompare(b.i18n.en.title, "en", { sensitivity: "base" })
+// 랜딩 캐러셀은 앞 6명만 노출한다. 국내 관객이 바로 알아보는 연사를 이 순서로 앞세우고,
+// 나머지는 기존대로 알파벳순을 유지한다.
+const featuredOrder = [
+  "louis-ko",
+  "kang-jaenam",
+  "daniel-james",
+  "respect",
+  "robin",
+  "stephan-livera",
+];
+
+const featuredRank = (slug: string) => {
+  const index = featuredOrder.indexOf(slug);
+  return index === -1 ? featuredOrder.length : index;
+};
+
+const sortedItems = [...items].sort(
+  (a, b) =>
+    featuredRank(a.slug) - featuredRank(b.slug) ||
+    a.i18n.en.title.localeCompare(b.i18n.en.title, "en", {
+      sensitivity: "base",
+    })
 );
 
 const speakers = {
