@@ -1,9 +1,5 @@
 import BlurText from "@/components/BlurText";
-import HeroStats from "./HeroStats";
 import HeroTicketCta from "./HeroTicketCta";
-
-// 2025 컨퍼런스 실참가자 수. 숫자의 출처는 이 상수 한 곳뿐이다.
-const ATTENDEES_2025 = 800;
 
 type Props = {
   tagline: string;
@@ -12,9 +8,6 @@ type Props = {
   date: string;
   ctaLabel: string;
   ctaHref: string;
-  statAttendeesLabel: string;
-  statMarketValue: string;
-  statMarketLabel: string;
 };
 
 export default function Hero({
@@ -24,9 +17,6 @@ export default function Hero({
   date,
   ctaLabel,
   ctaHref,
-  statAttendeesLabel,
-  statMarketValue,
-  statMarketLabel,
 }: Props) {
   // Split title to apply different fonts
   // For "Bitcoin Korea Conference" or "비트코인 코리아 컨퍼런스"
@@ -63,13 +53,6 @@ export default function Hero({
         </div>
         <HeroTicketCta label={ctaLabel} href={ctaHref} />
       </div>
-
-      <HeroStats
-        attendees={ATTENDEES_2025}
-        attendeesLabel={statAttendeesLabel}
-        marketValue={statMarketValue}
-        marketLabel={statMarketLabel}
-      />
     </section>
   );
 }

@@ -6,6 +6,7 @@ import ComingSoon from "./_components/ComingSoon";
 import Section from "./_components/Section";
 import Sponsor from "./_components/Sponsor";
 import SpeakersSection from "./_components/Speakers/SpeakersSection";
+import StatsSection from "./_components/Stats/StatsSection";
 import RecapSection from "./_components/Recap/RecapSection";
 import ReviewsSection from "./_components/Reviews/ReviewsSection";
 import PartnersSection from "./_components/Partners/PartnersSection";
@@ -36,10 +37,8 @@ export default async function Home2026({ params }: Props) {
         date={tHero("date")}
         ctaLabel={cta.label}
         ctaHref={cta.href}
-        statAttendeesLabel={tHero("statAttendeesLabel")}
-        statMarketValue={tHero("statMarketValue")}
-        statMarketLabel={tHero("statMarketLabel")}
       />
+      <StatsSection />
       <RecapSection />
       <ReviewsSection />
       <SpeakersSection />

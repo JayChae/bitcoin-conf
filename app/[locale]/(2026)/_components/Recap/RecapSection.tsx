@@ -15,8 +15,7 @@ export default async function RecapSection() {
   if (articles.length === 0) return null;
 
   return (
-    // 히어로(h-lvh) 바로 다음 섹션 — 위 마진 없이 스크롤 시작하자마자 보여야 한다
-    <section id="recap" className="scroll-mt-24">
+    <section id="recap" className="scroll-mt-24 mt-40 md:mt-44">
       <div className="max-w-7xl mx-auto px-4">
         <SectionTitle title={t("sectionTitle")} className="mb-4" />
 

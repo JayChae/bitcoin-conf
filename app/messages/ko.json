@@ -9,10 +9,15 @@
     "tagline": "대한민국 대표 비트코인 컨퍼런스",
     "title": "Bitcoin Korea Conference",
     "location": "코엑스 삼성",
-    "date": "2026년 11월 7일 ~ 8일",
-    "statAttendeesLabel": "2025 참가자",
-    "statMarketValue": "한국 최대",
-    "statMarketLabel": "라이트닝 마켓"
+    "date": "2026년 11월 7일 ~ 8일"
+  },
+  "Stats2026": {
+    "marketValue": "한국 최대",
+    "marketLabel": "라이트닝 마켓",
+    "speakersLabel": "국내외 연사자",
+    "attendeesLabel": "전체 참가자",
+    "editionValue": "3회",
+    "editionLabel": "개최"
   },
   "Speakers2026": {
     "sectionTitle": "연사 소개",
@@ -65,7 +70,7 @@
   },
   "Recap2026": {
     "sectionTitle": "2025 돌아보기",
-    "lead": "지난 겨울, 400여 명의 비트코이너가 서울에 모여 강연, 워크숍, 아시아 최대 규모의 라이트닝 마켓을 함께했습니다. 지난 컨퍼런스를 확인하세요.",
+    "lead": "지난 겨울, 800여 명의 비트코이너가 서울에 모여 강연, 워크숍, 아시아 최대 규모의 라이트닝 마켓을 함께했습니다. 지난 컨퍼런스를 확인하세요.",
     "highlightsAlt": "2025 컨퍼런스 현장 사진",
     "videoTitle": "2025 비트코인 미니 컨퍼런스 하이라이트 영상",
     "readArticle": "기사 읽기",
