@@ -10,7 +10,7 @@ export default async function FaqSection() {
   const items = faq[locale];
 
   return (
-    <section id="faq" className="scroll-mt-24 mt-40 md:mt-44 pb-28 md:pb-36">
+    <section id="faq" className="scroll-mt-24 mt-40 md:mt-44">
       <div className="mx-auto max-w-3xl px-4">
         <SectionTitle title={t("sectionTitle")} className="mb-4" />
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useId, useState } from "react";
+import { Fragment, useId, useState, type ElementType } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
@@ -33,27 +33,18 @@ function withEmailLinks(text: string) {
 }
 
 function CtaLink({ cta }: { cta: FaqCta }) {
+  // 외부 링크(http/mailto)는 평범한 <a>, 내부 경로는 i18n Link 로 렌더한다.
   const isExternal = /^(https?:|mailto:)/.test(cta.href);
-  const className =
-    "group/cta mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-glow-pink-soft transition-colors hover:text-white";
-  const inner = (
-    <>
+  const Tag: ElementType = isExternal ? "a" : Link;
+
+  return (
+    <Tag
+      href={cta.href}
+      className="group/cta mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-glow-pink-soft transition-colors hover:text-white"
+    >
       <span>{cta.label}</span>
       <ArrowUpRight className="size-4 transition-transform group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5" />
-    </>
-  );
-
-  if (isExternal) {
-    return (
-      <a href={cta.href} className={className}>
-        {inner}
-      </a>
-    );
-  }
-  return (
-    <Link href={cta.href} className={className}>
-      {inner}
-    </Link>
+    </Tag>
   );
 }
 
