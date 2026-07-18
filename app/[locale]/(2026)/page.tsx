@@ -9,6 +9,7 @@ import RecapSection from "./_components/Recap/RecapSection";
 import ReviewsSection from "./_components/Reviews/ReviewsSection";
 import SideEventsSection from "./_components/SideEvents/SideEventsSection";
 import LocationSection from "./_components/Location/LocationSection";
+import FaqSection from "./_components/Faq/FaqSection";
 import { ticketCta } from "@/app/messages/2026/nav";
 
 type Props = {
@@ -42,6 +43,7 @@ export default async function Home2026({ params }: Props) {
       <TicketsSection />
       <LocationSection />
       <SponsorsSection />
+      <FaqSection />
     </main>
   );
 }

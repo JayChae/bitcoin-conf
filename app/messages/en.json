@@ -60,7 +60,7 @@
     "hostLabel": "Host",
     "themeLabel": "Theme",
     "viewDetails": "View Details",
-    "viewWebsite": "Visit Website",
+    "register": "Register",
     "backToList": "Back to side events",
     "prev": "Previous",
     "next": "Next",
@@ -238,6 +238,10 @@
     "venueKfbAddress": "19 Myeongdong 11-gil, Jung-gu, Seoul (2F International Conference Room)",
     "venueMasilName": "Community House Masil",
     "venueMasilAddress": "14 Myeongdong 11-gil, Jung-gu, Seoul"
+  },
+  "Faq2026": {
+    "sectionTitle": "Frequently Asked Questions",
+    "lead": "The questions we hear most before the event. If there's anything else you'd like to know, reach out anytime."
   },
   "Schedule2026": {
     "pageTitle": "Schedule",

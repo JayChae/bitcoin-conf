@@ -11,7 +11,7 @@ export default async function SponsorsSection() {
   const tSponsors = await getTranslations("Sponsors2026");
 
   return (
-    <Section id="sponsors" title={t("title")} className="pb-28 md:pb-36">
+    <Section id="sponsors" title={t("title")}>
       {/* 블록 1 — 2026 스폰서 */}
       <SponsorTiers />
       <SponsorInquiryCta

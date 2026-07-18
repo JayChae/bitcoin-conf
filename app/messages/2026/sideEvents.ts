@@ -22,6 +22,9 @@ type SideEventSource = Omit<SideEvent, keyof LocaleContent> & {
   i18n: { en: LocaleContent; ko: LocaleContent };
 };
 
+// VIP 디너·애프터 파티는 동일한 신청 폼을 공유한다.
+const PARTY_REGISTER_URL = "https://bitcoinkoreaconference.fillout.com/t/9mmq56EMUHus";
+
 const items: SideEventSource[] = [
   {
     slug: "bitcoin-plus-plus-seoul",
@@ -53,7 +56,7 @@ const items: SideEventSource[] = [
   {
     slug: "vip-dinner-party",
     image: "/2026/side-events/vip-dinner-party.webp",
-    links: [],
+    links: [{ type: "website", url: PARTY_REGISTER_URL }],
     i18n: {
       en: {
         title: "VIP Dinner Party",
@@ -78,7 +81,7 @@ const items: SideEventSource[] = [
   {
     slug: "after-party",
     image: null,
-    links: [],
+    links: [{ type: "website", url: PARTY_REGISTER_URL }],
     i18n: {
       en: {
         title: "After Party",

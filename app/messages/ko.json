@@ -60,7 +60,7 @@
     "hostLabel": "주최",
     "themeLabel": "주제",
     "viewDetails": "자세히 보기",
-    "viewWebsite": "공식 웹사이트",
+    "register": "등록하기",
     "backToList": "사이드 이벤트 목록으로",
     "prev": "이전",
     "next": "다음",
@@ -237,6 +237,10 @@
     "venueKfbAddress": "서울특별시 중구 명동11길 19, 2층 국제회의실",
     "venueMasilName": "커뮤니티하우스 마실",
     "venueMasilAddress": "서울특별시 중구 명동11길 14"
+  },
+  "Faq2026": {
+    "sectionTitle": "자주 묻는 질문",
+    "lead": "참가 전 궁금한 점을 모았습니다. 더 알고 싶은 내용이 있다면 언제든 문의해 주세요."
   },
   "Schedule2026": {
     "pageTitle": "일정",

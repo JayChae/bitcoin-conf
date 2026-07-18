@@ -52,7 +52,7 @@ export default async function SideEventDetailPage({
   const next = list[i + 1] ?? null;
 
   const t = await getTranslations("SideEvents2026");
-  const websiteLink = event.links.find((l) => l.type === "website");
+  const registerLink = event.links.find((l) => l.type === "website");
 
   return (
     <main className="relative z-10 min-h-screen pt-28 pb-24 px-4">
@@ -95,16 +95,16 @@ export default async function SideEventDetailPage({
             <span>{event.host}</span>
           </p>
 
-          {websiteLink && (
-            <div className="mt-2">
+          {registerLink && (
+            <div className="mt-3">
               <a
-                href={websiteLink.url}
+                href={registerLink.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/10 backdrop-blur-2xl text-white text-sm font-semibold border border-white/15 transition-colors duration-200 hover:bg-white/15 active:scale-[0.97]"
+                className="group inline-flex w-full sm:w-auto items-center justify-center gap-2.5 px-8 py-4 md:px-10 md:py-5 rounded-full border border-[#E947F5]/50 bg-[#E947F5]/5 text-[#F490FF] text-base md:text-lg font-bold tracking-wide transition-all duration-200 ease-out hover:bg-[#E947F5] hover:border-[#E947F5] hover:text-white hover:-translate-y-0.5 hover:shadow-[0_0_28px_-6px_rgba(233,71,245,0.7)] active:scale-[0.98]"
               >
-                {t("viewWebsite")}
-                <ArrowUpRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                {t("register")}
+                <ArrowUpRight className="size-5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </a>
             </div>
           )}
