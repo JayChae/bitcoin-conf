@@ -4,6 +4,8 @@ import type { SNS } from "./speakers";
 export type SideEvent = {
   slug: string;
   image: string | null;
+  // 랜딩 카드용 이미지(정방형). 없으면 image로 폴백한다.
+  cardImage?: string;
   date: string;
   links: SNS[];
   title: string;
@@ -29,6 +31,7 @@ const items: SideEventSource[] = [
   {
     slug: "bitcoin-plus-plus-seoul",
     image: "/2026/side-events/bitcoin-plus-plus-seoul.webp",
+    cardImage: "/2026/side-events/bitcoin-plus-plus-seoul-card.webp",
     links: [{ type: "website", url: "https://btcplusplus.dev/seoul" }],
     i18n: {
       en: {

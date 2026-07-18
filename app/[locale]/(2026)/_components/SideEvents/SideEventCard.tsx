@@ -33,7 +33,7 @@ export default function SideEventCard({ event, labels }: Props) {
 
       <div className="relative shrink-0 w-full sm:w-[42%] aspect-[16/10] sm:aspect-auto overflow-hidden bg-[#0d0a1c]">
         <SideEventImage
-          src={event.image}
+          src={event.cardImage ?? event.image}
           alt={event.title}
           placeholderLabel={labels.imageComingSoon}
           size="card"
