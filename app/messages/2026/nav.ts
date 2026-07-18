@@ -16,6 +16,7 @@ const enItems: NavItem[] = [
   { label: "Side Events", href: hrefList.sideEvents },
   { label: "Lightning Market", href: hrefList.lightningMarket },
   { label: "2025 Recap", href: hrefList.recap },
+  { label: "Sponsors", href: hrefList.sponsors },
 ] as const;
 
 const koItems: NavItem[] = [
@@ -24,6 +25,7 @@ const koItems: NavItem[] = [
   { label: "사이드 이벤트", href: hrefList.sideEvents },
   { label: "라이트닝 마켓", href: hrefList.lightningMarket },
   { label: "2025 리캡", href: hrefList.recap },
+  { label: "스폰서", href: hrefList.sponsors },
 ] as const;
 
 export const ticketCta: Record<string, NavItem> = {
