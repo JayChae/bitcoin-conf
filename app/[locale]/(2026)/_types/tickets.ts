@@ -7,4 +7,6 @@ export type TicketDef = {
   totalSeats: number;
   benefitKeys: string[];
   addonKeys?: string[];
+  /** benefitKeys 중 마감되어 더 이상 제공되지 않는 항목 */
+  soldOutKeys?: string[];
 };

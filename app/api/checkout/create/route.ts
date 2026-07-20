@@ -44,11 +44,12 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  // VIP includes after party — force true regardless of client value
-  const normalizedSeats =
-    tier === "vip"
-      ? seats.map((s) => ({ ...s, afterParty: true }))
-      : seats;
+  // VIP는 애프터 파티 포함, 그 외 티어는 매진되어 애드온 판매 중단.
+  // 오래된 클라이언트가 afterParty: true를 보내도 서버에서 강제로 덮어쓴다.
+  const normalizedSeats = seats.map((s) => ({
+    ...s,
+    afterParty: tier === "vip",
+  }));
 
   // Step 1: Atomically hold seats (30 min TTL)
   const holdResult = await holdSeats(normalizedSeats, tier);

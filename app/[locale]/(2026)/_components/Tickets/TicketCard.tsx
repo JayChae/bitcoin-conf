@@ -1,10 +1,11 @@
-import { Check, Sparkles } from "lucide-react";
+import { Check, Sparkles, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Link } from "@/i18n/navigation";
 
 type Benefit = {
   text: string;
   addon?: string;
+  soldOut?: boolean;
 };
 
 type SaleStatus = "upcoming" | "open" | "closed";
@@ -122,9 +123,25 @@ export default function TicketCard({
         <ul className="grid grid-cols-1 gap-y-3 md:gap-y-3.5">
           {benefits.map((benefit, i) => (
             <li key={i} className="flex items-start gap-2.5">
-              <Check className="size-4 mt-0.5 flex-shrink-0 text-white/50" />
-              <span className="text-sm text-white/80 leading-tight">
-                {benefit.text}
+              {benefit.soldOut ? (
+                <X className="size-4 mt-0.5 flex-shrink-0 text-white/25" />
+              ) : (
+                <Check className="size-4 mt-0.5 flex-shrink-0 text-white/50" />
+              )}
+              <span
+                className={cn(
+                  "text-sm leading-tight",
+                  benefit.soldOut ? "text-white/40" : "text-white/80",
+                )}
+              >
+                <span className={cn(benefit.soldOut && "line-through")}>
+                  {benefit.text}
+                </span>
+                {benefit.soldOut && (
+                  <span className="ml-1.5 text-[11px] font-medium text-white/50 no-underline">
+                    {closedLabel}
+                  </span>
+                )}
                 {benefit.addon && (
                   <span className="text-white/30 ml-0.5">
                     ({benefit.addon})

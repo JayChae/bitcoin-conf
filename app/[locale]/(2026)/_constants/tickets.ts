@@ -14,7 +14,8 @@ export const TICKETS: TicketDef[] = [
       "networkingPartyNote",
       "translationProvided",
     ],
-    addonKeys: ["afterPartyOption"],
+    // 네트워킹 파티 매진 — 애드온 판매 중단
+    soldOutKeys: ["networkingPartyNote"],
   },
   {
     tier: "premium",
@@ -27,7 +28,8 @@ export const TICKETS: TicketDef[] = [
       "speakerMaterials",
       "networkingPartyNote",
     ],
-    addonKeys: ["afterPartyOption"],
+    // 네트워킹 파티 매진 — 애드온 판매 중단
+    soldOutKeys: ["networkingPartyNote"],
   },
   {
     tier: "vip",

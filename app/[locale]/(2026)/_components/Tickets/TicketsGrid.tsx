@@ -46,6 +46,7 @@ export default async function TicketsGrid({
           const phaseKey = PHASE_KEYS[phase];
           const benefits = ticket.benefitKeys.map((key) => ({
             text: t(key),
+            soldOut: ticket.soldOutKeys?.includes(key),
           }));
           const currentPrice = getDiscountedPrice(ticket.basePrice, phase);
 
