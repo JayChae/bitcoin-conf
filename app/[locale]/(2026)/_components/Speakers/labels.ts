@@ -1,5 +1,6 @@
 export type SpeakerLabels = {
   topic: string;
+  lecture: string;
   session: string;
   stage: string;
   bio: string;
@@ -19,6 +20,7 @@ export function getSpeakerLabels(
 ): SpeakerLabels {
   return {
     topic: t("topicLabel"),
+    lecture: t("lectureLabel"),
     session: t("sessionLabel"),
     stage: t("stageLabel"),
     bio: t("bioLabel"),

@@ -429,6 +429,115 @@ const items: SpeakerSource[] = [
       },
     },
   },
+  {
+    slug: "jm",
+    image: "/2026/speakers/JM.webp",
+    difficulty: "Medium",
+    links: [{ type: "x", url: "https://x.com/zappiwallet" }],
+    i18n: {
+      en: {
+        title: "JM",
+        subtitle: ["Co-Founder, Zappi Wallet"],
+        bio: "JM built Zappi, an ecash wallet, and works as an open-source project developer — contributing in particular to the decentralized platforms Nostr and ecash.\n\nHe runs Bitcoin in Pusan, where he continues to work on Bitcoin adoption and community building.\n\nHe believes it is possible to deliver an easy-to-use Bitcoin experience and privacy at the same time, and explores that intersection from both the development and the community side.",
+        lectureTitle:
+          "Vanishing Financial Privacy: The Age of Controlled Money",
+      },
+      ko: {
+        title: "JM",
+        subtitle: ["Zappi Wallet 공동 창업자"],
+        bio: "이캐시 지갑 째피(Zappi)를 개발했으며 오픈소스 프로젝트 개발자로 활동하며 특히 탈중앙화 플랫폼인 노스터(Nostr)와 이캐시에 많은 기여를 하고 있습니다.\n\nBitcoin in Pusan을 운영하며 비트코인의 어답션과 커뮤니티 형성을 주제로 활동을 이어가고 있습니다.\n\n사용하기 쉬운 비트코인 경험과 프라이버시를 동시에 달성하는 것이 가능하다고 믿으며, 그 접점을 개발과 커뮤니티 양쪽에서 탐구하고 있습니다.",
+        lectureTitle: "사라지는 금융 프라이버시, 통제되는 돈의 시대",
+      },
+    },
+  },
+  {
+    slug: "shaun",
+    image: "/2026/speakers/Shaun.webp",
+    difficulty: "Low",
+    links: [
+      { type: "website", url: "https://mybitcoinhouse.com/en" },
+      { type: "x", url: "https://x.com/shauntime" },
+    ],
+    i18n: {
+      en: {
+        title: "Shaun",
+        subtitle: ["Founder, Bitcoin House Malaysia", "Partner, YakiHonne"],
+        bio: "Shaun is the founder of Bitcoin House Malaysia, an HRF-supported Bitcoin education hub in Kuala Lumpur, and a partner at YakiHonne, a decentralized social media platform built on Nostr, with integrated Bitcoin wallet features and grant backing from HRF and OpenSats.\n\nHis work focuses on Bitcoin education, merchant onboarding, developer communities, and practical Bitcoin adoption across Southeast Asia. Having worked across Greater China and Southeast Asia, he believes the Global South needs sovereign tools, not just better fintech. Over the years, he has helped connect more than 50 native Bitcoin communities on the ground and more than 500 online Bitcoin communities globally.\n\nBased in Kuala Lumpur and deeply rooted in its Bitcoin community, Shaun works to connect Asian Bitcoin communities with the wider freedom tech movement.",
+        lectureTitle: "Bitcoin Communities in Asia",
+      },
+      ko: {
+        title: "Shaun",
+        subtitle: ["Bitcoin House Malaysia 창립자", "YakiHonne 파트너"],
+        bio: "숀(Shaun)은 쿠알라룸푸르에 자리한 HRF 지원 비트코인 교육 허브 '비트코인 하우스 말레이시아(Bitcoin House Malaysia)'의 창립자이자, 노스터(Nostr) 기반의 탈중앙 소셜 미디어 플랫폼 야키혼네(YakiHonne)의 파트너다. 야키혼네는 비트코인 지갑 기능을 통합하고 있으며 HRF와 오픈사츠(OpenSats)의 그랜트 지원을 받고 있다.\n\n그의 활동은 비트코인 교육, 가맹점 온보딩, 개발자 커뮤니티, 그리고 동남아시아 전역의 실질적인 비트코인 어답션에 초점을 맞추고 있다. 중화권과 동남아시아를 오가며 일해 온 그는, 글로벌 사우스에 필요한 것은 더 나은 핀테크가 아니라 주권을 지킬 수 있는 도구라고 믿는다. 지난 몇 년간 그는 현장에서 50개가 넘는 로컬 비트코인 커뮤니티와 전 세계 500개가 넘는 온라인 비트코인 커뮤니티를 잇는 데 힘을 보태 왔다.\n\n쿠알라룸푸르를 기반으로 현지 비트코인 커뮤니티에 깊이 뿌리내린 숀은, 아시아의 비트코인 커뮤니티를 더 넓은 프리덤 테크(freedom tech) 운동과 연결하는 일에 힘쓰고 있다.",
+        lectureTitle: "아시아 비트코인 커뮤니티",
+      },
+    },
+  },
+  {
+    slug: "rob",
+    image: "/2026/speakers/Rob.webp",
+    difficulty: "Low",
+    links: [
+      { type: "nostr", url: "https://primal.net/BoltC" },
+      { type: "website", url: "https://opensats.org" },
+    ],
+    i18n: {
+      en: {
+        title: "Rob",
+        subtitle: ["OpenSats Operations"],
+        bio: "Rob (Robos) is Head of Operations at OpenSats. OpenSats is a U.S. public-benefit non-profit that funds Bitcoin and related free and open-source (FOSS) projects, structured so that no part of a donation is taken for overhead — every dollar goes to developers, designers, researchers, and educators. Drawing on a career as a software project manager in many parts of the world, he oversees the day-to-day operations of OpenSats' grant programs. He currently lives in Japan, where he works to grow Bitcoin and Nostr adoption, and also runs 'Bush Bash Japan,' a Japanese Bitcoin community event.",
+        lectureTitle: "",
+      },
+      ko: {
+        title: "Rob",
+        subtitle: ["OpenSats 운영 총괄"],
+        bio: "롭(Robos)은 오픈사츠(OpenSats)의 운영 총괄이다. 오픈사츠는 비트코인 및 관련 자유·오픈소스(FOSS) 프로젝트에 자금을 지원하는 미국의 비영리 공익재단으로, 기부금에서 운영비를 떼지 않고 전액을 개발자·디자이너·연구자·교육자에게 전달하는 구조로 운영된다. 그는 세계 각지에서 소프트웨어 프로젝트 매니저로 일해 온 경력을 바탕으로 오픈사츠의 그랜트 운영 실무를 총괄하고 있으며, 현재 일본에 거주하며 일본 내 비트코인·노스트르 확산에 힘쓰고 있다. 일본의 비트코인 커뮤니티 행사 'Bush Bash Japan'도 운영한다.",
+        lectureTitle: "",
+      },
+    },
+  },
+  {
+    slug: "teruko",
+    image: "/2026/speakers/Teruko.webp",
+    difficulty: "Low",
+    links: [{ type: "x", url: "https://x.com/Teruko21M" }],
+    i18n: {
+      en: {
+        title: "Teruko",
+        subtitle: ["LHB Founder"],
+        bio: "Teruko Neriki is a Bitcoin advocate focused on financial freedom and adoption across Asia, with a particular emphasis on empowering young women. She spent four years leading Japan initiatives for Fulgur Ventures, during which she launched Tokyo Bitcoin Base and organized BITCOIN JAPAN 2025 and Bitcoin Tokyo 2024.\n\nDedicated to making Bitcoin philosophy accessible, Teruko is the creator of lostinbitcoin.jp and the Japanese translator of The Bitcoin Standard, The Bullish Case for Bitcoin, The Little Bitcoin Book, and Check Your Financial Privilege.\n\nHer early career includes product marketing and business development at Sony. She holds an MBA from Georgetown University.",
+        lectureTitle:
+          "Bitcoin's Missing Alpha: Why Our Current Onboarding Model Fails Women",
+      },
+      ko: {
+        title: "Teruko",
+        subtitle: ["LHB 창립자"],
+        bio: "테루코 네리키(Teruko Neriki)는 아시아 전역의 금융 자유와 비트코인 어답션에 집중해 온 비트코인 옹호자로, 특히 젊은 여성들에게 힘을 실어주는 일에 무게를 두고 있다. 그는 4년간 풀구르 벤처스(Fulgur Ventures)의 일본 사업을 이끌며 도쿄 비트코인 베이스(Tokyo Bitcoin Base)를 출범시키고 BITCOIN JAPAN 2025와 Bitcoin Tokyo 2024를 기획·운영했다.\n\n비트코인의 철학을 누구나 이해할 수 있게 만드는 일에 힘써 온 테루코는 lostinbitcoin.jp를 만들었으며, 『달러는 어떻게 세계를 지배하게 되었는가(The Bitcoin Standard)』, 『The Bullish Case for Bitcoin』, 『The Little Bitcoin Book』, 『Check Your Financial Privilege』를 일본어로 옮긴 번역가이기도 하다.\n\n커리어 초기에는 소니(Sony)에서 제품 마케팅과 사업 개발을 담당했다. 조지타운 대학교에서 MBA를 취득했다.",
+        lectureTitle:
+          "비트코인이 놓치고 있는 알파: 지금의 온보딩 모델은 왜 여성에게 통하지 않는가",
+      },
+    },
+  },
+  {
+    slug: "hope",
+    image: "/2026/speakers/Hope.webp",
+    difficulty: "Low",
+    links: [{ type: "x", url: "https://x.com/KopayHope" }],
+    i18n: {
+      en: {
+        title: "HOPE",
+        subtitle: ["Kopay Founder"],
+        bio: "Founder of Kopay, a Bitcoin cashback service.\n\nI want to build a world where people can protect those they hold dear and dream of hope for tomorrow.\n\nI found the answer in Bitcoin, and I created Kopay to connect that value to everyday life.\n\nBy making it as easy as possible for anyone to stack Bitcoin, I want to lead its adoption and bring the future of the Bitcoin standard closer.",
+        lectureTitle: "",
+      },
+      ko: {
+        title: "HOPE",
+        subtitle: ["Kopay 창업자"],
+        bio: "비트코인 캐시백 서비스 Kopay 창업자입니다.\n\n소중한 사람을 지키고 내일의 희망을 꿈꾸는 세상을 만들고 싶습니다.\n\n그 해답을 비트코인에서 찾았고, 이 가치를 대중의 삶에 연결하기 위해 코페이를 만들었습니다.\n\n누구나 비트코인을 가장 쉽게 모을 수 있도록 대중화를 이끌며, 비트코인 스탠다드의 미래를 앞당기겠습니다.",
+        lectureTitle: "",
+      },
+    },
+  },
 ];
 
 // 랜딩 캐러셀은 앞 6명만 노출한다. 국내 관객이 바로 알아보는 연사를 이 순서로 앞세우고,

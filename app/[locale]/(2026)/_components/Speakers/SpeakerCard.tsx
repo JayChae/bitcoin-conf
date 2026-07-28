@@ -53,36 +53,54 @@ export default function SpeakerCard({ speaker, labels }: Props) {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 gap-x-4 gap-y-3">
-          <InfoField
-            label={labels.topic}
-            value={speaker.topic}
-            variant="topic"
-            comingSoonText={labels.comingSoon}
-          />
-          <InfoField
-            label={labels.session}
-            value={speaker.session}
-            variant="session"
-            comingSoonText={labels.comingSoon}
-          />
-          <div className="col-span-2">
-            <InfoField
-              label={labels.stage}
-              value={speaker.stage}
-              variant="stage"
-              comingSoonText={labels.comingSoon}
-            />
+        {/* 강의 주제는 카드에서 가장 먼저 읽혀야 하는 정보다. */}
+        {speaker.lectureTitle && (
+          <div className="flex flex-col gap-1.5">
+            <span className={EYEBROW_CLASS}>{labels.lecture}</span>
+            <p className="text-base font-medium text-white/75 leading-snug line-clamp-2 break-keep">
+              {speaker.lectureTitle}
+            </p>
           </div>
-          <div className="col-span-2 flex flex-col gap-1.5">
-            <span className={EYEBROW_CLASS}>{labels.difficulty}</span>
-            <DifficultyDots difficulty={speaker.difficulty} />
+        )}
+
+        {/* 주제·세션·스테이지는 값이 정해진 뒤에만 노출한다. 미정 배지가 카드를 뒤덮지 않게. */}
+        {(speaker.topic || speaker.session || speaker.stage) && (
+          <div className="flex flex-wrap gap-x-4 gap-y-3">
+            {speaker.topic && (
+              <InfoField
+                label={labels.topic}
+                value={speaker.topic}
+                variant="topic"
+                comingSoonText={labels.comingSoon}
+              />
+            )}
+            {speaker.session && (
+              <InfoField
+                label={labels.session}
+                value={speaker.session}
+                variant="session"
+                comingSoonText={labels.comingSoon}
+              />
+            )}
+            {speaker.stage && (
+              <InfoField
+                label={labels.stage}
+                value={speaker.stage}
+                variant="stage"
+                comingSoonText={labels.comingSoon}
+              />
+            )}
           </div>
+        )}
+
+        <div className="flex flex-col gap-1.5">
+          <span className={EYEBROW_CLASS}>{labels.difficulty}</span>
+          <DifficultyDots difficulty={speaker.difficulty} />
         </div>
 
         <div className="flex flex-col gap-1.5">
           <span className={EYEBROW_CLASS}>{labels.bio}</span>
-          <p className="text-sm text-white/70 leading-relaxed line-clamp-3">
+          <p className="text-sm text-white/70 leading-relaxed line-clamp-3 break-keep">
             {speaker.bio}
           </p>
         </div>
