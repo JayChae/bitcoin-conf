@@ -80,7 +80,8 @@ const items: SideEventSource[] = [
   },
   {
     slug: "after-party",
-    image: null,
+    image: "/2026/side-events/after-party.webp",
+    cardImage: "/2026/side-events/after-party-card.webp",
     links: [],
     i18n: {
       en: {
