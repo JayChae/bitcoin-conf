@@ -1,7 +1,14 @@
 import type { Locale } from "@/i18n/routing";
 
 export type SNS = {
-  type: "x" | "website" | "youtube" | "nostr" | "telegram" | "github";
+  type:
+    | "x"
+    | "website"
+    | "youtube"
+    | "nostr"
+    | "telegram"
+    | "github"
+    | "linkedin";
   url: string;
 };
 
@@ -12,6 +19,7 @@ export const snsIconUrl: Record<SNS["type"], string> = {
   nostr: "/sns/nostr.svg",
   telegram: "/sns/telegram.svg",
   github: "/sns/github.svg",
+  linkedin: "/sns/linkedin.svg",
 };
 
 export type Difficulty = "High" | "Medium" | "Low";
@@ -78,13 +86,15 @@ const items: SpeakerSource[] = [
         title: "Daniel James",
         subtitle: ["CEO, Wallet of Satoshi"],
         bio: "Daniel James is the founder and CEO of Wallet of Satoshi, a wallet built on the Bitcoin Lightning Network (a Bitcoin Layer 2 technology for fast, low-cost payments). Since its launch in 2019, Wallet of Satoshi has processed more than 19 million transactions and established itself as the most widely used Lightning wallet in the world. Before Wallet of Satoshi, he founded and ran Living Room of Satoshi in 2014, which allowed users to pay utility and household bills with Bitcoin — making him one of the entrepreneurs with the longest hands-on track record in the Lightning payments space. At this conference, he will speak on strategies for mainstreaming the Lightning Network and expanding Bitcoin payment infrastructure.",
-        lectureTitle: "",
+        lectureTitle: "Life on Bitcoin, No Borders",
+        session: "Keynote",
       },
       ko: {
         title: "Daniel James",
         subtitle: ["CEO, Wallet of Satoshi"],
         bio: "Daniel James는 비트코인 라이트닝 네트워크(고속·저비용 결제를 위한 비트코인 2계층 기술) 기반 지갑 Wallet of Satoshi의 창업자이자 CEO다. Wallet of Satoshi는 2019년 출시 이후 1,900만 건 이상의 송금을 처리하며 세계에서 가장 널리 쓰이는 라이트닝 지갑으로 자리 잡았다. 그는 Wallet of Satoshi 이전에도 2014년부터 비트코인으로 공과금·청구서를 결제할 수 있게 한 Living Room of Satoshi를 창업·운영해 온, 라이트닝 결제 분야에서 가장 오랜 실전 경험을 가진 기업가 중 한 명이다. 이번 컨퍼런스에서는 라이트닝 네트워크의 대중화와 비트코인 결제 인프라 확장 전략에 대해 발표할 예정이다.",
-        lectureTitle: "",
+        lectureTitle: "국경 없는 비트코인 라이프",
+        session: "키노트",
       },
     },
   },
@@ -144,13 +154,15 @@ const items: SpeakerSource[] = [
         title: "Respect",
         subtitle: ["Bitcoin YouTuber"],
         bio: "Respect is a YouTuber who runs the channel 'Respect Investment Plan.' From the perspective of a working professional pursuing financial independence and freedom of time, he focuses on understanding the essence and volatility of Bitcoin and interpreting it through a long-term lens — delivering the big-picture market flow and asset allocation strategies through in-depth interviews with a wide range of experts. What sets him apart is his ability to translate the complexity of Bitcoin into everyday language, and he has built lasting influence in Korea's Bitcoin content ecosystem on that strength. At this conference, he will speak on the structural value of Bitcoin and strategies for navigating market cycles.",
-        lectureTitle: "",
+        lectureTitle: "A Bitcoin Mindset Unshaken by Price",
+        session: "Keynote",
       },
       ko: {
         title: "리스펙",
         subtitle: ["비트코인 유튜버"],
         bio: "리스펙(Respect)은 유튜브 채널 '리스펙 투자플랜'을 운영하는 유튜버이다. 직장인의 시선에서 경제적 자립과 시간의 자유를 추구하며 비트코인의 본질과 변동성을 이해하고, 이를 장기적 관점으로 풀어내며 다양한 전문가들과의 심층 인터뷰를 통해 시장의 큰 흐름과 자산 배분 전략을 전달해 왔다. 그의 특별함은 어려운 비트코인을 일반인들의 언어로 풀어내는 능력으로 한국 비트코인 콘텐츠 생태계에서 꾸준한 영향력을 쌓아 오고 있다. 이번 컨퍼런스에서는 비트코인의 구조적 가치와 사이클 대응 전략에 대해 이야기할 예정이다.",
-        lectureTitle: "",
+        lectureTitle: "가격에 흔들리지 않는 비트코인 마인드셋",
+        session: "키노트",
       },
     },
   },
@@ -232,13 +244,15 @@ const items: SpeakerSource[] = [
         title: "Kang Jae-nam",
         subtitle: ["Co-CEO, MADE Tax & Accounting"],
         bio: "Kang Jae-nam is a licensed tax accountant and the representative of MADE, a tax and accounting firm specializing in crypto assets. She currently provides in-depth tax and accounting management for businesses that accept Bitcoin as payment, P2P (peer-to-peer) traders, and individuals dealing with crypto assets. Drawing on years of practical experience, she addresses more realistic and reasonable approaches to the crypto asset taxation set to take effect in Korea from 2027.",
-        lectureTitle: "",
+        lectureTitle: "Bitcoin Inheritance and Taxation",
+        session: "Keynote",
       },
       ko: {
         title: "강재남",
         subtitle: ["MADE 세무회계 공동 대표"],
         bio: "가상자산 관련 전문 세무회계 MADE의 대표 세무사로 비트코인으로 결제를 받는 사업체와 P2P거래(개인 대 개인 거래) 그리고 개인들의 가상자산 세금에 대해 심층 높은 관리를 현재 하고 있다. 특히 2027년부터 실행될 가상자산 과세에 대하여 다년간의 실무 경험을 바탕으로 보다 현실적이고 합리적인 방법을 다룬다.",
-        lectureTitle: "",
+        lectureTitle: "비트코인 상속과 과세",
+        session: "키노트",
       },
     },
   },
@@ -278,13 +292,13 @@ const items: SpeakerSource[] = [
         title: "Jimmy Kostro",
         subtitle: ["Founder, Bitcoin Learning Center"],
         bio: "Jimmy Kostro is an American entrepreneur and U.S. Marine Corps veteran, and a passionate Bitcoin advocate based in Chiang Mai, Thailand. He co-founded two logistics companies and grew them into multi-million-dollar businesses spanning 24 markets across the United States. A steadfast Bitcoiner since 2017, Kostro has devoted himself to building one of Asia's most active Bitcoin hubs, and has become a leading voice in showing how Bitcoin can be a powerful tool for financial freedom and sovereignty — especially for people living under authoritarian regimes in Southeast Asia.\n\nHe serves as chairman of The Kostro Foundation, a U.S. 501(c)(3) non-profit that provides education and Bitcoin literacy programs to underserved communities in Thailand. A passionate ultramarathon runner who has competed in races around the world, Kostro loves to draw a powerful parallel between endurance on the trail and Bitcoin's long-term resilience. As a featured speaker at major events including Bitcoin MENA, Bitcoin Vegas, BTC Prague, and Bitcoin Asia, he brings a compelling, freedom-focused perspective to every stage.",
-        lectureTitle: "",
+        lectureTitle: "Bitcoin in Southeast Asia: Why It Matters More Here",
       },
       ko: {
         title: "Jimmy Kostro",
         subtitle: ["Bitcoin Learning Center 창립자"],
         bio: "지미 코스트로(Jimmy Kostro)는 미 해병대 출신의 미국인 기업가이자 열정적인 비트코인 옹호자로, 태국 치앙마이를 거점으로 활동하고 있다. 그는 물류 회사 두 곳을 공동 창업해 미국 24개 시장에 걸친 수백만 달러 규모의 사업으로 키워냈다. 2017년부터 한결같은 비트코이너로 활동해 온 코스트로는 아시아에서 가장 활발한 비트코인 허브를 구축하는 데 전념해 왔으며, 특히 동남아시아의 권위주의 체제 아래 살아가는 사람들에게 비트코인이 재정적 자유와 주권을 실현하는 강력한 도구임을 알리는 대표적인 목소리로 활동하고 있다.\n\n그는 코스트로 재단(The Kostro Foundation)의 이사장을 맡고 있다. 이 재단은 미국 세법상 501(c)(3) 비영리 단체로, 태국의 소외 계층 커뮤니티에 교육과 비트코인 이해 교육 프로그램을 제공하고 있다. 세계 곳곳의 대회에 출전해 온 열정적인 울트라마라톤 러너이기도 한 코스트로는, 트레일 위에서의 인내와 비트코인의 장기적 회복력 사이에서 강렬한 공통점을 즐겨 끌어낸다. 비트코인 MENA, 비트코인 베이거스, BTC 프라하, 비트코인 아시아 등 주요 행사의 주목받는 연사로서, 그는 무대마다 자유에 초점을 맞춘 설득력 있는 관점을 펼쳐 보인다.",
-        lectureTitle: "",
+        lectureTitle: "동남아시아의 비트코인: 왜 이곳에서 더 중요한가",
       },
     },
   },
@@ -327,13 +341,15 @@ const items: SpeakerSource[] = [
         title: "Rama Gan",
         subtitle: ["Creator of Penlock"],
         bio: "Rama is a software engineer and Bitcoiner who has devoted himself to making the future of self-custody simpler and more robust. The tool he created, Penlock, is a printable encryption wheel that lets anyone split a seed phrase into a 2-of-3 multi-phrase backup using nothing but paper and pen — no electronics required. Because only two of the three pieces are needed to recover assets, the setup stays secure even if one is lost or stolen, and a breach of any single location never exposes the whole. Most importantly, even if the original mnemonic (seed phrase) is lost entirely, the full seed phrase can be reconstructed from any two of the three pieces using the Penlock wheel. This lets users design remote recovery and inheritance plans on their own, without relying on any company or third party. No power, no battery, and no internet connection is required — Rama has focused on 'low-tech' solutions that anyone can hold in their hands and use directly, rather than flashy technology. His work is an attempt to realize Bitcoin's ideal of 'being your own bank' without compromising on privacy, security, or sovereignty.",
-        lectureTitle: "",
+        lectureTitle: "Trust-Minimized Bitcoin Inheritance — Magic on Paper",
+        session: "Workshop",
       },
       ko: {
         title: "Rama Gan",
         subtitle: ["Penlock 개발자"],
         bio: "라마(Rama)는 자가 수탁(self-custody)의 미래를 더 단순하고 견고하게 만드는 일에 몰두해 온 소프트웨어 엔지니어이자 비트코이너입니다. 그가 만든 펜록(Penlock)은 인쇄해서 사용할 수 있는 암호화 휠로, 전자기기 없이 종이와 펜만으로 시드 문구를 2-of-3 멀티프레이즈 백업으로 직접 나눌 수 있게 해주는 도구입니다. 세 조각 중 두 개만 있으면 자산을 복구할 수 있기 때문에, 하나를 분실하거나 도난당해도 안전하며 어느 한 곳이 뚫려도 전체가 노출되지 않습니다. 무엇보다 원본 니모닉(시드 문구)을 통째로 잃어버려도, 세 조각 중 두 개만 남아 있으면 펜록 휠로 다시 시드 문구 전체를 복원해낼 수 있다는 점이 핵심입니다. 덕분에 사용자는 특정 기업이나 제3자에 의존하지 않고 원격지 복구와 상속 계획까지 스스로 설계할 수 있습니다. 전원도, 배터리도, 인터넷 연결도 필요 없으며, 라마는 화려한 기술보다 누구나 손에 쥐고 직접 써볼 수 있는 '로우테크' 해법에 주목해 왔습니다. 그의 작업은 '스스로 자신의 은행이 되라'는 비트코인의 이상을 프라이버시·보안·주권 어느 하나도 타협하지 않으면서 실현하려는 시도입니다.",
-        lectureTitle: "",
+        lectureTitle: "신뢰를 최소화한 비트코인 상속 — 종이 위의 마법",
+        session: "워크숍",
       },
     },
   },
@@ -350,13 +366,13 @@ const items: SpeakerSource[] = [
         title: "Matthew Vuk",
         subtitle: ["Protocol Researcher, Second"],
         bio: "Based in Waterloo, Canada, Matthew Vuk works as a researcher at Second, the company developing Ark, a Bitcoin Layer 2 payment protocol. Ark is a Layer 2 protocol that aims to enable off-chain Bitcoin transactions at very low cost, without complex pre-setup such as opening channels. It works directly on top of today's Bitcoin without consensus rule changes or new op_codes, offering easy onboarding, low and predictable fees, instant settlement, Lightning Network compatibility, and control over one's own funds. The protocol revolves around an 'Ark server': users connect to this server to transact directly with one another, and can also transact with the broader Lightning Network through the server's Lightning gateway. At the heart of Ark is a new scaling model called the 'virtual UTXO (VTXO)' — a series of pre-signed off-chain transactions that a user can broadcast on-chain to reclaim their funds at any time in an emergency.",
-        lectureTitle: "",
+        lectureTitle: "Ark: Making Bitcoin Everyday Money",
       },
       ko: {
         title: "Matthew Vuk",
         subtitle: ["Protocol Researcher, Second"],
         bio: "Matthew Vuk은 캐나다 워털루를 기반으로, 비트코인 2계층 결제 프로토콜 Ark를 개발하는 회사 Second에서 리서처로 일하고 있습니다. Ark는 채널 개설 같은 복잡한 사전 설정 없이 매우 낮은 비용으로 오프체인 비트코인 거래를 가능하게 하는 것을 목표로 하는 레이어 2 프로토콜입니다. Ark는 합의 규칙 변경이나 새로운 op_code 없이 오늘날의 비트코인 위에서 바로 작동하며, 간편한 온보딩, 낮고 예측 가능한 수수료, 즉각적인 결제, 라이트닝 네트워크 호환, 그리고 자기 자금에 대한 통제권을 제공합니다. 이 프로토콜은 'Ark 서버'를 중심으로 동작하는데, 사용자는 이 서버에 연결해 서로 직접 거래하고, 서버의 라이트닝 게이트웨이를 통해 더 넓은 라이트닝 네트워크와도 거래할 수 있습니다. Ark의 핵심은 '가상 UTXO(VTXO)'라는 새로운 확장 모델로, VTXO는 사용자가 비상시 언제든 온체인으로 자금을 회수하기 위해 브로드캐스트할 수 있는 일련의 사전 서명된 오프체인 거래입니다.",
-        lectureTitle: "",
+        lectureTitle: "비트코인을 일상 화폐로 만드는 Ark 이야기",
       },
     },
   },
@@ -376,13 +392,13 @@ const items: SpeakerSource[] = [
         title: "Robin",
         subtitle: ["Founder, Bitcoin in Pusan"],
         bio: "Robin is a European-born developer who has lived in Korea for more than five years, and the founder of 'Bitcoin in Pusan,' a Busan-based Bitcoin community. Before starting Bitcoin in Pusan, he worked as an open-source developer in the ecash space, contributing to Bitcoin ecosystem projects, and has long been interested in connecting Bitcoin technology to the lives of real users. He created Bitcoin in Pusan at a time when the region had no Bitcoin community at all; within just one year of its launch, it grew into a community with regular meetups, lectures, workshops, and events — as well as its own physical space. At this conference, Robin will share the experiences and lessons he gained over the past year building Bitcoin in Pusan, and will talk about how anyone can build their own Bitcoin network.",
-        lectureTitle: "",
+        lectureTitle: "Bitcoin in Busan",
       },
       ko: {
         title: "Robin",
         subtitle: ["BiP 설립자"],
         bio: "Robin은 한국에 5년 넘게 거주해 온 유럽 출신 개발자이자, 부산 기반 비트코인 커뮤니티 'Bitcoin in Pusan'의 설립자다. 그는 'Bitcoin in Pusan'을 시작하기 전까지 ecash 분야의 오픈소스 개발자로서 비트코인 생태계 프로젝트에 참여해 왔으며, 비트코인 기술을 실제 사용자의 삶에 연결하는 데 오랜 관심을 기울여 왔다. 'Bitcoin in Pusan'은 지역에 비트코인 커뮤니티가 전무하던 상황에서 그가 직접 만든 모임으로, 출범 1년 만에 정기 모임과 강의, 워크숍, 각종 행사는 물론 자체 물리적 공간까지 갖춘 커뮤니티로 성장했다. 이번 컨퍼런스에서 Robin은 지난 1년간 'Bitcoin in Pusan'을 일구며 얻은 경험과 교훈을 공유하고, 누구나 자신만의 비트코인 네트워크를 구축할 수 있다는 점을 이야기할 예정이다.",
-        lectureTitle: "",
+        lectureTitle: "부산의 비트코인",
       },
     },
   },
@@ -535,6 +551,79 @@ const items: SpeakerSource[] = [
         subtitle: ["Kopay 창업자"],
         bio: "비트코인 캐시백 서비스 Kopay 창업자입니다.\n\n소중한 사람을 지키고 내일의 희망을 꿈꾸는 세상을 만들고 싶습니다.\n\n그 해답을 비트코인에서 찾았고, 이 가치를 대중의 삶에 연결하기 위해 코페이를 만들었습니다.\n\n누구나 비트코인을 가장 쉽게 모을 수 있도록 대중화를 이끌며, 비트코인 스탠다드의 미래를 앞당기겠습니다.",
         lectureTitle: "",
+      },
+    },
+  },
+  {
+    slug: "misha-komarov",
+    image: "/2026/speakers/Misha_Komarov.webp",
+    difficulty: "High",
+    links: [
+      { type: "website", url: "https://www.allocinit.xyz" },
+      { type: "x", url: "https://x.com/nemothenoone" },
+    ],
+    i18n: {
+      en: {
+        title: "Misha Komarov",
+        subtitle: ["[[alloc] init] Founder"],
+        bio: "Misha Komarov is the Founder and CEO of [[alloc] init], a cryptography research and development company advancing Bitcoin through applied cryptography. She is the lead author of Bitcoin PIPEs v2, a witness encryption-based scheme demonstrating how covenants, non-interactive zero-knowledge proofs, and privacy-preserving applications can be brought to Bitcoin without protocol changes.\n\nPreviously, Misha founded =nil; Foundation, where she led research spanning zero-knowledge proofs and cryptographic infrastructure, and she was an early member of the founding team behind Lido, the leading liquid staking protocol.",
+        lectureTitle: "Bringing Privacy to Bitcoin L1 via PIPEs",
+      },
+      ko: {
+        title: "Misha Komarov",
+        subtitle: ["[[alloc] init] 창립자"],
+        bio: "미샤 코마로프(Misha Komarov)는 응용 암호학으로 비트코인을 발전시키는 암호학 연구·개발 기업 [[alloc] init]의 창립자이자 CEO다. 그는 프로토콜 변경 없이도 비트코인에 커버넌트(covenant)와 비대화형 영지식 증명(NIZK), 프라이버시 보호 애플리케이션을 도입할 수 있음을 보인 위트니스 암호화(witness encryption) 기반 설계 'Bitcoin PIPEs v2'의 주 저자다.\n\n이전에는 =nil; Foundation을 창업해 영지식 증명부터 암호 인프라에 이르는 연구를 이끌었으며, 대표적인 리퀴드 스테이킹 프로토콜 Lido의 창업 초기 멤버로도 참여했다.",
+        lectureTitle: "PIPEs로 비트코인 L1에 프라이버시를 더하다",
+      },
+    },
+  },
+  {
+    slug: "marek-feder",
+    image: "/2026/speakers/Marek_Feder.webp",
+    difficulty: "Low",
+    links: [
+      { type: "website", url: "https://www.amityage.com/education-page" },
+      {
+        type: "linkedin",
+        url: "https://www.linkedin.com/in/marek-feder-5b911a15a",
+      },
+    ],
+    i18n: {
+      en: {
+        title: "Marek Feder",
+        subtitle: ["AmityAge, Head of Education"],
+        bio: "Bitcoin educator and former central bank insider on a mission to welcome 100 million people into Bitcoin rabbit hole. As Head of Education at AmityAge, he builds curriculums and delivers different academies, such as Bitcoin Educators Academy — a global program training Bitcoin educators. He also helps Bitcoin companies with internal and external communication. At this conference, he'll be speaking on \"How to Handle Bitcoin Objections\" — giving a practical framework for better communication not only in Bitcoin, but in your everyday life.",
+        lectureTitle: "How to Handle Bitcoin Objections",
+      },
+      ko: {
+        title: "Marek Feder",
+        subtitle: ["AmityAge 교육 총괄"],
+        bio: "마렉 페데르(Marek Feder)는 비트코인 교육자이자 전직 중앙은행 내부자로, 1억 명을 비트코인의 세계로 안내하겠다는 목표를 품고 활동하고 있다. AmityAge의 교육 총괄로서 커리큘럼을 설계하고, 전 세계 비트코인 교육자를 양성하는 프로그램인 '비트코인 에듀케이터 아카데미(Bitcoin Educators Academy)'를 비롯한 여러 아카데미를 운영한다. 또한 비트코인 기업들의 대내외 커뮤니케이션을 돕고 있다. 이번 컨퍼런스에서는 '비트코인에 대한 반론에 답하는 법'을 주제로, 비트코인은 물론 일상에서도 통하는 실용적인 커뮤니케이션 프레임워크를 제시할 예정이다.",
+        lectureTitle: "비트코인에 대한 반론에 답하는 법",
+      },
+    },
+  },
+  {
+    slug: "piriya-sambandaraksa",
+    image: "/2026/speakers/Piriya_Sambandaraksa.webp",
+    difficulty: "Low",
+    links: [
+      { type: "website", url: "https://www.rightshift.to/" },
+      { type: "x", url: "https://x.com/piriya" },
+    ],
+    i18n: {
+      en: {
+        title: "Piriya Sambandaraksa",
+        subtitle: ["Right Shift, CEO and Co-Founder"],
+        bio: "Piriya Sambandaraksa is a prominent Bitcoin educator and the CEO & Co-Founder of Rightshift, an organization dedicated to Bitcoin media, translation, and education. Active in the space since 2014, he has spent over a decade teaching macroeconomic structures, Austrian economics, and technical self-sovereignty. His efforts are focused on creating localized, accessible educational pipelines that drive real-world, bottom-up monetary adoption. In addition to media production, he consults with institutions and individuals on multi-signature security and long-term asset preservation. He continues to advocate for grassroots educational models as the most effective path to lasting economic change.",
+        lectureTitle:
+          "Orangepilling a country: a bottom up approach to shifting the overton window.",
+      },
+      ko: {
+        title: "Piriya Sambandaraksa",
+        subtitle: ["Right Shift 공동 창업자 겸 CEO"],
+        bio: "피리야 삼반다락사(Piriya Sambandaraksa)는 태국을 대표하는 비트코인 교육자이자, 비트코인 미디어·번역·교육에 전념하는 조직 라이트시프트(Rightshift)의 공동 창업자 겸 CEO다. 2014년부터 이 분야에서 활동하며 10년 넘게 거시경제 구조와 오스트리안 경제학, 기술적 자기주권을 가르쳐 왔다. 그의 활동은 현지화되고 누구나 접근할 수 있는 교육 파이프라인을 만들어, 현실 세계에서 상향식 화폐 채택을 이끌어내는 데 초점이 맞춰져 있다. 미디어 제작과 더불어 기관과 개인을 대상으로 멀티시그 보안과 장기 자산 보존에 대한 자문도 이어가고 있다. 그는 지속적인 경제적 변화로 가는 가장 효과적인 길로서 풀뿌리 교육 모델을 꾸준히 주창하고 있다.",
+        lectureTitle: "한 나라를 오렌지필하다: 오버톤 창을 옮기는 상향식 접근",
       },
     },
   },
