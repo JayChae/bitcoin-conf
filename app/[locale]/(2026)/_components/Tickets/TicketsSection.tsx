@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import TicketsGrid from "./TicketsGrid";
 import { getSaleStatus } from "@/lib/pricing";
 
@@ -22,13 +22,6 @@ export default async function TicketsSection() {
             >
               {t("sectionTitle")}
             </h2>
-          </div>
-
-          <div className="flex justify-center mt-5 animate-fade-in">
-            <span className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full border border-glow-pink/50 bg-gradient-to-r from-glow-blue/25 via-glow-purple/25 to-glow-pink/25 backdrop-blur-2xl text-sm md:text-base font-semibold text-white animate-glow-pulse">
-              <Sparkles className="size-4 flex-shrink-0 text-glow-pink" />
-              {t("phase2Limit")}
-            </span>
           </div>
         </div>
 
