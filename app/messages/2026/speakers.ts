@@ -627,6 +627,29 @@ const items: SpeakerSource[] = [
       },
     },
   },
+  {
+    slug: "pacman",
+    image: "/2026/speakers/Pacman.webp",
+    difficulty: "Low",
+    links: [
+      { type: "x", url: "https://x.com/DIYbitcoin" },
+      { type: "github", url: "https://github.com/selfcustody/krux" },
+    ],
+    i18n: {
+      en: {
+        title: "Pacman",
+        subtitle: ["Founder, DIYbitcoin"],
+        bio: "DIYbitcoin is someone who has been on the ground through the history of Bitcoin wallets. He began his career as the first employee at Samourai Wallet, the emblem of privacy wallets, and later worked at Wasabi Wallet as well — a rare track record of having been inside both pillars of Bitcoin privacy wallets.\n\nSince 2020, through DIYbitcoin, the education brand that became his name, he has been shining a light on the DIY hardware projects of Bitcoin developers who work without a marketing budget — because it seemed a waste for good open-source projects to be buried in obscurity. As an early user of Krux, the open-source hardware signing device, he took on testing and marketing and grew alongside the project, and his DIYbitcoin Telegram community even became the point of contact through which one of Krux's core developers joined the project.\n\nThat you can contribute to the open-source ecosystem without writing code, and that anyone can build their own self-custody device — these are the two things he has proven over years spent in the wallet industry.",
+        lectureTitle: "DIY Bitcoin Ecosystem",
+      },
+      ko: {
+        title: "Pacman",
+        subtitle: ["Founder, DIYbitcoin"],
+        bio: "DIYbitcoin은 비트코인 지갑의 역사를 현장에서 함께 해온 사람이다. 프라이버시 지갑의 상징이었던 사무라이 월렛(Samourai Wallet)의 첫 번째 직원으로 커리어를 시작했고, 이후 와사비 월렛(Wasabi Wallet)에서도 일했다. 비트코인 프라이버시 지갑의 두 축을 모두 내부에서 경험한 흔치 않은 이력이다.\n\n2020년부터는 자신의 이름이 된 교육 브랜드 DIYbitcoin을 통해, 좋은 오픈소스 프로젝트가 알려지지 않은 채 묻히는 것이 아까워서 마케팅 예산 없이 활동하는 비트코인 개발자들의 DIY 하드웨어 프로젝트를 알려왔다. 오픈소스 하드웨어 서명 장치 Krux의 초기 사용자로서 테스트와 마케팅을 담당하며 프로젝트의 성장에 함께했고, 그의 DIYbitcoin 텔레그램 커뮤니티는 Krux의 핵심 개발자가 프로젝트에 합류하는 접점이 되기도 했다.\n\n코드를 쓰지 않아도 오픈소스 생태계에 기여할 수 있다는 것, 그리고 누구나 자가수탁 장치를 직접 만들 수 있다는 것은 그가 지갑 업계에서 보낸 수년의 시간으로 증명해온 두 가지다.",
+        lectureTitle: "DIY 비트코인 생태계",
+      },
+    },
+  },
 ];
 
 // 랜딩 캐러셀은 앞 6명만 노출한다. 국내 관객이 바로 알아보는 연사를 이 순서로 앞세우고,
