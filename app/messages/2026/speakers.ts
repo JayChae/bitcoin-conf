@@ -650,6 +650,29 @@ const items: SpeakerSource[] = [
       },
     },
   },
+  {
+    slug: "alex-li",
+    image: "/2026/speakers/Alex_Li.webp",
+    difficulty: "Low",
+    links: [
+      { type: "website", url: "https://hrf.org" },
+      { type: "x", url: "https://x.com/AlexLi98" },
+    ],
+    i18n: {
+      en: {
+        title: "Alex Li",
+        subtitle: ["Human Rights Foundation, Bitcoin Development Lead"],
+        bio: "Alex Li is the Bitcoin Development Lead at the Human Rights Foundation. He works on the Bitcoin Development Fund, interfacing with developers to build easier to use and more powerful tools for activists, hosting workshops, and helping with planning financial freedom content at the Oslo Freedom Forum. In his spare time, he enjoys snowboarding, offroading, and exploring the great outdoors.",
+        lectureTitle: "CBDCs and Bitcoin",
+      },
+      ko: {
+        title: "Alex Li",
+        subtitle: ["Human Rights Foundation 비트코인 개발 총괄"],
+        bio: "알렉스 리(Alex Li)는 인권재단(Human Rights Foundation)의 비트코인 개발 총괄이다. 그는 비트코인 개발 기금(Bitcoin Development Fund)을 맡아 개발자들과 소통하며 활동가들이 더 쉽고 강력하게 쓸 수 있는 도구를 만드는 일을 돕고, 워크숍을 열며, 오슬로 프리덤 포럼(Oslo Freedom Forum)의 금융 자유 관련 콘텐츠 기획에도 참여하고 있다. 여가 시간에는 스노보드와 오프로드 주행을 즐기며 대자연을 탐험하는 것을 좋아한다.",
+        lectureTitle: "CBDC와 비트코인",
+      },
+    },
+  },
 ];
 
 // 랜딩 캐러셀은 앞 6명만 노출한다. 국내 관객이 바로 알아보는 연사를 이 순서로 앞세우고,
