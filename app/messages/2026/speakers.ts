@@ -266,15 +266,15 @@ const items: SpeakerSource[] = [
     ],
     i18n: {
       en: {
-        title: "keypleb",
+        title: "Keypleb",
         subtitle: ["Founder, Code Orange"],
-        bio: "keypleb is the founder of Code Orange, a Bitcoin education initiative focused on cultivating the next generation of Bitcoiners, developers, and community leaders across Asia. With a practical, builder-centric approach, Code Orange runs monthly Bitcoin workshops, study cohorts, and developer fellowships that help people build self-custody, payments, and privacy tools themselves.\n\nBefore founding Code Orange, keypleb co-founded Bitcoin House Bali and actively contributed to growing Indonesia's local Bitcoin community through hands-on meetups and grassroots education. Operating pseudonymously in the true cypherpunk spirit, keypleb focuses on privacy and censorship resistance, and through the fellowship program works to open paths for Bitcoiners to learn, build, and contribute to Bitcoin Open Source Software.",
+        bio: "Keypleb is the founder of Code Orange, a Bitcoin education initiative focused on cultivating the next generation of Bitcoiners, developers, and community leaders across Asia. With a practical, builder-centric approach, Code Orange runs monthly Bitcoin workshops, study cohorts, and developer fellowships that help people build self-custody, payments, and privacy tools themselves.\n\nBefore founding Code Orange, Keypleb co-founded Bitcoin House Bali and actively contributed to growing Indonesia's local Bitcoin community through hands-on meetups and grassroots education. Operating pseudonymously in the true cypherpunk spirit, Keypleb focuses on privacy and censorship resistance, and through the fellowship program works to open paths for Bitcoiners to learn, build, and contribute to Bitcoin Open Source Software.",
         lectureTitle: "",
       },
       ko: {
-        title: "keypleb",
+        title: "Keypleb",
         subtitle: ["Code Orange 창립자"],
-        bio: "키플렙(keypleb)은 코드 오렌지(Code Orange)의 창립자다. 코드 오렌지는 아시아 전역에서 차세대 비트코이너, 개발자, 커뮤니티 리더를 길러내는 데 초점을 둔 비트코인 교육 이니셔티브다. 코드 오렌지는 실용적이고 빌더 중심적인 접근을 바탕으로, 사람들이 자기수탁(self-custody)·결제·프라이버시 도구를 직접 만들 수 있도록 돕는 월간 비트코인 워크숍, 스터디 코호트, 개발자 펠로우십을 운영한다.\n\n코드 오렌지를 설립하기 전, 키플렙은 비트코인 하우스 발리(Bitcoin House Bali)의 공동 설립에 참여했으며, 직접 발로 뛰는 밋업과 풀뿌리 교육을 통해 인도네시아 현지 비트코인 커뮤니티를 키우는 데 적극적으로 기여했다. 진정한 사이퍼펑크 정신에 따라 가명으로 활동하는 키플렙은 프라이버시와 검열 저항에 집중하고 있으며, 펠로우십 프로그램을 통해 비트코이너들이 비트코인 오픈소스 소프트웨어(Bitcoin Open Source Software)를 배우고, 만들고, 기여할 수 있는 길을 열어주는 데 힘쓰고 있다.",
+        bio: "키플렙(Keypleb)은 코드 오렌지(Code Orange)의 창립자다. 코드 오렌지는 아시아 전역에서 차세대 비트코이너, 개발자, 커뮤니티 리더를 길러내는 데 초점을 둔 비트코인 교육 이니셔티브다. 코드 오렌지는 실용적이고 빌더 중심적인 접근을 바탕으로, 사람들이 자기수탁(self-custody)·결제·프라이버시 도구를 직접 만들 수 있도록 돕는 월간 비트코인 워크숍, 스터디 코호트, 개발자 펠로우십을 운영한다.\n\n코드 오렌지를 설립하기 전, 키플렙은 비트코인 하우스 발리(Bitcoin House Bali)의 공동 설립에 참여했으며, 직접 발로 뛰는 밋업과 풀뿌리 교육을 통해 인도네시아 현지 비트코인 커뮤니티를 키우는 데 적극적으로 기여했다. 진정한 사이퍼펑크 정신에 따라 가명으로 활동하는 키플렙은 프라이버시와 검열 저항에 집중하고 있으며, 펠로우십 프로그램을 통해 비트코이너들이 비트코인 오픈소스 소프트웨어(Bitcoin Open Source Software)를 배우고, 만들고, 기여할 수 있는 길을 열어주는 데 힘쓰고 있다.",
         lectureTitle: "",
       },
     },
@@ -315,9 +315,9 @@ const items: SpeakerSource[] = [
     ],
     i18n: {
       en: {
-        title: "네딸바",
+        title: "NLDD",
         subtitle: ["Bitcoin YouTuber"],
-        bio: "네딸바 is a Bitcoin YouTuber and translator. He translated 'The Blocksize War' and 'The Bitcoin Standard' into Korean, helping bring foundational Bitcoin literature to Korean readers.",
+        bio: "NLDD is a Bitcoin YouTuber and translator. He translated 'The Blocksize War' and 'The Bitcoin Standard' into Korean, helping bring foundational Bitcoin literature to Korean readers.",
         lectureTitle: "",
       },
       ko: {
