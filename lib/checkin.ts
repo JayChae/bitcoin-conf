@@ -1,7 +1,5 @@
 import { redis } from "./redis";
 import { verifyPayload, type QRPayload } from "./qr";
-import { TIER_VALID_DAYS } from "@/app/[locale]/(2026)/_constants/tickets";
-import type { TierKey } from "@/app/[locale]/(2026)/_types/tickets";
 
 // ─── Types ───
 
@@ -33,9 +31,11 @@ function checkinKey(cid: string, section: string, seat: number, day: string): st
 /**
  * Verify a QR token and mark the ticket as checked in for today (KST).
  * - Invalid/tampered token → { valid: false }
- * - Ticket not valid today (e.g. Main Day on Day 2) → { valid: false }
  * - First scan today → records check-in time, returns { valid: true, alreadyCheckedIn: false }
  * - Duplicate scan today → returns { valid: true, alreadyCheckedIn: true, checkedInAt }
+ *
+ * 입장 가능 일자는 검증하지 않는다. Main Day처럼 일자가 제한된 티켓은
+ * 스캐너가 TIER_VALID_DAYS의 뱃지를 띄우고, 통제는 현장 스태프가 판단한다.
  */
 export async function processCheckin(token: string): Promise<CheckinResult> {
   const payload = verifyPayload(token);
@@ -44,17 +44,6 @@ export async function processCheckin(token: string): Promise<CheckinResult> {
   }
 
   const today = todayInKST();
-
-  // 입장 가능 일자가 지정된 티어(Main Day 등)는 그 날짜에만 통과시킨다.
-  // 시안색 뱃지 + 스태프 육안 확인에만 기대면 Day 2 통제가 되지 않는다.
-  const validity = TIER_VALID_DAYS[payload.tier as TierKey];
-  if (validity && !validity.days.includes(today)) {
-    return {
-      valid: false,
-      reason: `Not valid today — this ticket is for ${validity.days.join(", ")} only`,
-    };
-  }
-
   const key = checkinKey(payload.cid, payload.sec, payload.seat, today);
   const now = new Date().toISOString();
 

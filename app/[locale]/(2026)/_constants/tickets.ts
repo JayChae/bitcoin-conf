@@ -70,7 +70,7 @@ export const SHARED_POOL_TIERS: ReadonlySet<TierKey> = new Set(
 /**
  * 티어별 입장 가능 일자 (KST, YYYY-MM-DD)와 스캐너 뱃지 문구.
  * 명시되지 않은 티어는 전 일자 입장 가능하다.
- * days는 서버 차단(lib/checkin.ts), badge는 스태프 육안 확인용이다.
+ * 서버는 이 값으로 차단하지 않는다 — 스캐너가 badge를 띄우고 스태프가 판단한다.
  */
 export const TIER_VALID_DAYS: Partial<
   Record<TierKey, { days: readonly string[]; badge: string }>
