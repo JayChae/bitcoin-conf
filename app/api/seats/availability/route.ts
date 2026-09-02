@@ -1,17 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getRemainingSeatsBySectionForTier } from "@/lib/seat-lock";
-import { getSelectableCount } from "@/app/[locale]/(2026)/_utils/tierMapping";
+import { getSelectableCount, isValidTier } from "@/app/[locale]/(2026)/_utils/tierMapping";
 import { TIER_SECTIONS } from "@/app/[locale]/(2026)/_constants/tierMapping";
-import type { TierKey } from "@/app/[locale]/(2026)/_types/tickets";
-
-const VALID_TIERS: TierKey[] = ["vip", "premium", "general"];
+import { TIER_KEYS } from "@/app/[locale]/(2026)/_types/tickets";
 
 export async function GET(request: NextRequest) {
-  const tier = request.nextUrl.searchParams.get("tier") as TierKey | null;
+  const tier = request.nextUrl.searchParams.get("tier");
 
-  if (!tier || !VALID_TIERS.includes(tier)) {
+  if (!tier || !isValidTier(tier)) {
     return NextResponse.json(
-      { error: "Valid tier parameter required (vip, premium, general)" },
+      { error: `Valid tier parameter required (${TIER_KEYS.join(", ")})` },
       { status: 400 },
     );
   }

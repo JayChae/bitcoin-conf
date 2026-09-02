@@ -40,7 +40,7 @@ const faq: Record<Locale, FaqItem[]> = {
     {
       question: "이틀 장소가 다른데, 하루만 참석해도 되나요?",
       answer: [
-        "티켓 한 장으로 이틀 모두 입장할 수 있으며, 하루만 참석하셔도 됩니다. Day 1(11월 7일)은 코엑스에서 메인 강연이, Day 2(11월 8일)는 명동에서 열립니다. 두 장소는 별도 티켓이 아니라 하나의 티켓으로 참석이 가능한 컨퍼런스입니다.",
+        "제너럴·프리미엄·VIP 티켓은 한 장으로 이틀 모두 입장할 수 있으며, 하루만 참석하셔도 됩니다. Day 1(11월 7일)은 코엑스에서 메인 강연이, Day 2(11월 8일)는 명동에서 열립니다. 11월 7일 메인데이만 참석하실 분들을 위한 Main Day 티켓도 따로 준비되어 있습니다.",
       ],
     },
     {
@@ -83,7 +83,7 @@ const faq: Record<Locale, FaqItem[]> = {
     {
       question: "The two days are at different venues — can I attend just one day?",
       answer: [
-        "A single ticket gets you into both days, and you're welcome to come for just one. Day 1 (Nov 7) features the main talks at COEX, and Day 2 (Nov 8) takes place in Myeongdong. These aren't separate tickets — one ticket covers the entire conference across both venues.",
+        "A General, Premium, or VIP ticket gets you into both days, and you're welcome to come for just one. Day 1 (Nov 7) features the main talks at COEX, and Day 2 (Nov 8) takes place in Myeongdong. If you only plan to attend Nov 7, there's a separate Main Day ticket for that.",
       ],
     },
     {

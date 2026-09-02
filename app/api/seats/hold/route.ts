@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { holdSeats } from "@/lib/seat-lock";
+import { isValidTier } from "@/app/[locale]/(2026)/_utils/tierMapping";
 import type { TierKey } from "@/app/[locale]/(2026)/_types/tickets";
-
-const VALID_TIERS: TierKey[] = ["vip", "premium", "general"];
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
@@ -19,7 +18,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  if (!VALID_TIERS.includes(tier)) {
+  if (!isValidTier(tier)) {
     return NextResponse.json({ error: "Invalid tier" }, { status: 400 });
   }
 

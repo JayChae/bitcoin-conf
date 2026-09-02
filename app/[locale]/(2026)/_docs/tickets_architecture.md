@@ -116,7 +116,7 @@ Redis (좌석 상태 관리)    Shopify (결제 처리)
 
 > 가격 설정: [_constants/tickets.ts](app/[locale]/(2026)/_constants/tickets.ts) · Variant ID: [lib/shopify-config.ts](lib/shopify-config.ts)
 
-Shopify에 **4개 상품**을 등록합니다. **재고 관리는 Shopify에서 하지 않습니다** (Redis가 관리).
+Shopify에 **5개 상품**을 등록합니다. **재고 관리는 Shopify에서 하지 않습니다** (Redis가 관리).
 
 모든 상품은 **정가(base price)**로 등록하고, 할인은 **Shopify 할인 코드**로 적용합니다.
 애프터파티는 할인 대상에서 제외하기 위해 **별도 상품**으로 분리되어 있습니다.
@@ -126,7 +126,19 @@ Shopify에 **4개 상품**을 등록합니다. **재고 관리는 Shopify에서 
 | VIP Ticket | Conference Ticket | ₩2,400,000 | `48806870352114` |
 | Premium Ticket | Conference Ticket | ₩300,000 | `48892186296562` |
 | General Ticket | Conference Ticket | ₩240,000 | `48806870450418` |
+| Main Day Ticket | Conference Ticket | ₩140,000 | `SHOPIFY_VARIANT_MAINDAY` (신규 등록 필요) |
 | After Party | Conference Add-on | ₩50,000 | `48892186329330` |
+
+> **Main Day Ticket**은 11/7 하루만 참석하는 티켓입니다. 상품 handle을 반드시
+> `main-day-ticket`으로 지정하세요 — 주문 확인 이메일 템플릿(`email.html`)이 handle로 상품명을 분기합니다.
+>
+> **미등록 상태 보호**: `SHOPIFY_VARIANT_MAINDAY`가 비어 있으면 티켓 카드가 **마감**으로 표시되고
+> `/api/checkout/create`는 좌석을 잡기 전에 503을 반환합니다 (`isTierPurchasable`, `lib/shopify-config.ts`).
+> 잘못된 variant ID로 결제 마지막 단계에서 실패하는 일은 없습니다.
+>
+> **좌석 풀 공유**: Main Day는 제너럴과 동일한 `regular` 좌석 522석을 공유합니다
+> (`TIER_TO_SEAT_TIER.mainday = "regular"`). 두 티어의 잔여석은 항상 같은 값이므로 합산하면 안 됩니다.
+> 판매 티어 구분은 Redis `seat:{sec}:{seat}` 값의 `tier` 필드로 이루어집니다.
 
 **할인 코드:**
 

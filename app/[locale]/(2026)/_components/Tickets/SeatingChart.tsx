@@ -1,14 +1,20 @@
 import { getTranslations } from "next-intl/server";
 import { TICKETS } from "../../_constants/tickets";
 import { TIER_COLORS } from "../../_constants/seats";
+import { TIER_TO_SEAT_TIER } from "../../_constants/tierMapping";
 
-const TIERS = [...TICKETS]
-  .reverse()
-  .map((t) => ({
-    key: t.tier,
-    seats: t.totalSeats,
-    color: TIER_COLORS[t.tier === "general" ? "regular" : t.tier],
-  }));
+// 좌석 풀을 공유하는 티어(Main Day)는 물리 구역이 제너럴과 같으므로 아크를 중복 표시하지 않는다
+const TIERS = [...TICKETS].reverse().flatMap((t) =>
+  t.sharesSeatPoolWith
+    ? []
+    : [
+        {
+          key: t.tier,
+          seats: t.totalSeats,
+          color: TIER_COLORS[TIER_TO_SEAT_TIER[t.tier]],
+        },
+      ],
+);
 
 // Fan arc path builder: concentric arcs from center top
 function fanArc(

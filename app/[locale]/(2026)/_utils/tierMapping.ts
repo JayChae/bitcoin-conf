@@ -1,10 +1,11 @@
 import type { TierKey } from "../_types/tickets";
+import { TIER_KEYS } from "../_types/tickets";
 import { SECTIONS } from "../_constants/seats";
 import { TIER_TO_SEAT_TIER, TIER_SECTIONS } from "../_constants/tierMapping";
 import { getSeatTier } from "./seats";
 
 export function isValidTier(tier: string): tier is TierKey {
-  return tier === "vip" || tier === "premium" || tier === "general";
+  return (TIER_KEYS as readonly string[]).includes(tier);
 }
 
 export function isSectionActiveForTier(

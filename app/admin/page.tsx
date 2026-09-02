@@ -2,6 +2,15 @@
 
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
+import {
+  SHARED_POOL_TIERS,
+  tierLabel,
+  PHASE2_TIERS,
+} from "@/app/[locale]/(2026)/_constants/tickets";
+import { TIER_KEYS, type TierKey } from "@/app/[locale]/(2026)/_types/tickets";
+// 타입 전용 import — 빌드 시 지워지므로 서버 전용 lib/redis를 끌고 오지 않는다
+import type { SeatSummary, SoldSeatRecord } from "@/lib/seat-lock";
 
 type SaleStatus = "upcoming" | "open" | "closed";
 
@@ -30,22 +39,15 @@ type PricingData = {
 type ActiveMode = "earlybird1" | "earlybird2" | "regular";
 type Tab = "pricing" | "seats";
 
-type SoldSeatRecord = {
-  section: string;
-  seat: number;
-  tier: string;
-  afterParty: boolean;
-  email?: string;
-  checkedIn: boolean;
-  checkedInAt?: string;
-};
-
-type SeatSummary = {
-  byTier: Record<string, { total: number; sold: number; remaining: number }>;
-  afterPartyCount: number;
-  checkedInCount: number;
-  fillRate: number;
-  soldSeats: SoldSeatRecord[];
+/**
+ * 단계별로 화면에 세울 티어.
+ * Phase 2 참여 티어는 _constants/tickets가 소유하므로 여기서 다시 정의하지 않는다.
+ */
+const TIERS_BY_PHASE: Record<ActiveMode, readonly TierKey[]> = {
+  // Main Day는 항상 정가로 팔리므로 얼리버드 행에는 세우지 않는다
+  earlybird1: TIER_KEYS.filter((t) => t !== "mainday"),
+  earlybird2: PHASE2_TIERS,
+  regular: TIER_KEYS,
 };
 
 function getActiveMode(config: PricingConfig): ActiveMode {
@@ -224,10 +226,7 @@ export default function AdminPage() {
               ).map((phase) => {
                 const isActive = serverActiveMode === phase.key;
                 const tierSold = phaseSold[phase.key] ?? {};
-                const tiersForPhase =
-                  phase.key === "earlybird2"
-                    ? (["premium", "general"] as const)
-                    : (["vip", "premium", "general"] as const);
+                const tiersForPhase = TIERS_BY_PHASE[phase.key];
                 const totalSold = tiersForPhase.reduce(
                   (sum, t) => sum + (tierSold[t] ?? 0),
                   0,
@@ -256,7 +255,13 @@ export default function AdminPage() {
                         </span>
                       )}
                     </div>
-                    <div className={`grid gap-3 ${tiersForPhase.length === 2 ? "grid-cols-2" : "grid-cols-3"}`}>
+                    <div
+                      className={cn(
+                        "grid gap-3 grid-cols-2",
+                        tiersForPhase.length === 3 && "md:grid-cols-3",
+                        tiersForPhase.length === 4 && "md:grid-cols-4",
+                      )}
+                    >
                       {tiersForPhase.map((tier) => {
                         const sold = tierSold[tier] ?? 0;
                         const isEB2 = phase.key === "earlybird2";
@@ -266,7 +271,7 @@ export default function AdminPage() {
                         return (
                           <div key={tier}>
                             <p className="text-[10px] text-neutral-600 mb-0.5">
-                              {tier.toUpperCase()}
+                              {tierLabel(tier)}
                             </p>
                             <p className="text-sm font-medium text-neutral-300 tabular-nums">
                               {sold}
@@ -500,24 +505,29 @@ export default function AdminPage() {
             <h2 className="text-xs font-medium text-neutral-500 uppercase tracking-wider mb-4">
               좌석 현황
             </h2>
-            <div className="grid grid-cols-3 gap-3 mb-4">
-              {(["vip", "premium", "general"] as const).map((tier) => {
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+              {TIER_KEYS.map((tier) => {
                 const s = seatData.byTier[tier];
                 if (!s) return null;
-                const pct = s.total > 0 ? (s.sold / s.total) * 100 : 0;
+                const shared = SHARED_POOL_TIERS.has(tier);
+                // 공유 풀은 풀 전체 판매량으로 진행도를 그린다
+                const filled = shared ? s.poolSold : s.sold;
+                const pct = s.total > 0 ? (filled / s.total) * 100 : 0;
                 return (
                   <div
                     key={tier}
                     className="rounded-lg bg-neutral-900 border border-neutral-800 p-3"
                   >
                     <p className="text-xs text-neutral-500 mb-1">
-                      {tier.toUpperCase()}
+                      {tierLabel(tier)}
                     </p>
                     <p className="text-lg font-bold text-neutral-200 tabular-nums">
                       {s.sold}
-                      <span className="text-sm font-normal text-neutral-500">
-                        /{s.total}
-                      </span>
+                      {!shared && (
+                        <span className="text-sm font-normal text-neutral-500">
+                          /{s.total}
+                        </span>
+                      )}
                     </p>
                     <div className="mt-2 h-1 rounded-full bg-neutral-800 overflow-hidden">
                       <div
@@ -525,10 +535,18 @@ export default function AdminPage() {
                         style={{ width: `${pct}%` }}
                       />
                     </div>
+                    {shared && (
+                      <p className="mt-1.5 text-[10px] text-neutral-600 tabular-nums">
+                        공유 풀 {s.poolSold}/{s.total} · 잔여 {s.remaining}
+                      </p>
+                    )}
                   </div>
                 );
               })}
             </div>
+            <p className="text-[11px] text-neutral-600 mb-4">
+              제너럴과 Main Day는 같은 522석을 공유합니다 — 잔여석을 합산하지 마세요.
+            </p>
             <div className="flex items-center justify-between text-sm py-2">
               <span className="text-neutral-500">전체 점유율</span>
               <span className="text-neutral-200 tabular-nums">
@@ -573,9 +591,11 @@ export default function AdminPage() {
                 className="px-3 py-1.5 rounded-lg bg-neutral-900 border border-neutral-800 text-sm text-neutral-300 focus:outline-none focus:border-neutral-600"
               >
                 <option value="all">전체 티어</option>
-                <option value="vip">VIP</option>
-                <option value="premium">Premium</option>
-                <option value="general">General</option>
+                {TIER_KEYS.map((tier) => (
+                  <option key={tier} value={tier}>
+                    {tierLabel(tier)}
+                  </option>
+                ))}
               </select>
               <select
                 value={sectionFilter}
@@ -634,7 +654,7 @@ export default function AdminPage() {
                             <span className="text-xs text-emerald-500">IN</span>
                           )}
                           <span className="text-xs text-neutral-500">
-                            {s.tier.toUpperCase()}
+                            {tierLabel(s.tier)}
                           </span>
                           {s.afterParty && (
                             <span className="text-xs text-amber-500">AP</span>
@@ -668,7 +688,7 @@ export default function AdminPage() {
                             {s.section}-{s.seat}
                           </td>
                           <td className="py-2 text-neutral-400">
-                            {s.tier.toUpperCase()}
+                            {tierLabel(s.tier)}
                           </td>
                           <td className="py-2 text-center">
                             {s.afterParty ? (

@@ -1,7 +1,7 @@
 import type { EventInfo } from "@/app/_utils/seo";
 import { TICKETS } from "@/app/[locale]/(2026)/_constants/tickets";
 
-const generalPrice = TICKETS.find((t) => t.tier === "general")!.basePrice;
+const lowestPrice = Math.min(...TICKETS.map((t) => t.basePrice));
 
 export const event: EventInfo = {
   startDate: "2026-11-07T09:00:00+09:00",
@@ -31,7 +31,7 @@ export const event: EventInfo = {
   offers: {
     path: "/tickets",
     // Lowest tier at full price.
-    price: generalPrice,
+    price: lowestPrice,
     priceCurrency: "KRW",
     availability: "https://schema.org/InStock",
   },

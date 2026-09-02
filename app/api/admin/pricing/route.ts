@@ -9,9 +9,7 @@ import {
   type PricingConfig,
 } from "@/lib/pricing";
 import { isValidSession } from "../auth/route";
-import type { TierKey } from "@/app/[locale]/(2026)/_types/tickets";
-
-const TIERS: TierKey[] = ["vip", "premium", "general"];
+import { TIER_KEYS, type TierKey } from "@/app/[locale]/(2026)/_types/tickets";
 
 export async function GET(request: NextRequest) {
   if (!isValidSession(request)) {
@@ -20,15 +18,20 @@ export async function GET(request: NextRequest) {
 
   const config = await getPricingConfig();
 
-  // Get current phase per tier and sold counts
-  const tiers: Record<string, { phase: string; sold: number }> = {};
-  for (const tier of TIERS) {
-    const phase = await getCurrentPhase(tier);
-    const sold = await getPhase2Sold(tier);
-    tiers[tier] = { phase, sold };
-  }
-
-  const phaseSold = await getAllPhaseSold();
+  // 티어별 조회는 서로 독립적이고, config는 위에서 읽은 것을 재사용한다
+  const [tierEntries, phaseSold] = await Promise.all([
+    Promise.all(
+      TIER_KEYS.map(async (tier) => {
+        const [phase, sold] = await Promise.all([
+          getCurrentPhase(tier, config),
+          getPhase2Sold(tier),
+        ]);
+        return [tier, { phase, sold }] as const;
+      }),
+    ),
+    getAllPhaseSold(),
+  ]);
+  const tiers = Object.fromEntries(tierEntries);
 
   return NextResponse.json({ config, tiers, phaseSold });
 }

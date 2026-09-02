@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import type { TierKey } from "@/app/[locale]/(2026)/_types/tickets";
+import type { SeatTier } from "@/app/[locale]/(2026)/_types/seats";
 import {
   SECTIONS,
   TIER_BORDER,
@@ -13,20 +14,20 @@ import {
   TIER_TO_SEAT_TIER,
 } from "@/app/[locale]/(2026)/_constants/tierMapping";
 
-// Sections shown as display-only context above selectable sections
-const CONTEXT_SECTIONS: Record<TierKey, string[][]> = {
+/**
+ * 선택 가능한 구역 위에 안내용으로만 보여줄 상위 구역들.
+ * 좌석 풀의 성질이므로 티켓 티어가 아니라 SeatTier로 키를 잡는다 —
+ * 같은 풀을 쓰는 티어(general·mainday)가 자동으로 같은 안내를 받는다.
+ * 구역 목록은 TIER_SECTIONS에서 그대로 가져와 정의가 갈라지지 않게 한다.
+ */
+const CONTEXT_ROWS: Record<SeatTier, { sections: string[]; label: string }[]> = {
   vip: [],
-  premium: [["C", "D"]],
-  general: [
-    ["C", "D"],
-    ["A", "B", "C", "D", "E", "F"],
+  premium: [{ sections: TIER_SECTIONS.vip, label: "VIP" }],
+  regular: [
+    { sections: TIER_SECTIONS.vip, label: "VIP" },
+    { sections: TIER_SECTIONS.premium, label: "Premium" },
   ],
-};
-
-const CONTEXT_LABELS: Record<TierKey, string[]> = {
-  vip: [],
-  premium: ["VIP"],
-  general: ["VIP", "Premium"],
+  unavailable: [],
 };
 
 // U-shape curve: center sections stay up, edges drop down
@@ -52,8 +53,7 @@ export default function ZoneSelector({
 }) {
   const t = useTranslations("Tickets2026");
   const activeIds = TIER_SECTIONS[tier];
-  const contextRows = CONTEXT_SECTIONS[tier];
-  const contextLabels = CONTEXT_LABELS[tier];
+  const contextRows = CONTEXT_ROWS[TIER_TO_SEAT_TIER[tier]];
 
   return (
     <div className="overflow-x-auto md:overflow-x-visible">
@@ -66,14 +66,14 @@ export default function ZoneSelector({
         </div>
 
         {/* Context sections (display-only) */}
-        {contextRows.map((ids, rowIdx) => (
-          <div key={rowIdx} className="flex flex-col items-center gap-1">
+        {contextRows.map(({ sections, label }) => (
+          <div key={label} className="flex flex-col items-center gap-1">
             <span className="text-xs md:text-sm text-white/60 font-medium">
-              {contextLabels[rowIdx]}
+              {label}
             </span>
             <div className="flex items-end justify-center gap-1.5 md:gap-2">
-              {ids.map((id, i) => {
-                const offsetY = getCurveOffset(i, ids.length);
+              {sections.map((id, i) => {
+                const offsetY = getCurveOffset(i, sections.length);
                 return (
                   <div
                     key={id}
