@@ -11,8 +11,6 @@ export const TICKETS: TicketDef[] = [
     sharesSeatPoolWith: "general",
     descriptionKey: "maindayDescription",
     benefitKeys: ["maindayOnly", "mainStage", "translationProvided"],
-    // 공개 보류 중 — 다시 열려면 이 줄만 지운다
-    hidden: true,
   },
   {
     tier: "general",
