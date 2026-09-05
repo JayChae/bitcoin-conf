@@ -8,35 +8,65 @@
 > 에러가 나거나 데이터가 깨지지는 않습니다 — **조용히 판매만 안 됩니다.**
 > 타입 체크·빌드는 멀쩡히 통과하므로 배포 전에 눈으로 확인하는 수밖에 없습니다.
 
+> 🔴 **Shopify 스토어가 두 개입니다** (2026-09-05 확인). Variant ID는 스토어마다 다릅니다.
+>
+> | 용도 | 스토어 도메인 | 환경변수 보관 |
+> |---|---|---|
+> | 운영 | `bitomun.myshopify.com` | `.env.main` · Vercel Production |
+> | 테스트/로컬 | `bitcoin-korea-conference-2.myshopify.com` | `.env` |
+>
+> 한쪽 스토어의 variant ID를 다른 쪽 환경에 넣으면 **결제 마지막 단계에서 실패합니다.**
+> 환경변수를 넣기 전에 그 환경이 어느 스토어를 보는지 반드시 확인하세요.
+
 ---
 
 ## 1. Shopify 상품 만들기 · 주최측
 
-- [ ] 새 상품 생성
-  - 제목: `Main Day Ticket`
-  - **handle(URL 슬러그): `main-day-ticket`** ← 이메일 템플릿이 handle로 상품명을 분기하므로 **철자까지 정확히**
-  - 가격: `140,000` (VAT 처리 방식은 기존 티켓과 동일하게)
-  - 상품 타입: `Conference Ticket` (기존 티켓과 동일)
-  - **재고 추적(Track quantity) 끄기** — 좌석 재고는 Redis가 관리합니다
-- [ ] 생성 후 Variant ID(숫자) 복사
-  - 상품 편집 URL 끝의 `.../variants/48806870450418` 형태에서 숫자 부분
+- [x] **운영 스토어(`bitomun`)에 생성 완료** — 2026-09-05
+  - 제목 `Main Day Ticket` / handle `main-day-ticket` / ₩140,000 / `Conference Ticket`
+  - 상태 활성 + 모든 채널 게시, 재고 추적 꺼짐, `requiresShipping: false`
+  - **Variant ID: `43281527832670`**
+  - Storefront API `cartCreate` 왕복 테스트 통과 (총액 ₩140,000)
+- [ ] **테스트 스토어에는 아직 없습니다.** 로컬에서 Main Day를 확인하려면 같은 설정으로
+      `bitcoin-korea-conference-2`에도 만들고, 그 스토어의 variant ID를 `.env`에 넣으세요.
+      (안 만들면 로컬에서 Main Day 카드가 마감으로 표시됩니다 — 설계된 안전 동작)
+
+> **product ID ≠ variant ID.** 관리자 상품 페이지 URL의 `.../products/7759921709150`은 product ID입니다.
+> 단일 옵션 상품은 관리자 화면에 variant ID가 드러나지 않으므로, Storefront API로 조회하는 게 확실합니다:
+>
+> ```bash
+> set -a; . ./.env.main; set +a
+> curl -s -X POST "https://${NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN}/api/2024-10/graphql.json" \
+>   -H "Content-Type: application/json" \
+>   -H "X-Shopify-Storefront-Access-Token: ${SHOPIFY_STOREFRONT_ACCESS_TOKEN}" \
+>   -d '{"query":"{ product(handle: \"main-day-ticket\") { variants(first:5){ nodes { id } } } }"}'
+> ```
+>
+> `https://<스토어>.myshopify.com/products/<handle>.json`도 variant ID를 주지만 **ID 공간이 다릅니다.**
+> 이 값을 환경변수에 넣으면 안 됩니다.
 
 ## 2. 환경변수 등록 · 개발 + 주최측
 
-- [ ] 로컬 `.env`에 추가
+- [x] `.env.main`에 운영 값 등록 완료
   ```
-  SHOPIFY_VARIANT_MAINDAY=<1번에서 복사한 숫자>
+  SHOPIFY_VARIANT_MAINDAY=43281527832670
   ```
-- [ ] **Vercel 프로젝트 환경변수에 추가** — Production / Preview / Development **세 곳 모두**
+- [ ] **Vercel Production에 추가**: `SHOPIFY_VARIANT_MAINDAY=43281527832670`
+- [ ] **Vercel Preview / Development**: 먼저 이 환경들의 `NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN`이
+      어느 스토어인지 확인하세요.
+  - 운영(`bitomun`)을 본다면 → 위와 같은 값
+  - 테스트 스토어를 본다면 → **위 값을 넣지 말 것.** 테스트 스토어에 상품을 만든 뒤 그쪽 variant ID 사용
+  - 비워두면 Main Day만 마감으로 표시되고 나머지 티어는 정상 동작합니다 (안전한 기본값)
+- [ ] 로컬 `.env` — 테스트 스토어에 상품을 만든 경우에만 추가
 - [ ] 등록 후 재배포 (환경변수는 재배포해야 반영됩니다)
 
 ## 3. 주문 확인 이메일 템플릿 · 주최측
 
 `_docs/email.html`은 이미 수정해 두었습니다. 이 파일 내용을 Shopify에 붙여넣기만 하면 됩니다.
 
-- [ ] Shopify Admin → Settings → Notifications → **Order confirmation**
-- [ ] `_docs/email.html` 전체를 복사해 붙여넣기
-- [ ] 반영 확인: 템플릿 안에 `main-day-ticket`이 **2곳** 있어야 합니다 (85행·173행)
+- [x] Shopify Admin → Settings → Notifications → **Order confirmation**
+- [x] `_docs/email.html` 전체를 복사해 붙여넣기
+- [x] 반영 확인 — 2026-09-05 운영 스토어 템플릿에서 `main-day-ticket` **2곳(85행·173행)** 확인 완료
   ```liquid
   {% when 'general-ticket' %}General Ticket{% when 'main-day-ticket' %}Main Day Ticket
   ```
@@ -47,8 +77,11 @@
 
 Main Day는 **얼리버드 할인 대상이 아닙니다** (항상 정가 ₩140,000).
 
-- [ ] `EARLYBIRD20` / `EARLYBIRD10`의 적용 대상에 **Main Day Ticket을 넣지 않기**
-- [ ] 할인코드가 **컬렉션 단위**로 걸려 있다면, 새 상품이 자동으로 포함되지 않는지 확인
+- [x] `EARLYBIRD20` / `EARLYBIRD10`의 적용 대상에 **Main Day Ticket을 넣지 않기**
+- [x] 할인코드가 **컬렉션 단위**로 걸려 있다면, 새 상품이 자동으로 포함되지 않는지 확인
+
+> 검증 완료 (2026-09-05): 운영 스토어에서 Main Day 카트에 두 코드를 적용해본 결과
+> 모두 `applicable: false`, 총액 ₩140,000 유지. Shopify 쪽 추가 작업 불필요.
 
 > 코드 레벨에서 mainday는 항상 `regular` 페이즈라 할인코드가 붙지 않지만, Shopify 쪽도 맞춰두면 이중 안전장치가 됩니다.
 

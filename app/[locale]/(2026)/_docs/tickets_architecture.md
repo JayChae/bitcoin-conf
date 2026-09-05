@@ -121,13 +121,24 @@ Shopify에 **5개 상품**을 등록합니다. **재고 관리는 Shopify에서 
 모든 상품은 **정가(base price)**로 등록하고, 할인은 **Shopify 할인 코드**로 적용합니다.
 애프터파티는 할인 대상에서 제외하기 위해 **별도 상품**으로 분리되어 있습니다.
 
-| 상품명 | 타입 | 정가 | Variant ID |
-|--------|------|------|-----------|
-| VIP Ticket | Conference Ticket | ₩2,400,000 | `48806870352114` |
-| Premium Ticket | Conference Ticket | ₩300,000 | `48892186296562` |
-| General Ticket | Conference Ticket | ₩240,000 | `48806870450418` |
-| Main Day Ticket | Conference Ticket | ₩140,000 | `SHOPIFY_VARIANT_MAINDAY` (신규 등록 필요) |
-| After Party | Conference Add-on | ₩50,000 | `48892186329330` |
+> ⚠️ **Shopify 스토어는 두 개입니다.** Variant ID는 스토어마다 다르므로 환경별로 짝을 맞춰야 합니다.
+>
+> | 용도 | 스토어 도메인 | 환경변수 보관 |
+> |---|---|---|
+> | 운영 | `bitomun.myshopify.com` | `.env.main` · Vercel Production |
+> | 테스트/로컬 | `bitcoin-korea-conference-2.myshopify.com` | `.env` |
+
+| 상품명 | 타입 | 정가 | Variant ID (운영 `bitomun`) | Variant ID (테스트) |
+|--------|------|------|------|------|
+| VIP Ticket | Conference Ticket | ₩2,400,000 | `42620884615262` | `48806870352114` |
+| Premium Ticket | Conference Ticket | ₩300,000 | `42620884648030` | `48892186296562` |
+| General Ticket | Conference Ticket | ₩240,000 | `42620884680798` | `48806870450418` |
+| Main Day Ticket | Conference Ticket | ₩140,000 | `43281527832670` | 미등록 |
+| After Party | Conference Add-on | ₩50,000 | `42620884713566` | `48892186329330` |
+
+> Main Day는 **운영 스토어에만 등록되어 있습니다.** 테스트 스토어에는 없으므로 로컬 `pnpm dev`에서는
+> Main Day 카드가 마감으로 표시됩니다 (아래 "미등록 상태 보호" 참고). 로컬에서 확인하려면
+> 테스트 스토어에도 같은 상품을 만들고 `.env`에 그 스토어의 variant ID를 넣어야 합니다.
 
 > **Main Day Ticket**은 11/7 하루만 참석하는 티켓입니다. 상품 handle을 반드시
 > `main-day-ticket`으로 지정하세요 — 주문 확인 이메일 템플릿(`email.html`)이 handle로 상품명을 분기합니다.
