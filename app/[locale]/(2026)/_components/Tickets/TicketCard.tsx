@@ -1,5 +1,6 @@
 import { Check, Sparkles, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { CARD } from "./cardStyles";
 import { Link } from "@/i18n/navigation";
 
 type Benefit = {
@@ -12,6 +13,8 @@ type SaleStatus = "upcoming" | "open" | "closed";
 
 type Props = {
   tierLabel: string;
+  /** 티어명 아래 부가 설명 (예: "11월 7일 행사만 참석") */
+  description?: string;
   benefits: Benefit[];
   ctaLabel: string;
   ctaHref: string;
@@ -36,6 +39,7 @@ type Props = {
 
 export default function TicketCard({
   tierLabel,
+  description,
   benefits,
   ctaLabel,
   ctaHref,
@@ -73,17 +77,20 @@ export default function TicketCard({
         </div>
       )}
 
-      <div className="flex flex-col flex-grow p-6 md:p-10">
+      <div className={cn("flex flex-col flex-grow", CARD.pad)}>
         {/* Header: tier */}
-        <div className="mb-6 md:mb-8">
-          <h3 className={cn("text-2xl md:text-3xl font-bold", "text-white")}>
-            {tierLabel}
-          </h3>
+        <div className={description ? "mb-2" : "mb-6 md:mb-8"}>
+          <h3 className={cn(CARD.title, "text-white")}>{tierLabel}</h3>
         </div>
+
+        {/* Description */}
+        {description && (
+          <p className={cn(CARD.description, "mb-6 md:mb-8")}>{description}</p>
+        )}
 
         {/* Early Bird - desktop only */}
         {isDiscounted && (
-          <div className="hidden md:inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium border border-white/15 bg-white/5 text-white/70 w-fit mb-5">
+          <div className="hidden md:inline-flex flex-wrap max-w-full items-center gap-2 lg:gap-1.5 px-3 lg:px-2 py-1.5 rounded-full text-xs lg:text-[10px] xl:text-xs font-medium border border-white/15 bg-white/5 text-white/70 w-fit mb-5">
             <span>{phaseLabel}</span>
             <span className="text-white/30">|</span>
             <span>{discountLabel}</span>
@@ -94,7 +101,7 @@ export default function TicketCard({
         <div className="mb-8 md:mb-10">
           {isDiscounted && (
             <div className="flex items-center gap-2 mb-1.5">
-              <del className="text-sm text-white/50 tabular-nums">
+              <del className="text-sm lg:text-xs text-white/50 tabular-nums">
                 {originalPrice} {currencyLabel}
               </del>
               {/* Early bird inline - mobile only */}
@@ -103,11 +110,11 @@ export default function TicketCard({
               </span>
             </div>
           )}
-          <div className="flex items-baseline gap-1.5">
-            <span className="text-3xl md:text-4xl font-bold text-white tracking-tight tabular-nums">
+          <div className="flex items-baseline gap-1.5 flex-wrap">
+            <span className={cn(CARD.price, "tabular-nums")}>
               {currentPrice}
             </span>
-            <span className="text-base text-white/40 font-medium">
+            <span className="text-base lg:text-sm xl:text-base text-white/40 font-medium">
               {currencyLabel}
             </span>
           </div>
@@ -117,10 +124,10 @@ export default function TicketCard({
         </div>
 
         {/* Divider */}
-        <div className="border-t border-white/10 mb-6 md:mb-8" />
+        <div className={CARD.divider} />
 
         {/* Benefits */}
-        <ul className="grid grid-cols-1 gap-y-3 md:gap-y-3.5">
+        <ul className={CARD.benefits}>
           {benefits.map((benefit, i) => (
             <li key={i} className="flex items-start gap-2.5">
               {benefit.soldOut ? (
@@ -130,7 +137,7 @@ export default function TicketCard({
               )}
               <span
                 className={cn(
-                  "text-sm leading-tight",
+                  CARD.benefitText,
                   benefit.soldOut ? "text-white/40" : "text-white/80",
                 )}
               >
@@ -153,13 +160,12 @@ export default function TicketCard({
         </ul>
 
         {/* CTA */}
-        <div className="mt-auto pt-8 md:pt-10">
+        <div className={CARD.ctaWrap}>
           {saleStatus === "open" ? (
             <Link
               href={ctaHref}
               className={cn(
-                "w-full flex items-center justify-center",
-                "text-sm font-semibold py-3.5 px-6 rounded-full",
+                CARD.ctaButton,
                 "transition-colors duration-200",
                 bestOffer
                   ? "bg-gradient-to-r from-glow-purple to-glow-pink text-white hover:opacity-90"
@@ -172,8 +178,7 @@ export default function TicketCard({
             <button
               disabled
               className={cn(
-                "w-full flex items-center justify-center",
-                "text-sm font-semibold py-3.5 px-6 rounded-full",
+                CARD.ctaButton,
                 "bg-white/10 text-white/40 border border-white/15",
                 "cursor-not-allowed",
               )}

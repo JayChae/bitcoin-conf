@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import type { QRPayload } from "@/lib/qr";
+import { tierLabel } from "@/app/[locale]/(2026)/_constants/tickets";
+import { TIER_KEYS } from "@/app/[locale]/(2026)/_types/tickets";
 
 function decodeToken(token: string): QRPayload | null {
   try {
@@ -207,9 +209,11 @@ export default function QRAdminPage() {
                 onChange={(e) => setFields({ ...fields, tier: e.target.value })}
                 className={inputCls}
               >
-                <option value="vip">VIP</option>
-                <option value="premium">Premium</option>
-                <option value="general">General</option>
+                {TIER_KEYS.map((tier) => (
+                  <option key={tier} value={tier}>
+                    {tierLabel(tier)}
+                  </option>
+                ))}
               </select>
             </div>
           </div>

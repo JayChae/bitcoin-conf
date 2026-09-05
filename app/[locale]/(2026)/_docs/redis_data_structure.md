@@ -212,6 +212,7 @@ checkout:gid://shopify/Cart/xyz789 → (삭제됨)
 
 ```
 seat:C:1    → { status: "held", tier: "general", ... }   ⏰ 30분 후 삭제
+            (tier 값: "vip" | "premium" | "general" | "mainday" — general과 mainday는 같은 regular 좌석을 공유)
 ```
 
 **② 30분 경과 — 아무 것도 하지 않아도 자동으로:**

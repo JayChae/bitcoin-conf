@@ -3,6 +3,8 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
+import { TIER_VALID_DAYS, tierLabel } from "@/app/[locale]/(2026)/_constants/tickets";
+import type { TierKey } from "@/app/[locale]/(2026)/_types/tickets";
 
 type CheckinResult =
   | { valid: false; reason: string }
@@ -12,6 +14,14 @@ type CheckinResult =
       payload: { cid: string; sec: string; seat: number; tier: string; ap: boolean };
       checkedInAt?: string;
     };
+
+/** 스캐너 판독용 티어 식별색 (좌석도의 TIER_COLORS와는 목적이 다른 별개 팔레트) */
+const TIER_COLORS: Record<TierKey, string> = {
+  vip: "#FFD700",
+  premium: "#FF8C00",
+  general: "#FFFFFF",
+  mainday: "#22D3EE",
+};
 
 export default function CheckinPage() {
   const router = useRouter();
@@ -144,12 +154,6 @@ export default function CheckinPage() {
 
   // ─── Main UI ───
 
-  const tierColors: Record<string, string> = {
-    vip: "#FFD700",
-    premium: "#FF8C00",
-    general: "#FFFFFF",
-  };
-
   return (
     <div style={{ minHeight: "100vh", background: "#000", color: "#fff", fontFamily: "system-ui, sans-serif", padding: 16 }}>
       <div style={{ maxWidth: 480, margin: "0 auto" }}>
@@ -218,7 +222,6 @@ export default function CheckinPage() {
             key="checkin-overlay"
             result={result}
             onDismiss={dismissResult}
-            tierColors={tierColors}
           />
         )}
       </AnimatePresence>
@@ -229,14 +232,15 @@ export default function CheckinPage() {
 function CheckinResultOverlay({
   result,
   onDismiss,
-  tierColors,
 }: {
   result: CheckinResult;
   onDismiss: () => void;
-  tierColors: Record<string, string>;
 }) {
   const isInvalid = !result.valid;
   const isDuplicate = result.valid && result.alreadyCheckedIn;
+  const validity = result.valid
+    ? TIER_VALID_DAYS[result.payload.tier as TierKey]
+    : undefined;
 
   const config = isInvalid
     ? { bg: "rgba(220, 38, 38, 0.95)", icon: "✗", label: "INVALID", sublabel: result.reason }
@@ -282,10 +286,17 @@ function CheckinResultOverlay({
         {result.valid && (
           <div style={{ fontSize: 24, lineHeight: 1.6, color: "rgba(255,255,255,0.95)" }}>
             <p style={{ margin: "0 0 8px" }}>
-              <span style={{ color: tierColors[result.payload.tier] ?? "#fff", fontWeight: 800, textTransform: "uppercase", fontSize: 28, textShadow: "0 2px 8px rgba(0,0,0,0.3)" }}>
-                {result.payload.tier}
+              <span style={{ color: TIER_COLORS[result.payload.tier as TierKey] ?? "#fff", fontWeight: 800, textTransform: "uppercase", fontSize: 28, textShadow: "0 2px 8px rgba(0,0,0,0.3)" }}>
+                {tierLabel(result.payload.tier)}
               </span>
             </p>
+            {validity && (
+              <p style={{ margin: "0 0 12px" }}>
+                <span style={{ display: "inline-block", background: TIER_COLORS[result.payload.tier as TierKey] ?? "#22D3EE", color: "#000", fontSize: 22, fontWeight: 800, padding: "6px 14px", borderRadius: 999, letterSpacing: "0.02em" }}>
+                  {validity.badge}
+                </span>
+              </p>
+            )}
             <p style={{ margin: 0, fontSize: 22 }}>
               Section <span style={{ fontWeight: 700 }}>{result.payload.sec}</span>
               {" · "}Seat <span style={{ fontWeight: 700 }}>{result.payload.seat}</span>

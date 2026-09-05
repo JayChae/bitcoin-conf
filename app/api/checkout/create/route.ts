@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { holdSeats, saveCheckoutMapping, releaseSeats, stampCartIdOnSeats } from "@/lib/seat-lock";
 import { createCheckoutCart } from "@/lib/shopify";
+import { isTierPurchasable } from "@/lib/shopify-config";
 import { getCurrentPhase, getSaleStatus } from "@/lib/pricing";
 import { redis } from "@/lib/redis";
+import { isValidTier } from "@/app/[locale]/(2026)/_utils/tierMapping";
 import type { TierKey } from "@/app/[locale]/(2026)/_types/tickets";
 import type { SeatHoldRequest } from "@/app/[locale]/(2026)/_types/seats";
-
-const VALID_TIERS: TierKey[] = ["vip", "premium", "general"];
 
 export async function POST(request: NextRequest) {
   // Rate limiting: 5 checkout attempts per IP per minute
@@ -32,8 +32,19 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  if (!VALID_TIERS.includes(tier)) {
+  if (!isValidTier(tier)) {
     return NextResponse.json({ error: "Invalid tier" }, { status: 400 });
+  }
+
+  // Shopify variant가 아직 등록되지 않은 티어는 좌석을 잡기 전에 막는다.
+  // 그러지 않으면 잘못된 variant ID로 카트 생성이 실패해 사용자에게는
+  // 좌석 예약 실패처럼 보인다.
+  if (!isTierPurchasable(tier)) {
+    console.error(`[checkout] tier "${tier}" has no Shopify variant configured`);
+    return NextResponse.json(
+      { error: "Tier is not available for purchase" },
+      { status: 503 },
+    );
   }
 
   const saleStatus = await getSaleStatus();

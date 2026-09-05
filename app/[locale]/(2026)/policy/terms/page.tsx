@@ -148,7 +148,7 @@ export default function TermsOfUsePage() {
         </PolicyParagraph>
         <PolicyOrderedList>
           <li>
-            행사 티켓 카테고리(학생, 제너럴, 프리미엄, VIP 등)의 검색 및 선택과
+            행사 티켓 카테고리(학생, Main Day, 제너럴, 프리미엄, VIP 등)의 검색 및 선택과
             좌석(구역)의 선택
           </li>
           <li>참가자 정보(성명, 국적, 소속, 직책, 이메일 주소 등)의 입력</li>

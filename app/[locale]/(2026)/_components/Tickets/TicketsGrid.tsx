@@ -5,6 +5,7 @@ import StudentTicketCard from "./StudentTicketCard";
 import { TICKETS } from "../../_constants/tickets";
 import { getDiscountedPrice, isDiscounted, formatKRW } from "../../_utils/tickets";
 import { getCurrentPhase } from "@/lib/pricing";
+import { isTierPurchasable } from "@/lib/shopify-config";
 
 const PHASE_KEYS: Record<string, { phase: string; discount: string }> = {
   earlybird1: { phase: "phaseEarlybird1", discount: "discountEarlybird1" },
@@ -24,7 +25,7 @@ export default async function TicketsGrid({
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 md:gap-6 lg:gap-4 xl:gap-6">
       <div>
         <StudentTicketCard
           tierLabel={t("student")}
@@ -49,11 +50,18 @@ export default async function TicketsGrid({
             soldOut: ticket.soldOutKeys?.includes(key),
           }));
           const currentPrice = getDiscountedPrice(ticket.basePrice, phase);
+          // Shopify variant 미등록 티어는 결제가 불가능하므로 마감으로 표시한다
+          const tierSaleStatus = isTierPurchasable(ticket.tier)
+            ? saleStatus
+            : "closed";
 
           return (
             <div key={ticket.tier}>
               <TicketCard
                 tierLabel={t(ticket.tier)}
+                description={
+                  ticket.descriptionKey ? t(ticket.descriptionKey) : undefined
+                }
                 benefits={benefits}
                 ctaLabel={t("ctaBuy")}
                 ctaHref={`/tickets/${ticket.tier}`}
@@ -64,7 +72,7 @@ export default async function TicketsGrid({
                 isDiscounted={discounted}
                 phaseLabel={phaseKey ? t(phaseKey.phase) : ""}
                 discountLabel={phaseKey ? t(phaseKey.discount) : ""}
-                saleStatus={saleStatus}
+                saleStatus={tierSaleStatus}
                 closedLabel={t("closed")}
                 comingSoonLabel={t("comingSoon")}
                 bestOffer={ticket.tier === "premium"}

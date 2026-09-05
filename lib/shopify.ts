@@ -1,5 +1,5 @@
 import crypto from "crypto";
-import { TICKET_VARIANT_IDS, AFTER_PARTY_VARIANT_ID, DISCOUNT_CODES } from "./shopify-config";
+import { getTicketVariantId, getAfterPartyVariantId, DISCOUNT_CODES } from "./shopify-config";
 import { signPayload } from "./qr";
 import type { TierKey, PricingPhase } from "@/app/[locale]/(2026)/_types/tickets";
 import type { SeatHoldRequest } from "@/app/[locale]/(2026)/_types/seats";
@@ -65,9 +65,10 @@ export async function createCheckoutCart(
   locale?: string,
 ): Promise<{ cartId: string; checkoutUrl: string }> {
   // 1. Ticket line items (one per seat) with QR token for check-in
+  const ticketVariantId = getTicketVariantId(tier);
   const checkoutId = crypto.randomUUID().slice(0, 8);
   const ticketLines = seats.map((seat) => ({
-    merchandiseId: TICKET_VARIANT_IDS[tier],
+    merchandiseId: ticketVariantId,
     quantity: 1,
     attributes: [
       { key: "seat_section", value: seat.section },
@@ -87,16 +88,17 @@ export async function createCheckoutCart(
   }));
 
   // 2. After Party line items (separate product, VIP excluded — AP included in VIP ticket)
-  const apLines = seats
-    .filter((seat) => seat.afterParty && tier !== "vip")
-    .map((seat) => ({
-      merchandiseId: AFTER_PARTY_VARIANT_ID,
+  const apSeats = seats.filter((seat) => seat.afterParty && tier !== "vip");
+  // AP 좌석이 있을 때만 조회한다 — 없으면 미등록 환경변수로 던질 이유가 없다
+  const apVariantId = apSeats.length > 0 ? getAfterPartyVariantId() : "";
+  const apLines = apSeats.map((seat) => ({
+      merchandiseId: apVariantId,
       quantity: 1,
       attributes: [
         { key: "seat_section", value: seat.section },
         { key: "seat_number", value: seat.seat.toString() },
       ],
-    }));
+  }));
 
   const lines = [...ticketLines, ...apLines];
 

@@ -3,7 +3,9 @@ import { SECTIONS } from "@/app/[locale]/(2026)/_constants/seats";
 import {
   TIER_TO_SEAT_TIER,
   TIER_SECTIONS,
+  DEFAULT_TIER_FOR_POOL,
 } from "@/app/[locale]/(2026)/_constants/tierMapping";
+import { TIER_KEYS } from "@/app/[locale]/(2026)/_types/tickets";
 import { getSeatTier } from "@/app/[locale]/(2026)/_utils/seats";
 import type { SeatStatus, SeatStatusInfo, SeatHoldRequest } from "@/app/[locale]/(2026)/_types/seats";
 import type { TierKey, PricingPhase } from "@/app/[locale]/(2026)/_types/tickets";
@@ -15,6 +17,7 @@ const MAX_SEATS: Record<TierKey, number> = {
   vip: 4,
   premium: 10,
   general: 10,
+  mainday: 10,
 };
 
 function seatKey(section: string, seat: number) {
@@ -368,8 +371,19 @@ export type SoldSeatRecord = {
   checkedInAt?: string;
 };
 
+export type TierSummary = {
+  /** 이 티어가 쓰는 물리 좌석 풀의 용량. 풀을 공유하는 티어끼리 같은 값. */
+  total: number;
+  /** 이 티어로 판매된 좌석 수. */
+  sold: number;
+  /** 풀 전체 판매 수. 풀을 공유하는 티어끼리 같은 값. */
+  poolSold: number;
+  /** 풀 잔여 좌석. 풀을 공유하는 티어끼리 같은 값이므로 합산하면 안 된다. */
+  remaining: number;
+};
+
 export type SeatSummary = {
-  byTier: Record<string, { total: number; sold: number; remaining: number }>;
+  byTier: Record<string, TierSummary>;
   afterPartyCount: number;
   checkedInCount: number;
   fillRate: number;
@@ -391,11 +405,15 @@ export async function getAllSeatSummary(): Promise<SeatSummary> {
     buildCheckinMap(),
   ]);
 
-  const byTier: Record<string, { total: number; sold: number; remaining: number }> = {
-    vip: { total: 0, sold: 0, remaining: 0 },
-    premium: { total: 0, sold: 0, remaining: 0 },
-    general: { total: 0, sold: 0, remaining: 0 },
-  };
+  // 용량·판매는 물리 좌석 풀(SeatTier) 단위로 1회만 센다 — 공유 티어 이중 계산 방지
+  const poolTotal: Record<string, number> = {};
+  const poolSold: Record<string, number> = {};
+  const byTier = Object.fromEntries(
+    TIER_KEYS.map((tier) => [
+      tier,
+      { total: 0, sold: 0, poolSold: 0, remaining: 0 } as TierSummary,
+    ]),
+  ) as Record<string, TierSummary>;
 
   let afterPartyCount = 0;
   let checkedInCount = 0;
@@ -410,13 +428,20 @@ export async function getAllSeatSummary(): Promise<SeatSummary> {
 
       if (seatTier === "unavailable") continue;
 
-      const ticketTier = seatTier === "regular" ? "general" : seatTier;
-      byTier[ticketTier].total++;
+      poolTotal[seatTier] = (poolTotal[seatTier] ?? 0) + 1;
       totalAvailable++;
 
       const info = values[i];
       if (info?.status === "sold") {
-        byTier[ticketTier].sold++;
+        // 저장된 구매 티어를 쓰되, 좌석 풀이 일치할 때만 신뢰 (레거시/오염 방어)
+        const stored = info.tier as TierKey | undefined;
+        const soldTier =
+          stored && TIER_TO_SEAT_TIER[stored] === seatTier
+            ? stored
+            : DEFAULT_TIER_FOR_POOL[seatTier];
+
+        poolSold[seatTier] = (poolSold[seatTier] ?? 0) + 1;
+        byTier[soldTier].sold++;
         totalSold++;
         if (info.afterParty) afterPartyCount++;
 
@@ -426,7 +451,7 @@ export async function getAllSeatSummary(): Promise<SeatSummary> {
         soldSeats.push({
           section: section.id,
           seat: seatNumber,
-          tier: ticketTier,
+          tier: soldTier,
           afterParty: info.afterParty ?? false,
           email: info.email,
           checkedIn: !!checkedInAt,
@@ -436,8 +461,11 @@ export async function getAllSeatSummary(): Promise<SeatSummary> {
     }
   }
 
-  for (const tier of Object.values(byTier)) {
-    tier.remaining = tier.total - tier.sold;
+  for (const tier of TIER_KEYS) {
+    const pool = TIER_TO_SEAT_TIER[tier];
+    byTier[tier].total = poolTotal[pool] ?? 0;
+    byTier[tier].poolSold = poolSold[pool] ?? 0;
+    byTier[tier].remaining = byTier[tier].total - byTier[tier].poolSold;
   }
 
   const fillRate = totalAvailable > 0
@@ -457,12 +485,15 @@ async function buildCheckinMap(): Promise<Map<string, string>> {
   for (let i = 0; i < checkinKeys.length; i++) {
     const ts = values[i];
     if (!ts) continue;
-    // key format: checkin:{cid}:{section}:{seat}
+    // key format: checkin:{cid}:{section}:{seat}:{YYYY-MM-DD}
     const parts = checkinKeys[i].split(":");
     if (parts.length >= 4) {
       const section = parts[2];
       const seat = parts[3];
-      map.set(`${section}:${seat}`, ts);
+      // 좌석당 날짜별 키가 여러 개이므로 최초 체크인 시각을 남긴다
+      const mapKey = `${section}:${seat}`;
+      const existing = map.get(mapKey);
+      if (!existing || ts < existing) map.set(mapKey, ts);
     }
   }
   return map;

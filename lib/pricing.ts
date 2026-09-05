@@ -1,5 +1,13 @@
 import { redis } from "./redis";
+import { TIER_KEYS } from "@/app/[locale]/(2026)/_types/tickets";
+import {
+  NO_DISCOUNT_TIERS,
+  PHASE2_TIERS,
+} from "@/app/[locale]/(2026)/_constants/tickets";
 import type { PricingPhase, TierKey } from "@/app/[locale]/(2026)/_types/tickets";
+
+// 할인 대상 티어 정의는 "use client" 어드민에서도 읽으므로 _constants/tickets에 산다.
+export { NO_DISCOUNT_TIERS, PHASE2_TIERS };
 
 // ─── Redis Data Structures ───
 
@@ -42,11 +50,18 @@ const DEFAULT_CONFIG: PricingConfig = {
 
 // ─── Phase Determination ───
 
-export async function getCurrentPhase(tier?: TierKey): Promise<PricingPhase> {
-  // VIP는 모든 얼리버드 할인 대상 아님 — 항상 정가
-  if (tier === "vip") return "regular";
+/**
+ * 티어의 현재 판매 단계.
+ * config를 이미 읽은 호출자는 그대로 넘겨 pricing:config 재조회를 피한다.
+ */
+export async function getCurrentPhase(
+  tier?: TierKey,
+  presetConfig?: PricingConfig,
+): Promise<PricingPhase> {
+  // VIP·Main Day는 모든 얼리버드 할인 대상 아님 — 항상 정가
+  if (tier && NO_DISCOUNT_TIERS.includes(tier)) return "regular";
 
-  const config = await getPricingConfig();
+  const config = presetConfig ?? (await getPricingConfig());
 
   // Manual override takes priority
   if (config.override) return config.override;
@@ -115,22 +130,20 @@ export async function incrementPhaseSold(
   await redis.incrby(phaseSoldKey(phase, tier), count);
 }
 
-const TIERS: TierKey[] = ["vip", "premium", "general"];
-/** Phase 2 참여 티어. VIP는 Phase 2 대상 아님. */
-export const PHASE2_TIERS: TierKey[] = ["premium", "general"];
 const PHASES: PricingPhase[] = ["earlybird1", "earlybird2", "regular"];
 
 export async function getAllPhaseSold(): Promise<
   Record<PricingPhase, Record<TierKey, number>>
 > {
-  const keys = PHASES.flatMap((p) => TIERS.map((t) => phaseSoldKey(p, t)));
-  const values = await Promise.all(keys.map((k) => redis.get<number>(k)));
+  const keys = PHASES.flatMap((p) => TIER_KEYS.map((t) => phaseSoldKey(p, t)));
+  // 티어 수만큼 늘어나는 개별 GET 대신 한 번의 MGET
+  const values = await redis.mget<(number | null)[]>(...keys);
 
   let i = 0;
   const result = {} as Record<PricingPhase, Record<TierKey, number>>;
   for (const phase of PHASES) {
     result[phase] = {} as Record<TierKey, number>;
-    for (const tier of TIERS) {
+    for (const tier of TIER_KEYS) {
       result[phase][tier] = values[i++] ?? 0;
     }
   }
