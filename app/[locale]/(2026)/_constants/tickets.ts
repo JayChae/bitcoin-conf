@@ -11,6 +11,8 @@ export const TICKETS: TicketDef[] = [
     sharesSeatPoolWith: "general",
     descriptionKey: "maindayDescription",
     benefitKeys: ["maindayOnly", "mainStage", "translationProvided"],
+    // 공개 보류 중 — 다시 열려면 이 줄만 지운다
+    hidden: true,
   },
   {
     tier: "general",
@@ -55,6 +57,20 @@ export const TICKETS: TicketDef[] = [
     ],
   },
 ];
+
+/**
+ * 공개적으로 노출·판매하는 티켓.
+ * 카드 목록, SEO 최저가, 구매 페이지 진입, 결제 API가 모두 이 목록을 기준으로 삼는다.
+ *
+ * 좌석 집계(SHARED_POOL_TIERS, TIER_TO_SEAT_TIER)는 의도적으로 TICKETS 전체를 쓴다 —
+ * 숨긴 티어로 이미 팔린 좌석도 계속 점유 상태로 세어야 하기 때문이다.
+ */
+export const VISIBLE_TICKETS: TicketDef[] = TICKETS.filter((t) => !t.hidden);
+
+/** 공개 보류된 티어인지. 구매 페이지와 결제 API가 진입을 막는 데 쓴다. */
+export function isTierHidden(tier: TierKey): boolean {
+  return TICKETS.some((t) => t.tier === tier && t.hidden === true);
+}
 
 /**
  * 좌석 풀을 공유하는 티어 집합.

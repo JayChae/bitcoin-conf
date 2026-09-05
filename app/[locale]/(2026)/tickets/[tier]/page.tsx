@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { isValidTier } from "../../_utils/tierMapping";
-import { TICKETS } from "../../_constants/tickets";
+import { TICKETS, isTierHidden } from "../../_constants/tickets";
 import {
   getDiscountedPrice,
   isDiscounted as checkDiscount,
@@ -20,6 +20,8 @@ export default async function TierPage({ params }: Props) {
   const { locale, tier } = await params;
 
   if (!isValidTier(tier)) notFound();
+  // 공개 보류된 티어는 URL을 직접 열어도 없는 페이지로 취급한다
+  if (isTierHidden(tier)) notFound();
 
   const saleStatus = await getSaleStatus();
   if (saleStatus !== "open") redirect(`/${locale}/#tickets`);

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { holdSeats, saveCheckoutMapping, releaseSeats, stampCartIdOnSeats } from "@/lib/seat-lock";
 import { createCheckoutCart } from "@/lib/shopify";
 import { isTierPurchasable } from "@/lib/shopify-config";
+import { isTierHidden } from "@/app/[locale]/(2026)/_constants/tickets";
 import { getCurrentPhase, getSaleStatus } from "@/lib/pricing";
 import { redis } from "@/lib/redis";
 import { isValidTier } from "@/app/[locale]/(2026)/_utils/tierMapping";
@@ -34,6 +35,12 @@ export async function POST(request: NextRequest) {
 
   if (!isValidTier(tier)) {
     return NextResponse.json({ error: "Invalid tier" }, { status: 400 });
+  }
+
+  // 공개 보류된 티어는 카드도 구매 페이지도 없지만, API를 직접 호출하면 뚫린다.
+  // 좌석을 잡기 전에 막아 숨긴 티켓이 조용히 팔리는 일을 방지한다.
+  if (isTierHidden(tier)) {
+    return NextResponse.json({ error: "Tier is not available" }, { status: 404 });
   }
 
   // Shopify variant가 아직 등록되지 않은 티어는 좌석을 잡기 전에 막는다.
