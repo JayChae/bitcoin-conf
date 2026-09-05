@@ -2,7 +2,7 @@ import { getTranslations } from "next-intl/server";
 import { getLocale } from "next-intl/server";
 import TicketCard from "./TicketCard";
 import StudentTicketCard from "./StudentTicketCard";
-import { TICKETS } from "../../_constants/tickets";
+import { VISIBLE_TICKETS } from "../../_constants/tickets";
 import { getDiscountedPrice, isDiscounted, formatKRW } from "../../_utils/tickets";
 import { getCurrentPhase } from "@/lib/pricing";
 import { isTierPurchasable } from "@/lib/shopify-config";
@@ -41,7 +41,7 @@ export default async function TicketsGrid({
         />
       </div>
       {await Promise.all(
-        TICKETS.map(async (ticket) => {
+        VISIBLE_TICKETS.map(async (ticket) => {
           const phase = await getCurrentPhase(ticket.tier);
           const discounted = isDiscounted(phase);
           const phaseKey = PHASE_KEYS[phase];

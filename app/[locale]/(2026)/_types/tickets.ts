@@ -13,6 +13,12 @@ type TicketDefBase = {
   soldOutKeys?: string[];
   /** 부가 설명 번역 키 (학생 카드 description과 동일 위치/스타일) */
   descriptionKey?: string;
+  /**
+   * 공개 노출과 구매 진입에서만 제외한다 (카드 목록·SEO 최저가·구매 페이지·결제 API).
+   * 좌석 집계와 관리자 화면은 그대로 둔다 — 이미 팔린 좌석은 계속 점유 상태여야 하고
+   * 관리자는 기존 주문을 볼 수 있어야 한다.
+   */
+  hidden?: boolean;
 };
 
 /**

@@ -1,7 +1,7 @@
 import type { EventInfo } from "@/app/_utils/seo";
-import { TICKETS } from "@/app/[locale]/(2026)/_constants/tickets";
+import { VISIBLE_TICKETS } from "@/app/[locale]/(2026)/_constants/tickets";
 
-const lowestPrice = Math.min(...TICKETS.map((t) => t.basePrice));
+const lowestPrice = Math.min(...VISIBLE_TICKETS.map((t) => t.basePrice));
 
 export const event: EventInfo = {
   startDate: "2026-11-07T09:00:00+09:00",
