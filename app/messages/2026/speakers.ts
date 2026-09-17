@@ -222,13 +222,13 @@ const items: SpeakerSource[] = [
         title: "Louis Ko (PowDae)",
         subtitle: ["CEO, NonceLab · Coconut Wallet · Bitcoin Center Seoul"],
         bio: "He is the Founder and CEO of NonceLab, a Bitcoin company operating Coconut Wallet and Bitcoin Center Seoul. He lectures on Bitcoin at universities and enterprises, and is the lead developer of coconut_lib, an open-source library for mobile wallet development.\n\nCEO, NonceLab Inc.\nAdjunct Professor, Graduate School of AI & SW, Sogang University\nAdjunct Professor, Korea Banking Institute",
-        lectureTitle: "",
+        lectureTitle: "Becoming a Bitcoin Builder",
       },
       ko: {
         title: "고덕윤 (포대)",
         subtitle: ["논스랩 · 코코넛 월렛 · 비트코인 센터 서울 대표"],
         bio: "코코넛월렛과 비트코인 센터 서울을 운영하는 논스랩의 설립자로 대학과 기업에서 비트코인을 가르치는 강사로 활동 중에 있으며, 모바일 월렛 개발을 위한 오픈소스 라이브러리 coconut_lib의 메인 개발자입니다.\n\n논스랩(주) 대표이사\n서강대학교 AI/SW 대학원 겸임교수\n한국금융연수원 겸임교수",
-        lectureTitle: "",
+        lectureTitle: "비트코인 빌더 되기",
       },
     },
   },
@@ -499,16 +499,15 @@ const items: SpeakerSource[] = [
       en: {
         title: "Teruko",
         subtitle: ["LHB Founder"],
-        bio: "Teruko Neriki is a Bitcoin advocate focused on financial freedom and adoption across Asia, with a particular emphasis on empowering young women. She spent four years leading Japan initiatives for Fulgur Ventures, during which she launched Tokyo Bitcoin Base and organized BITCOIN JAPAN 2025 and Bitcoin Tokyo 2024.\n\nDedicated to making Bitcoin philosophy accessible, Teruko is the creator of lostinbitcoin.jp and the Japanese translator of The Bitcoin Standard, The Bullish Case for Bitcoin, The Little Bitcoin Book, and Check Your Financial Privilege.\n\nHer early career includes product marketing and business development at Sony. She holds an MBA from Georgetown University.",
-        lectureTitle:
-          "Bitcoin's Missing Alpha: Why Our Current Onboarding Model Fails Women",
+        bio: "Teruko Neriki is a Bitcoin advocate focused on financial freedom and adoption across Asia, with a particular emphasis on empowering young women. She spent four years leading Japan initiatives for Fulgur Ventures, during which she launched Tokyo Bitcoin Base and organized BITCOIN JAPAN 2025 and Bitcoin Tokyo 2024.\n\nDedicated to making Bitcoin philosophy accessible, Teruko is the creator of lostinbitcoin.jp and the Japanese translator of The Bitcoin Standard, The Bullish Case for Bitcoin, The Little Bitcoin Book, and Check Your Financial Privilege.\n\nHer early career includes product marketing and business development at Sony. She holds an MBA from Georgetown University.\n\nIn 2017, Japan accounted for nearly 60% of global Bitcoin trading and became the first country to establish a regulatory framework for Bitcoin. Japan was destined to be the Bitcoin capital of the world.\n\nAfter eight years in the trenches—co-hosting meetups, translating books, launching a 1,300 m² hub, and running conferences—Teruko shares an unfiltered operator's post-mortem: what worked, what didn't, and what the experience taught her about the limits of education, infrastructure, and institutional scale. Most importantly, she explains why she eventually walked away from Japan—not because she stopped believing in Bitcoin, but because she realized she was solving the wrong problem in the wrong market.",
+        lectureTitle: "Pushing Adoption in Japan: What Worked and What Didn't",
       },
       ko: {
         title: "Teruko",
         subtitle: ["LHB 창립자"],
-        bio: "테루코 네리키(Teruko Neriki)는 아시아 전역의 금융 자유와 비트코인 어답션에 집중해 온 비트코인 옹호자로, 특히 젊은 여성들에게 힘을 실어주는 일에 무게를 두고 있다. 그는 4년간 풀구르 벤처스(Fulgur Ventures)의 일본 사업을 이끌며 도쿄 비트코인 베이스(Tokyo Bitcoin Base)를 출범시키고 BITCOIN JAPAN 2025와 Bitcoin Tokyo 2024를 기획·운영했다.\n\n비트코인의 철학을 누구나 이해할 수 있게 만드는 일에 힘써 온 테루코는 lostinbitcoin.jp를 만들었으며, 『달러는 어떻게 세계를 지배하게 되었는가(The Bitcoin Standard)』, 『The Bullish Case for Bitcoin』, 『The Little Bitcoin Book』, 『Check Your Financial Privilege』를 일본어로 옮긴 번역가이기도 하다.\n\n커리어 초기에는 소니(Sony)에서 제품 마케팅과 사업 개발을 담당했다. 조지타운 대학교에서 MBA를 취득했다.",
+        bio: "테루코 네리키(Teruko Neriki)는 아시아 전역의 금융 자유와 비트코인 어답션에 집중해 온 비트코인 옹호자로, 특히 젊은 여성들에게 힘을 실어주는 일에 무게를 두고 있다. 그는 4년간 풀구르 벤처스(Fulgur Ventures)의 일본 사업을 이끌며 도쿄 비트코인 베이스(Tokyo Bitcoin Base)를 출범시키고 BITCOIN JAPAN 2025와 Bitcoin Tokyo 2024를 기획·운영했다.\n\n비트코인의 철학을 누구나 이해할 수 있게 만드는 일에 힘써 온 테루코는 lostinbitcoin.jp를 만들었으며, 『달러는 어떻게 세계를 지배하게 되었는가(The Bitcoin Standard)』, 『The Bullish Case for Bitcoin』, 『The Little Bitcoin Book』, 『Check Your Financial Privilege』를 일본어로 옮긴 번역가이기도 하다.\n\n커리어 초기에는 소니(Sony)에서 제품 마케팅과 사업 개발을 담당했다. 조지타운 대학교에서 MBA를 취득했다.\n\n2017년 일본은 전 세계 비트코인 거래량의 60% 가까이를 차지했고, 세계 최초로 비트코인 규제 체계를 마련한 나라가 되었다. 일본은 세계 비트코인의 수도가 될 운명처럼 보였다.\n\n이번 발표에서 테루코는 밋업 공동 주최, 책 번역, 1,300㎡ 규모의 허브 출범, 컨퍼런스 운영까지 8년간 현장에서 부딪혀 온 운영자로서 가감 없는 회고를 들려준다. 무엇이 통했고 무엇이 통하지 않았는지, 그리고 그 경험을 통해 교육·인프라·기관 규모 확장의 한계에 대해 무엇을 배웠는지를 이야기한다. 무엇보다 그가 결국 일본을 떠난 이유를 설명한다. 비트코인에 대한 믿음을 잃어서가 아니라, 잘못된 시장에서 잘못된 문제를 풀고 있었다는 사실을 깨달았기 때문이다.",
         lectureTitle:
-          "비트코인이 놓치고 있는 알파: 지금의 온보딩 모델은 왜 여성에게 통하지 않는가",
+          "일본에서 비트코인 어답션을 밀어붙이며: 통한 것과 통하지 않은 것",
       },
     },
   },
@@ -743,6 +742,30 @@ const items: SpeakerSource[] = [
         bio: "빌리조는 기술 투자자이자 작가입니다. 그는 개인 뉴스레터(빌리조의 생각)에서 비트코인과 기타 혁신적인 아이디어에 대한 글을 쓰고 있습니다. 이전에는 실리콘 밸리에서 사업 개발 담당자로 근무했습니다. 10년 이상 미국에서 생활한 후 한국으로 돌아와 주로 개인 투자자들을 위해 미국 기술 기업과 비트코인 트레저리 회사에 대한 글을 쓰고 있습니다.",
         lectureTitle: "키, 기업, 그리고 콜드카드: 비트코인 커스터디 다시 보기",
         session: "디베이트",
+      },
+    },
+  },
+  {
+    slug: "dea-rezkitha",
+    image: "/2026/speakers/Dea_Rezkitha.webp",
+    difficulty: "Low",
+    links: [
+      { type: "website", url: "https://www.fedi.xyz/" },
+      { type: "x", url: "https://x.com/dearezkitha" },
+    ],
+    i18n: {
+      en: {
+        title: "Dea Rezkitha",
+        subtitle: ["Fedi Master SEA"],
+        bio: "Dea Rezkitha is the Community Master of South East Asia for Fedi. Dea is the co-founder of the Indonesia Bitcoin Conference and the Indonesia Bitcoin Community. Prior to joining Fedi, she was also a Marketing Associate for South East Asia at Paxful and helped create content for the Indonesian local exchange's Bitcoin Education Academy. Dea has appeared on many podcasts, shows, and conferences to educate people about Bitcoin. In the past, Dea has experience in managing communication for global teams in Africa, Asia, and Latin America.",
+        lectureTitle:
+          "Whose Keys? The Third Option Between Self-Custody and the Exchange",
+      },
+      ko: {
+        title: "Dea Rezkitha",
+        subtitle: ["Fedi Master SEA"],
+        bio: "데아 레즈키타(Dea Rezkitha)는 페디(Fedi)의 동남아시아 커뮤니티 마스터다. 인도네시아 비트코인 컨퍼런스(Indonesia Bitcoin Conference)와 인도네시아 비트코인 커뮤니티(Indonesia Bitcoin Community)의 공동 창립자이기도 하다. 페디에 합류하기 전에는 팍스풀(Paxful)에서 동남아시아 마케팅 어소시에이트로 일했으며, 인도네시아 현지 거래소가 운영하는 비트코인 교육 아카데미(Bitcoin Education Academy)의 콘텐츠 제작에도 참여했다. 여러 팟캐스트와 방송, 컨퍼런스에 출연하며 사람들에게 비트코인을 알려 왔고, 과거에는 아프리카·아시아·라틴아메리카의 글로벌 팀을 대상으로 커뮤니케이션을 관리한 경험도 있다.",
+        lectureTitle: "키를 가진 사람. 거래소와 셀프커스터디 사이, 제 3의 선택지",
       },
     },
   },
