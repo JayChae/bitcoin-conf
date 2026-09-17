@@ -31,7 +31,14 @@ const sponsors: {
     },
   ],
   silver: [],
-  bronze: [],
+  bronze: [
+    {
+      name: "Fedi",
+      url: "https://www.fedi.xyz",
+      image: "/sponsors/fedi.webp",
+      alt: "Fedi",
+    },
+  ],
 } as const;
 
 export default sponsors;
