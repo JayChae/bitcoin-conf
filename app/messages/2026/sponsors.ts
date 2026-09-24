@@ -38,6 +38,17 @@ const sponsors: {
       image: "/sponsors/fedi.webp",
       alt: "Fedi",
     },
+    {
+      name: "Obscura VPN",
+      url: "https://obscura.com",
+      // 원본(~/Downloads/obscura_vpn.png)은 "obscura" 가 검은 글씨라 다크 배경에서 사라진다.
+      // 바깥과 이어진 검은 픽셀(글자·TV 외곽선·안테나)만 흰색으로 바꾸고 화면 속 눈·입과 주황 "vpn" 은 그대로 둔 무손실 webp.
+      image: "/sponsors/obscura.webp",
+      alt: "Obscura VPN",
+      // 박스 높이는 TV 아이콘이 꽉 채우고 글자 x-height 는 43% 뿐이라(Fedi 는 글자가 박스 높이 전체),
+      // 브론즈 기본 높이로는 Fedi 보다 작아 보인다 → 기본값의 약 1.3배.
+      customImageClass: "h-[26px] sm:h-[32px] md:h-[36px] lg:h-[44px]",
+    },
   ],
 } as const;
 

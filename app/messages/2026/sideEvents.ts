@@ -79,6 +79,37 @@ const items: SideEventSource[] = [
     },
   },
   {
+    slug: "meditation-for-bitcoiners",
+    image: "/2026/side-events/meditation-for-bitcoiners.webp",
+    cardImage: "/2026/side-events/meditation-for-bitcoiners-card.webp",
+    links: [
+      {
+        type: "website",
+        url: "https://m.booking.naver.com/booking/12/bizes/152204/items/8087427?entry=pll&isProgramBizItem=false&lang=ko&startDateTime=2026-11-07T00%3A00%3A00%2B09%3A00&theme=place",
+      },
+    ],
+    i18n: {
+      en: {
+        title: "Meditation for Bitcoiners",
+        host: "Master Cheon Sia",
+        date: "Sat, Nov 7, 2026 · 10:00 – 11:00",
+        shortDescription:
+          "Release inner tension and learn a calm, long-term mindset along with simple meditation techniques for living with bitcoin.",
+        description:
+          "Peace of mind and self-control are essential for any smart bitcoin investor. This session helps bitcoiners release their inner tension, learn a mindset for comfortable long-term holding along with a few simple meditation techniques, and share thoughts on what it means to live alongside bitcoin.\n\nSchedule: Saturday, November 7, 2026, 10:00 – 11:00\n\nVenue: Zen Therapy Natural Healing Center\n\nCapacity: 30 people\n\nFee: KRW 10,000",
+      },
+      ko: {
+        title: "비트코이너들을 위한 명상",
+        host: "마스터 천시아",
+        date: "2026년 11월 7일 (토) 10:00 – 11:00",
+        shortDescription:
+          "비트코이너들의 내적 긴장을 풀고, 편안한 장기투자를 위한 마인드셋과 간단한 명상법을 배워보는 시간.",
+        description:
+          "마음의 평화와 컨트롤은 스마트한 비트코인 투자자를 위해서는 필수 조건입니다. 이 시간은 비트코이너들의 내적 긴장을 풀고 편안한 장기투자를 위한 마인드셋과 간단한 명상방법들을 배워보며, 비트코인과 함께 살아가는 마인드셋에 대해 이야기를 나눠봅니다.\n\n일정: 2026년 11월 7일 (토) 오전 10:00 ~ 11:00\n\n장소: 젠테라피 네츄럴 힐링센터\n\n정원: 30명\n\n비용: 10,000원",
+      },
+    },
+  },
+  {
     slug: "after-party",
     image: "/2026/side-events/after-party.webp",
     cardImage: "/2026/side-events/after-party-card.webp",
