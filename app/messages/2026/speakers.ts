@@ -769,6 +769,52 @@ const items: SpeakerSource[] = [
       },
     },
   },
+  {
+    slug: "akasha",
+    image: "/2026/speakers/Akasha.webp",
+    difficulty: "Low",
+    links: [{ type: "website", url: "https://www.akashapay.co.kr" }],
+    i18n: {
+      en: {
+        title: "Akasha",
+        subtitle: ["CEO"],
+        bio: "CEO of Akasha\nBitcoin investor\nFounder of Zen Therapy Natural Healing Center\nEarth traveler & wellness expert",
+        lectureTitle:
+          "Nomad Travel Culture Platforms and the Potential of the Bitcoin Ecosystem",
+      },
+      ko: {
+        title: "Akasha",
+        subtitle: ["CEO"],
+        bio: "아카샤 CEO\n비트코인 투자자\n젠테라피 네츄럴 힐링센터 대표\n지구여행자 & 웰니스 전문가",
+        lectureTitle: "노마드 여행 문화 플랫폼과 비트코인 생태계의 가능성",
+      },
+    },
+  },
+  {
+    slug: "sea-of-corea",
+    image: "/2026/speakers/Sea_of_Corea.webp",
+    difficulty: "Medium",
+    links: [
+      { type: "website", url: "https://promenadecastle.com" },
+      { type: "x", url: "https://x.com/PromenadeCastle" },
+    ],
+    i18n: {
+      en: {
+        title: "Sea of Corea",
+        subtitle: ["Founder, BTCorea Grassroots Hash Force"],
+        bio: "About 'Sea of Corea Decentralized Mining Cooperative'\n\nWe are dedicated to decentralizing the Republic of Korea and rebuilding it as a Bitcoin network state. Through the Proof of Work of grassroots Bitcoin mining, we aggregate local hashrate and strengthen the decentralized network. By practicing self-custody, running nodes, and mining, we empower individuals to achieve true on-chain Bitcoin sovereignty and independence.",
+        lectureTitle:
+          "Decentralize the Bitcoin - From a Bitaxe to the Sea of Hash",
+      },
+      ko: {
+        title: "Sea of Corea",
+        subtitle: ["BTCorea Grassroots Hash Force 창립자"],
+        bio: "'Sea of Corea 탈중앙화 채굴 협동조합' 소개\n\n우리는 대한민국을 탈중앙화하고, 비트코인 네트워크 국가(Network State)로 재건하는 데 힘쓰고 있습니다. 풀뿌리 비트코인 채굴의 작업증명(Proof of Work)을 통해 지역의 해시레이트를 모으고, 탈중앙화된 네트워크를 강화합니다. 자기수탁(self-custody), 노드 운영, 채굴을 직접 실천하며, 개인이 진정한 온체인 비트코인 주권과 독립을 이룰 수 있도록 돕습니다.",
+        lectureTitle:
+          "비트코인을 탈중앙화하라 - 비트액스(Bitaxe)에서 해시의 바다로",
+      },
+    },
+  },
 ];
 
 // 랜딩 캐러셀은 앞 6명만 노출한다. 국내 관객이 바로 알아보는 연사를 이 순서로 앞세우고,
