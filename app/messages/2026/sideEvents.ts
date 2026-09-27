@@ -79,6 +79,34 @@ const items: SideEventSource[] = [
     },
   },
   {
+    slug: "run-for-hal",
+    image: "/2026/side-events/run-for-hal.webp",
+    cardImage: "/2026/side-events/run-for-hal-card.webp",
+    links: [
+      { type: "website", url: "https://bitcoinrunners.org/events/korea26/" },
+    ],
+    i18n: {
+      en: {
+        title: "Run For Hal (5km Social Run)",
+        host: "Bitcoin Runners × ALS Network",
+        date: "Sat, Nov 7, 2026 · Meet at 09:00",
+        shortDescription:
+          "A 5km social run/jog honouring Hal Finney and raising funds for ALS research. All paces welcome, no conference ticket required.",
+        description:
+          "The best way to enjoy Bitcoin Korea 2026: \"Running bitcoin.\"\n\nJoin us for Run For Hal, a 5km social run/jog honouring Hal Finney — the bitcoin pioneer who received the very first bitcoin transaction and faced ALS with remarkable courage. Pace doesn't matter. Seasoned runners and those who just want a light warm-up are equally welcome.\n\nAll you need is a pair of running shoes, comfortable workout clothes, and a bright smile.\n\nWant to turn your run into a fundraiser for ALS/MND research? You can ask for sponsorship or donate directly, and the ALS Network staff will be happy to help. For questions, contact Asher Garfinkel (agarfinkel@alsnetwork.org).\n\nThis is a free side event open to everyone (no conference ticket required). Please RSVP so we can prepare and keep you updated.\n\nRun free, stay sovereign, stack sats!\n\nSchedule: Saturday, November 7, 2026 · Meet at 09:00, start at 09:15\n\nVenue: Seoul (meeting point TBD)\n\nFee: Free",
+      },
+      ko: {
+        title: "Run For Hal (5km 소셜 런)",
+        host: "Bitcoin Runners × ALS Network",
+        date: "2026년 11월 7일 (토) 09:00 집결",
+        shortDescription:
+          "할 피니(Hal Finney)를 기리며 ALS 연구 기금을 모으는 5km 소셜 런. 페이스 무관, 컨퍼런스 티켓 없이 누구나 참여할 수 있습니다.",
+        description:
+          "비트코인 코리아 2026, 제대로 즐기는 방법: 'Running bitcoin'\n\n할 피니(Hal Finney)를 기리는 'Run For Hal' 5km 소셜 런/조깅에 함께해 주세요. 할 피니는 사상 최초의 비트코인 트랜잭션을 받은 비트코인 선구자이자, 루게릭병(ALS)에 놀라운 용기로 맞선 인물입니다. 페이스는 상관없습니다. 숙련된 러너든, 가볍게 몸을 풀고 싶은 분이든 모두 환영합니다.\n\n준비물은 러닝화, 편한 운동복, 그리고 밝은 미소면 충분합니다.\n\n여러분의 달리기를 ALS/MND 연구 기금 모금으로 이어가고 싶으신가요? 여기에서 후원을 요청하거나 직접 기부하실 수 있습니다. ALS Network 스태프가 기꺼이 도와드립니다. 문의는 Asher Garfinkel(agarfinkel@alsnetwork.org)에게 연락해 주세요.\n\n이 행사는 누구나 참여할 수 있는 무료 사이드 이벤트입니다(컨퍼런스 티켓 불필요). 행사 준비와 안내를 위해 꼭 참가 신청(RSVP)을 부탁드립니다.\n\n자유롭게 달리고, 주권을 지키고, 사토시를 모으자!\n\n달리는 속도는 자유롭습니다! 부담없이 참가해주세요!!\n함께 달리고! 함께 행사를 즐겨요!!\n\n일정: 2026년 11월 7일 (토) 오전 09:00 집결, 09:15 출발\n\n장소: 서울 (집결 장소 추후 안내)\n\n비용: 무료",
+      },
+    },
+  },
+  {
     slug: "meditation-for-bitcoiners",
     image: "/2026/side-events/meditation-for-bitcoiners.webp",
     cardImage: "/2026/side-events/meditation-for-bitcoiners-card.webp",
@@ -132,6 +160,32 @@ const items: SideEventSource[] = [
           "컨퍼런스 1일차 일정 종료 후, 연사와 참가자들이 한자리에 모이는 공식 애프터 파티.",
         description:
           "컨퍼런스 1일차가 끝난 토요일 저녁, 연사·참가자·한국 비트코인 커뮤니티가 한자리에 모이는 공식 애프터 파티가 열립니다. 네트워킹 파티 티켓 소지자라면 누구나 참여하실 수 있으며, 장소와 세부 라인업은 추후 안내 예정입니다.",
+      },
+    },
+  },
+  {
+    slug: "fedi-p2p-platform",
+    image: "/2026/side-events/fedi-p2p-platform.webp",
+    cardImage: "/2026/side-events/fedi-p2p-platform-card.webp",
+    links: [],
+    i18n: {
+      en: {
+        title: "Using a New Bitcoin P2P Platform",
+        host: "Dea Rezkitha (Fedi)",
+        date: "Sun, Nov 8, 2026 · 13:00 – 14:00",
+        shortDescription:
+          "Fedi introduces its new P2P platform in a private session where the team and users can talk directly.",
+        description:
+          "An introduction to Fedi's new P2P platform, and a chance for the company and its users to talk directly with one another. This is a private event — if you'd like to join, please reach out to admin@bitomun.com.\n\nSchedule: Sunday, November 8, 2026, 13:00 – 14:00\n\nVenue: Shared with registered attendees only\n\nCapacity: 10 people\n\nFee: Free",
+      },
+      ko: {
+        title: "새로운 비트코인 플랫폼 소개",
+        host: "Dea Rezkitha (Fedi)",
+        date: "2026년 11월 8일 (일) 13:00 – 14:00",
+        shortDescription:
+          "Fedi의 새로운 P2P 플랫폼을 소개하고, 기업과 유저가 직접 소통하는 프라이빗 세션.",
+        description:
+          "Fedi 기업의 새로운 플랫폼인 P2P 플랫폼을 소개하고 기업과 유저간의 소통이 이루어지는 자리입니다. 해당 이벤트는 프라이빗으로 진행하여 신청을 원할경우 admin@bitomun.com으로 연락 주세요.\n\n일정: 2026년 11월 8일 (일) 오후 01:00 ~ 02:00\n\n장소: 신청자에 한하여 공개\n\n정원: 10명\n\n비용: 무료",
       },
     },
   },
