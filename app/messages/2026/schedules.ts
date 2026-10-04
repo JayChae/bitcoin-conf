@@ -23,6 +23,8 @@ type Localized = Record<Locale, string>;
 export type GuestSpeaker = {
   name: Localized;
   affiliation?: Localized;
+  // public/ 기준 경로. 없으면 이름 첫 글자를 대신 보여준다.
+  image?: string;
 };
 
 export type Session = {
@@ -104,6 +106,7 @@ const days: Record<DayId, ScheduleDay> = {
           {
             name: { en: "Calvin", ko: "Calvin" },
             affiliation: { en: "NonceLab", ko: "논스랩" },
+            image: "/avatars/calvin.png",
           },
           "spector",
         ],

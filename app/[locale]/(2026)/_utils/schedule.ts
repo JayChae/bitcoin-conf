@@ -31,7 +31,7 @@ type FormatTraits = {
 
 const FORMAT_TRAITS: Record<SessionFormat, FormatTraits> = {
   opening: { inheritsTitle: false, divider: false, labeled: true },
-  keynote: { inheritsTitle: true, divider: false, labeled: true },
+  keynote: { inheritsTitle: true, divider: false, labeled: false },
   talk: { inheritsTitle: true, divider: false, labeled: false },
   panel: { inheritsTitle: false, divider: false, labeled: true },
   fireside: { inheritsTitle: false, divider: false, labeled: true },
@@ -106,7 +106,7 @@ export function getScheduleDayView(
             key: `guest-${entry.name.en}`,
             name: entry.name[locale],
             affiliation: entry.affiliation?.[locale] ?? null,
-            image: null,
+            image: entry.image ?? null,
             href: null,
           };
         }
