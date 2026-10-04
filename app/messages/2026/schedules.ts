@@ -105,7 +105,10 @@ const days: Record<DayId, ScheduleDay> = {
           "respect",
           {
             name: { en: "Calvin", ko: "Calvin" },
-            affiliation: { en: "NonceLab", ko: "논스랩" },
+            affiliation: {
+              en: "Open Source Project, UTREEXO",
+              ko: "오픈소스 프로젝트, UTREEXO",
+            },
             image: "/avatars/calvin.png",
           },
           "spector",
