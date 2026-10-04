@@ -1,6 +1,7 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import Section from "../Section";
+import ViewAllLink from "../ViewAllLink";
 import VenueCard from "./VenueCard";
 import { venueMapUrl } from "@/app/messages/2026/venues";
 
@@ -64,6 +65,8 @@ export default async function LocationSection() {
           ]}
         />
       </div>
+
+      <ViewAllLink href="/schedule" label={t("viewSchedule")} />
     </Section>
   );
 }

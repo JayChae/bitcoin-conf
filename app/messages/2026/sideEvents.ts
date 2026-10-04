@@ -164,6 +164,32 @@ const items: SideEventSource[] = [
     },
   },
   {
+    slug: "bitcoin-classical-music",
+    image: "/2026/side-events/bitcoin-classical-music.webp",
+    cardImage: "/2026/side-events/bitcoin-classical-music-card.webp",
+    links: [],
+    i18n: {
+      en: {
+        title: "Bitcoin & Classical Music",
+        host: "Bitcoin Korea Conference",
+        date: "Sun, Nov 8, 2026 · 12:30 – 13:00",
+        shortDescription:
+          "A classical trio performance over lunch — step away from the conference buzz and rest your mind with music. Free for Day-2 ticket holders.",
+        description:
+          "A Classical Trio with Bitcoin\n\nStep away from the buzz of the conference for a moment and give your mind a rest with some music.\n\nAs a special side event of the Bitcoin Korea Conference, a classical string trio performance will take place.\n\nThrough the beautiful melodies of violin, viola, and cello, experience the harmony and inspiration that classical music brings, alongside the new world bitcoin is building.\n\nSince this is a short performance during lunch, we recommend being seated at the venue by 12:30 if you plan to attend.\n\nEnjoy a delicious lunch and a moment of music as you continue your conference journey.\n\nSchedule: Sunday, November 8, 2026, 12:30 – 13:00\n\nVenue: Myeongdong Community House Masil, 2F\n\nProgram: Classical music trio performance\n\nAdmission: Free for Day-2 ticket holders only",
+      },
+      ko: {
+        title: "Bitcoin & Classical Music",
+        host: "Bitcoin Korea Conference",
+        date: "2026년 11월 8일 (일) 12:30 – 13:00",
+        shortDescription:
+          "비트코인과 함께하는 클래식 3중주. 점심시간, 컨퍼런스의 열기에서 잠시 벗어나 음악과 함께 쉬어가는 시간. Day-2 티켓 소지자 무료.",
+        description:
+          "비트코인과 함께하는 클래식 3중주\n\n컨퍼런스의 열기에서 잠시 벗어나, 음악과 함께 마음을 쉬어가는 시간을 가져보세요.\n\nBitcoin Korea Conference의 특별한 사이드 이벤트로 클래식 현악 3중주 공연이 진행됩니다.\n\n바이올린, 비올라, 첼로가 만들어내는 아름다운 선율을 통해 비트코인이 만들어가는 새로운 세계와 클래식 음악이 선사하는 조화와 영감을 함께 경험해보세요.\n\n점심시간에 진행되는 짧은 공연인 만큼, 공연을 관람하실 분들은 12:30까지 행사장에 미리 자리해 주시기를 권장드립니다.\n\n맛있는 점심과 함께 잠시 음악을 즐기며 컨퍼런스의 여정을 이어가 보세요.\n\n일시: 2026년 11월 8일 (일) 12:30 – 13:00\n\n장소: 명동 커뮤니티 하우스 마실 2층\n\n프로그램: 클래식 음악 3중주 공연\n\n입장비: Day-2 티켓 소지자에 한하여 무료",
+      },
+    },
+  },
+  {
     slug: "fedi-p2p-platform",
     image: "/2026/side-events/fedi-p2p-platform.webp",
     cardImage: "/2026/side-events/fedi-p2p-platform-card.webp",
@@ -186,6 +212,39 @@ const items: SideEventSource[] = [
           "Fedi의 새로운 P2P 플랫폼을 소개하고, 기업과 유저가 직접 소통하는 프라이빗 세션.",
         description:
           "Fedi 기업의 새로운 플랫폼인 P2P 플랫폼을 소개하고 기업과 유저간의 소통이 이루어지는 자리입니다. 해당 이벤트는 프라이빗으로 진행하여 신청을 원할경우 admin@bitomun.com으로 연락 주세요.\n\n일정: 2026년 11월 8일 (일) 오후 01:00 ~ 02:00\n\n장소: 신청자에 한하여 공개\n\n정원: 10명\n\n비용: 무료",
+      },
+    },
+  },
+  {
+    slug: "diy-signing-device-workshop",
+    image: "/2026/side-events/diy-signing-device-workshop.webp",
+    cardImage: "/2026/side-events/diy-signing-device-workshop-card.webp",
+    links: [
+      {
+        type: "website",
+        url: "https://bitcoincenterseoul.com/ko/programs/bitcoin-developer-hands-on-workshop",
+      },
+    ],
+    i18n: {
+      en: {
+        title: "Build Your Own Bitcoin Signing Device: DIY Hands-on Workshop",
+        host: "Bitcoin Center Seoul × DIYbitcoin (@diybitcoin)",
+        date: "Tue, Nov 10, 2026 · 19:00 – 21:00",
+        theme: "Don't Trust, Verify — The World of DIY Bitcoin",
+        shortDescription:
+          "Compare open-source signing devices, then flash firmware onto a board yourself using your own laptop.",
+        description:
+          "Explore the different approaches open-source signing devices take to balance security and usability. After the walkthrough, participants install firmware themselves using their own laptops.\n\nProgram\n\n• Intro to the DIY bitcoin ecosystem: Look at DIY projects across wallets, nodes, miners, and signing devices, and see how the principle of \"Don't trust, verify\" connects to open-source code.\n\n• Comparing open-source signing devices: Compare Specter-DIY, SeedSigner, Krux, and Jade by board, firmware, storage approach, and how they use QR codes.\n\n• Firmware installation lab: In teams, install and boot Kern and KISS Signer on a board. If boards run out, install Satochip on a blank smartcard and set up a wallet in Sparrow.\n\n• Optional advanced lab: Send and receive on signet (testnet), and try silent payments with KISS Signer and kiss-bdk.\n\nOn-site prizes: Active participants in the lab will receive an ESP32-P4 board (5 in total).\n\nWho it's for\n\n• Those who want to learn how wallets work by getting hands-on with DIY signing devices\n• Those curious about the board and firmware differences between open-source signing devices\n• Those who want to contribute to DIY projects through guides, translations, or bug reports\n\nAbout the host: DIYbitcoin promotes DIY bitcoin projects and helps developers secure funding. It shares learning resources in its Telegram community and handles promotion for the Krux team.\n\nSchedule: Tuesday, November 10, 2026, 19:00 – 21:00 (KST)\n\nVenue: Bitcoin Center Seoul (2F, 30 Sinchon-ro 2an-gil, Mapo-gu, Seoul · 3 min walk from Hongik Univ. Station Exit 6)\n\nFee: 15,000 sats\n\nWhat to bring (required): Laptop, power bank, USB-C cable",
+      },
+      ko: {
+        title: "직접 만드는 비트코인 서명 장치, DIY 실습 워크숍",
+        host: "비트코인센터 서울 × DIYbitcoin (@diybitcoin)",
+        date: "2026년 11월 10일 (화) 19:00 – 21:00",
+        theme: "신뢰하지 말고 검증하라, DIY 비트코인의 세계",
+        shortDescription:
+          "오픈소스 서명 장치들을 비교해 보고, 자기 노트북으로 보드에 펌웨어를 직접 설치해 보는 실습 워크숍.",
+        description:
+          "여러 오픈소스 서명 장치가 보안과 사용성을 위해 각각 어떤 방식을 택했는지 알아봅니다. 설명을 들은 뒤, 참가자가 자기 노트북으로 펌웨어를 직접 설치해 봅니다.\n\n프로그램\n\n• DIY 비트코인 생태계 소개: 지갑, 노드, 채굴기, 서명 장치까지 DIY 프로젝트를 살펴보고, \"신뢰하지 말고 검증하라\"는 원칙이 공개된 코드와 어떻게 이어지는지 알아봅니다.\n\n• 오픈소스 서명 장치 비교: Specter-DIY, SeedSigner, Krux, Jade를 보드, 펌웨어, 저장 방식, QR 활용 방식 기준으로 비교합니다.\n\n• 펌웨어 설치 실습: 팀별로 보드에 Kern과 KISS Signer를 설치하고 부팅합니다. 보드가 떨어지면 빈 스마트카드에 Satochip을 설치하고 Sparrow에서 지갑을 설정합니다.\n\n• 선택 심화 실습: 시그넷(테스트넷)에서 송금과 수신을 해 보고, KISS Signer와 kiss-bdk로 사일런트 페이먼트를 체험합니다.\n\n현장 경품: 실습에 적극적으로 참여한 분께 ESP32-P4 보드를 드립니다(총 5개).\n\n추천 대상\n\n• DIY 서명 장치를 직접 다뤄 보며 지갑의 작동 원리를 알고 싶은 분\n• 오픈소스 서명 장치들의 보드와 펌웨어 차이가 궁금한 분\n• 가이드 작성, 번역, 버그 제보로 DIY 프로젝트에 기여하고 싶은 분\n\n진행자 소개: DIYbitcoin은 DIY 비트코인 프로젝트를 알리고 개발자의 후원금 확보를 돕습니다. 텔레그램 커뮤니티에서 학습 자료를 공유하고, Krux 팀의 홍보를 맡고 있습니다.\n\n일시: 2026년 11월 10일 (화) 19:00 – 21:00 (KST)\n\n장소: 비트코인센터 서울 (서울 마포구 신촌로2안길 30, 2층 · 홍대입구역 6번 출구 도보 3분)\n\n참가비: 15,000 sats\n\n준비물(필수): 노트북, 보조배터리, USB-C 케이블",
       },
     },
   },

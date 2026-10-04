@@ -62,13 +62,13 @@ const items: SpeakerSource[] = [
         title: "Fabian Jahr",
         subtitle: ["Bitcoin Open Source Developer"],
         bio: "Fabian Jahr is a Berlin-based Bitcoin Core (the standard reference software for the Bitcoin network) developer. His work spans a wide range of efforts to improve the stability and scalability of the Bitcoin protocol — from research on Schnorr signature–based technologies, to in-depth review of critical pull requests, to development of ASMap (a technology that improves the geographic and network decentralization of nodes). In recognition of his research, he was recently selected as a CISA (Cross-Input Signature Aggregation, a Bitcoin signature aggregation technique that can significantly improve transaction efficiency) Research Fellow at the Human Rights Foundation (HRF), and published a 38-page industry report analyzing the impact CISA could have on the Bitcoin ecosystem. At this conference, he will draw on this experience to discuss recent developments in Bitcoin Core, and what the next generation of protocol upgrades — including CISA and Schnorr signatures — means for Bitcoin.",
-        lectureTitle: "",
+        lectureTitle: "CISA & Friends",
       },
       ko: {
         title: "Fabian Jahr",
         subtitle: ["비트코인 오픈소스 개발자"],
         bio: "파비안 야르(Fabian Jahr)는 베를린에 기반을 두고 활동하는 비트코인 코어(Bitcoin Core, 비트코인 네트워크의 표준 레퍼런스 소프트웨어) 개발자다. 그는 슈노어(Schnorr) 서명 기반 기술 연구부터 핵심 PR(Pull Request)에 대한 심층 리뷰, ASMap(노드 네트워크 분산도 향상 기술) 개발에 이르기까지, 비트코인 프로토콜의 안정성과 확장성을 끌어올리는 작업을 폭넓게 이어 오고 있다. 이러한 연구 역량을 인정받아 최근에는 인권재단(HRF)의 CISA(Cross-Input Signature Aggregation, 트랜잭션 효율을 크게 향상시킬 수 있는 비트코인 서명 집계 기술) 연구 펠로우로 선정되어, CISA가 비트코인 생태계에 미칠 영향을 분석한 38페이지 분량의 산업 보고서를 발표하기도 했다. 이번 컨퍼런스에서는 이러한 경험을 바탕으로 비트코인 코어의 최근 개발 동향, 그리고 CISA와 슈노어 서명을 비롯한 차세대 프로토콜 업그레이드가 갖는 의미에 대해 이야기할 예정이다.",
-        lectureTitle: "",
+        lectureTitle: "CISA & Friends",
       },
     },
   },
@@ -128,13 +128,15 @@ const items: SpeakerSource[] = [
         title: "Adam Gibson",
         subtitle: ["Individual Contributor"],
         bio: "Adam Gibson (aka Waxwing) is a Bitcoin developer and privacy researcher best known for his work on JoinMarket, one of Bitcoin's most prominent CoinJoin implementations. He is one of the most respected voices in Bitcoin privacy and fungibility.",
-        lectureTitle: "",
+        lectureTitle:
+          "LN-GAP and trustless offchain bitcoin games ... or 'Make Bitcoin Fun Again'",
       },
       ko: {
         title: "Adam Gibson",
         subtitle: ["개인 기여자"],
         bio: "Adam Gibson(Waxwing)은 비트코인 개발자이자 프라이버시 연구자로, 비트코인의 가장 대표적인 CoinJoin 구현체인 JoinMarket으로 잘 알려져 있습니다. 비트코인 프라이버시와 대체가능성 분야에서 가장 존경받는 목소리 중 하나입니다.",
-        lectureTitle: "",
+        lectureTitle:
+          "LN-GAP과 신뢰가 필요 없는 오프체인 비트코인 게임 … 혹은 '비트코인을 다시 재미있게'",
       },
     },
   },
@@ -179,13 +181,13 @@ const items: SpeakerSource[] = [
         title: "Stephan Livera",
         subtitle: ["Bitcoin & Economics Podcaster"],
         bio: "Stephan Livera is the host of the Stephan Livera Podcast (SLP), a show that dives deep into the economics and technology of Bitcoin. A longtime student and advocate of the Austrian school (an economic tradition emphasizing free markets and sound money), he is listed on the Mises Institute's official profile page and has consistently worked to interpret Bitcoin through an Austrian-economics lens. SLP has surpassed 6 million cumulative downloads and holds an average rating of 4.9 across more than 700 reviews worldwide — placing it in the top 0.5% of global podcasts and establishing it as one of the flagship podcasts in the Bitcoin space. On the strength of that influence, he is a regular speaker at major Bitcoin conferences around the world. At this conference, drawing on the rich body of interviews he has accumulated over the years, he will share insights on the economic and technical currents in Bitcoin and the latest developments in global markets.",
-        lectureTitle: "",
+        lectureTitle: "How to Prepare for the Coming Quantum Computing Era",
       },
       ko: {
         title: "Stephan Livera",
         subtitle: ["비트코인과 경제 전문 팟캐스터"],
         bio: "스테판 리베라(Stephan Livera)는 비트코인 경제와 기술을 깊이 있게 다루는 'Stephan Livera Podcast(SLP)'의 진행자다. 그는 오스트리안 학파(자유시장과 건전화폐를 강조하는 경제학파)의 오랜 학습자이자 옹호자로, 미제스 연구소(Mises Institute)에도 정식 프로필이 등재되어 있으며, 비트코인을 오스트리안 경제학의 관점에서 해석하는 작업을 꾸준히 이어 오고 있다. 그가 진행하는 SLP는 누적 다운로드 600만 회를 넘어섰고, 전 세계 700여 개의 평점에서 평균 4.9점을 받으며 글로벌 팟캐스트 상위 0.5%, 비트코인 분야의 대표 팟캐스트 중 하나로 자리 잡았다. 이러한 영향력을 바탕으로 그는 전 세계 주요 비트코인 컨퍼런스에 단골 연사로 무대에 오르고 있다. 이번 컨퍼런스에서도 그동안 쌓아 온 풍부한 인터뷰 경험을 바탕으로, 비트코인의 경제적·기술적 흐름과 글로벌 시장의 최신 동향에 대한 통찰을 전할 예정이다.",
-        lectureTitle: "",
+        lectureTitle: "다가오는 양자컴퓨팅 시대, 어떻게 대비할 것인가",
       },
     },
   },
@@ -270,13 +272,13 @@ const items: SpeakerSource[] = [
         title: "Keypleb",
         subtitle: ["Founder, Code Orange"],
         bio: "Keypleb is the founder of Code Orange, a Bitcoin education initiative focused on cultivating the next generation of Bitcoiners, developers, and community leaders across Asia. With a practical, builder-centric approach, Code Orange runs monthly Bitcoin workshops, study cohorts, and developer fellowships that help people build self-custody, payments, and privacy tools themselves.\n\nBefore founding Code Orange, Keypleb co-founded Bitcoin House Bali and actively contributed to growing Indonesia's local Bitcoin community through hands-on meetups and grassroots education. Operating pseudonymously in the true cypherpunk spirit, Keypleb focuses on privacy and censorship resistance, and through the fellowship program works to open paths for Bitcoiners to learn, build, and contribute to Bitcoin Open Source Software.",
-        lectureTitle: "",
+        lectureTitle: "Bitcoiner School - from node runner to Bitcoin dev",
       },
       ko: {
         title: "Keypleb",
         subtitle: ["Code Orange 창립자"],
         bio: "키플렙(Keypleb)은 코드 오렌지(Code Orange)의 창립자다. 코드 오렌지는 아시아 전역에서 차세대 비트코이너, 개발자, 커뮤니티 리더를 길러내는 데 초점을 둔 비트코인 교육 이니셔티브다. 코드 오렌지는 실용적이고 빌더 중심적인 접근을 바탕으로, 사람들이 자기수탁(self-custody)·결제·프라이버시 도구를 직접 만들 수 있도록 돕는 월간 비트코인 워크숍, 스터디 코호트, 개발자 펠로우십을 운영한다.\n\n코드 오렌지를 설립하기 전, 키플렙은 비트코인 하우스 발리(Bitcoin House Bali)의 공동 설립에 참여했으며, 직접 발로 뛰는 밋업과 풀뿌리 교육을 통해 인도네시아 현지 비트코인 커뮤니티를 키우는 데 적극적으로 기여했다. 진정한 사이퍼펑크 정신에 따라 가명으로 활동하는 키플렙은 프라이버시와 검열 저항에 집중하고 있으며, 펠로우십 프로그램을 통해 비트코이너들이 비트코인 오픈소스 소프트웨어(Bitcoin Open Source Software)를 배우고, 만들고, 기여할 수 있는 길을 열어주는 데 힘쓰고 있다.",
-        lectureTitle: "",
+        lectureTitle: "비트코이너 스쿨 — 노드 러너에서 비트코인 개발자까지",
       },
     },
   },
@@ -293,13 +295,13 @@ const items: SpeakerSource[] = [
         title: "Jimmy Kostro",
         subtitle: ["Founder, Bitcoin Learning Center"],
         bio: "Jimmy Kostro is an American entrepreneur and U.S. Marine Corps veteran, and a passionate Bitcoin advocate based in Chiang Mai, Thailand. He co-founded two logistics companies and grew them into multi-million-dollar businesses spanning 24 markets across the United States. A steadfast Bitcoiner since 2017, Kostro has devoted himself to building one of Asia's most active Bitcoin hubs, and has become a leading voice in showing how Bitcoin can be a powerful tool for financial freedom and sovereignty — especially for people living under authoritarian regimes in Southeast Asia.\n\nHe serves as chairman of The Kostro Foundation, a U.S. 501(c)(3) non-profit that provides education and Bitcoin literacy programs to underserved communities in Thailand. A passionate ultramarathon runner who has competed in races around the world, Kostro loves to draw a powerful parallel between endurance on the trail and Bitcoin's long-term resilience. As a featured speaker at major events including Bitcoin MENA, Bitcoin Vegas, BTC Prague, and Bitcoin Asia, he brings a compelling, freedom-focused perspective to every stage.",
-        lectureTitle: "Bitcoin in Southeast Asia: Why It Matters More Here",
+        lectureTitle: "Building Asia's Largest Freedom Brands",
       },
       ko: {
         title: "Jimmy Kostro",
         subtitle: ["Bitcoin Learning Center 창립자"],
         bio: "지미 코스트로(Jimmy Kostro)는 미 해병대 출신의 미국인 기업가이자 열정적인 비트코인 옹호자로, 태국 치앙마이를 거점으로 활동하고 있다. 그는 물류 회사 두 곳을 공동 창업해 미국 24개 시장에 걸친 수백만 달러 규모의 사업으로 키워냈다. 2017년부터 한결같은 비트코이너로 활동해 온 코스트로는 아시아에서 가장 활발한 비트코인 허브를 구축하는 데 전념해 왔으며, 특히 동남아시아의 권위주의 체제 아래 살아가는 사람들에게 비트코인이 재정적 자유와 주권을 실현하는 강력한 도구임을 알리는 대표적인 목소리로 활동하고 있다.\n\n그는 코스트로 재단(The Kostro Foundation)의 이사장을 맡고 있다. 이 재단은 미국 세법상 501(c)(3) 비영리 단체로, 태국의 소외 계층 커뮤니티에 교육과 비트코인 이해 교육 프로그램을 제공하고 있다. 세계 곳곳의 대회에 출전해 온 열정적인 울트라마라톤 러너이기도 한 코스트로는, 트레일 위에서의 인내와 비트코인의 장기적 회복력 사이에서 강렬한 공통점을 즐겨 끌어낸다. 비트코인 MENA, 비트코인 베이거스, BTC 프라하, 비트코인 아시아 등 주요 행사의 주목받는 연사로서, 그는 무대마다 자유에 초점을 맞춘 설득력 있는 관점을 펼쳐 보인다.",
-        lectureTitle: "동남아시아의 비트코인: 왜 이곳에서 더 중요한가",
+        lectureTitle: "아시아 최대의 프리덤 브랜드를 만들다",
       },
     },
   },
@@ -812,6 +814,123 @@ const items: SpeakerSource[] = [
         bio: "'Sea of Corea 탈중앙화 채굴 협동조합' 소개\n\n우리는 대한민국을 탈중앙화하고, 비트코인 네트워크 국가(Network State)로 재건하는 데 힘쓰고 있습니다. 풀뿌리 비트코인 채굴의 작업증명(Proof of Work)을 통해 지역의 해시레이트를 모으고, 탈중앙화된 네트워크를 강화합니다. 자기수탁(self-custody), 노드 운영, 채굴을 직접 실천하며, 개인이 진정한 온체인 비트코인 주권과 독립을 이룰 수 있도록 돕습니다.",
         lectureTitle:
           "비트코인을 탈중앙화하라 - 비트액스(Bitaxe)에서 해시의 바다로",
+      },
+    },
+  },
+  {
+    slug: "anmol-sharma",
+    image: "/2026/speakers/Anmol_Sharma.webp",
+    difficulty: "High",
+    links: [
+      { type: "website", url: "https://bitshala.org/" },
+      { type: "x", url: "https://x.com/theanmolsharma_" },
+    ],
+    i18n: {
+      en: {
+        title: "Anmol Sharma",
+        subtitle: ["Head of Engineering, Bitshala", "Lead Developer, Shroud"],
+        bio: "I am Head of Engineering at Bitshala, where we're training the next generation of Bitcoin open source developers in India. I'm also the lead developer of Shroud, a bitcoin wallet that puts silent payments in your pocket. I firmly believe that Bitcoin should be open, understandable, and in the hands of the people who use it.",
+        lectureTitle:
+          "A Pathshala for Bitcoin: Growing Builders in India (and What They've Built)",
+      },
+      ko: {
+        title: "Anmol Sharma",
+        subtitle: ["Bitshala 엔지니어링 총괄", "Shroud 리드 개발자"],
+        bio: "저는 비트샬라(Bitshala)의 엔지니어링 총괄로, 인도에서 차세대 비트코인 오픈소스 개발자를 양성하고 있습니다. 또한 사일런트 페이먼트(Silent Payments)를 주머니 속에서 쓸 수 있게 해 주는 비트코인 지갑 슈라우드(Shroud)의 리드 개발자이기도 합니다. 저는 비트코인이 개방적이고, 이해하기 쉬우며, 그것을 사용하는 사람들의 손에 있어야 한다고 굳게 믿습니다.",
+        lectureTitle:
+          "비트코인 파트샬라(Pathshala, 학교): 인도에서 빌더를 키우는 일 (그리고 그들이 만든 것들)",
+      },
+    },
+  },
+  {
+    slug: "paperpsych",
+    image: "/2026/speakers/Paperpsych.webp",
+    difficulty: "High",
+    links: [
+      { type: "x", url: "https://x.com/_paperpsych" },
+      { type: "website", url: "https://bitshala.org/" },
+    ],
+    i18n: {
+      en: {
+        title: "Paperpsych",
+        subtitle: [
+          "Curator, Bitshala Bitspace",
+          "Design and Events Lead, Bitshala",
+        ],
+        bio: "Paperpsych (Paper) works on community, education, and design at Bitshala, a Bitcoin education initiative in India that trains people to work on Bitcoin open source.\n\nPaper is the curator and community manager of Bitshala Bitspace, India's first Bitcoin-only hackerspace, which opened in Bengaluru in 2024. Since early 2023, he has been helping build India's Bitcoin ecosystem from the ground up, and he is one of the main organizers of the BOSS Summit and the BitPlebs Summit in India.\n\nPaper also conceptualized and is building HODL (Hands-On Design Lab), a cohort-based education initiative that brings designers into Bitcoin FOSS. He builds the rooms, programs, and pathways that turn curiosity into contributions.",
+        lectureTitle: "Bitshala: Building India's Bitcoin Developer Ecosystem",
+      },
+      ko: {
+        title: "Paperpsych",
+        subtitle: ["Bitshala Bitspace 큐레이터", "Bitshala 디자인·이벤트 리드"],
+        bio: "페이퍼사이크(Paperpsych, 줄여서 Paper)는 사람들이 비트코인 오픈소스에서 일할 수 있도록 교육하는 인도의 비트코인 교육 이니셔티브 비트샬라(Bitshala)에서 커뮤니티, 교육, 디자인을 맡고 있다.\n\n그는 2024년 벵갈루루에 문을 연 인도 최초의 비트코인 온리(Bitcoin-only) 해커스페이스, 비트샬라 비트스페이스(Bitshala Bitspace)의 큐레이터이자 커뮤니티 매니저다. 2023년 초부터 인도의 비트코인 생태계를 밑바닥부터 일구는 데 힘을 보태 왔으며, 인도에서 열리는 BOSS 서밋(BOSS Summit)과 비트플렙스 서밋(BitPlebs Summit)의 주요 기획자 중 한 명이다.\n\n또한 디자이너를 비트코인 FOSS(자유·오픈소스 소프트웨어)로 이끄는 코호트 기반 교육 이니셔티브 HODL(Hands-On Design Lab)을 구상해 직접 만들어 가고 있다. 그는 호기심이 실제 기여로 이어지도록 공간과 프로그램, 그리고 그 길을 만든다.",
+        lectureTitle: "Bitshala: 인도의 비트코인 개발자 생태계를 만들다",
+      },
+    },
+  },
+  {
+    slug: "stark",
+    image: "/2026/speakers/Stark.webp",
+    difficulty: "High",
+    links: [
+      { type: "website", url: "https://openswap.live" },
+      { type: "x", url: "https://x.com/stark21m" },
+    ],
+    i18n: {
+      en: {
+        title: "Stark",
+        subtitle: ["Protocol Engineer, Openswap"],
+        bio: "I have been in the Bitcoin space since 2021, starting as a participant in the open source development program Summer of Bitcoin. I have contributed to multiple open source projects since. A couple of years ago I started diving into the privacy and fungibility area of Bitcoin which led me to Coinswap (now Openswap, https://github.com/citadel-foss/openswap). Since then I have been contributing to this project which is supported by Spiral and OpenSats. Now I lead protocol development for the project.",
+        lectureTitle: "Private and Decentralized Atomic Swaps on Bitcoin",
+      },
+      ko: {
+        title: "Stark",
+        subtitle: ["Openswap 프로토콜 엔지니어"],
+        bio: "저는 2021년 오픈소스 개발 프로그램 서머 오브 비트코인(Summer of Bitcoin)에 참가하면서 비트코인 업계에 발을 들였고, 이후 여러 오픈소스 프로젝트에 기여해 왔습니다. 몇 년 전부터 비트코인의 프라이버시와 대체 가능성(fungibility) 분야를 깊이 파고들기 시작했고, 그 과정에서 코인스왑(Coinswap, 현 오픈스왑 Openswap, https://github.com/citadel-foss/openswap)을 만나게 되었습니다. 그때부터 스파이럴(Spiral)과 오픈샛츠(OpenSats)의 후원을 받는 이 프로젝트에 기여해 왔으며, 현재는 프로젝트의 프로토콜 개발을 이끌고 있습니다.",
+        lectureTitle: "비트코인 위의 프라이빗하고 탈중앙화된 아토믹 스왑",
+      },
+    },
+  },
+  {
+    slug: "veronika-dorson",
+    image: "/2026/speakers/Veronika_Dorson.webp",
+    difficulty: "High",
+    links: [
+      { type: "website", url: "https://dorsonveronika.framer.website/" },
+      { type: "x", url: "https://x.com/veronika_dorson" },
+    ],
+    i18n: {
+      en: {
+        title: "Veronika Dorson",
+        subtitle: ["Open Source Designer, Zeus"],
+        bio: "Veronika Dorson is a UX/UI and product designer, now focused on Bitcoin. She has contributed design work to Cashu, OpenPleb, Bitshala, and is currently working on Zeus.\n\nVeronika is also the co-founder of HODL (Hands-On Design Lab), a cohort-based education initiative that brings designers into Bitcoin. Having shipped real open source design work in Bitcoin, she teaches designers from experience instead of theory.",
+        lectureTitle: "Does Bitcoin Need Designers? Well, No.",
+      },
+      ko: {
+        title: "Veronika Dorson",
+        subtitle: ["Zeus 오픈소스 디자이너"],
+        bio: "베로니카 도르손(Veronika Dorson)은 현재 비트코인에 집중하고 있는 UX/UI·프로덕트 디자이너다. 캐슈(Cashu), 오픈플렙(OpenPleb), 비트샬라(Bitshala)에 디자인 작업으로 기여했으며, 지금은 제우스(Zeus)에서 일하고 있다.\n\n또한 디자이너를 비트코인으로 이끄는 코호트 기반 교육 이니셔티브 HODL(Hands-On Design Lab)의 공동 창립자이기도 하다. 비트코인 오픈소스에서 실제 디자인 작업을 출시해 온 경험을 바탕으로, 이론이 아닌 경험으로 디자이너들을 가르친다.",
+        lectureTitle: "비트코인에 디자이너가 필요할까요? 글쎄요, 아니요.",
+      },
+    },
+  },
+  {
+    slug: "davidson",
+    image: "/2026/speakers/Davidson.webp",
+    difficulty: "High",
+    links: [{ type: "website", url: "https://blog.dlsouza.lol" }],
+    i18n: {
+      en: {
+        title: "Davidson",
+        subtitle: ["Vinteum Grantee"],
+        bio: "Bitcoin OSS dev working on Utreexo and Floresta for four years.",
+        lectureTitle: "Speeding up Bitcoin IBD",
+      },
+      ko: {
+        title: "Davidson",
+        subtitle: ["Vinteum 그랜티"],
+        bio: "4년째 유트렉소(Utreexo)와 플로레스타(Floresta)를 개발하고 있는 비트코인 오픈소스 개발자.",
+        lectureTitle: "비트코인 IBD(초기 블록 다운로드) 가속하기",
       },
     },
   },
