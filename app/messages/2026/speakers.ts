@@ -815,6 +815,123 @@ const items: SpeakerSource[] = [
       },
     },
   },
+  {
+    slug: "anmol-sharma",
+    image: "/2026/speakers/Anmol_Sharma.webp",
+    difficulty: "High",
+    links: [
+      { type: "website", url: "https://bitshala.org/" },
+      { type: "x", url: "https://x.com/theanmolsharma_" },
+    ],
+    i18n: {
+      en: {
+        title: "Anmol Sharma",
+        subtitle: ["Head of Engineering, Bitshala", "Lead Developer, Shroud"],
+        bio: "I am Head of Engineering at Bitshala, where we're training the next generation of Bitcoin open source developers in India. I'm also the lead developer of Shroud, a bitcoin wallet that puts silent payments in your pocket. I firmly believe that Bitcoin should be open, understandable, and in the hands of the people who use it.",
+        lectureTitle:
+          "A Pathshala for Bitcoin: Growing Builders in India (and What They've Built)",
+      },
+      ko: {
+        title: "Anmol Sharma",
+        subtitle: ["Bitshala 엔지니어링 총괄", "Shroud 리드 개발자"],
+        bio: "저는 비트샬라(Bitshala)의 엔지니어링 총괄로, 인도에서 차세대 비트코인 오픈소스 개발자를 양성하고 있습니다. 또한 사일런트 페이먼트(Silent Payments)를 주머니 속에서 쓸 수 있게 해 주는 비트코인 지갑 슈라우드(Shroud)의 리드 개발자이기도 합니다. 저는 비트코인이 개방적이고, 이해하기 쉬우며, 그것을 사용하는 사람들의 손에 있어야 한다고 굳게 믿습니다.",
+        lectureTitle:
+          "비트코인 파트샬라(Pathshala, 학교): 인도에서 빌더를 키우는 일 (그리고 그들이 만든 것들)",
+      },
+    },
+  },
+  {
+    slug: "paperpsych",
+    image: "/2026/speakers/Paperpsych.webp",
+    difficulty: "High",
+    links: [
+      { type: "x", url: "https://x.com/_paperpsych" },
+      { type: "website", url: "https://bitshala.org/" },
+    ],
+    i18n: {
+      en: {
+        title: "Paperpsych",
+        subtitle: [
+          "Curator, Bitshala Bitspace",
+          "Design and Events Lead, Bitshala",
+        ],
+        bio: "Paperpsych (Paper) works on community, education, and design at Bitshala, a Bitcoin education initiative in India that trains people to work on Bitcoin open source.\n\nPaper is the curator and community manager of Bitshala Bitspace, India's first Bitcoin-only hackerspace, which opened in Bengaluru in 2024. Since early 2023, he has been helping build India's Bitcoin ecosystem from the ground up, and he is one of the main organizers of the BOSS Summit and the BitPlebs Summit in India.\n\nPaper also conceptualized and is building HODL (Hands-On Design Lab), a cohort-based education initiative that brings designers into Bitcoin FOSS. He builds the rooms, programs, and pathways that turn curiosity into contributions.",
+        lectureTitle: "",
+      },
+      ko: {
+        title: "Paperpsych",
+        subtitle: ["Bitshala Bitspace 큐레이터", "Bitshala 디자인·이벤트 리드"],
+        bio: "페이퍼사이크(Paperpsych, 줄여서 Paper)는 사람들이 비트코인 오픈소스에서 일할 수 있도록 교육하는 인도의 비트코인 교육 이니셔티브 비트샬라(Bitshala)에서 커뮤니티, 교육, 디자인을 맡고 있다.\n\n그는 2024년 벵갈루루에 문을 연 인도 최초의 비트코인 온리(Bitcoin-only) 해커스페이스, 비트샬라 비트스페이스(Bitshala Bitspace)의 큐레이터이자 커뮤니티 매니저다. 2023년 초부터 인도의 비트코인 생태계를 밑바닥부터 일구는 데 힘을 보태 왔으며, 인도에서 열리는 BOSS 서밋(BOSS Summit)과 비트플렙스 서밋(BitPlebs Summit)의 주요 기획자 중 한 명이다.\n\n또한 디자이너를 비트코인 FOSS(자유·오픈소스 소프트웨어)로 이끄는 코호트 기반 교육 이니셔티브 HODL(Hands-On Design Lab)을 구상해 직접 만들어 가고 있다. 그는 호기심이 실제 기여로 이어지도록 공간과 프로그램, 그리고 그 길을 만든다.",
+        lectureTitle: "",
+      },
+    },
+  },
+  {
+    slug: "stark",
+    image: "/2026/speakers/Stark.webp",
+    difficulty: "High",
+    links: [
+      { type: "website", url: "https://openswap.live" },
+      { type: "x", url: "https://x.com/stark21m" },
+    ],
+    i18n: {
+      en: {
+        title: "Stark",
+        subtitle: ["Protocol Engineer, Openswap"],
+        bio: "I have been in the Bitcoin space since 2021, starting as a participant in the open source development program Summer of Bitcoin. I have contributed to multiple open source projects since. A couple of years ago I started diving into the privacy and fungibility area of Bitcoin which led me to Coinswap (now Openswap, https://github.com/citadel-foss/openswap). Since then I have been contributing to this project which is supported by Spiral and OpenSats. Now I lead protocol development for the project.",
+        lectureTitle: "Private and Decentralized Atomic Swaps on Bitcoin",
+      },
+      ko: {
+        title: "Stark",
+        subtitle: ["Openswap 프로토콜 엔지니어"],
+        bio: "저는 2021년 오픈소스 개발 프로그램 서머 오브 비트코인(Summer of Bitcoin)에 참가하면서 비트코인 업계에 발을 들였고, 이후 여러 오픈소스 프로젝트에 기여해 왔습니다. 몇 년 전부터 비트코인의 프라이버시와 대체 가능성(fungibility) 분야를 깊이 파고들기 시작했고, 그 과정에서 코인스왑(Coinswap, 현 오픈스왑 Openswap, https://github.com/citadel-foss/openswap)을 만나게 되었습니다. 그때부터 스파이럴(Spiral)과 오픈샛츠(OpenSats)의 후원을 받는 이 프로젝트에 기여해 왔으며, 현재는 프로젝트의 프로토콜 개발을 이끌고 있습니다.",
+        lectureTitle: "비트코인 위의 프라이빗하고 탈중앙화된 아토믹 스왑",
+      },
+    },
+  },
+  {
+    slug: "veronika-dorson",
+    image: "/2026/speakers/Veronika_Dorson.webp",
+    difficulty: "High",
+    links: [
+      { type: "website", url: "https://dorsonveronika.framer.website/" },
+      { type: "x", url: "https://x.com/veronika_dorson" },
+    ],
+    i18n: {
+      en: {
+        title: "Veronika Dorson",
+        subtitle: ["Open Source Designer, Zeus"],
+        bio: "Veronika Dorson is a UX/UI and product designer, now focused on Bitcoin. She has contributed design work to Cashu, OpenPleb, Bitshala, and is currently working on Zeus.\n\nVeronika is also the co-founder of HODL (Hands-On Design Lab), a cohort-based education initiative that brings designers into Bitcoin. Having shipped real open source design work in Bitcoin, she teaches designers from experience instead of theory.",
+        lectureTitle: "Does Bitcoin Need Designers? Well, No.",
+      },
+      ko: {
+        title: "Veronika Dorson",
+        subtitle: ["Zeus 오픈소스 디자이너"],
+        bio: "베로니카 도르손(Veronika Dorson)은 현재 비트코인에 집중하고 있는 UX/UI·프로덕트 디자이너다. 캐슈(Cashu), 오픈플렙(OpenPleb), 비트샬라(Bitshala)에 디자인 작업으로 기여했으며, 지금은 제우스(Zeus)에서 일하고 있다.\n\n또한 디자이너를 비트코인으로 이끄는 코호트 기반 교육 이니셔티브 HODL(Hands-On Design Lab)의 공동 창립자이기도 하다. 비트코인 오픈소스에서 실제 디자인 작업을 출시해 온 경험을 바탕으로, 이론이 아닌 경험으로 디자이너들을 가르친다.",
+        lectureTitle: "비트코인에 디자이너가 필요할까요? 글쎄요, 아니요.",
+      },
+    },
+  },
+  {
+    slug: "davidson",
+    image: "/2026/speakers/Davidson.webp",
+    difficulty: "High",
+    links: [{ type: "website", url: "https://blog.dlsouza.lol" }],
+    i18n: {
+      en: {
+        title: "Davidson",
+        subtitle: ["Vinteum Grantee"],
+        bio: "Bitcoin OSS dev working on Utreexo and Floresta for four years.",
+        lectureTitle: "Speeding up Bitcoin IBD",
+      },
+      ko: {
+        title: "Davidson",
+        subtitle: ["Vinteum 그랜티"],
+        bio: "4년째 유트렉소(Utreexo)와 플로레스타(Floresta)를 개발하고 있는 비트코인 오픈소스 개발자.",
+        lectureTitle: "비트코인 IBD(초기 블록 다운로드) 가속하기",
+      },
+    },
+  },
 ];
 
 // 랜딩 캐러셀은 앞 6명만 노출한다. 국내 관객이 바로 알아보는 연사를 이 순서로 앞세우고,
