@@ -322,6 +322,16 @@ button {
   scrollbar-color: hsl(var(--muted-foreground) / 0.4) transparent;
 }
 
+/* 스크롤바를 아예 숨기는 가로 레일용(라이트닝 마켓 골목 등).
+   위 * 규칙이 레이어 밖에 있어서 Tailwind 유틸리티([scrollbar-width:none])로는 덮이지 않는다 —
+   이 규칙도 레이어 밖에 둬야 이긴다. */
+.scrollbar-none {
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
 @keyframes star-movement-bottom {
   0% {
     transform: translate(0%, 0%);

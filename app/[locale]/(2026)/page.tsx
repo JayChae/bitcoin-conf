@@ -8,6 +8,7 @@ import StatsSection from "./_components/Stats/StatsSection";
 import RecapSection from "./_components/Recap/RecapSection";
 import ReviewsSection from "./_components/Reviews/ReviewsSection";
 import SideEventsSection from "./_components/SideEvents/SideEventsSection";
+import LightningMarketSection from "./_components/LightningMarket/LightningMarketSection";
 import GetInvolvedSection from "./_components/GetInvolved/GetInvolvedSection";
 import LocationSection from "./_components/Location/LocationSection";
 import FaqSection from "./_components/Faq/FaqSection";
@@ -41,6 +42,7 @@ export default async function Home2026({ params }: Props) {
       <ReviewsSection />
       <SpeakersSection />
       <SideEventsSection />
+      <LightningMarketSection />
       <TicketsSection />
       <GetInvolvedSection />
       <LocationSection />
