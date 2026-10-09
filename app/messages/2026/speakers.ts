@@ -934,6 +934,78 @@ const items: SpeakerSource[] = [
       },
     },
   },
+  {
+    slug: "btcbaker",
+    image: "/2026/speakers/BTCbaker.webp",
+    difficulty: "Low",
+    links: [{ type: "website", url: "http://bsl.pub/" }],
+    i18n: {
+      en: {
+        title: "BTCbaker",
+        subtitle: ["President, BSL (Bitcoin Social Layer)"],
+        bio: "A social welfare Ph.D., social entrepreneur, and mother of five, she has spent more than a decade running a social enterprise and working at the intersection of community, care, and social impact.\n\nShe currently serves as President of Bitcoin Social Layer (BSL), Korea's first Bitcoin nonprofit organization. She sees Bitcoin not simply as an investment asset, but as a tool that can strengthen individual sovereignty, responsibility, and long-term thinking.\n\nThrough education, community building, and sats-based giving, she explores how Bitcoin's principles can be translated into meaningful action in everyday life. Her work focuses on connecting the timeless values of life, peace, and sharing with the possibilities opened by Bitcoin.",
+        lectureTitle:
+          "Beyond Money: Can Bitcoin Change Society? — The BSL Experiment",
+      },
+      ko: {
+        title: "빵집아줌마",
+        subtitle: ["BSL(Bitcoin Social Layer) 대표"],
+        bio: "사회복지학 박사이자 사회적 기업가, 다섯 아이의 엄마다. 10년 넘게 사회적 기업을 운영하며 공동체와 돌봄, 사회적 임팩트가 만나는 자리에서 일해 왔다.\n\n현재 한국 최초의 비트코인 비영리단체인 비트코인 소셜 레이어(Bitcoin Social Layer, BSL)의 대표를 맡고 있다. 그는 비트코인을 단순한 투자 자산이 아니라, 개인의 주권과 책임, 그리고 장기적 사고를 키워 주는 도구로 바라본다.\n\n교육과 커뮤니티 활동, 사토시(sats) 단위의 기부를 통해 비트코인의 원칙을 일상 속 의미 있는 실천으로 옮기는 방법을 탐구하고 있다. 생명과 평화, 나눔이라는 변하지 않는 가치를 비트코인이 열어 준 가능성과 잇는 데 힘을 쏟고 있다.",
+        lectureTitle:
+          "돈을 넘어: 비트코인은 사회를 바꿀 수 있을까? — BSL의 실험",
+      },
+    },
+  },
+  {
+    slug: "mineey",
+    image: "/2026/speakers/Mineey.webp",
+    difficulty: "Low",
+    links: [
+      { type: "website", url: "https://saturdayblock.com/" },
+      { type: "website", url: "https://www.bitcoincenterseoul.com/" },
+      { type: "x", url: "https://x.com/mineey_2100" },
+    ],
+    i18n: {
+      en: {
+        title: "Mineey",
+        subtitle: [
+          "CMO, NonceLab",
+          "Co-founder & Creative Director, Saturday Block",
+        ],
+        bio: "Mineey connects Bitcoin hubs and communities across Asia through Bitcoin Squad Asia. She is CMO of NonceLab and co-founder and Creative Director of Saturday Block, a Seoul-based brand focused exclusively on Bitcoin culture. Through Saturday Block, she creates Bitcoin-inspired merchandise and brings Bitcoin culture to international audiences through pop-up events and community gatherings.\n\nShe also co-runs Bitcoin Center Seoul and leads its meetup program, while helping build a Bitcoin circular economy in Korea through Bitcoin Hanbit. Her work helps people move beyond trading to actually using and holding Bitcoin.",
+        lectureTitle: "Bitcoin in Korea: Where Are We Now?",
+      },
+      ko: {
+        title: "Mineey",
+        subtitle: ["논스랩 CMO", "Saturday Block 공동 창업자·크리에이티브 디렉터"],
+        bio: "Mineey는 비트코인 스쿼드 아시아(Bitcoin Squad Asia)를 통해 아시아 곳곳의 비트코인 허브와 커뮤니티를 잇고 있다. 논스랩(NonceLab)의 CMO이자, 오직 비트코인 문화에만 집중하는 서울 기반 브랜드 새터데이 블록(Saturday Block)의 공동 창업자이자 크리에이티브 디렉터다. 새터데이 블록에서는 비트코인에서 영감을 받은 굿즈를 만들고, 팝업 이벤트와 커뮤니티 모임을 통해 해외 관객에게 비트코인 문화를 알리고 있다.\n\n또한 비트코인 센터 서울(Bitcoin Center Seoul)을 공동 운영하며 밋업 프로그램을 이끌고, 비트코인 한빛(Bitcoin Hanbit)을 통해 한국에 비트코인 순환 경제를 만드는 데 힘을 보태고 있다. 그의 활동은 사람들이 트레이딩을 넘어 비트코인을 실제로 쓰고 보유하도록 돕는다.",
+        lectureTitle: "한국의 비트코인, 지금 어디까지 왔나?",
+      },
+    },
+  },
+  {
+    slug: "luis-schwab",
+    image: "/2026/speakers/Luis_Schwab.webp",
+    difficulty: "Medium",
+    links: [
+      { type: "website", url: "https://luisschwab.net/" },
+      { type: "x", url: "https://x.com/luisschwab_" },
+    ],
+    i18n: {
+      en: {
+        title: "Luis Schwab",
+        subtitle: ["BDK & Floresta, Developer"],
+        bio: "Luis Schwab is a developer working on embedding Utreexo-powered nodes inside wallet applications, which increases user privacy by removing the need for Electrum and Esplora servers for wallet synching and transaction broadcasting.",
+        lectureTitle: "3 Billion Devices Run Floresta",
+      },
+      ko: {
+        title: "Luis Schwab",
+        subtitle: ["BDK·Floresta 개발자"],
+        bio: "루이스 슈바브(Luis Schwab)는 유트렉소(Utreexo) 기반 노드를 지갑 애플리케이션 안에 내장하는 작업을 하고 있는 개발자다. 지갑 동기화와 트랜잭션 전파에 일렉트럼(Electrum)·에스플로라(Esplora) 서버가 필요 없도록 만들어 사용자의 프라이버시를 높인다.",
+        lectureTitle: "30억 대의 기기가 Floresta를 실행한다",
+      },
+    },
+  },
 ];
 
 // 랜딩 캐러셀은 앞 6명만 노출한다. 국내 관객이 바로 알아보는 연사를 이 순서로 앞세우고,
