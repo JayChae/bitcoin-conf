@@ -3,16 +3,11 @@ import { Link } from "@/i18n/navigation";
 import type { SideEvent } from "@/app/messages/2026/sideEvents";
 import { EYEBROW_CLASS } from "../Speakers/InfoField";
 import SideEventImage from "./SideEventImage";
-
-type Labels = {
-  host: string;
-  cta: string;
-  imageComingSoon: string;
-};
+import type { SideEventLabels } from "./labels";
 
 type Props = {
   event: SideEvent;
-  labels: Labels;
+  labels: SideEventLabels;
 };
 
 export default function SideEventCard({ event, labels }: Props) {

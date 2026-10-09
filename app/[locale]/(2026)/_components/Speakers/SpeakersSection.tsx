@@ -1,9 +1,14 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import speakers from "@/app/messages/2026/speakers";
-import SpeakersCarousel from "./SpeakersCarousel";
+import PagedCarousel from "../PagedCarousel";
+import SpeakerCard from "./SpeakerCard";
 import { getSpeakerLabels } from "./labels";
 import ViewAllLink from "../ViewAllLink";
+
+// 모바일은 1장씩이라 전원을 다 넣으면 도트가 너무 많아진다. 앞 8명만 보여주고
+// 나머지는 "모든 연사 보기"로 넘긴다.
+const MOBILE_LIMIT = 8;
 
 export default async function SpeakersSection() {
   const t = await getTranslations("Speakers2026");
@@ -27,7 +32,15 @@ export default async function SpeakersSection() {
           </h2>
         </div>
 
-        <SpeakersCarousel speakers={list} labels={labels} />
+        <PagedCarousel
+          items={list.map((speaker) => ({
+            key: speaker.slug,
+            node: <SpeakerCard speaker={speaker} labels={labels} />,
+          }))}
+          labels={labels}
+          viewAllHref="/speakers"
+          mobileLimit={MOBILE_LIMIT}
+        />
 
         <ViewAllLink href="/speakers" label={t("viewAll")} />
       </div>
