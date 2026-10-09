@@ -17,6 +17,10 @@ type InvolveSource = Omit<InvolveCard, keyof LocaleContent> & {
   i18n: { en: LocaleContent; ko: LocaleContent };
 };
 
+// 라이트닝 마켓 부스 신청 폼. 마켓 페이지의 부스 신청 CTA도 이 값을 쓴다.
+export const MARKET_FORM_URL =
+  "https://bitcoinkoreaconference.fillout.com/t/2q34AFDv8Sus";
+
 // 외부 Fillout 신청 폼들. 스폰서 URL은 SponsorInquiryCta.tsx의 INQUIRY_URL과
 // 같은 값이지만, 이 허브가 자체적으로 참조할 수 있도록 여기 그대로 보관한다.
 const items: InvolveSource[] = [
@@ -36,7 +40,7 @@ const items: InvolveSource[] = [
   },
   {
     key: "market",
-    formUrl: "https://bitcoinkoreaconference.fillout.com/t/2q34AFDv8Sus",
+    formUrl: MARKET_FORM_URL,
     i18n: {
       en: {
         title: "Lightning Market",

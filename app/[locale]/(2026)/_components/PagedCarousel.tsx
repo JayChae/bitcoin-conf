@@ -1,16 +1,39 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  Fragment,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
-import type { Speaker } from "@/app/messages/2026/speakers";
-import SpeakerCard from "./SpeakerCard";
-import type { SpeakerLabels } from "./labels";
+
+// 카드는 서버에서 렌더링해 node로 넘긴다. key는 같은 페이지 안에서 겹치지 않아야 한다.
+export type CarouselItem = {
+  key: string;
+  node: ReactNode;
+};
+
+export type CarouselLabels = {
+  viewAll: string;
+  prev: string;
+  next: string;
+  carousel: string;
+  slide: string;
+};
 
 type Props = {
-  speakers: Speaker[];
-  labels: SpeakerLabels;
+  items: CarouselItem[];
+  labels: CarouselLabels;
+  // 마지막 장에서 "다음" 버튼이 이동할 전체 목록 경로
+  viewAllHref: string;
+  // 모바일(1장씩)에서 보여줄 최대 개수. 없으면 전부 보여준다.
+  mobileLimit?: number;
 };
 
 const NAV_BUTTON_CLASS =
@@ -21,17 +44,14 @@ const NAV_BUTTON_CLASS =
 const LG_QUERY = "(min-width: 1024px)";
 const PER_PAGE_DESKTOP = 4;
 const PER_PAGE_MOBILE = 1;
-// 모바일은 1장씩이라 전원을 다 넣으면 도트가 너무 많아진다. 앞 8명만 보여주고
-// 나머지는 "모든 연사 보기"로 넘긴다.
-const MOBILE_LIMIT = 8;
 
 function chunk<T>(items: T[], size: number): T[][] {
   const pages = Array.from({ length: Math.ceil(items.length / size) }, (_, i) =>
     items.slice(i * size, i * size + size),
   );
-  // 연사 수가 페이지 크기로 나누어떨어지지 않으면 마지막 페이지가 비어 보인다.
-  // 앞쪽 연사를 다시 끌어와 칸을 채운다. 단 전체가 한 페이지도 못 채우는 경우엔
-  // 같은 페이지에 같은 연사가 중복되므로 그대로 둔다.
+  // 카드 수가 페이지 크기로 나누어떨어지지 않으면 마지막 페이지가 비어 보인다.
+  // 앞쪽 카드를 다시 끌어와 칸을 채운다. 단 전체가 한 페이지도 못 채우는 경우엔
+  // 같은 페이지에 같은 카드가 중복되므로 그대로 둔다.
   const last = pages.at(-1);
   if (last && last.length < size && items.length >= size) {
     last.push(...items.slice(0, size - last.length));
@@ -39,7 +59,12 @@ function chunk<T>(items: T[], size: number): T[][] {
   return pages;
 }
 
-export default function SpeakersCarousel({ speakers, labels }: Props) {
+export default function PagedCarousel({
+  items,
+  labels,
+  viewAllHref,
+  mobileLimit,
+}: Props) {
   const viewportRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const touchStart = useRef<{ x: number; y: number } | null>(null);
@@ -71,9 +96,9 @@ export default function SpeakersCarousel({ speakers, labels }: Props) {
   }, []);
 
   const pages = useMemo(() => {
-    const list = isDesktop ? speakers : speakers.slice(0, MOBILE_LIMIT);
+    const list = isDesktop ? items : items.slice(0, mobileLimit);
     return chunk(list, isDesktop ? PER_PAGE_DESKTOP : PER_PAGE_MOBILE);
-  }, [speakers, isDesktop]);
+  }, [items, isDesktop, mobileLimit]);
 
   const measure = useCallback(() => {
     const track = trackRef.current;
@@ -262,19 +287,15 @@ export default function SpeakersCarousel({ speakers, labels }: Props) {
               const visible = p === active;
               return (
                 <div
-                  key={page[0].slug}
+                  key={page[0].key}
                   // lg에서 행을 2개로 고정해야 카드가 4장 미만인 마지막 페이지에서도
                   // 카드가 세로로 늘어나지 않고 제 높이를 유지한다.
                   className="shrink-0 w-full grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-2 gap-4 md:gap-5 lg:gap-6"
                   inert={!visible}
                   aria-hidden={!visible}
                 >
-                  {page.map((speaker) => (
-                    <SpeakerCard
-                      key={speaker.slug}
-                      speaker={speaker}
-                      labels={labels}
-                    />
+                  {page.map((item) => (
+                    <Fragment key={item.key}>{item.node}</Fragment>
                   ))}
                 </div>
               );
@@ -292,10 +313,10 @@ export default function SpeakersCarousel({ speakers, labels }: Props) {
         >
           <ChevronLeft className="size-8 text-glow-pink-soft" />
         </button>
-        {/* 마지막 장에서는 다음 버튼이 전체 연사 목록으로 이동 */}
+        {/* 마지막 장에서는 다음 버튼이 전체 목록으로 이동 */}
         {atEnd ? (
           <Link
-            href="/speakers"
+            href={viewAllHref}
             aria-label={labels.viewAll}
             className={cn(NAV_BUTTON_CLASS, "right-0 translate-x-1/4")}
           >

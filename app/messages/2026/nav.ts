@@ -4,7 +4,7 @@ export const hrefList = {
   speakers: "/speakers",
   schedule: "/schedule",
   sideEvents: "/side-events",
-  lightningMarket: "#lightningMarket",
+  lightningMarket: "/lightning-market",
   recap: "/recap",
   sponsors: "/sponsors",
   tickets: "/tickets",

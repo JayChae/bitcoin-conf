@@ -24,6 +24,8 @@ type SideEventSource = Omit<SideEvent, keyof LocaleContent> & {
   i18n: { en: LocaleContent; ko: LocaleContent };
 };
 
+// bitcoin++ 서울(프라이버시 에디션)은 날짜와 상관없이 항상 맨 앞에 둔다.
+// 나머지는 날짜 순.
 const items: SideEventSource[] = [
   {
     slug: "bitcoin-plus-plus-seoul",
@@ -50,6 +52,32 @@ const items: SideEventSource[] = [
           "개발자 중심의 비트코인 컨퍼런스 시리즈. 서울 에디션은 온체인·오프체인 프라이버시와 P2P 교환의 최전선을 깊이 탐구합니다.",
         description:
           "bitcoin++는 개발자 중심의 비트코인 컨퍼런스 시리즈로, 긴 형식의 강연(long-form lectures)과 워크숍에 중점을 두고, 비트코인 기술의 최첨단(cutting edge)을 더 깊이 파고들기 원하는 청중을 대상으로 합니다.\n\n매 행사마다 특정 주제(에디션)를 정해 비트코인의 한 분야를 집중 탐구하는 것이 특징이며 이번 서울 에디션은 한국인들이 관심이 많은 프라이버시 입니다.\n\n일정: 2026년 11월 5~6일\n\n주제: \"Privacy Edition\" 비트코인 거래의 \"어두운 면(dark side)\"에 집중. 온체인과 오프체인 모두에서 프라이버시와 P2P 교환의 최전선을 깊이 탐구합니다.\n\n이번 행사는 한국에서 열리는 첫 bitcoin++ 행사이며 ₿itcoin Korea Conference 주최측과 함께 기획하여 진행됩니다.",
+      },
+    },
+  },
+  {
+    slug: "dmz-tour",
+    image: "/2026/side-events/dmz-tour.webp",
+    cardImage: "/2026/side-events/dmz-tour-card.webp",
+    links: [{ type: "website", url: "https://luma.com/4lhp10tz" }],
+    i18n: {
+      en: {
+        title: "DMZ Tour",
+        host: "Calvin Kim",
+        date: "Tue, Nov 3, 2026 · 09:00 – 16:30",
+        shortDescription:
+          "Get as close to North Korea as you can: descend into a tunnel North Korea secretly dug, look across the border, and sit down for an open Q&A with a North Korean defector.",
+        description:
+          "We can't go to North Korea itself, so we're getting as close to it as possible.\n\nWe'll head to the DMZ, descend into a tunnel secretly dug by North Korea, look across the border with our own eyes, and sit down with a North Korean defector for an open Q&A.\n\nOpen to Bitcoin Korea Conference VIP ticket holders and speakers, and btc++ Seoul edition attendees.\n\nSchedule: Tuesday, November 3, 2026, 09:00 – 16:30\n\nMeeting point: Myeongdong Station Exit 7, Seoul\n\nWhat to bring (required): Passport",
+      },
+      ko: {
+        title: "DMZ 투어",
+        host: "Calvin Kim",
+        date: "2026년 11월 3일 (화) 09:00 – 16:30",
+        shortDescription:
+          "북한과 가장 가까운 곳, DMZ로 떠나는 하루. 북한이 몰래 판 땅굴로 내려가 국경 너머를 바라보고, 탈북민과 자유롭게 질의응답을 나눕니다.",
+        description:
+          "북한에 직접 가볼 수는 없습니다. 그래서 갈 수 있는 가장 가까운 곳까지 가보려 합니다.\n\nDMZ로 이동해 북한이 몰래 판 땅굴 안으로 내려가고, 국경 너머를 직접 바라본 뒤, 탈북민과 함께 자유로운 질의응답 시간을 갖습니다.\n\nBitcoin Korea Conference VIP 티켓 보유자와 연사, btc++ Seoul edition 참가자가 신청할 수 있습니다.\n\n일정: 2026년 11월 3일 (화) 09:00 – 16:30\n\n집결 장소: 명동역 7번 출구\n\n준비물(필수): 여권",
       },
     },
   },

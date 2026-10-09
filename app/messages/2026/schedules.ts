@@ -236,16 +236,7 @@ const days: Record<DayId, ScheduleDay> = {
         end: "13:30",
         room: "masil-2f",
         format: "talk",
-        speakers: [
-          {
-            name: { en: "Bbangjip Ajumma", ko: "빵집아줌마" },
-            affiliation: { en: "President, BSL", ko: "BSL 대표" },
-          },
-        ],
-        title: {
-          en: "Beyond Money: Can Bitcoin Change Society? The BSL Experiment",
-          ko: "돈을 넘어: 비트코인은 사회를 바꿀 수 있을까? BSL의 실험",
-        },
+        speakers: ["btcbaker"],
       },
       {
         start: "13:30",
@@ -308,7 +299,7 @@ const days: Record<DayId, ScheduleDay> = {
         end: "18:00",
         room: "masil-2f",
         format: "talk",
-        speakers: [{ name: { en: "Luis Schwab", ko: "Luis Schwab" } }],
+        speakers: ["luis-schwab"],
       },
 
       // 마실 1층

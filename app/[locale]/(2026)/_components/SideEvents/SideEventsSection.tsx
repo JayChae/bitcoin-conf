@@ -1,7 +1,9 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import sideEvents from "@/app/messages/2026/sideEvents";
-import SideEventsGrid from "./SideEventsGrid";
+import PagedCarousel from "../PagedCarousel";
+import SideEventCard from "./SideEventCard";
+import { getSideEventLabels } from "./labels";
 import ViewAllLink from "../ViewAllLink";
 
 export default async function SideEventsSection() {
@@ -10,6 +12,8 @@ export default async function SideEventsSection() {
   const list = sideEvents[locale];
 
   if (list.length === 0) return null;
+
+  const labels = getSideEventLabels(t);
 
   return (
     <section id="side-events" className="scroll-mt-24 mt-40 md:mt-44 px-4">
@@ -24,7 +28,14 @@ export default async function SideEventsSection() {
           </h2>
         </div>
 
-        <SideEventsGrid events={list} />
+        <PagedCarousel
+          items={list.map((event) => ({
+            key: event.slug,
+            node: <SideEventCard event={event} labels={labels} />,
+          }))}
+          labels={labels}
+          viewAllHref="/side-events"
+        />
 
         <ViewAllLink href="/side-events" label={t("viewAll")} />
       </div>
