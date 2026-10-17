@@ -150,6 +150,53 @@ const items: VendorSource[] = [
       },
     ],
   },
+  {
+    slug: "protocol-studio",
+    i18n: {
+      en: {
+        name: "Protocol Studio",
+        category: "Bitcoin silver jewelry",
+        description:
+          "We engrave bitcoin into 925 sterling silver. The Genesis Line is a set of four silver rings engraved with the raw data of the genesis block and the ₿ symbol.",
+      },
+      ko: {
+        name: "Protocol Studio",
+        category: "비트코인 실버 주얼리",
+        description:
+          "925 스털링 실버에 비트코인을 새깁니다. Genesis Line은 제네시스블록의 원시 데이터와 ₿ 심볼을 각인한 실버 링 4종으로 구성됩니다.",
+      },
+    },
+    products: [
+      {
+        image: `${IMAGE_DIR}/protocol-studio-bitcoin-lettering.webp`,
+        i18n: {
+          en: { name: "BITCOIN Lettering Ring" },
+          ko: { name: "BITCOIN 레터링 링" },
+        },
+      },
+      {
+        image: `${IMAGE_DIR}/protocol-studio-b-pattern.webp`,
+        i18n: {
+          en: { name: "₿ Pattern Ring" },
+          ko: { name: "₿ 패턴 링" },
+        },
+      },
+      {
+        image: `${IMAGE_DIR}/protocol-studio-filigree.webp`,
+        i18n: {
+          en: { name: "Filigree Ring" },
+          ko: { name: "필리그리 링" },
+        },
+      },
+      {
+        image: `${IMAGE_DIR}/protocol-studio-genesis-data.webp`,
+        i18n: {
+          en: { name: "Genesis Block Data Ring" },
+          ko: { name: "제네시스 블록 데이터 링" },
+        },
+      },
+    ],
+  },
 ];
 
 // 셀러 문구와 상품 문구를 같은 로케일로 한꺼번에 펼친다.
