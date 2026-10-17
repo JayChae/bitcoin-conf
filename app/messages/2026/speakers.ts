@@ -1006,6 +1006,46 @@ const items: SpeakerSource[] = [
       },
     },
   },
+  {
+    slug: "nick-farrow",
+    image: "/2026/speakers/Nick_Farrow.webp",
+    difficulty: "Medium",
+    links: [{ type: "website", url: "https://frostsnap.com/" }],
+    i18n: {
+      en: {
+        title: "Nick Farrow",
+        subtitle: ["Co-founder, Frostsnap"],
+        bio: "Nick works on peer-to-peer cash security at Frostsnap. He maintains utxo.club.",
+        lectureTitle: "Hunting Single Points of Failure in Bitcoin",
+      },
+      ko: {
+        title: "Nick Farrow",
+        subtitle: ["Frostsnap 공동 창업자"],
+        bio: "닉은 Frostsnap에서 P2P 현금의 보안을 연구하며, utxo.club을 운영하고 있습니다.",
+        lectureTitle: "비트코인 속 단일 장애점(SPOF) 찾기",
+      },
+    },
+  },
+  {
+    slug: "gio-galt",
+    image: "/2026/speakers/Gio_Galt.webp",
+    difficulty: "Medium",
+    links: [],
+    i18n: {
+      en: {
+        title: "Gio Galt",
+        subtitle: ["Product Manager for MDK and MOS, Tether"],
+        bio: "Open source is becoming unstoppable in the age of AI: when intelligence is shared, innovation compounds. The same force that is transforming software will soon reshape Bitcoin mining from the inside out. Closed systems will give way to open infrastructure, faster experimentation, and a new generation of builders. This shift will disrupt operations, energy optimization, automation, and hardware integration across the entire industry. And that disruption is exactly what Bitcoin mining needs: more innovation, more decentralization, stronger security, and a more resilient network.",
+        lectureTitle: "The Future of Bitcoin Mining is Open",
+      },
+      ko: {
+        title: "Gio Galt",
+        subtitle: ["테더 MDK·MOS 프로덕트 매니저"],
+        bio: "AI 시대에 오픈소스는 막을 수 없는 흐름이 되고 있다. 지능이 공유될 때 혁신은 복리로 쌓인다. 소프트웨어를 바꾸고 있는 바로 그 힘이 머지않아 비트코인 채굴을 안에서부터 다시 빚어낼 것이다. 닫힌 시스템은 열린 인프라와 더 빠른 실험, 그리고 새로운 세대의 빌더에게 자리를 내줄 것이다. 이 변화는 운영, 에너지 최적화, 자동화, 하드웨어 통합에 이르기까지 업계 전반을 뒤흔들 것이다. 그리고 그 파괴야말로 비트코인 채굴에 꼭 필요한 것이다. 더 많은 혁신, 더 많은 탈중앙화, 더 강한 보안, 그리고 더 회복력 있는 네트워크 말이다.",
+        lectureTitle: "비트코인 채굴의 미래는 '오픈'이다",
+      },
+    },
+  },
 ];
 
 // 랜딩 캐러셀은 앞 6명만 노출한다. 국내 관객이 바로 알아보는 연사를 이 순서로 앞세우고,

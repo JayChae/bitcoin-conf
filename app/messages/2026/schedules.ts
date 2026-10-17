@@ -343,16 +343,7 @@ const days: Record<DayId, ScheduleDay> = {
         end: "12:00",
         room: "masil-1f",
         format: "talk",
-        speakers: [
-          {
-            name: { en: "Gio", ko: "Gio" },
-            affiliation: { en: "MDK", ko: "MDK" },
-          },
-        ],
-        title: {
-          en: "The Future of Bitcoin Mining is Open",
-          ko: "비트코인 채굴의 미래는 '오픈'이다",
-        },
+        speakers: ["gio-galt"],
       },
       {
         start: "13:00",

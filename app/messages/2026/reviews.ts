@@ -43,6 +43,30 @@ type VideoSource = { id: string; channel: string; title: { en: string; ko: strin
 
 const videoItems: VideoSource[] = [
   {
+    id: "H93TIth1bqI",
+    channel: "리스펙 투자플랜",
+    title: {
+      ko: "“11월에 큰거 온다” 지금부터 미리 미리 준비해라! 이때 모두 만나게 된다 🚀",
+      en: "“Something big is coming in November” — get ready now, this is where everyone meets 🚀",
+    },
+  },
+  {
+    id: "uTKa3tjbAYw",
+    channel: "Bitcoin Korea",
+    title: {
+      ko: "2025 비트코인 코리아 컨퍼런스 | Win Ko Ko Aung",
+      en: "2025 Bitcoin Korea Conference | Win Ko Ko Aung",
+    },
+  },
+  {
+    id: "bKVjhWOoKjk",
+    channel: "Bitcoin Korea",
+    title: {
+      ko: "2025 비트코인 코리아 컨퍼런스 | Calvin Kim",
+      en: "2025 Bitcoin Korea Conference | Calvin Kim",
+    },
+  },
+  {
     id: "mG1oE4OywRc",
     channel: "망고일기",
     title: {
@@ -64,14 +88,6 @@ const videoItems: VideoSource[] = [
     title: {
       ko: "2025 비트코인 미니 컨퍼런스 후기",
       en: "2025 Bitcoin Mini Conference review",
-    },
-  },
-  {
-    id: "H93TIth1bqI",
-    channel: "리스펙 투자플랜",
-    title: {
-      ko: "“11월에 큰거 온다” 지금부터 미리 미리 준비해라! 이때 모두 만나게 된다 🚀",
-      en: "“Something big is coming in November” — get ready now, this is where everyone meets 🚀",
     },
   },
   {

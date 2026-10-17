@@ -82,6 +82,32 @@ const items: SideEventSource[] = [
     },
   },
   {
+    slug: "bitcoin-dev-day",
+    image: "/2026/side-events/bitcoin-dev-day.webp",
+    cardImage: "/2026/side-events/bitcoin-dev-day-card.webp",
+    links: [{ type: "website", url: "https://luma.com/1pmwtapp" }],
+    i18n: {
+      en: {
+        title: "Bitcoin dev day in traditional Korea",
+        host: "Calvin Kim",
+        date: "Wed, Nov 4, 2026",
+        shortDescription:
+          "A social day where bitcoin open-source developers from Korea and around the world come together and spend the day with one another.",
+        description:
+          "A social day where bitcoin open-source developers from Korea and around the world come together and spend the day with one another.\n\nSchedule: Wednesday, November 4, 2026",
+      },
+      ko: {
+        title: "Bitcoin dev day in traditional Korea",
+        host: "Calvin Kim",
+        date: "2026년 11월 4일 (수)",
+        shortDescription:
+          "한국과 해외의 비트코인 오픈소스 개발자들이 모여 하루를 함께 보내는 친목 행사입니다.",
+        description:
+          "한국과 해외의 비트코인 오픈소스 개발자들이 모여 하루를 함께 보내는 친목 행사입니다.\n\n일정: 2026년 11월 4일 (수)",
+      },
+    },
+  },
+  {
     slug: "vip-dinner-party",
     image: "/2026/side-events/vip-dinner-party.webp",
     links: [],
