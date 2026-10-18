@@ -3,6 +3,8 @@ import Hero from "./_components/Hero";
 import TicketsSection from "./_components/Tickets/TicketsSection";
 import FloatingLines from "@/components/FloatingLines";
 import SponsorsSection from "./_components/Sponsors/SponsorsSection";
+import MediaPartnersSection from "./_components/MediaPartners/MediaPartnersSection";
+import TrackRecordSection from "./_components/Partners/TrackRecordSection";
 import SpeakersSection from "./_components/Speakers/SpeakersSection";
 import StatsSection from "./_components/Stats/StatsSection";
 import RecapSection from "./_components/Recap/RecapSection";
@@ -47,6 +49,8 @@ export default async function Home2026({ params }: Props) {
       <GetInvolvedSection />
       <LocationSection />
       <SponsorsSection />
+      <MediaPartnersSection />
+      <TrackRecordSection />
       <FaqSection />
     </main>
   );

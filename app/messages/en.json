@@ -161,6 +161,12 @@
     "pastTitle": "Past Sponsors",
     "pastSubtitle": "Sponsors who supported our previous conferences."
   },
+  "MediaPartners2026": {
+    "title": "Media Partners",
+    "lead": "The media partners spreading the word about the 2026 Bitcoin Korea Conference.",
+    "main": "Main Media Partner",
+    "media": "Media Partner"
+  },
   "Tickets2026": {
     "sectionTitle": "Tickets",
     "pageTitle": "Tickets",
