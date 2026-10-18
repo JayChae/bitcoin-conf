@@ -170,29 +170,29 @@ const items: VendorSource[] = [
       {
         image: `${IMAGE_DIR}/protocol-studio-bitcoin-lettering.webp`,
         i18n: {
-          en: { name: "BITCOIN Lettering Ring" },
-          ko: { name: "BITCOIN 레터링 링" },
+          en: { name: "Genesis Line No.01" },
+          ko: { name: "Genesis Line No.01" },
         },
       },
       {
         image: `${IMAGE_DIR}/protocol-studio-b-pattern.webp`,
         i18n: {
-          en: { name: "₿ Pattern Ring" },
-          ko: { name: "₿ 패턴 링" },
+          en: { name: "Genesis Line No.02" },
+          ko: { name: "Genesis Line No.02" },
         },
       },
       {
         image: `${IMAGE_DIR}/protocol-studio-filigree.webp`,
         i18n: {
-          en: { name: "Filigree Ring" },
-          ko: { name: "필리그리 링" },
+          en: { name: "Genesis Line No.03" },
+          ko: { name: "Genesis Line No.03" },
         },
       },
       {
         image: `${IMAGE_DIR}/protocol-studio-genesis-data.webp`,
         i18n: {
-          en: { name: "Genesis Block Data Ring" },
-          ko: { name: "제네시스 블록 데이터 링" },
+          en: { name: "Genesis Line No.04" },
+          ko: { name: "Genesis Line No.04" },
         },
       },
     ],

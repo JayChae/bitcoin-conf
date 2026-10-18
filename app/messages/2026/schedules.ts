@@ -160,13 +160,6 @@ const days: Record<DayId, ScheduleDay> = {
         speakers: ["teruko"],
       },
       {
-        start: "13:30",
-        end: "14:00",
-        room: "kfb",
-        format: "talk",
-        speakers: ["sergej-kotliar"],
-      },
-      {
         start: "14:00",
         end: "14:30",
         room: "kfb",
@@ -344,13 +337,6 @@ const days: Record<DayId, ScheduleDay> = {
         room: "masil-1f",
         format: "talk",
         speakers: ["gio-galt"],
-      },
-      {
-        start: "13:00",
-        end: "14:30",
-        room: "masil-1f",
-        format: "workshop",
-        speakers: ["rama-gan"],
       },
       {
         start: "14:30",

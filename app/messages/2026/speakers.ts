@@ -332,31 +332,6 @@ const items: SpeakerSource[] = [
     },
   },
   {
-    slug: "rama-gan",
-    image: "/2026/speakers/Rama_Gan.webp",
-    difficulty: "Low",
-    links: [
-      { type: "website", url: "https://v1.penlock.io/en/" },
-      { type: "nostr", url: "https://nosta.me/nostr@penlock.io" },
-    ],
-    i18n: {
-      en: {
-        title: "Rama Gan",
-        subtitle: ["Creator of Penlock"],
-        bio: "Rama is a software engineer and Bitcoiner who has devoted himself to making the future of self-custody simpler and more robust. The tool he created, Penlock, is a printable encryption wheel that lets anyone split a seed phrase into a 2-of-3 multi-phrase backup using nothing but paper and pen — no electronics required. Because only two of the three pieces are needed to recover assets, the setup stays secure even if one is lost or stolen, and a breach of any single location never exposes the whole. Most importantly, even if the original mnemonic (seed phrase) is lost entirely, the full seed phrase can be reconstructed from any two of the three pieces using the Penlock wheel. This lets users design remote recovery and inheritance plans on their own, without relying on any company or third party. No power, no battery, and no internet connection is required — Rama has focused on 'low-tech' solutions that anyone can hold in their hands and use directly, rather than flashy technology. His work is an attempt to realize Bitcoin's ideal of 'being your own bank' without compromising on privacy, security, or sovereignty.",
-        lectureTitle: "Trust-Minimized Bitcoin Inheritance — Magic on Paper",
-        session: "Workshop",
-      },
-      ko: {
-        title: "Rama Gan",
-        subtitle: ["Penlock 개발자"],
-        bio: "라마(Rama)는 자가 수탁(self-custody)의 미래를 더 단순하고 견고하게 만드는 일에 몰두해 온 소프트웨어 엔지니어이자 비트코이너입니다. 그가 만든 펜록(Penlock)은 인쇄해서 사용할 수 있는 암호화 휠로, 전자기기 없이 종이와 펜만으로 시드 문구를 2-of-3 멀티프레이즈 백업으로 직접 나눌 수 있게 해주는 도구입니다. 세 조각 중 두 개만 있으면 자산을 복구할 수 있기 때문에, 하나를 분실하거나 도난당해도 안전하며 어느 한 곳이 뚫려도 전체가 노출되지 않습니다. 무엇보다 원본 니모닉(시드 문구)을 통째로 잃어버려도, 세 조각 중 두 개만 남아 있으면 펜록 휠로 다시 시드 문구 전체를 복원해낼 수 있다는 점이 핵심입니다. 덕분에 사용자는 특정 기업이나 제3자에 의존하지 않고 원격지 복구와 상속 계획까지 스스로 설계할 수 있습니다. 전원도, 배터리도, 인터넷 연결도 필요 없으며, 라마는 화려한 기술보다 누구나 손에 쥐고 직접 써볼 수 있는 '로우테크' 해법에 주목해 왔습니다. 그의 작업은 '스스로 자신의 은행이 되라'는 비트코인의 이상을 프라이버시·보안·주권 어느 하나도 타협하지 않으면서 실현하려는 시도입니다.",
-        lectureTitle: "신뢰를 최소화한 비트코인 상속 — 종이 위의 마법",
-        session: "워크숍",
-      },
-    },
-  },
-  {
     slug: "matthew-vuk",
     image: "/2026/speakers/Matthew_Vuk.webp",
     difficulty: "Medium",
@@ -695,29 +670,6 @@ const items: SpeakerSource[] = [
         subtitle: ["BOB Space Bangkok 창립자"],
         bio: "피콜로(Piccolo)는 방콕의 BOB(Build On Bitcoin) 스페이스 창립자이자 최고 자원봉사자(Chief Volunteer)다. 2022년 8월 문을 연 BOB 스페이스는 비트코인 온리 빌더들을 위한 오프라인 공간으로, 정기 밋업과 워크숍을 열고 지금까지 FOSS 레지던시 네 개 기수를 후원해 왔다. BOB 스페이스 밖에서는 2016년 직접 창업한 핀테크 기업을 운영하고 있으며, 그전에는 18년간 기업 금융 분야에서 일했다.",
         lectureTitle: "에너지 전환과 비트코인 채굴",
-      },
-    },
-  },
-  {
-    slug: "sergej-kotliar",
-    image: "/2026/speakers/Sergej_Kotliar.webp",
-    difficulty: "Low",
-    links: [
-      { type: "x", url: "https://x.com/ziggamon" },
-      { type: "website", url: "https://www.bitrefill.com" },
-    ],
-    i18n: {
-      en: {
-        title: "Sergej Kotliar",
-        subtitle: ["CEO, Bitrefill"],
-        bio: "Sergej Kotliar is the founder and CEO of Bitrefill, a platform that helps people use Bitcoin for everyday purchases. Since 2014, Bitrefill has served more than one million customers across more than 180 countries. Sergej has helped pioneer commercial Lightning payments and Lightning-native services. He speaks about Bitcoin payments, merchant adoption, and building a circular Bitcoin economy.",
-        lectureTitle: "",
-      },
-      ko: {
-        title: "Sergej Kotliar",
-        subtitle: ["Bitrefill 대표"],
-        bio: "세르게이 코틀리아르(Sergej Kotliar)는 사람들이 일상적인 소비에 비트코인을 쓸 수 있도록 돕는 플랫폼 비트리필(Bitrefill)의 창립자이자 CEO다. 2014년 이후 비트리필은 180개국이 넘는 나라에서 100만 명 이상의 고객을 맞이해 왔다. 그는 상용 라이트닝 결제와 라이트닝 네이티브 서비스의 길을 앞장서 열어 온 인물로, 비트코인 결제와 상점의 도입, 그리고 순환하는 비트코인 경제를 만드는 일에 대해 이야기한다.",
-        lectureTitle: "",
       },
     },
   },
