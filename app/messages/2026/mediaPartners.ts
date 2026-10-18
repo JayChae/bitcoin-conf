@@ -14,13 +14,15 @@ const mediaPartners: {
     {
       name: "Tokyo Bitcoin Base",
       url: "https://tokyobitcoin.space",
-      // 원본(~/Downloads/tbb_logo_yoko_white.png, 5440×1920)의 흰색 버전 — 검정 배경에서 워드마크가 읽히는 유일한 버전.
-      // (primary 는 워드마크가 짙은 갈색이라 배경에 묻힌다.) 사방 320px 투명 여백만 트림한 무손실 webp.
-      image: "/media-partners/tokyo-bitcoin-base.webp",
+      // 원본(~/Downloads/tbb_logo_yoko_primary.png, 5440×1920)의 컬러 버전. 워드마크가 짙은 갈색(#43341b)이라
+      // 검정 배경에 묻힌다 → 갈색만 로고 자체의 크림색(#fcfaf2)으로 바꿨다. 코인 빨강·머리글자 색(보라·주황·청록)은 그대로.
+      // 사방 320px 투명 여백 트림 + 무손실 webp. (흰색 단색 원본 tbb_logo_yoko_white.png 도 있으나 컬러판으로 확정)
+      image: "/media-partners/tokyo-bitcoin-base-primary.webp",
       alt: "Tokyo Bitcoin Base",
       // 코인 2개 + 3줄 워드마크라 한 줄 글자 높이가 박스의 ~21% 뿐이다.
-      // 기본 높이로는 글자가 7px 남짓이라 읽히지 않는다 → 글자가 10~13px 이 되도록 키운다.
-      customImageClass: "h-[44px] sm:h-[50px] md:h-[56px] lg:h-[64px]",
+      // 기본 높이로는 글자가 7px 남짓이라 읽히지 않는다 → 글자가 15~23px 이 되도록 크게 잡는다.
+      // 모바일 72px = 폭 270px(390px 화면 콘텐츠 폭 358px 안).
+      customImageClass: "h-[72px] sm:h-[84px] md:h-[96px] lg:h-[112px]",
     },
   ],
 };
