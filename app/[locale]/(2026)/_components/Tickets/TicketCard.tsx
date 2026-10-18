@@ -1,7 +1,8 @@
 import { Check, Sparkles, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { CARD } from "./cardStyles";
-import { Link } from "@/i18n/navigation";
+import TicketCtaLink from "./TicketCtaLink";
+import type { TierKey } from "../../_types/tickets";
 
 type Benefit = {
   text: string;
@@ -12,6 +13,7 @@ type Benefit = {
 type SaleStatus = "upcoming" | "open" | "closed";
 
 type Props = {
+  tier: TierKey;
   tierLabel: string;
   /** 티어명 아래 부가 설명 (예: "11월 7일 행사만 참석") */
   description?: string;
@@ -19,6 +21,8 @@ type Props = {
   ctaLabel: string;
   ctaHref: string;
   // Pricing
+  /** 현재 판매가(원). 표시는 currentPrice, 이 값은 GA 이벤트 기록용 */
+  unitPrice: number;
   currentPrice: string;
   originalPrice: string;
   currencyLabel: string;
@@ -38,11 +42,13 @@ type Props = {
 };
 
 export default function TicketCard({
+  tier,
   tierLabel,
   description,
   benefits,
   ctaLabel,
   ctaHref,
+  unitPrice,
   currentPrice,
   originalPrice,
   currencyLabel,
@@ -162,8 +168,10 @@ export default function TicketCard({
         {/* CTA */}
         <div className={CARD.ctaWrap}>
           {saleStatus === "open" ? (
-            <Link
+            <TicketCtaLink
               href={ctaHref}
+              tier={tier}
+              unitPrice={unitPrice}
               className={cn(
                 CARD.ctaButton,
                 "transition-colors duration-200",
@@ -173,7 +181,7 @@ export default function TicketCard({
               )}
             >
               {ctaLabel}
-            </Link>
+            </TicketCtaLink>
           ) : (
             <button
               disabled

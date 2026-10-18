@@ -8,6 +8,7 @@ import { redis } from "@/lib/redis";
 import { isValidTier } from "@/app/[locale]/(2026)/_utils/tierMapping";
 import type { TierKey } from "@/app/[locale]/(2026)/_types/tickets";
 import type { SeatHoldRequest } from "@/app/[locale]/(2026)/_types/seats";
+import { pickUtm } from "@/lib/utm";
 
 export async function POST(request: NextRequest) {
   // Rate limiting: 5 checkout attempts per IP per minute
@@ -20,10 +21,11 @@ export async function POST(request: NextRequest) {
   }
 
   const body = await request.json();
-  const { seats, tier, locale } = body as {
+  const { seats, tier, locale, utm } = body as {
     seats: SeatHoldRequest[];
     tier: TierKey;
     locale?: string;
+    utm?: unknown;
   };
 
   if (!seats?.length || !tier) {
@@ -82,7 +84,8 @@ export async function POST(request: NextRequest) {
   // Step 2: Create Shopify checkout
   try {
     const phase = await getCurrentPhase(tier);
-    const { cartId, checkoutUrl } = await createCheckoutCart(normalizedSeats, tier, phase, locale);
+    // 클라이언트가 보낸 값이라 UTM 키·문자열만 남기고 길이를 잘라 장바구니에 싣는다
+    const { cartId, checkoutUrl } = await createCheckoutCart(normalizedSeats, tier, phase, locale, pickUtm(utm));
 
     const cleanCartId = cartId.split('?')[0];
 

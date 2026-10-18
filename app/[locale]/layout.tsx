@@ -7,6 +7,7 @@ import { setRequestLocale } from "next-intl/server";
 import localFont from "next/font/local";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { BASE_URL } from "../_utils/seo";
+import UtmCapture from "../_components/UtmCapture";
 
 // Resolves the relative og:image paths returned by generateSEOMetadata.
 export const metadata: Metadata = { metadataBase: new URL(BASE_URL) };
@@ -65,6 +66,7 @@ export default async function RootLayout({ children, params }: Props) {
         className={`antialiased size-full relative overflow-y-auto bg-[#101018]`}
       >
         <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        <UtmCapture />
       </body>
       <GoogleAnalytics gaId="G-9R5RSRB96E" />
     </html>

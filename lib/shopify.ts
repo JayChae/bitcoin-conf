@@ -1,6 +1,7 @@
 import crypto from "crypto";
 import { getTicketVariantId, getAfterPartyVariantId, DISCOUNT_CODES } from "./shopify-config";
 import { signPayload } from "./qr";
+import type { UtmParams } from "./utm";
 import type { TierKey, PricingPhase } from "@/app/[locale]/(2026)/_types/tickets";
 import type { SeatHoldRequest } from "@/app/[locale]/(2026)/_types/seats";
 
@@ -63,6 +64,7 @@ export async function createCheckoutCart(
   tier: TierKey,
   phase: PricingPhase,
   locale?: string,
+  utm: UtmParams = {},
 ): Promise<{ cartId: string; checkoutUrl: string }> {
   // 1. Ticket line items (one per seat) with QR token for check-in
   const ticketVariantId = getTicketVariantId(tier);
@@ -103,8 +105,10 @@ export async function createCheckoutCart(
   const lines = [...ticketLines, ...apLines];
 
   // 3. Create cart with lang attribute for bilingual email notifications
+  //    광고 UTM도 함께 실어 주문 상세에서 어느 캠페인으로 들어온 구매인지 보이게 한다
   const cartAttributes = [
     { key: "lang", value: locale ?? "ko" },
+    ...Object.entries(utm).map(([key, value]) => ({ key, value })),
   ];
 
   const data = await storefrontFetch<{

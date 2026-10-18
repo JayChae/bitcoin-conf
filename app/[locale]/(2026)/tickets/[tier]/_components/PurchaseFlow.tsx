@@ -9,6 +9,9 @@ import type {
 } from "@/app/[locale]/(2026)/_types/tickets";
 import type { SeatHoldRequest } from "@/app/[locale]/(2026)/_types/seats";
 import { TICKETS } from "@/app/[locale]/(2026)/_constants/tickets";
+import { getDiscountedPrice } from "@/app/[locale]/(2026)/_utils/tickets";
+import { trackTicketEvent } from "@/lib/analytics";
+import { getStoredUtm } from "@/lib/utm";
 import { useSeatAvailability } from "@/hooks/useSeatAvailability";
 import { useZoneAvailability } from "@/hooks/useZoneAvailability";
 import ZoneSelector from "./ZoneSelector";
@@ -45,6 +48,7 @@ export default function PurchaseFlow({
   const ticket = TICKETS.find((tk) => tk.tier === tier)!;
   const hasAfterPartyAddon = !!ticket.addonKeys?.includes("afterPartyOption");
   const afterPartyIncluded = tier === "vip";
+  const unitPrice = getDiscountedPrice(ticket.basePrice, phase);
 
   const afterPartyCount = Object.values(afterPartySeats).reduce(
     (sum, set) => sum + set.size,
@@ -66,7 +70,16 @@ export default function PurchaseFlow({
     }, 100);
   }, []);
 
+  // 좌석을 고르기 시작한 사람만 한 번 기록한다. 빈 상태에서 출발하므로
+  // 첫 토글은 항상 좌석 추가다.
+  const seatTrackedRef = useRef(false);
+
   const toggleSeat = useCallback((sectionId: string, seatNumber: number) => {
+    if (!seatTrackedRef.current) {
+      seatTrackedRef.current = true;
+      trackTicketEvent("add_to_cart", { tier, price: unitPrice });
+    }
+
     setSelectedSeats((prev) => {
       const next = { ...prev };
       const set = new Set(prev[sectionId] ?? []);
@@ -87,7 +100,7 @@ export default function PurchaseFlow({
       else next[sectionId] = set;
       return next;
     });
-  }, []);
+  }, [tier, unitPrice]);
 
   const toggleAfterParty = useCallback(
     (sectionId: string, seatNumber: number) => {
@@ -138,7 +151,7 @@ export default function PurchaseFlow({
       const res = await fetch("/api/checkout/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ seats, tier, locale }),
+        body: JSON.stringify({ seats, tier, locale, utm: getStoredUtm() }),
         signal: controller.signal,
       });
 
@@ -151,6 +164,12 @@ export default function PurchaseFlow({
       }
 
       const { checkoutUrl } = await res.json();
+      // 결제는 Shopify 도메인에서 이어져 GA가 따라가지 못한다 — 여기가 사이트에서 잡히는 마지막 단계.
+      trackTicketEvent("begin_checkout", {
+        tier,
+        price: unitPrice,
+        quantity: seats.length,
+      });
       window.location.href = checkoutUrl;
     } catch {
       setHoldState("error");
@@ -159,7 +178,7 @@ export default function PurchaseFlow({
       clearTimeout(timeoutId);
       isSubmittingRef.current = false;
     }
-  }, [selectedSeats, afterPartySeats, afterPartyIncluded, tier, locale, t]);
+  }, [selectedSeats, afterPartySeats, afterPartyIncluded, tier, locale, unitPrice, t]);
 
   const handleNext = useCallback(() => {
     if (hasAfterPartyAddon) {

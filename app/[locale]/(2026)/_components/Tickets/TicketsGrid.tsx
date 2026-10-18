@@ -81,6 +81,7 @@ export default async function TicketsGrid({
           return (
             <div key={ticket.tier}>
               <TicketCard
+                tier={ticket.tier}
                 tierLabel={t(ticket.tier)}
                 description={
                   ticket.descriptionKey ? t(ticket.descriptionKey) : undefined
@@ -88,6 +89,7 @@ export default async function TicketsGrid({
                 benefits={benefits}
                 ctaLabel={t("ctaBuy")}
                 ctaHref={`/tickets/${ticket.tier}`}
+                unitPrice={currentPrice}
                 currentPrice={formatKRW(currentPrice, locale)}
                 originalPrice={formatKRW(ticket.basePrice, locale)}
                 currencyLabel={t("currency")}
