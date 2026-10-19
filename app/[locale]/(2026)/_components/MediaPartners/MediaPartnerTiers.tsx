@@ -6,6 +6,12 @@ import { cn } from "@/lib/utils";
 
 const MONO = "font-[family-name:var(--font-ubuntu-mono)]";
 
+// 모든 미디어 파트너 로고가 공유하는 4:1 칸. 비율이 다른 로고는 object-contain 으로 칸 안에 맞춘다.
+// 검정 그림자(가장자리 3px + 번짐 14px)는 배경의 밝은 빛줄기가 로고 뒤를 지날 때만 드러나 로고를 떼어 준다.
+// 검정 위에선 보이지 않는다.
+const LOGO_BOX =
+  "h-[64px] w-[256px] md:h-[76px] md:w-[304px] lg:h-[88px] lg:w-[352px] [filter:drop-shadow(0_0_3px_rgba(0,0,0,0.95))_drop-shadow(0_0_14px_rgba(0,0,0,0.85))]";
+
 // 신문 1면 머리의 겹줄 괘선(굵은 줄 + 가는 줄). 아래쪽 마감은 flip 으로 순서를 뒤집어 대칭을 맞춘다.
 function DoubleRule({ flip }: { flip?: boolean }) {
   return (
@@ -27,7 +33,8 @@ function displayHost(url: string) {
 // 랜딩(MediaPartnersSection)과 /sponsors 페이지가 공유.
 // 미디어 파트너는 신문·방송사라 후원사의 가운데 금속 라벨 대신 지면(紙面) 문법을 쓴다:
 // 겹줄 괘선 사이를 티어별 칸으로 나누고, 칸 왼쪽 위에 티어 이름(조용한 글자), 로고 밑에 매체 도메인.
-// 위계는 칸 여백·로고 크기로만 준다(메인 > 일반). 빈 티어는 칸째 숨긴다.
+// 로고는 티어와 상관없이 모두 같은 크기 칸(LOGO_BOX)에 넣는다 — 어느 매체도 더 크게 보이지 않게.
+// 빈 티어는 칸째 숨긴다.
 export default async function MediaPartnerTiers() {
   const t = await getTranslations("MediaPartners2026");
 
@@ -36,14 +43,12 @@ export default async function MediaPartnerTiers() {
       key: "main",
       title: t("main"),
       partners: mediaPartners.main,
-      logoSize: "h-[40px] sm:h-[52px] md:h-[64px] lg:h-[76px]",
       rowPadding: "pb-12 md:pb-16",
     },
     {
       key: "media",
       title: t("media"),
       partners: mediaPartners.media,
-      logoSize: "h-[28px] sm:h-[32px] md:h-[36px] lg:h-[40px]",
       rowPadding: "pb-10 md:pb-12",
     },
   ].filter((tier) => tier.partners.length > 0);
@@ -88,8 +93,8 @@ export default async function MediaPartnerTiers() {
                     width={400}
                     height={200}
                     className={cn(
-                      "w-auto object-contain transition-transform duration-300 group-hover:scale-[1.03]",
-                      partner.customImageClass || tier.logoSize,
+                      "object-contain transition-transform duration-300 group-hover:scale-[1.03]",
+                      LOGO_BOX,
                     )}
                   />
                   <span
