@@ -8,6 +8,7 @@ import localFont from "next/font/local";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { BASE_URL } from "../_utils/seo";
 import UtmCapture from "../_components/UtmCapture";
+import MetaPixel from "../_components/MetaPixel";
 
 // Resolves the relative og:image paths returned by generateSEOMetadata.
 export const metadata: Metadata = { metadataBase: new URL(BASE_URL) };
@@ -67,6 +68,7 @@ export default async function RootLayout({ children, params }: Props) {
       >
         <NextIntlClientProvider>{children}</NextIntlClientProvider>
         <UtmCapture />
+        <MetaPixel />
       </body>
       <GoogleAnalytics gaId="G-9R5RSRB96E" />
     </html>
