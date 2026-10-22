@@ -101,18 +101,11 @@ const days: Record<DayId, ScheduleDay> = {
         end: "15:40",
         room: "coex",
         format: "panel",
-        speakers: [
-          "respect",
-          {
-            name: { en: "Calvin", ko: "Calvin" },
-            affiliation: {
-              en: "Open Source Project, UTREEXO",
-              ko: "오픈소스 프로젝트, UTREEXO",
-            },
-            image: "/avatars/calvin.png",
-          },
-          "spector",
-        ],
+        speakers: ["respect", "calvin-kim", "spector", "mineey"],
+        title: {
+          en: "Bitcoin in Korea: Where Are We Now?",
+          ko: "한국의 비트코인, 지금 어디까지 왔나?",
+        },
       },
       {
         start: "15:40",
@@ -135,6 +128,10 @@ const days: Record<DayId, ScheduleDay> = {
         room: "coex",
         format: "fireside",
         speakers: ["carl-dong", "stephan-livera"],
+        title: {
+          en: "VPNs, Internet Freedom, and Bitcoin",
+          ko: "VPN, 인터넷 자유, 그리고 비트코인",
+        },
       },
       {
         start: "17:40",
@@ -149,7 +146,7 @@ const days: Record<DayId, ScheduleDay> = {
   day2: {
     rooms: ["kfb", "masil-2f", "masil-1f"],
     sessions: [
-      { start: "12:00", end: "13:00", format: "lunch" },
+      { start: "11:40", end: "13:00", format: "lunch" },
 
       // 은행회관
       {
@@ -160,11 +157,22 @@ const days: Record<DayId, ScheduleDay> = {
         speakers: ["teruko"],
       },
       {
+        start: "13:30",
+        end: "14:00",
+        room: "kfb",
+        format: "talk",
+        speakers: ["tadge-dryja"],
+      },
+      {
         start: "14:00",
         end: "14:30",
         room: "kfb",
         format: "debate",
         speakers: ["respect", "billy-jo"],
+        title: {
+          en: "What's the best way to hold Bitcoin? Self-custody vs. custodial",
+          ko: "비트코인, 어떻게 보관하는 게 최선일까? 셀프커스터디 vs 수탁",
+        },
       },
       {
         start: "14:30",
@@ -297,46 +305,53 @@ const days: Record<DayId, ScheduleDay> = {
 
       // 마실 1층
       {
-        start: "09:00",
-        end: "09:30",
+        start: "09:40",
+        end: "10:10",
         room: "masil-1f",
         format: "talk",
         speakers: ["fabian-jahr"],
       },
       {
-        start: "09:30",
-        end: "10:00",
+        start: "10:10",
+        end: "10:40",
         room: "masil-1f",
         format: "talk",
         speakers: ["anmol-sharma"],
       },
       {
-        start: "10:00",
-        end: "10:30",
+        start: "10:40",
+        end: "11:10",
         room: "masil-1f",
         format: "talk",
         speakers: ["paperpsych"],
       },
       {
-        start: "10:30",
-        end: "11:00",
+        start: "11:10",
+        end: "11:40",
         room: "masil-1f",
         format: "talk",
         speakers: ["stark"],
       },
       {
-        start: "11:00",
-        end: "11:30",
+        start: "13:00",
+        end: "13:30",
         room: "masil-1f",
         format: "talk",
         speakers: ["veronika-dorson"],
       },
       {
-        start: "11:30",
-        end: "12:00",
+        start: "13:30",
+        end: "14:00",
         room: "masil-1f",
         format: "talk",
         speakers: ["gio-galt"],
+      },
+      {
+        start: "14:00",
+        end: "14:30",
+        room: "masil-1f",
+        format: "talk",
+        speakers: ["nick-farrow"],
       },
       {
         start: "14:30",
