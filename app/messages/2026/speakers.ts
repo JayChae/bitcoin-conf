@@ -749,20 +749,20 @@ const items: SpeakerSource[] = [
     image: "/2026/speakers/Sea_of_Corea.webp",
     difficulty: "Medium",
     links: [
-      { type: "website", url: "https://promenadecastle.com" },
+      { type: "website", url: "https://seaofcorea.org/" },
       { type: "x", url: "https://x.com/PromenadeCastle" },
     ],
     i18n: {
       en: {
         title: "Sea of Corea",
-        subtitle: ["Founder, BTCorea Grassroots Hash Force"],
+        subtitle: ["Initiator, BTCorea Grassroots Hash Force"],
         bio: "About 'Sea of Corea Decentralized Mining Cooperative'\n\nWe are dedicated to decentralizing the Republic of Korea and rebuilding it as a Bitcoin network state. Through the Proof of Work of grassroots Bitcoin mining, we aggregate local hashrate and strengthen the decentralized network. By practicing self-custody, running nodes, and mining, we empower individuals to achieve true on-chain Bitcoin sovereignty and independence.",
         lectureTitle:
           "Decentralize the Bitcoin - From a Bitaxe to the Sea of Hash",
       },
       ko: {
         title: "Sea of Corea",
-        subtitle: ["BTCorea Grassroots Hash Force 창립자"],
+        subtitle: ["BTCorea Grassroots Hash Force Initiator"],
         bio: "'Sea of Corea 탈중앙화 채굴 협동조합' 소개\n\n우리는 대한민국을 탈중앙화하고, 비트코인 네트워크 국가(Network State)로 재건하는 데 힘쓰고 있습니다. 풀뿌리 비트코인 채굴의 작업증명(Proof of Work)을 통해 지역의 해시레이트를 모으고, 탈중앙화된 네트워크를 강화합니다. 자기수탁(self-custody), 노드 운영, 채굴을 직접 실천하며, 개인이 진정한 온체인 비트코인 주권과 독립을 이룰 수 있도록 돕습니다.",
         lectureTitle:
           "비트코인을 탈중앙화하라 - 비트액스(Bitaxe)에서 해시의 바다로",
@@ -995,6 +995,46 @@ const items: SpeakerSource[] = [
         subtitle: ["테더 MDK·MOS 프로덕트 매니저"],
         bio: "AI 시대에 오픈소스는 막을 수 없는 흐름이 되고 있다. 지능이 공유될 때 혁신은 복리로 쌓인다. 소프트웨어를 바꾸고 있는 바로 그 힘이 머지않아 비트코인 채굴을 안에서부터 다시 빚어낼 것이다. 닫힌 시스템은 열린 인프라와 더 빠른 실험, 그리고 새로운 세대의 빌더에게 자리를 내줄 것이다. 이 변화는 운영, 에너지 최적화, 자동화, 하드웨어 통합에 이르기까지 업계 전반을 뒤흔들 것이다. 그리고 그 파괴야말로 비트코인 채굴에 꼭 필요한 것이다. 더 많은 혁신, 더 많은 탈중앙화, 더 강한 보안, 그리고 더 회복력 있는 네트워크 말이다.",
         lectureTitle: "비트코인 채굴의 미래는 '오픈'이다",
+      },
+    },
+  },
+  {
+    slug: "calvin-kim",
+    image: "/2026/speakers/Calvin_Kim.webp",
+    difficulty: "Low",
+    links: [{ type: "github", url: "https://github.com/kcalvinalvin" }],
+    i18n: {
+      en: {
+        title: "Calvin Kim",
+        subtitle: ["Lead Developer, utreexod", "Contributor, btcd"],
+        bio: "Calvin is an open-source Bitcoin protocol developer based in Seoul. He leads the Utreexo project, which lets nodes validate transactions without storing the full UTXO set so that full nodes can run even on low-spec devices, and he is a co-author of BIP 181, 182, and 183, which define its specification. He is a major contributor to btcd, the Bitcoin node written in Go, and the lead developer of utreexod, a Utreexo node, supported by a long-term support (LTS) grant from OpenSats. He also mentors the next generation of Bitcoin developers through programs such as the Asia Bitcoin Dev Internship.",
+        lectureTitle: "Bitcoin in Korea: Where Are We Now?",
+      },
+      ko: {
+        title: "캘빈 김 (Calvin Kim)",
+        subtitle: ["utreexod 리드 개발자", "btcd 기여자"],
+        bio: "서울에서 활동하는 오픈소스 비트코인 프로토콜 개발자입니다. 전체 UTXO 셋을 저장하지 않고도 거래를 검증할 수 있게 해 저사양 기기에서도 풀노드를 돌릴 수 있도록 하는 Utreexo 프로젝트를 이끌고 있으며, 그 사양을 정의한 BIP 181·182·183의 공동 작성자입니다. Go 언어 기반 비트코인 노드 btcd의 주요 기여자이자 Utreexo 노드 utreexod의 리드 개발자로, OpenSats의 장기 지원(LTS) 그랜트를 받고 있습니다. Asia Bitcoin Dev Internship 등을 통해 차세대 비트코인 개발자도 멘토링하고 있습니다.",
+        lectureTitle: "한국의 비트코인, 지금 어디까지 왔나?",
+      },
+    },
+  },
+  {
+    slug: "tadge-dryja",
+    image: "/2026/speakers/Tadge_Dryja.webp",
+    difficulty: "High",
+    links: [{ type: "x", url: "https://x.com/tdryja" }],
+    i18n: {
+      en: {
+        title: "Tadge Dryja",
+        subtitle: ["Bitcoin Researcher"],
+        bio: "Tadge co-authored the design and development of the Lightning Network, changing how people think about Bitcoin scalability. He devised Discreet Log Contracts (DLCs), a smart contract protocol for Bitcoin, and Utreexo, an accumulator that improves Bitcoin's scalability and performance. He is currently researching post-quantum migration protocols to make Bitcoin safer and more resilient.",
+        lectureTitle: "Post Quantum Recovery",
+      },
+      ko: {
+        title: "Tadge Dryja",
+        subtitle: ["비트코인 리서처"],
+        bio: "라이트닝 네트워크를 공동 저자로 설계·개발해 비트코인 확장성에 대한 관점을 바꾼 인물입니다. 비트코인 스마트 컨트랙트 프로토콜인 DLC(Discreet Log Contracts)와, 비트코인의 확장성과 성능을 개선한 어큐뮬레이터 Utreexo를 고안했습니다. 현재는 비트코인의 안전성과 회복력을 높이기 위한 양자 내성(포스트 퀀텀) 마이그레이션 프로토콜을 연구하고 있습니다.",
+        lectureTitle: "양자 내성 복구",
       },
     },
   },
