@@ -133,6 +133,34 @@ const items: SideEventSource[] = [
     },
   },
   {
+    slug: "bitcoin-happy-hour",
+    image: "/2026/side-events/bitcoin-happy-hour.webp",
+    cardImage: "/2026/side-events/bitcoin-happy-hour-card.webp",
+    links: [{ type: "website", url: "https://luma.com/yt3km21i" }],
+    i18n: {
+      en: {
+        title: "Bitcoin Happy Hour",
+        host: "Zachary Signor × SPECTER",
+        date: "Fri, Nov 6, 2026 · 18:00 – 24:00",
+        theme: "Support Bitcoin Businesses in Seoul",
+        shortDescription:
+          "A casual Bitcoiner meetup over drinks, food and hookah at The Hike in Itaewon — the only bar in Seoul that accepts Bitcoin. Come with a loaded lightning wallet.",
+        description:
+          "Happy hour at The Hike in Itaewon?\n\nJoin us for a casual Bitcoiner meetup over drinks, food and hookah! Purchase your refreshments with BTC to support this great bar in the heart of Itaewon. Come with a loaded lightning wallet.\n\nThe Hike is the only bar that accepts Bitcoin in Seoul. What better place to pre-game on Friday? Calling all Bitcoin entrepreneurs, investors, novices... and calling all non-Bitcoiners to see how easy it is to use BTC.\n\nAdd The Hike to your bookmarks and every time you are in Seoul, stop by.\n\nSchedule: Friday, November 6, 2026, 18:00 – 24:00\n\nVenue: The Hike (3F, 5 Itaewon-ro 19-gil, Yongsan-gu, Seoul · above Shenanigans Irish Pub)",
+      },
+      ko: {
+        title: "Bitcoin Happy Hour",
+        host: "Zachary Signor × SPECTER",
+        date: "2026년 11월 6일 (금) 18:00 – 24:00",
+        theme: "서울의 비트코인 비즈니스 응원하기",
+        shortDescription:
+          "서울에서 비트코인을 받는 유일한 바, 이태원 The Hike에서 술·음식·후카와 함께하는 캐주얼 밋업. 라이트닝 지갑에 잔고 채워서 오세요.",
+        description:
+          "이태원 The Hike에서 해피아워 어때요?\n\n비트코이너들과 함께 캐주얼한 밋업을 해요! 술, 음식, 후카를 즐기면서 BTC로 결제해서 이 좋은 바를 응원해주세요. 라이트닝 지갑에 잔고 채워서 오세요.\n\nThe Hike는 서울에서 비트코인을 받는 유일한 바입니다. 금요일 프리게임 하기에 이보다 더 좋은 곳이 있을까요? 비트코인 사업가, 투자자, 초보자 모두 환영합니다. 그리고 비트코인을 안 써본 분들도, BTC가 얼마나 쉬운지 직접 경험해보세요.\n\n지도에 The Hike를 북마크해두고, 서울에 올 때마다 꼭 들러주세요.\n\n일정: 2026년 11월 6일 (금) 18:00 – 24:00\n\n장소: The Hike (서울 용산구 이태원로19길 5, 3층 · Shenanigans Irish Pub 위층)",
+      },
+    },
+  },
+  {
     slug: "run-for-hal",
     image: "/2026/side-events/run-for-hal.webp",
     cardImage: "/2026/side-events/run-for-hal-card.webp",
@@ -299,6 +327,39 @@ const items: SideEventSource[] = [
           "오픈소스 서명 장치들을 비교해 보고, 자기 노트북으로 보드에 펌웨어를 직접 설치해 보는 실습 워크숍.",
         description:
           "여러 오픈소스 서명 장치가 보안과 사용성을 위해 각각 어떤 방식을 택했는지 알아봅니다. 설명을 들은 뒤, 참가자가 자기 노트북으로 펌웨어를 직접 설치해 봅니다.\n\n프로그램\n\n• DIY 비트코인 생태계 소개: 지갑, 노드, 채굴기, 서명 장치까지 DIY 프로젝트를 살펴보고, \"신뢰하지 말고 검증하라\"는 원칙이 공개된 코드와 어떻게 이어지는지 알아봅니다.\n\n• 오픈소스 서명 장치 비교: Specter-DIY, SeedSigner, Krux, Jade를 보드, 펌웨어, 저장 방식, QR 활용 방식 기준으로 비교합니다.\n\n• 펌웨어 설치 실습: 팀별로 보드에 Kern과 KISS Signer를 설치하고 부팅합니다. 보드가 떨어지면 빈 스마트카드에 Satochip을 설치하고 Sparrow에서 지갑을 설정합니다.\n\n• 선택 심화 실습: 시그넷(테스트넷)에서 송금과 수신을 해 보고, KISS Signer와 kiss-bdk로 사일런트 페이먼트를 체험합니다.\n\n현장 경품: 실습에 적극적으로 참여한 분께 ESP32-P4 보드를 드립니다(총 5개).\n\n추천 대상\n\n• DIY 서명 장치를 직접 다뤄 보며 지갑의 작동 원리를 알고 싶은 분\n• 오픈소스 서명 장치들의 보드와 펌웨어 차이가 궁금한 분\n• 가이드 작성, 번역, 버그 제보로 DIY 프로젝트에 기여하고 싶은 분\n\n진행자 소개: DIYbitcoin은 DIY 비트코인 프로젝트를 알리고 개발자의 후원금 확보를 돕습니다. 텔레그램 커뮤니티에서 학습 자료를 공유하고, Krux 팀의 홍보를 맡고 있습니다.\n\n일시: 2026년 11월 10일 (화) 19:00 – 21:00 (KST)\n\n장소: 비트코인센터 서울 (서울 마포구 신촌로2안길 30, 2층 · 홍대입구역 6번 출구 도보 3분)\n\n참가비: 15,000 sats\n\n준비물(필수): 노트북, 보조배터리, USB-C 케이블",
+      },
+    },
+  },
+  {
+    slug: "bitcoin-tour-corea-manisan",
+    image: "/2026/side-events/bitcoin-tour-corea-manisan.webp",
+    cardImage: "/2026/side-events/bitcoin-tour-corea-manisan-card.webp",
+    links: [
+      {
+        type: "website",
+        url: "https://www.satlantis.io/events/1002906/bitcoin-korea-conference-week-bitcoin-tour-corea-1-mani-san",
+      },
+    ],
+    i18n: {
+      en: {
+        title: "Bitcoin Tour Corea #1 — Manisan",
+        host: "Sea of Corea DMC (@PromenadeCastle)",
+        date: "Wed, Nov 11, 2026 · 09:00 – 16:00",
+        theme: "Open a Heaven on Ganghwa Island",
+        shortDescription:
+          "A day on Ganghwa Island: coffee paid in sats at a bitcoin café, then a climb up Manisan to Chamseongdan Altar for a short silent meditation.",
+        description:
+          "Join the Ganghwa Island Bitcoin Tour, held as a Bitcoin Korea 2026 side event.\n\nTogether with Sea of Corea DMC (@PromenadeCastle), we'll have a coffee paid in sats at a bitcoin café on Ganghwa Island, then climb up to Chamseongdan Altar on Manisan to share a short silent meditation.\n\nThe round trip takes over 3 hours along a rocky ridge trail. Please bring hiking boots, a windproof jacket, water, and snacks.\n\nWhether the tour goes ahead will be decided 2–3 days in advance depending on the weather. If it's cancelled, you'll receive a full refund.\n\nSchedule: Wednesday, November 11, 2026, 09:00 – 16:00\n\nVenue: Manisan, Ganghwa Island (meeting point and transportation will be shared with registered attendees)\n\nCapacity: About 20 people\n\nWhat to bring: Hiking boots, windproof jacket, water, snacks",
+      },
+      ko: {
+        title: "Bitcoin Tour Corea #1 — 마니산",
+        host: "Sea of Corea DMC (@PromenadeCastle)",
+        date: "2026년 11월 11일 (수) 09:00 – 16:00",
+        theme: "Open a Heaven on Ganghwa Island",
+        shortDescription:
+          "강화도 비트코인 카페에서 사츠로 커피 한 잔, 마니산 참성단까지 올라 짧은 침묵 명상을 나누는 하루 투어.",
+        description:
+          "Bitcoin Korea 2026 사이드 이벤트로 열리는 강화도 비트코인 투어에 함께하세요.\n\nSea of Corea DMC(@PromenadeCastle)와 함께 강화도 비트코인 카페에서 사츠로 커피 한 잔, 마니산 참성단까지 올라 짧은 침묵 명상을 나눕니다.\n\n왕복 3시간 이상, 바위 능선 코스예요! 등산화·방풍 재킷·물·간식을 챙겨주세요.\n\n날씨에 따라 2~3일 전 진행 여부를 결정하며, 취소 시 전액 환불됩니다.\n\n일정: 2026년 11월 11일 (수) 09:00 – 16:00\n\n장소: 강화도 마니산 (집결지·교통편은 신청자에게 추후 공지)\n\n정원: 약 20명\n\n준비물: 등산화, 방풍 재킷, 물, 간식",
       },
     },
   },
