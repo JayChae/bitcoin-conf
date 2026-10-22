@@ -22,6 +22,29 @@ type PressSource = Omit<PressArticle, keyof LocaleContent> & {
 
 const items: PressSource[] = [
   {
+    id: "wowtv-2026",
+    url: "https://n.news.naver.com/article/215/0001270061",
+    i18n: {
+      en: {
+        outlet: "Korea Economic TV",
+        date: "Oct 22, 2026",
+        headline:
+          "'Replacing Credit Cards in Five Years' — A Future Where AI Pays with Bitcoin",
+        quote:
+          "A Brazilian tourist can open an app from home and finish paying at a shop in Seoul in just one second.",
+        quoteAttribution: "Daniel James · CEO, Wallet of Satoshi",
+      },
+      ko: {
+        outlet: "한국경제TV",
+        date: "2026. 10. 22.",
+        headline: "\"5년뒤 신용카드 대체\"…AI가 비트코인 긁는 미래",
+        quote:
+          "브라질 관광객이 자국 앱을 켜고 서울의 상점에서 단 1초만에 결제를 끝낼 수 있다.",
+        quoteAttribution: "Daniel James · Wallet of Satoshi CEO",
+      },
+    },
+  },
+  {
     id: "egn-2025",
     url: "http://www.egn.kr/news/articleView.html?idxno=208390",
     i18n: {

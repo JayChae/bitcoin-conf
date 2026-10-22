@@ -7,10 +7,14 @@ import YouTubePlayer from "../YouTubePlayer";
 import SectionTitle from "../SectionTitle";
 import PressCard from "./PressCard";
 
+// lg 에서 컴팩트 카드 3장(2줄 헤드라인)까지만 16:9 플레이어 높이 안에 들어간다.
+// 4장부터는 카드 열이 플레이어보다 길어지므로 홈엔 최신 3개만, 전체는 /recap 에서.
+const HOME_PRESS_LIMIT = 3;
+
 export default async function RecapSection() {
   const t = await getTranslations("Recap2026");
   const locale = (await getLocale()) as Locale;
-  const articles = press[locale];
+  const articles = press[locale].slice(0, HOME_PRESS_LIMIT);
 
   if (articles.length === 0) return null;
 
