@@ -278,22 +278,22 @@ const items: SideEventSource[] = [
     links: [],
     i18n: {
       en: {
-        title: "Using a New Bitcoin P2P Platform",
+        title: "Building Trusted Networks with Bitcoin and Fedi",
         host: "Dea Rezkitha (Fedi)",
         date: "Sun, Nov 8, 2026 · 13:00 – 14:00",
         shortDescription:
-          "Fedi introduces its new P2P platform in a private session where the team and users can talk directly.",
+          "Fedi introduces Building Trusted Networks with Bitcoin and Fedi in a private session where the team and users can talk directly.",
         description:
-          "An introduction to Fedi's new P2P platform, and a chance for the company and its users to talk directly with one another. This is a private event — if you'd like to join, please reach out to admin@bitomun.com.\n\nSchedule: Sunday, November 8, 2026, 13:00 – 14:00\n\nVenue: Shared with registered attendees only\n\nCapacity: 10 people\n\nFee: Free",
+          "An introduction to Building Trusted Networks with Bitcoin and Fedi, and a chance for the company and its users to talk directly with one another. This is a private event — if you'd like to join, please reach out to admin@bitomun.com.\n\nSchedule: Sunday, November 8, 2026, 13:00 – 14:00\n\nVenue: Shared with registered attendees only\n\nCapacity: 10 people\n\nFee: Free",
       },
       ko: {
-        title: "새로운 비트코인 플랫폼 소개",
+        title: "Building Trusted Networks with Bitcoin and Fedi",
         host: "Dea Rezkitha (Fedi)",
         date: "2026년 11월 8일 (일) 13:00 – 14:00",
         shortDescription:
-          "Fedi의 새로운 P2P 플랫폼을 소개하고, 기업과 유저가 직접 소통하는 프라이빗 세션.",
+          "Fedi가 Building Trusted Networks with Bitcoin and Fedi를 소개하고, 기업과 유저가 직접 소통하는 프라이빗 세션.",
         description:
-          "Fedi 기업의 새로운 플랫폼인 P2P 플랫폼을 소개하고 기업과 유저간의 소통이 이루어지는 자리입니다. 해당 이벤트는 프라이빗으로 진행하여 신청을 원할경우 admin@bitomun.com으로 연락 주세요.\n\n일정: 2026년 11월 8일 (일) 오후 01:00 ~ 02:00\n\n장소: 신청자에 한하여 공개\n\n정원: 10명\n\n비용: 무료",
+          "Fedi 기업이 Building Trusted Networks with Bitcoin and Fedi를 소개하고 기업과 유저간의 소통이 이루어지는 자리입니다. 해당 이벤트는 프라이빗으로 진행하여 신청을 원할경우 admin@bitomun.com으로 연락 주세요.\n\n일정: 2026년 11월 8일 (일) 오후 01:00 ~ 02:00\n\n장소: 신청자에 한하여 공개\n\n정원: 10명\n\n비용: 무료",
       },
     },
   },
