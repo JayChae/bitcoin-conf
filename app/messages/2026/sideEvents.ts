@@ -363,6 +363,39 @@ const items: SideEventSource[] = [
       },
     },
   },
+  {
+    slug: "bitcoin-educators-academy",
+    image: "/2026/side-events/bitcoin-educators-academy.webp",
+    cardImage: "/2026/side-events/bitcoin-educators-academy-card.webp",
+    links: [
+      {
+        type: "website",
+        url: "https://docs.google.com/forms/d/e/1FAIpQLSeGT2B6_oOaKYa3QnKYUvpSQf5f85jJxuekM0fUXcPBYFgd_w/viewform",
+      },
+    ],
+    i18n: {
+      en: {
+        title: "Bitcoin Educators Academy Seoul",
+        host: "AmityAge × Bitcoin Center Seoul",
+        date: "Fri – Sun, Nov 13 – 15, 2026",
+        theme: "Train the Trainers",
+        shortDescription:
+          "A three-day intensive train-the-trainers program by AmityAge: learn to explain bitcoin clearly, calmly, and confidently.",
+        description:
+          "The Bitcoin Educators Academy (BEA) is a three-day intensive \"Train the Trainers\" program run by AmityAge.\n\nOver three focused days, you'll practice public speaking, learn how to explain complex bitcoin concepts simply, how to respond to objections, and how to structure a presentation with impact.\n\nIf you care about bitcoin adoption and want to help the people around you understand bitcoin clearly, calmly, and confidently, BEA is the program for you.\n\nBEA has run in more than 16 cities across 4 continents, with 26 academies and 228 graduates so far.\n\nSchedule: Friday – Sunday, November 13 – 15, 2026\n\nVenue: Bitcoin Center Seoul (2F, 30 Sinchon-ro 2an-gil, Mapo-gu, Seoul · 3 min walk from Hongik Univ. Station Exit 6)",
+      },
+      ko: {
+        title: "비트코인 에듀케이터스 아카데미 서울",
+        host: "AmityAge × 비트코인센터 서울",
+        date: "2026년 11월 13일 (금) ~ 15일 (일)",
+        theme: "Train the Trainers",
+        shortDescription:
+          "AmityAge가 운영하는 3일간의 집중 강사 양성 프로그램. 비트코인을 명확하고 차분하고 자신감 있게 설명하는 법을 익힙니다.",
+        description:
+          "비트코인 에듀케이터스 아카데미(Bitcoin Educators Academy, BEA)는 AmityAge가 운영하는 3일간의 집중 \"강사 양성(Train the Trainers)\" 프로그램입니다.\n\n집중적인 3일 동안 대중 연설, 복잡한 비트코인 개념을 쉽게 풀어내는 법, 반론에 대응하는 법, 그리고 임팩트 있는 발표를 구성하는 법을 익히게 됩니다.\n\n비트코인 확산에 관심이 있고, 주변 사람들이 비트코인을 명확하고, 차분하고, 자신감 있게 이해하도록 돕고 싶다면 BEA가 바로 당신을 위한 프로그램입니다.\n\nBEA는 4개 대륙, 16개 이상의 도시에서 진행되었으며, 지금까지 26회의 아카데미와 228명의 수료생을 배출했습니다.\n\n일정: 2026년 11월 13일 (금) ~ 15일 (일)\n\n장소: 비트코인센터 서울 (서울 마포구 신촌로2안길 30, 2층 · 홍대입구역 6번 출구 도보 3분)",
+      },
+    },
+  },
 ];
 
 const sideEvents = {
