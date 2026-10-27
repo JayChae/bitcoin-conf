@@ -197,6 +197,54 @@ const items: VendorSource[] = [
       },
     ],
   },
+  {
+    slug: "bitcoinpills",
+    i18n: {
+      en: {
+        name: "Bitcoinpills.com",
+        category: "Bitcoin collectibles",
+        description:
+          "A project introducing bitcoin and bitcoin-themed collectibles. It is run by Fede, a collector known in the bitcoin community as 'bitbollo', and its signature collection, Bitcoin Pills, lets you meet bitcoin in a new way — as a collectible. Anyone who loves bitcoin and the joy of collecting is always welcome.",
+      },
+      ko: {
+        name: "Bitcoinpills.com",
+        category: "비트코인 수집품",
+        description:
+          "비트코인과 비트코인 테마 수집품을 소개하고 알리는 프로젝트입니다. 비트코인 커뮤니티에서 '비트볼로(bitbollo)'라는 이름으로 활동하는 수집가 페데(Fede)가 운영하며, 대표 컬렉션 'Bitcoin Pills'로 비트코인을 수집품이라는 새로운 방식으로 만나볼 수 있게 합니다. 비트코인을 좋아하고 무언가를 모으는 즐거움을 아는 분이라면 언제든 환영합니다.",
+      },
+    },
+    // 흰 배경 사진과 어두운 사진을 번갈아 둔다.
+    products: [
+      {
+        image: `${IMAGE_DIR}/bitcoinpills-pills.webp`,
+        i18n: {
+          en: { name: "Bitcoin Pills" },
+          ko: { name: "Bitcoin Pills" },
+        },
+      },
+      {
+        image: `${IMAGE_DIR}/bitcoinpills-posters.webp`,
+        i18n: {
+          en: { name: "Posters & sticker sheets" },
+          ko: { name: "포스터·스티커 시트" },
+        },
+      },
+      {
+        image: `${IMAGE_DIR}/bitcoinpills-sticker-pack.webp`,
+        i18n: {
+          en: { name: "Sticker Pack" },
+          ko: { name: "스티커 팩" },
+        },
+      },
+      {
+        image: `${IMAGE_DIR}/bitcoinpills-notes.webp`,
+        i18n: {
+          en: { name: "Bitcoin notes & coins" },
+          ko: { name: "비트코인 지폐·코인" },
+        },
+      },
+    ],
+  },
 ];
 
 // 셀러 문구와 상품 문구를 같은 로케일로 한꺼번에 펼친다.
