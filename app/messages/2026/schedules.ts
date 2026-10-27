@@ -207,7 +207,7 @@ const days: Record<DayId, ScheduleDay> = {
         end: "17:00",
         room: "kfb",
         format: "talk",
-        speakers: ["misha-komarov"],
+        speakers: ["scott-odell"],
       },
       {
         start: "17:00",
