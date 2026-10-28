@@ -236,7 +236,6 @@
     "holdError": "Failed to reserve seats. Please try again.",
     "alreadyHeld": "You already have reserved seats. Please release them first.",
     "quantity": "Quantity",
-    "noSeatSelection": "No seat selection — just choose how many tickets.",
     "decreaseQuantity": "Remove one ticket",
     "increaseQuantity": "Add one ticket",
     "checkoutError": "Couldn't open checkout. Please try again.",
