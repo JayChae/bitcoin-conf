@@ -15,6 +15,24 @@ type CheckinResult =
       checkedInAt?: string;
     };
 
+/** 서버·네트워크 오류. 티켓 무효(INVALID)와 구분해 "다시 스캔"으로 보여준다 */
+type ScanResult = CheckinResult | { error: true };
+
+/** 같은 QR은 카메라에서 이만큼 사라졌다가 다시 잡혀야 다시 처리한다 */
+const RESCAN_GAP_MS = 2000;
+/** 응답이 이보다 늦으면 오류로 보고 스캐너를 풀어준다 */
+const VERIFY_TIMEOUT_MS = 8000;
+/** 실패한 시도 이후의 체크인 기록인지 판단할 때 허용하는 폰·서버 시계 오차 */
+const CLOCK_SKEW_MS = 30_000;
+
+function buzz(pattern: number | number[]) {
+  try {
+    navigator.vibrate?.(pattern);
+  } catch {
+    // vibrate not supported
+  }
+}
+
 /** 스캐너 판독용 티어 식별색 (좌석도의 TIER_COLORS와는 목적이 다른 별개 팔레트) */
 const TIER_COLORS: Record<TierKey, string> = {
   vip: "#FFD700",
@@ -26,54 +44,100 @@ const TIER_COLORS: Record<TierKey, string> = {
 export default function CheckinPage() {
   const router = useRouter();
   const [manualInput, setManualInput] = useState("");
-  const [result, setResult] = useState<CheckinResult | null>(null);
+  const [result, setResult] = useState<ScanResult | null>(null);
+  const [checking, setChecking] = useState(false);
   const [scanning, setScanning] = useState(false);
   const [cameraError, setCameraError] = useState("");
   const scannerRef = useRef<HTMLDivElement>(null);
   const html5QrCodeRef = useRef<import("html5-qrcode").Html5Qrcode | null>(null);
   const lastScannedRef = useRef<string>("");
+  // 마지막으로 처리한 QR이 카메라에 마지막으로 잡힌 시각
+  const lastSeenAtRef = useRef(0);
+  // 확인 중이거나 결과 화면이 떠 있는 동안 true — 그 사이 잡힌 QR(뒷사람 것 포함)은 무시한다
+  const busyRef = useRef(false);
+  // 오류로 끝난 시도 — 같은 QR을 재시도했을 때 결과를 해석하는 데 쓴다
+  const failedAttemptRef = useRef<{ token: string; startedAt: number } | null>(null);
   const dismissResult = useCallback(() => {
     setResult(null);
-    lastScannedRef.current = "";
+    busyRef.current = false;
+    // 닫는 순간을 "방금 봤다"로 친다. 결과를 보는 사이 QR을 잠깐 놓쳤다가
+    // 닫을 때 다시 비춰도 같은 손님이 다시 처리되지 않는다
+    lastSeenAtRef.current = Date.now();
   }, []);
 
   // ─── Verify Token ───
 
   const verifyToken = useCallback(async (token: string) => {
-    // Prevent duplicate scans of the same token
-    if (token === lastScannedRef.current) return;
+    if (busyRef.current) return;
+    busyRef.current = true;
+    setChecking(true);
     lastScannedRef.current = token;
+    const startedAt = Date.now();
+    lastSeenAtRef.current = startedAt;
 
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), VERIFY_TIMEOUT_MS);
     try {
       const res = await fetch("/api/checkin/verify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token }),
+        signal: controller.signal,
       });
       if (res.status === 401) {
+        busyRef.current = false;
+        lastScannedRef.current = "";
         router.refresh();
         return;
       }
-      const data: CheckinResult = await res.json();
+      // 서버 오류를 티켓 무효로 보여주면 정상 손님을 돌려보내게 된다
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      let data: CheckinResult = await res.json();
+
+      const failed = failedAttemptRef.current;
+      if (failed?.token === token) {
+        failedAttemptRef.current = null;
+        // 실패로 보였던 시도가 실은 서버에 닿아 기록됐던 경우 — 그 기록이 이 손님의 최초 입장이다
+        if (
+          data.valid &&
+          data.alreadyCheckedIn &&
+          Date.parse(data.checkedInAt!) >= failed.startedAt - CLOCK_SKEW_MS
+        ) {
+          data = { valid: true, alreadyCheckedIn: false, payload: data.payload };
+        }
+      }
       setResult(data);
 
       // Haptic feedback
-      try {
-        if (navigator.vibrate) {
-          if (!data.valid || data.alreadyCheckedIn) {
-            navigator.vibrate([200, 100, 200]);
-          } else {
-            navigator.vibrate(200);
-          }
-        }
-      } catch {
-        // vibrate not supported
-      }
-
+      buzz(!data.valid || data.alreadyCheckedIn ? [200, 100, 200] : 200);
     } catch {
-      setResult({ valid: false, reason: "Network error" });
+      // 결과 화면을 닫으면 같은 QR을 바로 다시 시도할 수 있게 한다
+      lastScannedRef.current = "";
+      if (failedAttemptRef.current?.token !== token) {
+        failedAttemptRef.current = { token, startedAt };
+      }
+      setResult({ error: true });
+      buzz([100, 50, 100, 50, 100]);
+    } finally {
+      clearTimeout(timeout);
+      setChecking(false);
     }
   }, [router]);
+
+  /**
+   * 카메라는 QR이 화면에 있는 동안 같은 값을 계속 보고한다.
+   * 결과 화면을 닫은 직후 같은 QR이 다시 잡혀 "이미 체크인됨"이 뜨지 않도록,
+   * 같은 QR은 카메라에서 잠시 사라졌다가 다시 나타나야 처리한다.
+   */
+  const handleDecoded = useCallback((token: string) => {
+    if (token === lastScannedRef.current) {
+      const now = Date.now();
+      const stillInView = now - lastSeenAtRef.current < RESCAN_GAP_MS;
+      lastSeenAtRef.current = now;
+      if (stillInView) return;
+    }
+    verifyToken(token);
+  }, [verifyToken]);
 
   // ─── Camera Scanner ───
 
@@ -96,7 +160,7 @@ export default function CheckinPage() {
         { facingMode: "environment" },
         { fps: 10, qrbox: { width: 250, height: 250 } },
         (decodedText) => {
-          verifyToken(decodedText);
+          handleDecoded(decodedText);
         },
         () => {
           // ignore scan failures (no QR detected in frame)
@@ -121,7 +185,7 @@ export default function CheckinPage() {
         err instanceof Error ? err.message : "Camera access denied",
       );
     }
-  }, [verifyToken]);
+  }, [handleDecoded]);
 
   const stopScanner = useCallback(async () => {
     if (html5QrCodeRef.current) {
@@ -146,6 +210,8 @@ export default function CheckinPage() {
 
   const handleManualSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    // 확인 중에는 입력을 지우지 않고 남겨 둔다 — 지우면 처리 안 된 줄 모른다
+    if (busyRef.current) return;
     if (manualInput.trim()) {
       verifyToken(manualInput.trim());
       setManualInput("");
@@ -215,6 +281,22 @@ export default function CheckinPage() {
 
       </div>
 
+      {/* 확인 중 표시 — 응답이 빠르면 깜빡이지 않도록 잠깐 늦게 나타난다 */}
+      {checking && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3, duration: 0.15 }}
+          style={{ position: "fixed", inset: 0, zIndex: 40, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(0, 0, 0, 0.7)" }}
+        >
+          <p style={{ fontSize: 28, fontWeight: 800, color: "#fff", textAlign: "center", lineHeight: 1.4 }}>
+            확인 중…
+            <br />
+            <span style={{ fontSize: 18, fontWeight: 600, color: "rgba(255,255,255,0.7)" }}>Checking…</span>
+          </p>
+        </motion.div>
+      )}
+
       {/* Full-screen result overlay */}
       <AnimatePresence>
         {result && (
@@ -233,25 +315,32 @@ function CheckinResultOverlay({
   result,
   onDismiss,
 }: {
-  result: CheckinResult;
+  result: ScanResult;
   onDismiss: () => void;
 }) {
-  const isInvalid = !result.valid;
-  const isDuplicate = result.valid && result.alreadyCheckedIn;
-  const validity = result.valid
-    ? TIER_VALID_DAYS[result.payload.tier as TierKey]
+  const ticket = "error" in result || !result.valid ? null : result;
+  const validity = ticket
+    ? TIER_VALID_DAYS[ticket.payload.tier as TierKey]
     : undefined;
 
-  const config = isInvalid
-    ? { bg: "rgba(220, 38, 38, 0.95)", icon: "✗", label: "INVALID", sublabel: result.reason }
-    : isDuplicate
+  const config =
+    "error" in result
       ? {
-          bg: "rgba(217, 119, 6, 0.95)",
-          icon: "⚠",
-          label: "ALREADY CHECKED IN",
-          sublabel: `Checked in at: ${new Date(result.checkedInAt!).toLocaleString("ko-KR")}`,
+          bg: "rgba(51, 65, 85, 0.95)",
+          icon: "↻",
+          label: "SCAN AGAIN",
+          sublabel: "통신 오류 — 티켓 문제가 아닙니다 · Network error, not a ticket problem",
         }
-      : { bg: "rgba(22, 163, 74, 0.95)", icon: "✓", label: "WELCOME", sublabel: null };
+      : !result.valid
+        ? { bg: "rgba(220, 38, 38, 0.95)", icon: "✗", label: "INVALID", sublabel: result.reason }
+        : result.alreadyCheckedIn
+          ? {
+              bg: "rgba(217, 119, 6, 0.95)",
+              icon: "⚠",
+              label: "ALREADY CHECKED IN",
+              sublabel: `Checked in at: ${new Date(result.checkedInAt!).toLocaleString("ko-KR")}`,
+            }
+          : { bg: "rgba(22, 163, 74, 0.95)", icon: "✓", label: "WELCOME", sublabel: null };
 
   return (
     <motion.div
@@ -283,25 +372,25 @@ function CheckinResultOverlay({
           {config.label}
         </p>
 
-        {result.valid && (
+        {ticket && (
           <div style={{ fontSize: 24, lineHeight: 1.6, color: "rgba(255,255,255,0.95)" }}>
             <p style={{ margin: "0 0 8px" }}>
-              <span style={{ color: TIER_COLORS[result.payload.tier as TierKey] ?? "#fff", fontWeight: 800, textTransform: "uppercase", fontSize: 28, textShadow: "0 2px 8px rgba(0,0,0,0.3)" }}>
-                {tierLabel(result.payload.tier)}
+              <span style={{ color: TIER_COLORS[ticket.payload.tier as TierKey] ?? "#fff", fontWeight: 800, textTransform: "uppercase", fontSize: 28, textShadow: "0 2px 8px rgba(0,0,0,0.3)" }}>
+                {tierLabel(ticket.payload.tier)}
               </span>
             </p>
             {validity && (
               <p style={{ margin: "0 0 12px" }}>
-                <span style={{ display: "inline-block", background: TIER_COLORS[result.payload.tier as TierKey] ?? "#22D3EE", color: "#000", fontSize: 22, fontWeight: 800, padding: "6px 14px", borderRadius: 999, letterSpacing: "0.02em" }}>
+                <span style={{ display: "inline-block", background: TIER_COLORS[ticket.payload.tier as TierKey] ?? "#22D3EE", color: "#000", fontSize: 22, fontWeight: 800, padding: "6px 14px", borderRadius: 999, letterSpacing: "0.02em" }}>
                   {validity.badge}
                 </span>
               </p>
             )}
             <p style={{ margin: 0, fontSize: 22 }}>
-              Section <span style={{ fontWeight: 700 }}>{result.payload.sec}</span>
-              {" · "}Seat <span style={{ fontWeight: 700 }}>{result.payload.seat}</span>
+              Section <span style={{ fontWeight: 700 }}>{ticket.payload.sec}</span>
+              {" · "}Seat <span style={{ fontWeight: 700 }}>{ticket.payload.seat}</span>
             </p>
-            {result.payload.ap && (
+            {ticket.payload.ap && (
               <p style={{ margin: "8px 0 0", fontSize: 22 }}>✓ After Party</p>
             )}
           </div>
