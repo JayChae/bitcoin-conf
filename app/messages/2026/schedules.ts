@@ -305,25 +305,18 @@ const days: Record<DayId, ScheduleDay> = {
 
       // 마실 1층
       {
-        start: "09:40",
-        end: "10:10",
-        room: "masil-1f",
-        format: "talk",
-        speakers: ["fabian-jahr"],
-      },
-      {
         start: "10:10",
         end: "10:40",
         room: "masil-1f",
         format: "talk",
-        speakers: ["anmol-sharma"],
+        speakers: ["fabian-jahr"],
       },
       {
         start: "10:40",
         end: "11:10",
         room: "masil-1f",
         format: "talk",
-        speakers: ["paperpsych"],
+        speakers: ["anmol-sharma"],
       },
       {
         start: "11:10",
@@ -337,7 +330,19 @@ const days: Record<DayId, ScheduleDay> = {
         end: "13:30",
         room: "masil-1f",
         format: "talk",
-        speakers: ["veronika-dorson"],
+        speakers: [
+          {
+            name: { en: "Matthew", ko: "Matthew" },
+            affiliation: {
+              en: "Tokyo Bitcoin Base Manager",
+              ko: "Tokyo Bitcoin Base 매니저",
+            },
+          },
+        ],
+        title: {
+          en: "Tokyo Bitcoin Base: Building Japan's Bitcoin Hub",
+          ko: "Tokyo Bitcoin Base: 일본의 비트코인 허브를 만들다",
+        },
       },
       {
         start: "13:30",

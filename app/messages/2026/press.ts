@@ -22,6 +22,28 @@ type PressSource = Omit<PressArticle, keyof LocaleContent> & {
 
 const items: PressSource[] = [
   {
+    id: "wowtv-2026-1028",
+    url: "https://n.news.naver.com/article/215/0001270809",
+    i18n: {
+      en: {
+        outlet: "Korea Economic TV",
+        date: "Oct 28, 2026",
+        headline: "'The Monetary Revolution Was Foretold When Bitcoin Was $600'",
+        quote:
+          "Government anti-money-laundering rules can slow it down, but they can't stop bitcoin itself.",
+        quoteAttribution: "Stephan Livera · Bitcoin & Economics Podcaster",
+      },
+      ko: {
+        outlet: "한국경제TV",
+        date: "2026. 10. 28.",
+        headline: "\"비트코인 600달러때 화폐 혁명은 예고됐다\"",
+        quote:
+          "정부 자금세탁방지 규제가 속도를 늦출 수는 있지만 비트코인 자체를 막을 수는 없다.",
+        quoteAttribution: "Stephan Livera · 비트코인과 경제 전문 팟캐스터",
+      },
+    },
+  },
+  {
     id: "wowtv-2026",
     url: "https://n.news.naver.com/article/215/0001270061",
     i18n: {
