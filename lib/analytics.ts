@@ -8,6 +8,18 @@ import type { TierKey } from "@/app/[locale]/(2026)/_types/tickets";
 //   begin_checkout 좌석 확보 후 Shopify 결제 페이지로 이동
 type TicketEvent = "select_item" | "add_to_cart" | "begin_checkout";
 
+// Meta 픽셀(MetaPixel.tsx)에도 표준 이벤트로 같이 보낸다. 티켓 카드 클릭은 보내지 않는다.
+const META_EVENTS: Partial<Record<TicketEvent, string>> = {
+  add_to_cart: "AddToCart",
+  begin_checkout: "InitiateCheckout",
+};
+
+declare global {
+  interface Window {
+    fbq?: (...args: unknown[]) => void;
+  }
+}
+
 export function trackTicketEvent(
   event: TicketEvent,
   {
@@ -16,9 +28,23 @@ export function trackTicketEvent(
     quantity = 1,
   }: { tier: TierKey; price: number; quantity?: number },
 ) {
+  const value = price * quantity;
+
   sendGAEvent("event", event, {
     currency: "KRW",
-    value: price * quantity,
+    value,
     items: [{ item_id: tier, item_name: tier, price, quantity }],
   });
+
+  const metaEvent = META_EVENTS[event];
+  if (metaEvent) {
+    window.fbq?.("track", metaEvent, {
+      currency: "KRW",
+      value,
+      content_ids: [tier],
+      content_type: "product",
+      contents: [{ id: tier, quantity }],
+      num_items: quantity,
+    });
+  }
 }
