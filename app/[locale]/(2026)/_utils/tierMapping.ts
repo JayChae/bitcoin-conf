@@ -1,4 +1,4 @@
-import type { TierKey } from "../_types/tickets";
+import type { SeatedTierKey, TierKey } from "../_types/tickets";
 import { TIER_KEYS } from "../_types/tickets";
 import { SECTIONS } from "../_constants/seats";
 import { TIER_TO_SEAT_TIER, TIER_SECTIONS } from "../_constants/tierMapping";
@@ -10,12 +10,12 @@ export function isValidTier(tier: string): tier is TierKey {
 
 export function isSectionActiveForTier(
   sectionId: string,
-  tier: TierKey,
+  tier: SeatedTierKey,
 ): boolean {
   return TIER_SECTIONS[tier].includes(sectionId);
 }
 
-export function getSelectableCount(sectionId: string, tier: TierKey): number {
+export function getSelectableCount(sectionId: string, tier: SeatedTierKey): number {
   const section = SECTIONS.find((s) => s.id === sectionId);
   if (!section) return 0;
   const seatTier = TIER_TO_SEAT_TIER[tier];
@@ -27,7 +27,7 @@ export function getSelectableCount(sectionId: string, tier: TierKey): number {
 export function isSeatSelectable(
   sectionId: string,
   seatNumber: number,
-  tier: TierKey,
+  tier: SeatedTierKey,
 ): boolean {
   return getSeatTier(sectionId, seatNumber) === TIER_TO_SEAT_TIER[tier];
 }

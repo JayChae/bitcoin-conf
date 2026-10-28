@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { holdSeats } from "@/lib/seat-lock";
 import { isValidTier } from "@/app/[locale]/(2026)/_utils/tierMapping";
+import { isSeatlessTier } from "@/app/[locale]/(2026)/_constants/tickets";
 import type { TierKey } from "@/app/[locale]/(2026)/_types/tickets";
 
 export async function POST(request: NextRequest) {
@@ -18,7 +19,8 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  if (!isValidTier(tier)) {
+  // 좌석 없는 티어는 잡을 좌석이 없다
+  if (!isValidTier(tier) || isSeatlessTier(tier)) {
     return NextResponse.json({ error: "Invalid tier" }, { status: 400 });
   }
 

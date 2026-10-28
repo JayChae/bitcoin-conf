@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import {
   SHARED_POOL_TIERS,
   tierLabel,
+  isSeatlessTier,
   PHASE2_TIERS,
 } from "@/app/[locale]/(2026)/_constants/tickets";
 import { TIER_KEYS, type TierKey } from "@/app/[locale]/(2026)/_types/tickets";
@@ -44,11 +45,16 @@ type Tab = "pricing" | "seats";
  * Phase 2 참여 티어는 _constants/tickets가 소유하므로 여기서 다시 정의하지 않는다.
  */
 const TIERS_BY_PHASE: Record<ActiveMode, readonly TierKey[]> = {
-  // Main Day는 항상 정가로 팔리므로 얼리버드 행에는 세우지 않는다
-  earlybird1: TIER_KEYS.filter((t) => t !== "mainday"),
+  // Main Day·Day 2는 항상 정가로 팔리므로 얼리버드 행에는 세우지 않는다
+  earlybird1: TIER_KEYS.filter((t) => t !== "mainday" && t !== "day2"),
   earlybird2: PHASE2_TIERS,
   regular: TIER_KEYS,
 };
+
+/** 구매 내역의 좌석 표기. 좌석 없는 티켓은 주문(cid)과 주문 안 순번으로 적는다. */
+function seatLabel(s: SoldSeatRecord): string {
+  return s.cid ? `${s.cid}-${s.seat}` : `${s.section}-${s.seat}`;
+}
 
 function getActiveMode(config: PricingConfig): ActiveMode {
   if (config.phase1.enabled) return "earlybird1";
@@ -136,7 +142,14 @@ export default function AdminPage() {
     if (sectionFilter !== "all") result = result.filter((s) => s.section === sectionFilter);
     if (apFilter !== "all") result = result.filter((s) => apFilter === "yes" ? s.afterParty : !s.afterParty);
     if (checkinFilter !== "all") result = result.filter((s) => checkinFilter === "yes" ? s.checkedIn : !s.checkedIn);
-    result.sort((a, b) => a.section.localeCompare(b.section) || a.seat - b.seat);
+    // 좌석 없는 티켓은 구역 사이에 섞이지 않게 맨 뒤로 보낸다
+    result.sort(
+      (a, b) =>
+        Number(!!a.cid) - Number(!!b.cid) ||
+        a.section.localeCompare(b.section) ||
+        (a.cid ?? "").localeCompare(b.cid ?? "") ||
+        a.seat - b.seat,
+    );
     return result;
   }, [seatData, tierFilter, sectionFilter, apFilter, checkinFilter]);
 
@@ -144,7 +157,7 @@ export default function AdminPage() {
     const header = "좌석,티어,애프터파티,이메일";
     const rows = seats.map(
       (s) =>
-        `${s.section}-${s.seat},${s.tier.toUpperCase()},${s.afterParty ? "O" : "X"},${s.email ?? ""}`,
+        `${seatLabel(s)},${s.tier.toUpperCase()},${s.afterParty ? "O" : "X"},${s.email ?? ""}`,
     );
     const csv = "\uFEFF" + [header, ...rows].join("\n");
     const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
@@ -260,6 +273,7 @@ export default function AdminPage() {
                         "grid gap-3 grid-cols-2",
                         tiersForPhase.length === 3 && "md:grid-cols-3",
                         tiersForPhase.length === 4 && "md:grid-cols-4",
+                        tiersForPhase.length === 5 && "md:grid-cols-5",
                       )}
                     >
                       {tiersForPhase.map((tier) => {
@@ -509,6 +523,25 @@ export default function AdminPage() {
               {TIER_KEYS.map((tier) => {
                 const s = seatData.byTier[tier];
                 if (!s) return null;
+                // 좌석 없는 티어는 용량이 없으니 판매 수만 보인다
+                if (isSeatlessTier(tier)) {
+                  return (
+                    <div
+                      key={tier}
+                      className="rounded-lg bg-neutral-900 border border-neutral-800 p-3"
+                    >
+                      <p className="text-xs text-neutral-500 mb-1">
+                        {tierLabel(tier)}
+                      </p>
+                      <p className="text-lg font-bold text-neutral-200 tabular-nums">
+                        {s.sold}
+                      </p>
+                      <p className="mt-1.5 text-[10px] text-neutral-600">
+                        좌석 없음 · 상한 없음
+                      </p>
+                    </div>
+                  );
+                }
                 const shared = SHARED_POOL_TIERS.has(tier);
                 // 공유 풀은 풀 전체 판매량으로 진행도를 그린다
                 const filled = shared ? s.poolSold : s.sold;
@@ -546,6 +579,7 @@ export default function AdminPage() {
             </div>
             <p className="text-[11px] text-neutral-600 mb-4">
               제너럴과 Main Day는 같은 522석을 공유합니다 — 잔여석을 합산하지 마세요.
+              Day 2는 좌석이 없어 전체 점유율에 들어가지 않습니다.
             </p>
             <div className="flex items-center justify-between text-sm py-2">
               <span className="text-neutral-500">전체 점유율</span>
@@ -604,7 +638,11 @@ export default function AdminPage() {
               >
                 <option value="all">전체 섹션</option>
                 {Array.from(
-                  new Set(seatData.soldSeats.map((s) => s.section)),
+                  new Set(
+                    seatData.soldSeats
+                      .filter((s) => !s.cid)
+                      .map((s) => s.section),
+                  ),
                 )
                   .sort()
                   .map((sec) => (
@@ -642,12 +680,12 @@ export default function AdminPage() {
                 <div className="space-y-2 md:hidden max-h-[60vh] overflow-y-auto">
                   {filteredSeats.map((s) => (
                     <div
-                      key={`${s.section}-${s.seat}`}
+                      key={seatLabel(s)}
                       className="rounded-lg bg-neutral-900 border border-neutral-800 px-3 py-2.5"
                     >
                       <div className="flex items-center justify-between mb-1">
                         <span className="text-sm font-medium text-neutral-200">
-                          {s.section}-{s.seat}
+                          {seatLabel(s)}
                         </span>
                         <div className="flex items-center gap-2">
                           {s.checkedIn && (
@@ -681,11 +719,11 @@ export default function AdminPage() {
                     <tbody>
                       {filteredSeats.map((s) => (
                         <tr
-                          key={`${s.section}-${s.seat}`}
+                          key={seatLabel(s)}
                           className="border-b border-neutral-800/50"
                         >
                           <td className="py-2 text-neutral-200 tabular-nums">
-                            {s.section}-{s.seat}
+                            {seatLabel(s)}
                           </td>
                           <td className="py-2 text-neutral-400">
                             {tierLabel(s.tier)}

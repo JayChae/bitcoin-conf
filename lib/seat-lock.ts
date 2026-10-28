@@ -5,15 +5,24 @@ import {
   TIER_SECTIONS,
   DEFAULT_TIER_FOR_POOL,
 } from "@/app/[locale]/(2026)/_constants/tierMapping";
-import { TIER_KEYS } from "@/app/[locale]/(2026)/_types/tickets";
+import { isSeatlessTier } from "@/app/[locale]/(2026)/_constants/tickets";
+import { SEATLESS_TIER_KEYS, TIER_KEYS } from "@/app/[locale]/(2026)/_types/tickets";
 import { getSeatTier } from "@/app/[locale]/(2026)/_utils/seats";
 import type { SeatStatus, SeatStatusInfo, SeatHoldRequest } from "@/app/[locale]/(2026)/_types/seats";
-import type { TierKey, PricingPhase } from "@/app/[locale]/(2026)/_types/tickets";
+import type {
+  TierKey,
+  PricingPhase,
+  SeatedTierKey,
+  SeatlessTierKey,
+} from "@/app/[locale]/(2026)/_types/tickets";
 
 const HOLD_TTL = 30 * 60; // 30 minutes
 const CHECKOUT_TTL = 3 * 60 * 60; // 3 hours
+// 좌석 없는 주문은 잡아둔 좌석이 없어 결제를 오래 미뤄도 막을 이유가 없다.
+// 매핑이 먼저 사라져 판매 기록이 빠지지 않도록 넉넉히 둔다.
+const SEATLESS_CHECKOUT_TTL = 14 * 24 * 60 * 60; // 14 days
 
-const MAX_SEATS: Record<TierKey, number> = {
+const MAX_SEATS: Record<SeatedTierKey, number> = {
   vip: 4,
   premium: 10,
   general: 10,
@@ -28,6 +37,10 @@ function holdsKey(sessionId: string) {
 }
 function checkoutKey(cartId: string) {
   return `checkout:${cartId}`;
+}
+/** 좌석 없는 티어의 판매 기록. 필드는 QR의 cid, 값은 { quantity, email }. */
+function seatlessSoldKey(tier: SeatlessTierKey) {
+  return `sold:${tier}`;
 }
 
 // ─── 1. 섹션별 좌석 상태 조회 ───
@@ -106,7 +119,7 @@ return cjson.encode({ success = true })
 
 export async function holdSeats(
   seats: SeatHoldRequest[],
-  tier: TierKey,
+  tier: SeatedTierKey,
   sessionId?: string,
 ): Promise<{
   success: boolean;
@@ -288,6 +301,25 @@ return cjson.encode({ success = true })
 
 export type ConfirmFailureReason = "mapping_expired" | "already_sold" | "held_by_other";
 
+type SeatCheckoutMapping = {
+  seats: SeatHoldRequest[];
+  tier: SeatedTierKey;
+  phase: PricingPhase;
+};
+
+/** 좌석 없는 주문의 매핑. checkoutId는 이 주문 QR들의 cid다. */
+type SeatlessCheckoutMapping = {
+  tier: SeatlessTierKey;
+  phase: PricingPhase;
+  checkoutId: string;
+  quantity: number;
+};
+
+type SeatlessSale = { quantity: number; email?: string };
+
+/**
+ * 결제 완료된 장바구니를 확정한다. seatCount는 좌석 없는 주문이면 매수다.
+ */
 export async function confirmSeats(
   cartId: string,
   email?: string,
@@ -295,13 +327,21 @@ export async function confirmSeats(
   | { confirmed: false; reason: ConfirmFailureReason }
   | { confirmed: true; tier: TierKey; seatCount: number; phase: PricingPhase }
 > {
-  const data = await redis.get<{
-    seats: SeatHoldRequest[];
-    tier: TierKey;
-    phase: PricingPhase;
-  }>(checkoutKey(cartId));
+  const data = await redis.get<SeatCheckoutMapping | SeatlessCheckoutMapping>(
+    checkoutKey(cartId),
+  );
 
   if (!data) return { confirmed: false, reason: "mapping_expired" };
+
+  // 좌석 없는 주문은 다툴 좌석이 없으니 판매 기록만 남긴다.
+  // 같은 웹훅이 다시 와도 sold:{tier}는 같은 필드를 덮어쓸 뿐이라 판매 기록은 이중으로 남지 않는다.
+  if (!("seats" in data)) {
+    const sale: SeatlessSale = { quantity: data.quantity, ...(email && { email }) };
+    await redis.hset(seatlessSoldKey(data.tier), {
+      [data.checkoutId]: JSON.stringify(sale),
+    });
+    return { confirmed: true, tier: data.tier, seatCount: data.quantity, phase: data.phase };
+  }
 
   const keys = data.seats.map((s) => seatKey(s.section, s.seat));
   const seatArgs = data.seats.map((seat) =>
@@ -349,21 +389,41 @@ export async function releaseSeats(seats: SeatHoldRequest[]): Promise<void> {
 export async function saveCheckoutMapping(
   cartId: string,
   seats: SeatHoldRequest[],
-  tier: TierKey,
+  tier: SeatedTierKey,
   phase: PricingPhase,
 ): Promise<void> {
   await redis.set(
     checkoutKey(cartId),
-    JSON.stringify({ seats, tier, phase }),
+    JSON.stringify({ seats, tier, phase } satisfies SeatCheckoutMapping),
     { ex: CHECKOUT_TTL },
+  );
+}
+
+export async function saveSeatlessCheckoutMapping(
+  cartId: string,
+  tier: SeatlessTierKey,
+  phase: PricingPhase,
+  checkoutId: string,
+  quantity: number,
+): Promise<void> {
+  await redis.set(
+    checkoutKey(cartId),
+    JSON.stringify({ tier, phase, checkoutId, quantity } satisfies SeatlessCheckoutMapping),
+    { ex: SEATLESS_CHECKOUT_TTL },
   );
 }
 
 // ─── 6. 전체 좌석 요약 (관리자용) ───
 
+/**
+ * 판매된 표 한 장. 좌석 없는 티켓은 section에 티어 키, seat에 주문 안 순번이 들어가므로
+ * 주문끼리 겹친다 — cid로 구분한다.
+ */
 export type SoldSeatRecord = {
   section: string;
   seat: number;
+  /** 좌석 없는 티켓만. QR의 cid(주문 단위). */
+  cid?: string;
   tier: string;
   afterParty: boolean;
   email?: string;
@@ -371,6 +431,7 @@ export type SoldSeatRecord = {
   checkedInAt?: string;
 };
 
+/** 좌석 없는 티어는 sold만 의미가 있고 나머지는 0이다. */
 export type TierSummary = {
   /** 이 티어가 쓰는 물리 좌석 풀의 용량. 풀을 공유하는 티어끼리 같은 값. */
   total: number;
@@ -391,8 +452,8 @@ export type SeatSummary = {
 };
 
 export async function getAllSeatSummary(): Promise<SeatSummary> {
-  // Fetch seat statuses and check-in records in parallel
-  const [allStatuses, checkinMap] = await Promise.all([
+  // Fetch seat statuses, check-in records and seatless sales in parallel
+  const [allStatuses, checkinMap, seatlessSales] = await Promise.all([
     Promise.all(
       SECTIONS.map(async (cfg) => {
         const keys = Array.from({ length: cfg.totalSeats }, (_, i) =>
@@ -403,6 +464,12 @@ export async function getAllSeatSummary(): Promise<SeatSummary> {
       }),
     ),
     buildCheckinMap(),
+    Promise.all(
+      SEATLESS_TIER_KEYS.map(async (tier) => ({
+        tier,
+        sales: (await redis.hgetall<Record<string, SeatlessSale>>(seatlessSoldKey(tier))) ?? {},
+      })),
+    ),
   ]);
 
   // 용량·판매는 물리 좌석 풀(SeatTier) 단위로 1회만 센다 — 공유 티어 이중 계산 방지
@@ -436,7 +503,7 @@ export async function getAllSeatSummary(): Promise<SeatSummary> {
         // 저장된 구매 티어를 쓰되, 좌석 풀이 일치할 때만 신뢰 (레거시/오염 방어)
         const stored = info.tier as TierKey | undefined;
         const soldTier =
-          stored && TIER_TO_SEAT_TIER[stored] === seatTier
+          stored && !isSeatlessTier(stored) && TIER_TO_SEAT_TIER[stored] === seatTier
             ? stored
             : DEFAULT_TIER_FOR_POOL[seatTier];
 
@@ -462,10 +529,32 @@ export async function getAllSeatSummary(): Promise<SeatSummary> {
   }
 
   for (const tier of TIER_KEYS) {
+    if (isSeatlessTier(tier)) continue;
     const pool = TIER_TO_SEAT_TIER[tier];
     byTier[tier].total = poolTotal[pool] ?? 0;
     byTier[tier].poolSold = poolSold[pool] ?? 0;
     byTier[tier].remaining = byTier[tier].total - byTier[tier].poolSold;
+  }
+
+  // 좌석 없는 티켓은 좌석 점유율(fillRate)에 넣지 않고, 판매·체크인 수와 구매 내역에만 더한다
+  for (const { tier, sales } of seatlessSales) {
+    for (const [cid, sale] of Object.entries(sales)) {
+      byTier[tier].sold += sale.quantity;
+      for (let n = 1; n <= sale.quantity; n++) {
+        const checkedInAt = checkinMap.get(`${cid}:${tier}:${n}`);
+        if (checkedInAt) checkedInCount++;
+        soldSeats.push({
+          section: tier,
+          seat: n,
+          cid,
+          tier,
+          afterParty: false,
+          email: sale.email,
+          checkedIn: !!checkedInAt,
+          checkedInAt,
+        });
+      }
+    }
   }
 
   const fillRate = totalAvailable > 0
@@ -475,7 +564,10 @@ export async function getAllSeatSummary(): Promise<SeatSummary> {
   return { byTier, afterPartyCount, checkedInCount, fillRate, soldSeats };
 }
 
-/** Scan all checkin:* keys and build a Map<"section:seat", timestamp> */
+/**
+ * Scan all checkin:* keys and build a Map<"section:seat", timestamp>.
+ * 좌석 없는 티켓은 주문마다 1번부터 번호를 매기므로 "cid:section:seat"로 담는다.
+ */
 async function buildCheckinMap(): Promise<Map<string, string>> {
   const map = new Map<string, string>();
   const checkinKeys = await redis.keys("checkin:*");
@@ -488,10 +580,11 @@ async function buildCheckinMap(): Promise<Map<string, string>> {
     // key format: checkin:{cid}:{section}:{seat}:{YYYY-MM-DD}
     const parts = checkinKeys[i].split(":");
     if (parts.length >= 4) {
-      const section = parts[2];
-      const seat = parts[3];
+      const [, cid, section, seat] = parts;
       // 좌석당 날짜별 키가 여러 개이므로 최초 체크인 시각을 남긴다
-      const mapKey = `${section}:${seat}`;
+      const mapKey = isSeatlessTier(section)
+        ? `${cid}:${section}:${seat}`
+        : `${section}:${seat}`;
       const existing = map.get(mapKey);
       if (!existing || ts < existing) map.set(mapKey, ts);
     }
@@ -502,7 +595,7 @@ async function buildCheckinMap(): Promise<Map<string, string>> {
 // ─── 7. 구역별 남은 좌석 수 조회 ───
 
 export async function getRemainingSeatsBySectionForTier(
-  tier: TierKey,
+  tier: SeatedTierKey,
 ): Promise<Record<string, number>> {
   const sectionIds = TIER_SECTIONS[tier];
   const seatTier = TIER_TO_SEAT_TIER[tier];

@@ -4,7 +4,7 @@ import { useState, useCallback, useRef } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { useTranslations } from "next-intl";
 import type {
-  TierKey,
+  SeatedTierKey,
   PricingPhase,
 } from "@/app/[locale]/(2026)/_types/tickets";
 import type { SeatHoldRequest } from "@/app/[locale]/(2026)/_types/seats";
@@ -26,7 +26,7 @@ export default function PurchaseFlow({
   locale,
   phase,
 }: {
-  tier: TierKey;
+  tier: SeatedTierKey;
   locale: string;
   phase: PricingPhase;
 }) {
@@ -50,6 +50,10 @@ export default function PurchaseFlow({
   const afterPartyIncluded = tier === "vip";
   const unitPrice = getDiscountedPrice(ticket.basePrice, phase);
 
+  const selectedCount = Object.values(selectedSeats).reduce(
+    (sum, set) => sum + set.size,
+    0,
+  );
   const afterPartyCount = Object.values(afterPartySeats).reduce(
     (sum, set) => sum + set.size,
     0,
@@ -237,7 +241,7 @@ export default function PurchaseFlow({
           {/* Sticky Summary — "다음" when afterParty addon available */}
           <SelectionSummary
             tier={tier}
-            selectedSeats={selectedSeats}
+            count={selectedCount}
             afterPartyCount={afterPartyCount}
             locale={locale}
             onPurchase={handlePurchase}

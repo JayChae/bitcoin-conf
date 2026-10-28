@@ -3,9 +3,10 @@ import { TICKETS } from "../../_constants/tickets";
 import { TIER_COLORS } from "../../_constants/seats";
 import { TIER_TO_SEAT_TIER } from "../../_constants/tierMapping";
 
-// 좌석 풀을 공유하는 티어(Main Day)는 물리 구역이 제너럴과 같으므로 아크를 중복 표시하지 않는다
+// 좌석 풀을 소유한 티어만 아크를 그린다. Main Day는 물리 구역이 제너럴과 같아 중복이고,
+// Day 2는 좌석이 없다.
 const TIERS = [...TICKETS].reverse().flatMap((t) =>
-  t.sharesSeatPoolWith
+  t.totalSeats === undefined
     ? []
     : [
         {

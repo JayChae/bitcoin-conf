@@ -17,7 +17,7 @@ const PHASE_KEYS: Record<string, { phase: string; discount: string }> = {
  * 카드 수에 맞춘 lg 이상 열 배치. 티어를 숨기면 카드가 줄어드는데 열 수가 고정이면
  * 빈 칸이 남아 카드가 왼쪽으로 쏠린다. Tailwind가 클래스를 정적으로 수집해야 하므로
  * 문자열을 조립하지 않고 카드 수별로 미리 적어둔다.
- * 5장은 칸이 좁아 간격을 한 단계 줄인다.
+ * 5장은 칸이 좁아 간격을 한 단계 줄인다. 6장은 한 줄에 다 넣으면 너무 좁아 3장씩 두 줄로 놓는다.
  */
 const GRID_BY_CARD_COUNT: Record<number, string> = {
   1: "lg:grid-cols-1",
@@ -25,6 +25,7 @@ const GRID_BY_CARD_COUNT: Record<number, string> = {
   3: "lg:grid-cols-3",
   4: "lg:grid-cols-4",
   5: "lg:grid-cols-5 lg:gap-4 xl:gap-6",
+  6: "lg:grid-cols-3",
 };
 
 export default async function TicketsGrid({

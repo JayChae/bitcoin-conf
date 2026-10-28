@@ -3,13 +3,15 @@ import { getRemainingSeatsBySectionForTier } from "@/lib/seat-lock";
 import { getSelectableCount, isValidTier } from "@/app/[locale]/(2026)/_utils/tierMapping";
 import { TIER_SECTIONS } from "@/app/[locale]/(2026)/_constants/tierMapping";
 import { TIER_KEYS } from "@/app/[locale]/(2026)/_types/tickets";
+import { isSeatlessTier } from "@/app/[locale]/(2026)/_constants/tickets";
 
 export async function GET(request: NextRequest) {
   const tier = request.nextUrl.searchParams.get("tier");
 
-  if (!tier || !isValidTier(tier)) {
+  // 좌석 없는 티어는 구역별 잔여석이 없다
+  if (!tier || !isValidTier(tier) || isSeatlessTier(tier)) {
     return NextResponse.json(
-      { error: `Valid tier parameter required (${TIER_KEYS.join(", ")})` },
+      { error: `Valid tier parameter required (${TIER_KEYS.filter((t) => !isSeatlessTier(t)).join(", ")})` },
       { status: 400 },
     );
   }

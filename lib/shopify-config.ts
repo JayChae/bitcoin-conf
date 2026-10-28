@@ -8,6 +8,7 @@ import type { TierKey, PricingPhase } from "@/app/[locale]/(2026)/_types/tickets
  *   SHOPIFY_VARIANT_PREMIUM   - Premium Ticket Variant ID
  *   SHOPIFY_VARIANT_GENERAL   - General Ticket Variant ID
  *   SHOPIFY_VARIANT_MAINDAY   - Main Day Ticket Variant ID
+ *   SHOPIFY_VARIANT_DAY2      - Day 2 Ticket Variant ID
  *   SHOPIFY_VARIANT_AFTER_PARTY - After Party Variant ID
  *
  * 할인은 Shopify 할인 코드로 적용 (티켓 상품에만, AP 제외)
@@ -17,6 +18,7 @@ const TIER_ENV_VARS: Record<TierKey, string> = {
   premium: "SHOPIFY_VARIANT_PREMIUM",
   general: "SHOPIFY_VARIANT_GENERAL",
   mainday: "SHOPIFY_VARIANT_MAINDAY",
+  day2: "SHOPIFY_VARIANT_DAY2",
 };
 
 const AFTER_PARTY_ENV_VAR = "SHOPIFY_VARIANT_AFTER_PARTY";

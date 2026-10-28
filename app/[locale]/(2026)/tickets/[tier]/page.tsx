@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { isValidTier } from "../../_utils/tierMapping";
-import { TICKETS, isTierHidden } from "../../_constants/tickets";
+import { TICKETS, isTierHidden, isSeatlessTier } from "../../_constants/tickets";
 import {
   getDiscountedPrice,
   isDiscounted as checkDiscount,
@@ -11,6 +11,7 @@ import { getCurrentPhase, getSaleStatus } from "@/lib/pricing";
 import { redirect } from "next/navigation";
 import SeatMapOverview from "../../_components/Tickets/SeatMapOverview";
 import PurchaseFlow from "./_components/PurchaseFlow";
+import QuantityPurchaseFlow from "./_components/QuantityPurchaseFlow";
 
 type Props = {
   params: Promise<{ locale: string; tier: string }>;
@@ -51,8 +52,15 @@ export default async function TierPage({ params }: Props) {
           </p>
         </div>
 
-        <SeatMapOverview />
-        <PurchaseFlow tier={tier} locale={locale} phase={phase} />
+        {/* 좌석 없는 티어는 좌석 배치도 없이 매수만 고른다 */}
+        {isSeatlessTier(tier) ? (
+          <QuantityPurchaseFlow tier={tier} locale={locale} phase={phase} />
+        ) : (
+          <>
+            <SeatMapOverview />
+            <PurchaseFlow tier={tier} locale={locale} phase={phase} />
+          </>
+        )}
       </div>
     </main>
   );
