@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
 
   const response: Record<string, unknown> = { phase, discount };
 
-  // Include Phase 2 remaining info if relevant (VIP·Main Day excluded from Phase 2)
+  // Include Phase 2 remaining info if relevant (VIP·Main Day·Day 2 excluded from Phase 2)
   if (tier && config.phase2.enabled && PHASE2_TIERS.includes(tier)) {
     const sold = await getPhase2Sold(tier);
     const max = config.phase2.maxTickets[tier] ?? 0;

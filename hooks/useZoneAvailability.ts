@@ -1,13 +1,13 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
-import type { TierKey } from "@/app/[locale]/(2026)/_types/tickets";
+import type { SeatedTierKey } from "@/app/[locale]/(2026)/_types/tickets";
 import { TIER_SECTIONS } from "@/app/[locale]/(2026)/_constants/tierMapping";
 import { getSelectableCount } from "@/app/[locale]/(2026)/_utils/tierMapping";
 
 const POLL_INTERVAL = 8000;
 
-export function useZoneAvailability(tier: TierKey) {
+export function useZoneAvailability(tier: SeatedTierKey) {
   const [sectionCounts, setSectionCounts] = useState<Record<string, number>>(
     () => {
       const initial: Record<string, number> = {};

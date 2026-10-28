@@ -4,6 +4,7 @@
 
   SETUP: Cart must pass attribute "lang" with value "ko" or "en".
   SETUP: Line items must have properties: seat_section, seat_number, after_party, _qr_token.
+         Seatless tickets (Day 2) carry only _qr_token — the seat block is skipped.
   APPLY: Shopify Admin > Settings > Notifications > Order confirmation
 {%- endcomment -%}
 
@@ -82,7 +83,7 @@
                         <td style="padding:24px 24px 0;">
                           <!-- Ticket Title -->
                           <p style="margin:0 0 16px; font-size:11px; font-weight:700; color:rgba(255,255,255,0.4); text-transform:uppercase; letter-spacing:1.5px;">
-                            {% case line.product.handle %}{% when 'vip-ticket' %}VIP Ticket{% when 'premium-ticket' %}Premium Ticket{% when 'general-ticket' %}General Ticket{% when 'main-day-ticket' %}Main Day Ticket{% when 'after-party' %}After Party{% else %}{{ line.title }}{% endcase %}
+                            {% case line.product.handle %}{% when 'vip-ticket' %}VIP Ticket{% when 'premium-ticket' %}Premium Ticket{% when 'general-ticket' %}General Ticket{% when 'main-day-ticket' %}Main Day Ticket{% when 'day-2-ticket' %}Day 2 Ticket{% when 'after-party' %}After Party{% else %}{{ line.title }}{% endcase %}
                           </p>
 
                           <!-- Section & Seat (two columns) -->
@@ -170,7 +171,7 @@
                         <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:8px;">
                           <tr>
                             <td style="font-size:14px; color:#ffffff;">
-                              {% case line.product.handle %}{% when 'vip-ticket' %}VIP Ticket{% when 'premium-ticket' %}Premium Ticket{% when 'general-ticket' %}General Ticket{% when 'main-day-ticket' %}Main Day Ticket{% when 'after-party' %}After Party{% else %}{{ line.title }}{% endcase %}
+                              {% case line.product.handle %}{% when 'vip-ticket' %}VIP Ticket{% when 'premium-ticket' %}Premium Ticket{% when 'general-ticket' %}General Ticket{% when 'main-day-ticket' %}Main Day Ticket{% when 'day-2-ticket' %}Day 2 Ticket{% when 'after-party' %}After Party{% else %}{{ line.title }}{% endcase %}
                               &times; {{ line.quantity }}
                               {% if line.properties["seat_section"] and line.properties["seat_number"] %}
                                 <span style="color:#FF8C00; font-size:13px;"> ({{ line.properties["seat_section"] }}-{{ line.properties["seat_number"] }})</span>

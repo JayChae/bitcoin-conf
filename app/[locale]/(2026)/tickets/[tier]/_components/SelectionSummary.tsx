@@ -16,7 +16,7 @@ export type HoldState = "idle" | "loading" | "error";
 
 export default function SelectionSummary({
   tier,
-  selectedSeats,
+  count,
   afterPartyCount,
   locale,
   onPurchase,
@@ -26,7 +26,8 @@ export default function SelectionSummary({
   phase,
 }: {
   tier: TierKey;
-  selectedSeats: Record<string, Set<number>>;
+  /** 고른 좌석 수, 좌석 없는 티어면 매수 */
+  count: number;
   afterPartyCount: number;
   locale: string;
   onPurchase: () => void;
@@ -39,15 +40,10 @@ export default function SelectionSummary({
   const ticket = TICKETS.find((tk) => tk.tier === tier);
   if (!ticket) return null;
 
-  let totalCount = 0;
-  for (const seats of Object.values(selectedSeats)) {
-    totalCount += seats.size;
-  }
-
-  if (totalCount === 0) return null;
+  if (count === 0) return null;
 
   const unitPrice = getDiscountedPrice(ticket.basePrice, phase);
-  const ticketTotal = totalCount * unitPrice;
+  const ticketTotal = count * unitPrice;
   const afterPartyTotal = afterPartyCount * AFTER_PARTY_PRICE;
   const grandTotal = ticketTotal + afterPartyTotal;
 
@@ -65,7 +61,7 @@ export default function SelectionSummary({
         <div className="flex items-center justify-between gap-3">
           <div className="flex flex-col gap-0.5">
             <div className="text-sm text-white/70">
-              <span className="font-medium text-white">{totalCount}</span>{" "}
+              <span className="font-medium text-white">{count}</span>{" "}
               {t("selected")}
             </div>
             <div className="text-sm font-bold text-white tabular-nums">

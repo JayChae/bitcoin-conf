@@ -25,7 +25,7 @@ import { redis } from "../lib/redis";
 import { signPayload, generateQRBuffer } from "../lib/qr";
 import { SECTIONS } from "../app/[locale]/(2026)/_constants/seats";
 import { TIER_TO_SEAT_TIER } from "../app/[locale]/(2026)/_constants/tierMapping";
-import type { TierKey } from "../app/[locale]/(2026)/_types/tickets";
+import type { SeatedTierKey } from "../app/[locale]/(2026)/_types/tickets";
 import type { SeatTier } from "../app/[locale]/(2026)/_types/seats";
 
 // ─── Config ───
@@ -41,7 +41,7 @@ const EXCLUDE = new Set([7]); // A-7 — already sold
 
 // A-1~A-65 are premium seats. Premium doesn't bundle the after-party, but
 // speakers get it regardless.
-const TIER: TierKey = "premium";
+const TIER: SeatedTierKey = "premium";
 const AFTER_PARTY = true;
 
 const OUT_DIR = path.join(process.cwd(), "scripts", "out", "speaker-tickets");
@@ -148,7 +148,7 @@ async function main() {
   // 3. Commit: claim each seat in Redis, then issue token + PNG.
   fs.mkdirSync(OUT_DIR, { recursive: true });
   const manifest: {
-    tier: TierKey;
+    tier: SeatedTierKey;
     section: string;
     seat: number;
     afterParty: boolean;

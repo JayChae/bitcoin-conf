@@ -1,12 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
-import { holdSeats, saveCheckoutMapping, releaseSeats, stampCartIdOnSeats } from "@/lib/seat-lock";
-import { createCheckoutCart } from "@/lib/shopify";
+import {
+  holdSeats,
+  saveCheckoutMapping,
+  saveSeatlessCheckoutMapping,
+  releaseSeats,
+  stampCartIdOnSeats,
+} from "@/lib/seat-lock";
+import { createCheckoutCart, createSeatlessCheckoutCart } from "@/lib/shopify";
 import { isTierPurchasable } from "@/lib/shopify-config";
-import { isTierHidden } from "@/app/[locale]/(2026)/_constants/tickets";
+import {
+  isTierHidden,
+  isSeatlessTier,
+  SEATLESS_MAX_PER_ORDER,
+} from "@/app/[locale]/(2026)/_constants/tickets";
 import { getCurrentPhase, getSaleStatus } from "@/lib/pricing";
 import { redis } from "@/lib/redis";
 import { isValidTier } from "@/app/[locale]/(2026)/_utils/tierMapping";
-import type { TierKey } from "@/app/[locale]/(2026)/_types/tickets";
+import type { SeatlessTierKey, TierKey } from "@/app/[locale]/(2026)/_types/tickets";
 import type { SeatHoldRequest } from "@/app/[locale]/(2026)/_types/seats";
 import { pickUtm } from "@/lib/utm";
 
@@ -21,14 +31,16 @@ export async function POST(request: NextRequest) {
   }
 
   const body = await request.json();
-  const { seats, tier, locale, utm } = body as {
+  const { seats, quantity, tier, locale, utm } = body as {
     seats: SeatHoldRequest[];
+    quantity?: unknown;
     tier: TierKey;
     locale?: string;
     utm?: unknown;
   };
 
-  if (!seats?.length || !tier) {
+  // 좌석 없는 티어는 seats 대신 quantity(매수)를 보낸다
+  if (!tier || (!isSeatlessTier(tier) && !seats?.length)) {
     return NextResponse.json(
       { error: "Missing required fields" },
       { status: 400 },
@@ -62,6 +74,10 @@ export async function POST(request: NextRequest) {
       { error: "Sales are not open" },
       { status: 400 },
     );
+  }
+
+  if (isSeatlessTier(tier)) {
+    return createSeatlessCheckout(tier, quantity, locale, utm);
   }
 
   // VIP는 애프터 파티 포함, 그 외 티어는 매진되어 애드온 판매 중단.
@@ -99,6 +115,50 @@ export async function POST(request: NextRequest) {
     console.error("Failed to create checkout:", error);
     // Release held seats so user can retry immediately
     await releaseSeats(normalizedSeats);
+    return NextResponse.json(
+      { error: "Failed to create checkout" },
+      { status: 500 },
+    );
+  }
+}
+
+/**
+ * 좌석 없는 티어의 결제. 잡을 좌석도 판매 상한도 없으므로 매수만 검증하고 바로 카트를 만든다.
+ * 판매 기록은 결제 완료 웹훅이 이 매핑을 보고 남긴다.
+ */
+async function createSeatlessCheckout(
+  tier: SeatlessTierKey,
+  quantity: unknown,
+  locale: string | undefined,
+  utm: unknown,
+) {
+  if (
+    typeof quantity !== "number" ||
+    !Number.isInteger(quantity) ||
+    quantity < 1 ||
+    quantity > SEATLESS_MAX_PER_ORDER
+  ) {
+    return NextResponse.json({ error: "Invalid quantity" }, { status: 400 });
+  }
+
+  try {
+    const phase = await getCurrentPhase(tier);
+    const { cartId, checkoutUrl, checkoutId } = await createSeatlessCheckoutCart(
+      tier,
+      quantity,
+      phase,
+      locale,
+      pickUtm(utm),
+    );
+
+    const cleanCartId = cartId.split("?")[0];
+
+    console.log("[checkout] phase:", phase, "tier:", tier, "cleanCartId:", cleanCartId, "quantity:", quantity);
+
+    await saveSeatlessCheckoutMapping(cleanCartId, tier, phase, checkoutId, quantity);
+    return NextResponse.json({ checkoutUrl });
+  } catch (error) {
+    console.error("Failed to create checkout:", error);
     return NextResponse.json(
       { error: "Failed to create checkout" },
       { status: 500 },

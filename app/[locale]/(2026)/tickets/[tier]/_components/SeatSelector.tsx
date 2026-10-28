@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
-import type { TierKey } from "@/app/[locale]/(2026)/_types/tickets";
+import type { SeatedTierKey } from "@/app/[locale]/(2026)/_types/tickets";
 import type { SeatStatus } from "@/app/[locale]/(2026)/_types/seats";
 import { SECTIONS, TIER_COLORS } from "@/app/[locale]/(2026)/_constants/seats";
 import { getSeatTier } from "@/app/[locale]/(2026)/_utils/seats";
@@ -63,7 +63,7 @@ export default function SeatSelector({
   seatStatuses = {},
   loading = false,
 }: {
-  tier: TierKey;
+  tier: SeatedTierKey;
   sectionId: string | null;
   selectedSeats: Set<number>;
   onToggleSeat: (sectionId: string, seatNumber: number) => void;

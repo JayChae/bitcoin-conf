@@ -1,5 +1,5 @@
-import type { TicketDef, TierKey } from "../_types/tickets";
-import { TIER_KEYS } from "../_types/tickets";
+import type { SeatlessTierKey, TicketDef, TierKey } from "../_types/tickets";
+import { SEATLESS_TIER_KEYS, TIER_KEYS } from "../_types/tickets";
 
 export const AFTER_PARTY_PRICE = 50_000;
 
@@ -11,6 +11,13 @@ export const TICKETS: TicketDef[] = [
     sharesSeatPoolWith: "general",
     descriptionKey: "maindayDescription",
     benefitKeys: ["maindayOnly", "mainStage", "translationProvided"],
+  },
+  {
+    tier: "day2",
+    basePrice: 150_000,
+    // 명동 행사라 코엑스 좌석이 없다 — 매수만 고르고 판매 상한도 두지 않는다
+    descriptionKey: "day2Description",
+    benefitKeys: ["day2Only", "workshopStage", "lightningMarket"],
   },
   {
     tier: "general",
@@ -70,6 +77,14 @@ export function isTierHidden(tier: TierKey): boolean {
   return TICKETS.some((t) => t.tier === tier && t.hidden === true);
 }
 
+/** 좌석 없이 매수로만 파는 티어인지. 구매 페이지·결제 API·관리자 화면이 흐름을 가르는 데 쓴다. */
+export function isSeatlessTier(tier: string): tier is SeatlessTierKey {
+  return (SEATLESS_TIER_KEYS as readonly string[]).includes(tier);
+}
+
+/** 좌석 없는 티어의 주문당 최대 매수. 좌석 티어의 주문당 상한(lib/seat-lock MAX_SEATS)과 같은 역할. */
+export const SEATLESS_MAX_PER_ORDER = 10;
+
 /**
  * 좌석 풀을 공유하는 티어 집합.
  * TICKETS의 sharesSeatPoolWith에서 파생하므로 새 공유 티어를 추가해도 자동 반영된다.
@@ -90,13 +105,14 @@ export const TIER_VALID_DAYS: Partial<
   Record<TierKey, { days: readonly string[]; badge: string }>
 > = {
   mainday: { days: ["2026-11-07"], badge: "NOV 7 ONLY · 11/7 전용" },
+  day2: { days: ["2026-11-08"], badge: "NOV 8 ONLY · 11/8 전용" },
 };
 
 /**
  * 얼리버드 할인 대상이 아닌 티어 — 항상 정가로 판매된다.
  * lib/pricing과 어드민 대시보드가 함께 참조한다("use client"에서도 안전하도록 여기 둔다).
  */
-export const NO_DISCOUNT_TIERS: readonly TierKey[] = ["vip", "mainday"];
+export const NO_DISCOUNT_TIERS: readonly TierKey[] = ["vip", "mainday", "day2"];
 
 /** Phase 2 참여 티어. NO_DISCOUNT_TIERS의 여집합이다. */
 export const PHASE2_TIERS: readonly TierKey[] = TIER_KEYS.filter(
@@ -106,6 +122,7 @@ export const PHASE2_TIERS: readonly TierKey[] = TIER_KEYS.filter(
 /** 어드민·스캐너 표기용 라벨 중 단순 대문자화로 얻을 수 없는 것만 정의한다 */
 const TIER_LABEL_OVERRIDES: Partial<Record<TierKey, string>> = {
   mainday: "MAIN DAY",
+  day2: "DAY 2",
 };
 
 /** 알 수 없거나 비어 있는 티어 값도 안전하게 처리하는 라벨 조회 */

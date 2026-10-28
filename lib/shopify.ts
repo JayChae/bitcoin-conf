@@ -2,7 +2,11 @@ import crypto from "crypto";
 import { getTicketVariantId, getAfterPartyVariantId, DISCOUNT_CODES } from "./shopify-config";
 import { signPayload } from "./qr";
 import type { UtmParams } from "./utm";
-import type { TierKey, PricingPhase } from "@/app/[locale]/(2026)/_types/tickets";
+import type {
+  PricingPhase,
+  SeatedTierKey,
+  SeatlessTierKey,
+} from "@/app/[locale]/(2026)/_types/tickets";
 import type { SeatHoldRequest } from "@/app/[locale]/(2026)/_types/seats";
 
 const STOREFRONT_URL = `https://${process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN}/api/2024-10/graphql.json`;
@@ -59,9 +63,15 @@ async function storefrontFetch<T>(query: string, variables?: Record<string, unkn
   return json.data as T;
 }
 
+type CartLine = {
+  merchandiseId: string;
+  quantity: number;
+  attributes: { key: string; value: string }[];
+};
+
 export async function createCheckoutCart(
   seats: SeatHoldRequest[],
-  tier: TierKey,
+  tier: SeatedTierKey,
   phase: PricingPhase,
   locale?: string,
   utm: UtmParams = {},
@@ -102,8 +112,55 @@ export async function createCheckoutCart(
       ],
   }));
 
-  const lines = [...ticketLines, ...apLines];
+  return createCart([...ticketLines, ...apLines], phase, locale, utm);
+}
 
+/**
+ * 좌석 없는 티어의 카트. 매수만큼 줄을 나눠 줄마다 QR 토큰을 단다 —
+ * 주문 확인 이메일이 _qr_token이 있는 줄마다 QR을 하나씩 그리기 때문이다.
+ *
+ * QR의 sec에는 티어 키를, seat에는 주문 안 순번(1부터)을 넣는다.
+ * 체크인 도장이 cid·sec·seat로 찍히므로 같은 주문의 표끼리도 겹치지 않는다.
+ * seat_section·seat_number 속성은 달지 않아 이메일에 좌석 칸이 나오지 않는다.
+ */
+export async function createSeatlessCheckoutCart(
+  tier: SeatlessTierKey,
+  quantity: number,
+  phase: PricingPhase,
+  locale?: string,
+  utm: UtmParams = {},
+): Promise<{ cartId: string; checkoutUrl: string; checkoutId: string }> {
+  const variantId = getTicketVariantId(tier);
+  // 좌석 티켓은 구역·좌석 번호가 표를 갈라 주지만, 여기선 cid가 주문을 가르는 유일한 값이다.
+  // 판매 기록 필드와 체크인 키가 겹치지 않도록 좌석 티켓(8자)보다 길게 잡는다.
+  const checkoutId = crypto.randomBytes(6).toString("hex");
+  const lines: CartLine[] = Array.from({ length: quantity }, (_, i) => ({
+    merchandiseId: variantId,
+    quantity: 1,
+    attributes: [
+      {
+        key: "_qr_token",
+        value: signPayload({
+          cid: checkoutId,
+          sec: tier,
+          seat: i + 1,
+          tier,
+          ap: false,
+        }),
+      },
+    ],
+  }));
+
+  const cart = await createCart(lines, phase, locale, utm);
+  return { ...cart, checkoutId };
+}
+
+async function createCart(
+  lines: CartLine[],
+  phase: PricingPhase,
+  locale: string | undefined,
+  utm: UtmParams,
+): Promise<{ cartId: string; checkoutUrl: string }> {
   // 3. Create cart with lang attribute for bilingual email notifications
   //    광고 UTM도 함께 실어 주문 상세에서 어느 캠페인으로 들어온 구매인지 보이게 한다
   const cartAttributes = [

@@ -28,7 +28,7 @@ import {
   TIER_TO_SEAT_TIER,
   TIER_SECTIONS,
 } from "../app/[locale]/(2026)/_constants/tierMapping";
-import type { TierKey } from "../app/[locale]/(2026)/_types/tickets";
+import type { SeatedTierKey } from "../app/[locale]/(2026)/_types/tickets";
 import type { SeatTier } from "../app/[locale]/(2026)/_types/seats";
 
 // ─── Config ───
@@ -38,7 +38,7 @@ const COMP_EMAIL = "giveaway@bitcoinkoreaconference.com";
 
 // What to generate. (VIP includes the after-party by bundle; general/premium do not.)
 // `sections` restricts seat assignment to those section(s); omit to use all of the tier's sections.
-const SPEC: { tier: TierKey; count: number; afterParty: boolean; sections?: string[] }[] = [
+const SPEC: { tier: SeatedTierKey; count: number; afterParty: boolean; sections?: string[] }[] = [
   { tier: "vip", count: 1, afterParty: true }, // VIP only exists in C/D
   { tier: "premium", count: 5, afterParty: false, sections: ["F"] },
   { tier: "general", count: 10, afterParty: false, sections: ["H"] },
@@ -72,11 +72,11 @@ type SeatStatusInfo = {
   cartId?: string;
 };
 
-type Assignment = { tier: TierKey; section: string; seat: number; afterParty: boolean };
+type Assignment = { tier: SeatedTierKey; section: string; seat: number; afterParty: boolean };
 
 // All seats (in section order) whose intrinsic tier matches the ticket tier.
 // `restrict`, if given, limits to those sections (intersected with the tier's valid sections).
-function candidateSeats(tier: TierKey, restrict?: string[]): { section: string; seat: number }[] {
+function candidateSeats(tier: SeatedTierKey, restrict?: string[]): { section: string; seat: number }[] {
   const seatTier = TIER_TO_SEAT_TIER[tier];
   const sectionIds = restrict
     ? TIER_SECTIONS[tier].filter((id) => restrict.includes(id))
@@ -106,7 +106,7 @@ return 1
 `;
 
 async function pickAvailable(
-  tier: TierKey,
+  tier: SeatedTierKey,
   count: number,
   restrict?: string[],
 ): Promise<{ section: string; seat: number }[]> {
@@ -151,7 +151,7 @@ async function main() {
   // 2. Commit: claim each seat in Redis, then issue token + PNG.
   fs.mkdirSync(OUT_DIR, { recursive: true });
   const manifest: {
-    tier: TierKey;
+    tier: SeatedTierKey;
     section: string;
     seat: number;
     afterParty: boolean;

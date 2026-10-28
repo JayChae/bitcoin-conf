@@ -3,7 +3,11 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
-import { TIER_VALID_DAYS, tierLabel } from "@/app/[locale]/(2026)/_constants/tickets";
+import {
+  TIER_VALID_DAYS,
+  isSeatlessTier,
+  tierLabel,
+} from "@/app/[locale]/(2026)/_constants/tickets";
 import type { TierKey } from "@/app/[locale]/(2026)/_types/tickets";
 
 type CheckinResult =
@@ -39,6 +43,7 @@ const TIER_COLORS: Record<TierKey, string> = {
   premium: "#FF8C00",
   general: "#FFFFFF",
   mainday: "#22D3EE",
+  day2: "#F0ABFC",
 };
 
 export default function CheckinPage() {
@@ -386,10 +391,13 @@ function CheckinResultOverlay({
                 </span>
               </p>
             )}
-            <p style={{ margin: 0, fontSize: 22 }}>
-              Section <span style={{ fontWeight: 700 }}>{ticket.payload.sec}</span>
-              {" · "}Seat <span style={{ fontWeight: 700 }}>{ticket.payload.seat}</span>
-            </p>
+            {/* 좌석 없는 티켓은 sec·seat이 주문 안 순번이라 스태프에게 의미가 없다 */}
+            {!isSeatlessTier(ticket.payload.tier) && (
+              <p style={{ margin: 0, fontSize: 22 }}>
+                Section <span style={{ fontWeight: 700 }}>{ticket.payload.sec}</span>
+                {" · "}Seat <span style={{ fontWeight: 700 }}>{ticket.payload.seat}</span>
+              </p>
+            )}
             {ticket.payload.ap && (
               <p style={{ margin: "8px 0 0", fontSize: 22 }}>✓ After Party</p>
             )}

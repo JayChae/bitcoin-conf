@@ -58,7 +58,7 @@ export async function getCurrentPhase(
   tier?: TierKey,
   presetConfig?: PricingConfig,
 ): Promise<PricingPhase> {
-  // VIP·Main Day는 모든 얼리버드 할인 대상 아님 — 항상 정가
+  // VIP·Main Day·Day 2는 모든 얼리버드 할인 대상 아님 — 항상 정가
   if (tier && NO_DISCOUNT_TIERS.includes(tier)) return "regular";
 
   const config = presetConfig ?? (await getPricingConfig());

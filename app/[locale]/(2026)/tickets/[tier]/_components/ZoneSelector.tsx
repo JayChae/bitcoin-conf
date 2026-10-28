@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
-import type { TierKey } from "@/app/[locale]/(2026)/_types/tickets";
+import type { SeatedTierKey } from "@/app/[locale]/(2026)/_types/tickets";
 import type { SeatTier } from "@/app/[locale]/(2026)/_types/seats";
 import {
   SECTIONS,
@@ -45,7 +45,7 @@ export default function ZoneSelector({
   onSelectZone,
   sectionCounts,
 }: {
-  tier: TierKey;
+  tier: SeatedTierKey;
   selectedSeats: Record<string, Set<number>>;
   selectedSection: string | null;
   onSelectZone: (sectionId: string) => void;
