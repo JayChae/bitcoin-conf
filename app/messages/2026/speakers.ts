@@ -986,6 +986,26 @@ const items: SpeakerSource[] = [
       },
     },
   },
+  {
+    slug: "bitbollo",
+    image: "/2026/speakers/Bitbollo.webp",
+    difficulty: "Low",
+    links: [{ type: "website", url: "https://bitcoincollectibles.shop" }],
+    i18n: {
+      en: {
+        title: "Bitbollo",
+        subtitle: ["Collector"],
+        bio: "True to the name — bollo means 'stamp' in Italian — Bitbollo is a collector who gathers and shares Bitcoin-themed collectibles.\n\nFirst introduced to Bitcoin in 2013, Bitbollo joined Bitcoin Foundation Italy in 2015 and has taken part in meetups across Italy, from Milan to Rome.\n\nAfter more than ten years as a manager in the pharmaceutical and healthcare sector, working with global pharmaceutical companies, universities, and public hospitals, Bitbollo now draws on that experience to spread the word about Bitcoin and Bitcoin collectibles.\n\nIn recent years, Bitbollo has hosted meetups in three cities across two countries, refining the format along the way, and plans to make them a regular yearly gathering while expanding to more countries.",
+        lectureTitle: "Collectibles! Physical Bitcoin",
+      },
+      ko: {
+        title: "Bitbollo",
+        subtitle: ["수집가"],
+        bio: "이탈리아어로 '우표'를 뜻하는 볼로(bollo)라는 이름처럼, 비트코인을 주제로 한 수집품을 모으고 알리는 컬렉터입니다.\n\n2013년 비트코인을 처음 접했고, 2015년 비트코인 재단 이탈리아(Bitcoin Foundation Italy)에 가입해 밀라노, 로마 등 이탈리아 각지 모임에 참여해 왔습니다.\n\n제약·헬스케어 분야에서 10년 넘게 관리자로 일하며 글로벌 제약사, 대학, 공공 병원과 협업했습니다. 지금은 그 경험을 바탕으로 비트코인과 비트코인 수집품을 알리는 활동에 시간을 쏟고 있습니다.\n\n최근 몇 년간 2개국 3개 도시에서 밋업을 열며 형식을 다듬었고, 앞으로 이 모임을 매년 정기적으로 열며 더 많은 나라로 넓혀갈 계획입니다.",
+        lectureTitle: "수집품! 실물 비트코인",
+      },
+    },
+  },
 ];
 
 // 랜딩 캐러셀은 앞 6명만 노출한다. 국내 관객이 바로 알아보는 연사를 이 순서로 앞세우고,
