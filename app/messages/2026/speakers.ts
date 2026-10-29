@@ -967,26 +967,6 @@ const items: SpeakerSource[] = [
     },
   },
   {
-    slug: "tadge-dryja",
-    image: "/2026/speakers/Tadge_Dryja.webp",
-    difficulty: "High",
-    links: [{ type: "x", url: "https://x.com/tdryja" }],
-    i18n: {
-      en: {
-        title: "Tadge Dryja",
-        subtitle: ["Bitcoin Researcher"],
-        bio: "Tadge co-authored the design and development of the Lightning Network, changing how people think about Bitcoin scalability. He devised Discreet Log Contracts (DLCs), a smart contract protocol for Bitcoin, and Utreexo, an accumulator that improves Bitcoin's scalability and performance. He is currently researching post-quantum migration protocols to make Bitcoin safer and more resilient.",
-        lectureTitle: "Post Quantum Recovery",
-      },
-      ko: {
-        title: "Tadge Dryja",
-        subtitle: ["비트코인 리서처"],
-        bio: "라이트닝 네트워크를 공동 저자로 설계·개발해 비트코인 확장성에 대한 관점을 바꾼 인물입니다. 비트코인 스마트 컨트랙트 프로토콜인 DLC(Discreet Log Contracts)와, 비트코인의 확장성과 성능을 개선한 어큐뮬레이터 Utreexo를 고안했습니다. 현재는 비트코인의 안전성과 회복력을 높이기 위한 양자 내성(포스트 퀀텀) 마이그레이션 프로토콜을 연구하고 있습니다.",
-        lectureTitle: "양자 내성 복구",
-      },
-    },
-  },
-  {
     slug: "bitbollo",
     image: "/2026/speakers/Bitbollo.webp",
     difficulty: "Low",
