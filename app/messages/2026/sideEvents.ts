@@ -275,7 +275,12 @@ const items: SideEventSource[] = [
     slug: "fedi-p2p-platform",
     image: "/2026/side-events/fedi-p2p-platform.webp",
     cardImage: "/2026/side-events/fedi-p2p-platform-card.webp",
-    links: [],
+    links: [
+      {
+        type: "website",
+        url: "https://docs.google.com/forms/d/e/1FAIpQLSfImTV1RP0Sm6bdHSgxQISQ86ocf1TFbz1YTWhiDZF0lvpwKw/viewform",
+      },
+    ],
     i18n: {
       en: {
         title: "Building Trusted Networks with Bitcoin and Fedi",
