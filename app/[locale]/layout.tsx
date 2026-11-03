@@ -62,6 +62,11 @@ export default async function RootLayout({ children, params }: Props) {
           href="/favicon/favicon-16x16.png"
         />
         <link rel="manifest" href="/favicon/site.webmanifest" />
+        {/* Written into <head> directly: metadata from generateMetadata can stream into <body>, where Meta's domain check misses it. */}
+        <meta
+          name="facebook-domain-verification"
+          content="0mhs3b9s735nplwiu7g7ptuujsqvp2"
+        />
       </head>
       <body
         className={`antialiased size-full relative overflow-y-auto bg-[#101018]`}
