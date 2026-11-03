@@ -96,16 +96,21 @@ export default async function SideEventDetailPage({
           </p>
 
           {registerLink && (
-            <div className="mt-3">
-              <a
-                href={registerLink.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group inline-flex w-full sm:w-auto items-center justify-center gap-2.5 px-8 py-4 md:px-10 md:py-5 rounded-full border border-[#E947F5]/50 bg-[#E947F5]/5 text-[#F490FF] text-base md:text-lg font-bold tracking-wide transition-all duration-200 ease-out hover:bg-[#E947F5] hover:border-[#E947F5] hover:text-white hover:-translate-y-0.5 hover:shadow-[0_0_28px_-6px_rgba(233,71,245,0.7)] active:scale-[0.98]"
-              >
-                {t("register")}
-                <ArrowUpRight className="size-5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </a>
+            <div className="mt-3 flex flex-col gap-3">
+              {/* 결제 링크가 있으면 신청서 작성 → 결제 두 단계로 보여준다 */}
+              <div className="flex flex-col sm:flex-row gap-3">
+                <ExternalButton href={registerLink.url}>
+                  {event.paymentUrl ? t("apply") : t("register")}
+                </ExternalButton>
+                {event.paymentUrl && (
+                  <ExternalButton href={event.paymentUrl}>
+                    {t("pay")}
+                  </ExternalButton>
+                )}
+              </div>
+              {event.paymentUrl && (
+                <p className="text-sm text-white/50">{t("payNote")}</p>
+              )}
             </div>
           )}
 
@@ -122,6 +127,26 @@ export default async function SideEventDetailPage({
         )}
       </div>
     </main>
+  );
+}
+
+function ExternalButton({
+  href,
+  children,
+}: {
+  href: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group inline-flex w-full sm:w-auto items-center justify-center gap-2.5 px-8 py-4 md:px-10 md:py-5 rounded-full border border-[#E947F5]/50 bg-[#E947F5]/5 text-[#F490FF] text-base md:text-lg font-bold tracking-wide transition-all duration-200 ease-out hover:bg-[#E947F5] hover:border-[#E947F5] hover:text-white hover:-translate-y-0.5 hover:shadow-[0_0_28px_-6px_rgba(233,71,245,0.7)] active:scale-[0.98]"
+    >
+      {children}
+      <ArrowUpRight className="size-5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+    </a>
   );
 }
 

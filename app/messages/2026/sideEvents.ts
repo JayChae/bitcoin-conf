@@ -8,6 +8,8 @@ export type SideEvent = {
   cardImage?: string;
   date: string;
   links: SNS[];
+  // 결제 링크(Zaprite 등). 있으면 상세 페이지에서 신청 버튼 옆에 결제 버튼을 붙인다.
+  paymentUrl?: string;
   title: string;
   host: string;
   shortDescription: string;
@@ -372,12 +374,8 @@ const items: SideEventSource[] = [
     slug: "bitcoin-educators-academy",
     image: "/2026/side-events/bitcoin-educators-academy.webp",
     cardImage: "/2026/side-events/bitcoin-educators-academy-card.webp",
-    links: [
-      {
-        type: "website",
-        url: "https://docs.google.com/forms/d/e/1FAIpQLSeGT2B6_oOaKYa3QnKYUvpSQf5f85jJxuekM0fUXcPBYFgd_w/viewform",
-      },
-    ],
+    links: [{ type: "website", url: "https://forms.gle/MVZy2RZb1uZLahcp8" }],
+    paymentUrl: "https://pay.zaprite.com/pl_vSdWV7mMcU",
     i18n: {
       en: {
         title: "Bitcoin Educators Academy Seoul",
