@@ -986,6 +986,29 @@ const items: SpeakerSource[] = [
       },
     },
   },
+  {
+    slug: "matthew",
+    image: "/2026/speakers/Matthew.webp",
+    difficulty: "Low",
+    links: [
+      { type: "website", url: "https://tokyobitcoin.space/" },
+      { type: "x", url: "https://x.com/TBB_JP" },
+    ],
+    i18n: {
+      en: {
+        title: "Matthew",
+        subtitle: ["Tokyo Bitcoin Base and SNS Manager"],
+        bio: "Matthew is a member of Tokyo Bitcoin Base (TBB), a community hub connecting Bitcoiners in Japan and around the world.\n\nHe helps organize meetups, workshops, and events while supporting communication between Japanese and international Bitcoin communities. He also produces videos and social media content about Bitcoin's history, technology, and the people shaping its ecosystem.\n\nThrough interviews and educational content, he aims to make Bitcoin more accessible and engaging for newcomers. He is particularly passionate about bringing people together and building stronger connections within the global Bitcoin community.\n\nAt Bitcoin Korea Conference, he will introduce Tokyo Bitcoin Base and share its efforts to grow Bitcoin culture and connect communities in Japan and beyond.",
+        lectureTitle: "Tokyo Bitcoin Base: Building Japan's Bitcoin Hub",
+      },
+      ko: {
+        title: "Matthew",
+        subtitle: ["Tokyo Bitcoin Base 및 SNS 매니저"],
+        bio: "Matthew는 일본과 전 세계의 비트코이너를 잇는 커뮤니티 허브, Tokyo Bitcoin Base(TBB)의 멤버입니다.\n\n밋업과 워크숍, 각종 행사를 기획하는 일을 도우며 일본과 해외 비트코인 커뮤니티 사이의 소통을 돕고 있습니다. 비트코인의 역사와 기술, 그리고 생태계를 만들어 가는 사람들을 다루는 영상과 SNS 콘텐츠도 직접 제작합니다.\n\n인터뷰와 교육 콘텐츠를 통해 비트코인을 처음 접하는 사람들도 더 쉽고 재미있게 다가갈 수 있도록 하는 것이 목표입니다. 특히 사람들을 한자리에 모으고, 전 세계 비트코인 커뮤니티 사이의 유대를 더 단단하게 만드는 일에 열정을 쏟고 있습니다.\n\n이번 Bitcoin Korea Conference에서는 Tokyo Bitcoin Base를 소개하고, 일본과 그 너머에서 비트코인 문화를 키우고 커뮤니티를 연결해 온 노력을 나눌 예정입니다.",
+        lectureTitle: "Tokyo Bitcoin Base: 일본의 비트코인 허브를 만들다",
+      },
+    },
+  },
 ];
 
 // 랜딩 캐러셀은 앞 6명만 노출한다. 국내 관객이 바로 알아보는 연사를 이 순서로 앞세우고,

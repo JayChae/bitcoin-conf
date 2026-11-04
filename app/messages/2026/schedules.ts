@@ -323,19 +323,7 @@ const days: Record<DayId, ScheduleDay> = {
         end: "13:30",
         room: "masil-1f",
         format: "talk",
-        speakers: [
-          {
-            name: { en: "Matthew", ko: "Matthew" },
-            affiliation: {
-              en: "Tokyo Bitcoin Base Manager",
-              ko: "Tokyo Bitcoin Base 매니저",
-            },
-          },
-        ],
-        title: {
-          en: "Tokyo Bitcoin Base: Building Japan's Bitcoin Hub",
-          ko: "Tokyo Bitcoin Base: 일본의 비트코인 허브를 만들다",
-        },
+        speakers: ["matthew"],
       },
       {
         start: "13:30",
