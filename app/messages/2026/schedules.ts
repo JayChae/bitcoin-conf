@@ -79,7 +79,7 @@ const days: Record<DayId, ScheduleDay> = {
         end: "13:40",
         room: "coex",
         format: "keynote",
-        speakers: ["stephan-livera"],
+        speakers: ["niftynei"],
       },
       {
         start: "13:40",
@@ -127,7 +127,7 @@ const days: Record<DayId, ScheduleDay> = {
         end: "17:40",
         room: "coex",
         format: "fireside",
-        speakers: ["carl-dong", "stephan-livera"],
+        speakers: ["carl-dong", "calvin-kim"],
         title: {
           en: "VPNs, Internet Freedom, and Bitcoin",
           ko: "VPN, 인터넷 자유, 그리고 비트코인",

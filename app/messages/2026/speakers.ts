@@ -169,29 +169,6 @@ const items: SpeakerSource[] = [
     },
   },
   {
-    slug: "stephan-livera",
-    image: "/2026/speakers/Stephan_Livera.webp",
-    difficulty: "Low",
-    links: [
-      { type: "x", url: "https://x.com/stephanlivera" },
-      { type: "website", url: "https://stephanlivera.com" },
-    ],
-    i18n: {
-      en: {
-        title: "Stephan Livera",
-        subtitle: ["Bitcoin & Economics Podcaster"],
-        bio: "Stephan Livera is the host of the Stephan Livera Podcast (SLP), a show that dives deep into the economics and technology of Bitcoin. A longtime student and advocate of the Austrian school (an economic tradition emphasizing free markets and sound money), he is listed on the Mises Institute's official profile page and has consistently worked to interpret Bitcoin through an Austrian-economics lens. SLP has surpassed 6 million cumulative downloads and holds an average rating of 4.9 across more than 700 reviews worldwide — placing it in the top 0.5% of global podcasts and establishing it as one of the flagship podcasts in the Bitcoin space. On the strength of that influence, he is a regular speaker at major Bitcoin conferences around the world. At this conference, drawing on the rich body of interviews he has accumulated over the years, he will share insights on the economic and technical currents in Bitcoin and the latest developments in global markets.",
-        lectureTitle: "How to Prepare for the Coming Quantum Computing Era",
-      },
-      ko: {
-        title: "Stephan Livera",
-        subtitle: ["비트코인과 경제 전문 팟캐스터"],
-        bio: "스테판 리베라(Stephan Livera)는 비트코인 경제와 기술을 깊이 있게 다루는 'Stephan Livera Podcast(SLP)'의 진행자다. 그는 오스트리안 학파(자유시장과 건전화폐를 강조하는 경제학파)의 오랜 학습자이자 옹호자로, 미제스 연구소(Mises Institute)에도 정식 프로필이 등재되어 있으며, 비트코인을 오스트리안 경제학의 관점에서 해석하는 작업을 꾸준히 이어 오고 있다. 그가 진행하는 SLP는 누적 다운로드 600만 회를 넘어섰고, 전 세계 700여 개의 평점에서 평균 4.9점을 받으며 글로벌 팟캐스트 상위 0.5%, 비트코인 분야의 대표 팟캐스트 중 하나로 자리 잡았다. 이러한 영향력을 바탕으로 그는 전 세계 주요 비트코인 컨퍼런스에 단골 연사로 무대에 오르고 있다. 이번 컨퍼런스에서도 그동안 쌓아 온 풍부한 인터뷰 경험을 바탕으로, 비트코인의 경제적·기술적 흐름과 글로벌 시장의 최신 동향에 대한 통찰을 전할 예정이다.",
-        lectureTitle: "다가오는 양자컴퓨팅 시대, 어떻게 대비할 것인가",
-      },
-    },
-  },
-  {
     slug: "duncan-dean",
     image: "/2026/speakers/Duncan_Dean.webp",
     difficulty: "High",
@@ -245,16 +222,16 @@ const items: SpeakerSource[] = [
       en: {
         title: "Kang Jae-nam",
         subtitle: ["Co-CEO, MADE Tax & Accounting"],
-        bio: "Kang Jae-nam is a licensed tax accountant and the representative of MADE, a tax and accounting firm specializing in crypto assets. She provides in-depth tax management for businesses that accept Bitcoin as payment, P2P (peer-to-peer) traders, and individual investors. Drawing on years of practical experience, she offers realistic and workable approaches to the crypto asset taxation set to take effect in Korea in 2027.\n\nIn this talk she first walks through the 2026 revisions to Korea's crypto asset tax code and how its taxation framework is structured, then introduces the crypto capital gains tax calculator she built herself. She goes on to cover tax-saving strategies that individuals and business owners who steadily stack sats can actually put to use.\n\nTalk outline\n\nCrypto Asset Taxes in 2026\n· The 2026 revisions to crypto asset tax law\n· Understanding the crypto asset taxation framework\n· Using the crypto capital gains tax calculator\n\nTax-Saving Strategies for Stacking Sats\n· What tax saving actually means\n· Key tax-saving methods for individuals and businesses",
+        bio: "Kang Jae-nam is a licensed tax accountant and the representative of MADE, a tax and accounting firm specializing in crypto assets. She provides in-depth tax management for businesses that accept Bitcoin as payment, P2P (peer-to-peer) traders, and individual investors. Drawing on years of practical experience, she offers realistic and workable approaches to the crypto asset taxation set to take effect in Korea in 2027.\n\nIn this talk she first walks through the 2026 revisions to Korea's crypto asset tax code and how its taxation framework is structured, then introduces the crypto capital gains tax calculator she built herself. She goes on to cover tax-saving strategies that individuals and business owners who steadily stack sats can actually put to use.\n\nTalk outline\n\nCrypto Asset Taxes in 2027\n· The 2026 revisions to crypto asset tax law\n· Understanding the crypto asset taxation framework\n· Using the crypto capital gains tax calculator\n\nTax-Saving Strategies for Stacking Sats\n· What tax saving actually means\n· Key tax-saving methods for individuals and businesses",
         lectureTitle:
-          "Crypto Asset Taxes in 2026 / Tax-Saving Strategies for Stacking Sats",
+          "Crypto Asset Taxes in 2027 / Tax-Saving Strategies for Stacking Sats",
         session: "Keynote",
       },
       ko: {
         title: "강재남",
         subtitle: ["MADE 세무회계 공동 대표"],
-        bio: "가상자산 전문 세무회계 MADE의 대표 세무사로, 비트코인으로 결제를 받는 사업체, P2P(개인 간) 거래, 그리고 개인 투자자의 가상자산 세금을 심층적으로 관리하고 있다. 특히 2027년 시행을 앞둔 가상자산 과세에 대해, 다년간의 실무 경험을 바탕으로 보다 현실적이고 합리적인 대응 방법을 제시한다.\n\n이번 발표에서는 2026년 개정된 가상자산 세제와 과세 구조를 먼저 짚어보고, 직접 개발한 가상자산 양도세 계산기 활용법을 소개한다. 이어서 비트코인을 꾸준히 모으는(Stack Sats) 개인과 사업자가 실제로 활용할 수 있는 절세 전략을 다룬다.\n\n발표 주제\n\n2026년 가상자산 세금\n· 2026년 개정된 가상자산 세제\n· 가상자산 과세 구조의 이해\n· 가상자산 양도세 계산기 활용법\n\nStack Sats를 위한 절세 전략\n· 절세란 무엇인가\n· 개인과 사업자가 활용할 수 있는 주요 절세 방법",
-        lectureTitle: "2026년 가상자산 세금/Stack Sats를 위한 절세 전략",
+        bio: "가상자산 전문 세무회계 MADE의 대표 세무사로, 비트코인으로 결제를 받는 사업체, P2P(개인 간) 거래, 그리고 개인 투자자의 가상자산 세금을 심층적으로 관리하고 있다. 특히 2027년 시행을 앞둔 가상자산 과세에 대해, 다년간의 실무 경험을 바탕으로 보다 현실적이고 합리적인 대응 방법을 제시한다.\n\n이번 발표에서는 2026년 개정된 가상자산 세제와 과세 구조를 먼저 짚어보고, 직접 개발한 가상자산 양도세 계산기 활용법을 소개한다. 이어서 비트코인을 꾸준히 모으는(Stack Sats) 개인과 사업자가 실제로 활용할 수 있는 절세 전략을 다룬다.\n\n발표 주제\n\n2027년 가상자산 세금\n· 2026년 개정된 가상자산 세제\n· 가상자산 과세 구조의 이해\n· 가상자산 양도세 계산기 활용법\n\nStack Sats를 위한 절세 전략\n· 절세란 무엇인가\n· 개인과 사업자가 활용할 수 있는 주요 절세 방법",
+        lectureTitle: "2027년 가상자산 세금/Stack Sats를 위한 절세 전략",
         session: "키노트",
       },
     },
@@ -1009,6 +986,29 @@ const items: SpeakerSource[] = [
       },
     },
   },
+  {
+    slug: "niftynei",
+    image: "/2026/speakers/Niftynei.webp",
+    difficulty: "Low",
+    links: [
+      { type: "website", url: "https://btcpp.dev/" },
+      { type: "x", url: "https://x.com/niftynei" },
+    ],
+    i18n: {
+      en: {
+        title: "Niftynei",
+        subtitle: ["Founder"],
+        bio: "niftynei has been working on Bitcoin as a protocol engineer since 2018. She is an author and contributor to the Lightning network specification. She currently runs bitcoin++, the world's largest bitcoin developer conference series.",
+        lectureTitle: "How to Prepare for the Coming Quantum Computing Era",
+      },
+      ko: {
+        title: "Niftynei",
+        subtitle: ["Founder"],
+        bio: "niftynei는 2018년부터 프로토콜 엔지니어로 비트코인 개발에 참여해 왔습니다. 라이트닝 네트워크 명세의 저자이자 기여자이며, 현재 세계 최대 규모의 비트코인 개발자 컨퍼런스 시리즈인 bitcoin++를 운영하고 있습니다.",
+        lectureTitle: "다가오는 양자컴퓨팅 시대, 어떻게 대비할 것인가",
+      },
+    },
+  },
 ];
 
 // 랜딩 캐러셀은 앞 6명만 노출한다. 국내 관객이 바로 알아보는 연사를 이 순서로 앞세우고,
@@ -1019,7 +1019,7 @@ const featuredOrder = [
   "daniel-james",
   "respect",
   "robin",
-  "stephan-livera",
+  "niftynei",
 ];
 
 const featuredRank = (slug: string) => {
