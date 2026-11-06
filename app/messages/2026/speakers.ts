@@ -399,29 +399,6 @@ const items: SpeakerSource[] = [
     },
   },
   {
-    slug: "shaun",
-    image: "/2026/speakers/Shaun.webp",
-    difficulty: "Low",
-    links: [
-      { type: "website", url: "https://mybitcoinhouse.com/en" },
-      { type: "x", url: "https://x.com/shauntime" },
-    ],
-    i18n: {
-      en: {
-        title: "Shaun",
-        subtitle: ["Founder, Bitcoin House Malaysia", "Partner, YakiHonne"],
-        bio: "Shaun is the founder of Bitcoin House Malaysia, an HRF-supported Bitcoin education hub in Kuala Lumpur, and a partner at YakiHonne, a decentralized social media platform built on Nostr, with integrated Bitcoin wallet features and grant backing from HRF and OpenSats.\n\nHis work focuses on Bitcoin education, merchant onboarding, developer communities, and practical Bitcoin adoption across Southeast Asia. Having worked across Greater China and Southeast Asia, he believes the Global South needs sovereign tools, not just better fintech. Over the years, he has helped connect more than 50 native Bitcoin communities on the ground and more than 500 online Bitcoin communities globally.\n\nBased in Kuala Lumpur and deeply rooted in its Bitcoin community, Shaun works to connect Asian Bitcoin communities with the wider freedom tech movement.",
-        lectureTitle: "Bitcoin Communities in Asia",
-      },
-      ko: {
-        title: "Shaun",
-        subtitle: ["Bitcoin House Malaysia 창립자", "YakiHonne 파트너"],
-        bio: "숀(Shaun)은 쿠알라룸푸르에 자리한 HRF 지원 비트코인 교육 허브 '비트코인 하우스 말레이시아(Bitcoin House Malaysia)'의 창립자이자, 노스터(Nostr) 기반의 탈중앙 소셜 미디어 플랫폼 야키혼네(YakiHonne)의 파트너다. 야키혼네는 비트코인 지갑 기능을 통합하고 있으며 HRF와 오픈사츠(OpenSats)의 그랜트 지원을 받고 있다.\n\n그의 활동은 비트코인 교육, 가맹점 온보딩, 개발자 커뮤니티, 그리고 동남아시아 전역의 실질적인 비트코인 어답션에 초점을 맞추고 있다. 중화권과 동남아시아를 오가며 일해 온 그는, 글로벌 사우스에 필요한 것은 더 나은 핀테크가 아니라 주권을 지킬 수 있는 도구라고 믿는다. 지난 몇 년간 그는 현장에서 50개가 넘는 로컬 비트코인 커뮤니티와 전 세계 500개가 넘는 온라인 비트코인 커뮤니티를 잇는 데 힘을 보태 왔다.\n\n쿠알라룸푸르를 기반으로 현지 비트코인 커뮤니티에 깊이 뿌리내린 숀은, 아시아의 비트코인 커뮤니티를 더 넓은 프리덤 테크(freedom tech) 운동과 연결하는 일에 힘쓰고 있다.",
-        lectureTitle: "아시아 비트코인 커뮤니티",
-      },
-    },
-  },
-  {
     slug: "rob",
     image: "/2026/speakers/Rob.webp",
     difficulty: "Low",
