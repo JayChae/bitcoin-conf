@@ -1,6 +1,7 @@
 import { setRequestLocale } from "next-intl/server";
 import Nav from "./_components/Nav";
 import Footer from "./_components/Footer";
+import VenueNoticeModal from "./_components/VenueNotice/VenueNoticeModal";
 import navItems, { ticketCta } from "@/app/messages/2026/nav";
 import ColorBends from "@/components/ColorBends";
 
@@ -37,6 +38,7 @@ export default async function Layout2026({ children, params }: Props) {
         <div className="min-h-screen">{children}</div>
         <Footer />
       </div>
+      <VenueNoticeModal />
     </>
   );
 }

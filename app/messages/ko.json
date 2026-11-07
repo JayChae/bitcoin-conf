@@ -8,7 +8,7 @@
   "Hero2026": {
     "tagline": "대한민국 대표 비트코인 컨퍼런스",
     "title": "Bitcoin Korea Conference",
-    "day1Location": "11월 7일 · 코엑스 삼성",
+    "day1Location": "11월 7일 · 코엑스 3층 오디토리움",
     "day2Location": "11월 8일 · 전국은행연합회"
   },
   "Stats2026": {
@@ -281,13 +281,22 @@
     "day1FullDate": "2026년 11월 7일",
     "day2FullDate": "2026년 11월 8일",
     "viewMap": "네이버 지도에서 보기",
-    "venueCoexName": "코엑스",
-    "venueCoexAddress": "서울특별시 강남구 영동대로 513 (삼성동)",
+    "venueCoexName": "코엑스 오디토리움",
+    "venueCoexAddress": "서울특별시 강남구 영동대로 513 (삼성동), 코엑스 3층 오디토리움",
     "venueKfbName": "전국은행연합회",
     "venueKfbAddress": "서울특별시 중구 명동11길 19, 2층 국제회의실",
     "venueMasilName": "커뮤니티하우스 마실",
     "venueMasilAddress": "서울특별시 중구 명동11길 14",
     "viewSchedule": "일정 보러가기"
+  },
+  "VenueNotice2026": {
+    "eyebrow": "오늘 행사장 안내",
+    "title": "코엑스 3층 오디토리움",
+    "body": "11월 7일 Day 1 행사는 코엑스 3층 오디토리움에서 열립니다.",
+    "address": "서울특별시 강남구 영동대로 513 (삼성동)",
+    "mapCta": "네이버 지도로 길찾기",
+    "close": "확인",
+    "closeLabel": "안내 닫기"
   },
   "Faq2026": {
     "sectionTitle": "자주 묻는 질문",
@@ -308,7 +317,7 @@
     "scheduleNote": "모든 시간은 한국 표준시(KST) 기준이며, 일정은 사정에 따라 변경될 수 있습니다.",
     "roomFilterLabel": "공간별 보기",
     "roomAll": "전체",
-    "roomCoex": "메인 홀",
+    "roomCoex": "코엑스 3층 오디토리움",
     "roomKfb": "은행회관",
     "roomMasil2f": "마실 2층",
     "roomMasil1f": "마실 1층",

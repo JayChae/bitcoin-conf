@@ -8,7 +8,7 @@
   "Hero2026": {
     "tagline": "Korea's Premier Bitcoin Conference",
     "title": "Bitcoin Korea Conference",
-    "day1Location": "Nov 7 · COEX Samsung",
+    "day1Location": "Nov 7 · COEX 3F Auditorium",
     "day2Location": "Nov 8 · Korea Federation of Banks"
   },
   "Stats2026": {
@@ -282,13 +282,22 @@
     "day1FullDate": "November 7, 2026",
     "day2FullDate": "November 8, 2026",
     "viewMap": "View on Google Maps",
-    "venueCoexName": "COEX",
-    "venueCoexAddress": "513 Yeongdong-daero, Gangnam-gu, Seoul",
+    "venueCoexName": "COEX Auditorium",
+    "venueCoexAddress": "513 Yeongdong-daero, Gangnam-gu, Seoul (COEX 3F Auditorium)",
     "venueKfbName": "Korea Federation of Banks",
     "venueKfbAddress": "19 Myeongdong 11-gil, Jung-gu, Seoul (2F International Conference Room)",
     "venueMasilName": "Community House Masil",
     "venueMasilAddress": "14 Myeongdong 11-gil, Jung-gu, Seoul",
     "viewSchedule": "View schedule"
+  },
+  "VenueNotice2026": {
+    "eyebrow": "Today's venue",
+    "title": "COEX 3F Auditorium",
+    "body": "Day 1 (Nov 7) takes place in the Auditorium on the 3rd floor of COEX.",
+    "address": "513 Yeongdong-daero, Gangnam-gu, Seoul",
+    "mapCta": "Get directions",
+    "close": "Got it",
+    "closeLabel": "Close notice"
   },
   "Faq2026": {
     "sectionTitle": "Frequently Asked Questions",
@@ -309,7 +318,7 @@
     "scheduleNote": "All times are in Korea Standard Time (KST). The schedule is subject to change.",
     "roomFilterLabel": "Filter by room",
     "roomAll": "All",
-    "roomCoex": "Main Hall",
+    "roomCoex": "COEX 3F Auditorium",
     "roomKfb": "KFB Hall",
     "roomMasil2f": "Masil 2F",
     "roomMasil1f": "Masil 1F",

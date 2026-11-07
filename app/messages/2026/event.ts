@@ -10,7 +10,7 @@ export const event: EventInfo = {
   ogImage: { url: "/2026/2026_OG.jpg", width: 1280, height: 720 },
   places: [
     {
-      name: "COEX",
+      name: "COEX Auditorium (3F)",
       streetAddress: "513 Yeongdong-daero, Gangnam-gu",
       addressLocality: "Seoul",
       addressCountry: "KR",

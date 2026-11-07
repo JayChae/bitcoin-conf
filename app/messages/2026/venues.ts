@@ -16,9 +16,9 @@ export function venueMapUrl(id: VenueId, locale: Locale): string {
 export const venues: Record<VenueId, VenueMeta> = {
   coex: {
     day: 1,
-    naverMapUrl: "https://map.naver.com/p/search/%EC%BD%94%EC%97%91%EC%8A%A4",
+    naverMapUrl: "https://naver.me/Ge7Ba51Y",
     googleMapUrl:
-      "https://www.google.com/maps/search/?api=1&query=COEX+Seoul",
+      "https://www.google.com/maps/search/?api=1&query=COEX+Auditorium+Seoul",
   },
   kfb: {
     day: 2,
